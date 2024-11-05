@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Text("getX 적용"),
+      home: const Text("test"),
     );
   }
 }
