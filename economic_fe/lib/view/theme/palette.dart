@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class Palette {
   //사용하는 색상들
   static const Color background = Color.fromARGB(255, 255, 255, 255);
+  static const Color buttonColorGreen = Color(0xFF00D6D6);
 
   //사용하는 text style
-
   static TextStyle title = const TextStyle(
     color: Color(0xFF000000),
     fontFamily: 'Palanquin Dark',
