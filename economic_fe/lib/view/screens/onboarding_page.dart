@@ -47,9 +47,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
               text: "시작하기",
               onPress: () {
                 final controller = Get.find<OnboardingController>();
-                controller.clickedStartBtn(context); // 클릭 시 context 전달
+                controller.clickedStartBtn(context);
               },
-              bgColor: Palette.buttonColorGreen,
+              bgColor: Palette.buttonColorBlue,
             ),
           ],
         ),
