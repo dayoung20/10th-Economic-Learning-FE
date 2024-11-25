@@ -1,5 +1,9 @@
 import 'package:economic_fe/view/screens/home_page.dart';
+
+import 'package:economic_fe/view/screens/onboarding_card_page.dart';
+
 import 'package:economic_fe/view/screens/login_page.dart';
+
 import 'package:economic_fe/view/screens/onboarding_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,10 +16,12 @@ class UserRouter {
           path: '/',
           builder: (context, state) => const OnboardingPage(), // 홈 페이지
         ),
-        // GoRoute(
-        //   path: '/login',
-        //   builder: (context, state) => const LoginPage(), // 로그인 페이지
-        // ),
+
+        GoRoute(
+          path: '/onboarding',
+          builder: (context, state) => const OnboardingCardPage(),
+        ),
+
       ],
     );
   }
