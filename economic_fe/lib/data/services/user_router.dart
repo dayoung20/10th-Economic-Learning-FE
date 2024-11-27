@@ -10,18 +10,20 @@ import 'package:go_router/go_router.dart';
 class UserRouter {
   static GoRouter getRouter() {
     return GoRouter(
-      initialLocation: '/', // 초기 경로 설정
+      initialLocation: '/login', // 초기 경로 설정
       routes: [
         GoRoute(
           path: '/',
           builder: (context, state) => const OnboardingPage(), // 홈 페이지
         ),
-
         GoRoute(
           path: '/onboarding',
           builder: (context, state) => const OnboardingCardPage(),
         ),
-
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => const LoginPage(),
+        ),
       ],
     );
   }
