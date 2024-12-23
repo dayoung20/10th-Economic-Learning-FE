@@ -19,4 +19,8 @@ class OnboardingController extends GetxController {
     // 통계 데이터 로드 또는 초기화 작업
     print("Stats initialized!");
   }
+
+  void clickedTestBtn(BuildContext context) {
+    context.go('/test');
+  }
 }
