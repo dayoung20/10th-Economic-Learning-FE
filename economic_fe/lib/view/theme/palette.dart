@@ -1,3 +1,4 @@
+import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 class Palette {
@@ -75,4 +76,14 @@ class Palette {
     height: 1.2,
     letterSpacing: -0.35,
   );
+
+  // 로그인 화면 TextStyle
+  static TextStyle loginTitle(BuildContext context) {
+    return TextStyle(
+      fontFamily: 'Pretendard',
+      fontSize: ScreenUtils.getWidth(context, 20), // 화면 너비에 비례
+      fontWeight: FontWeight.w400,
+      letterSpacing: ScreenUtils.getWidth(context, -0.50),
+    );
+  }
 }

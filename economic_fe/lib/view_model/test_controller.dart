@@ -35,4 +35,8 @@ class TestController extends GetxController {
   void clickedTestMultiBtn(BuildContext context) {
     context.go('/test/multi');
   }
+
+  void clickedAfterBtn(BuildContext context) {
+    context.go('/login');
+  }
 }

@@ -32,6 +32,9 @@ class OnboardingSlide extends StatelessWidget {
         const SizedBox(
           height: 3,
         ),
+        const SizedBox(
+          height: 60,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -44,7 +47,7 @@ class OnboardingSlide extends StatelessWidget {
                         ? const Color(0xff767676)
                         : const Color(0xff2ad6d6))),
             const SizedBox(
-              width: 2,
+              width: 8,
             ),
             Container(
                 width: currentIdx == 1 ? 32 : 8,
@@ -55,7 +58,7 @@ class OnboardingSlide extends StatelessWidget {
                         ? const Color(0xff767676)
                         : const Color(0xff2ad6d6))),
             const SizedBox(
-              width: 2,
+              width: 8,
             ),
             Container(
                 width: currentIdx == 2 ? 32 : 8,
@@ -66,7 +69,7 @@ class OnboardingSlide extends StatelessWidget {
                         ? const Color(0xff767676)
                         : const Color(0xff2ad6d6))),
             const SizedBox(
-              width: 2,
+              width: 8,
             ),
             Container(
                 width: currentIdx == 3 ? 32 : 8,

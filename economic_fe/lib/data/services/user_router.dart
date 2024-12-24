@@ -23,14 +23,19 @@ class UserRouter {
           builder: (context, state) => const OnboardingCardPage(),
         ),
         GoRoute(
-            path: '/test',
-            builder: (context, state) => const TestPage(),
-            routes: [
-              GoRoute(
-                path: 'multi',
-                builder: (context, state) => const TestMultipleChoicePage(),
-              ),
-            ]),
+          path: '/test',
+          builder: (context, state) => const TestPage(),
+          routes: [
+            GoRoute(
+              path: 'multi',
+              builder: (context, state) => const TestMultipleChoicePage(),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => const LoginPage(),
+        ),
       ],
     );
   }

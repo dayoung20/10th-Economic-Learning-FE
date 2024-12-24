@@ -71,7 +71,11 @@ class _TestPageState extends State<TestPage> {
               height: 12,
             ),
             CustomButton(
-                text: "나중에 할게요", onPress: () {}, bgColor: Palette.background),
+                text: "나중에 할게요",
+                onPress: () {
+                  controller.clickedAfterBtn(context);
+                },
+                bgColor: Palette.background),
           ],
         ),
       ),
