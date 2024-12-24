@@ -37,6 +37,16 @@ class Palette {
     ],
   );
 
+  static TextStyle subleveltitle = const TextStyle(
+    color: Color(0xFF111111),
+    fontFamily: 'Pretendard Variable',
+    fontSize: 16.0,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 1.6,
+    letterSpacing: -0.4,
+  );
+
   static TextStyle cardTitle = const TextStyle(
     color: Color(0xFF000000),
     fontFamily: 'Pretendard Variable',
