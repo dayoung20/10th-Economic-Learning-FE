@@ -36,10 +36,12 @@ class _CustomButtonState extends State<CustomButton> {
       ),
       child: Text(
         widget.text,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // 텍스트 색상 설정
+          color: widget.bgColor == Colors.white
+              ? Colors.black
+              : Colors.white, // 텍스트 색상 설정
         ),
       ),
     );
