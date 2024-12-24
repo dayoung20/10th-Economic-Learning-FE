@@ -12,6 +12,7 @@ class TestMultipleChoicePage extends StatefulWidget {
 
 class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
   int? selectedOption;
+  final question = 'Q. 다음 중 복리 효과가 경제적\n결과로 나타날 수 있는\n상황으로 적절한 것은?';
   final List<String> options = [
     '단기간 대출을 받은 경우',
     '장기간 투자한 예금 계좌의\n이자가 점점 커지는 경우',
@@ -48,6 +49,7 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
             screenWidth: screenWidth,
             onPress: () {},
             option: 0,
+            question: question,
             answerOptions: options),
       ),
     );

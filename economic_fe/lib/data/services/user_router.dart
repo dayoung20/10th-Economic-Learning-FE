@@ -6,6 +6,7 @@ import 'package:economic_fe/view/screens/login_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
+import 'package:economic_fe/view/screens/test_ox_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,6 +30,10 @@ class UserRouter {
             GoRoute(
               path: 'multi',
               builder: (context, state) => const TestMultipleChoicePage(),
+            ),
+            GoRoute(
+              path: 'ox',
+              builder: (context, state) => const TestOxPage(),
             ),
           ],
         ),

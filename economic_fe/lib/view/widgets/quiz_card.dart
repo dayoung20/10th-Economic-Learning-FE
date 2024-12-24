@@ -5,14 +5,17 @@ class QuizCard extends StatefulWidget {
   final double screenHeight;
   final void Function()? onPress;
   final int option; // option : 0 -> 다중 선택, 1 -> ox 문제
-  final List<String> answerOptions;
+  final String question;
+  final List<String>? answerOptions;
+
   const QuizCard({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
     required this.onPress,
     required this.option,
-    required this.answerOptions,
+    required this.question,
+    this.answerOptions,
   });
 
   @override
@@ -21,6 +24,7 @@ class QuizCard extends StatefulWidget {
 
 class _QuizCardState extends State<QuizCard> {
   int? selectedOption;
+  final List<String>? oxOption = [" O", " X"];
   void selectOption(int index) {
     setState(() {
       selectedOption = index;
@@ -48,8 +52,8 @@ class _QuizCardState extends State<QuizCard> {
           ),
           Flexible(
             flex: 1,
-            child:
-                QuizOptionsContainer(widget.screenWidth, widget.screenHeight),
+            child: QuizOptionsContainer(
+                widget.screenWidth, widget.screenHeight, widget.option),
           ),
         ],
       ),
@@ -111,7 +115,8 @@ class _QuizCardState extends State<QuizCard> {
     );
   }
 
-  Container QuizOptionsContainer(double screenWidth, double screenHeight) {
+  Container QuizOptionsContainer(
+      double screenWidth, double screenHeight, int option) {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -120,27 +125,89 @@ class _QuizCardState extends State<QuizCard> {
           bottomRight: Radius.circular(10),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(
-          4,
-          (index) => GestureDetector(
-            onTap: () => selectOption(index + 1),
-            child: quizOptionCard(
-              screenWidth,
-              screenHeight,
-              selectedOption == index + 1
-                  ? const Color(0xff1eb692)
-                  : Colors.white,
-              selectedOption == index + 1
-                  ? const Color(0xff1eb692)
-                  : const Color(0xffd3d3d3),
-              index + 1,
-              widget.answerOptions[index],
+      child: option == 0
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: widget.option == 0
+                  ? List.generate(
+                      4,
+                      (index) => GestureDetector(
+                        onTap: () => selectOption(index + 1),
+                        child: quizOptionCard(
+                          screenWidth,
+                          screenHeight,
+                          selectedOption == index + 1
+                              ? const Color(0xff1eb692)
+                              : Colors.white,
+                          selectedOption == index + 1
+                              ? const Color(0xff1eb692)
+                              : const Color(0xffd3d3d3),
+                          index + 1,
+                          widget.answerOptions![index],
+                          widget.option,
+                        ),
+                      ),
+                    )
+                  : List.generate(
+                      2,
+                      (index) => GestureDetector(
+                        onTap: () => selectOption(index + 1),
+                        child: quizOptionCard(
+                            screenWidth,
+                            screenHeight,
+                            selectedOption == index + 1
+                                ? const Color(0xff1eb692)
+                                : Colors.white,
+                            selectedOption == index + 1
+                                ? const Color(0xff1eb692)
+                                : const Color(0xffd3d3d3),
+                            index + 1,
+                            oxOption![index],
+                            widget.option),
+                      ),
+                    ),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: widget.option == 0
+                  ? List.generate(
+                      4,
+                      (index) => GestureDetector(
+                        onTap: () => selectOption(index + 1),
+                        child: quizOptionCard(
+                            screenWidth,
+                            screenHeight,
+                            selectedOption == index + 1
+                                ? const Color(0xff1eb692)
+                                : Colors.white,
+                            selectedOption == index + 1
+                                ? const Color(0xff1eb692)
+                                : const Color(0xffd3d3d3),
+                            index + 1,
+                            widget.answerOptions![index],
+                            widget.option),
+                      ),
+                    )
+                  : List.generate(
+                      2,
+                      (index) => GestureDetector(
+                        onTap: () => selectOption(index + 1),
+                        child: quizOptionCard(
+                          138,
+                          138,
+                          selectedOption == index + 1
+                              ? const Color(0xff1eb692)
+                              : Colors.white,
+                          selectedOption == index + 1
+                              ? const Color(0xff1eb692)
+                              : const Color(0xffd3d3d3),
+                          index + 1,
+                          oxOption![index],
+                          widget.option,
+                        ),
+                      ),
+                    ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -151,10 +218,11 @@ class _QuizCardState extends State<QuizCard> {
     Color border,
     int number,
     String text,
+    int option,
   ) {
     return Container(
-      width: screenWidth * 0.75,
-      height: screenHeight * 0.08,
+      width: option == 0 ? screenWidth * 0.75 : 138,
+      height: option == 0 ? screenHeight * 0.08 : 138,
       decoration: BoxDecoration(
         color: background,
         border: Border.all(
@@ -166,23 +234,25 @@ class _QuizCardState extends State<QuizCard> {
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Container(
-              width: screenWidth * 0.04,
-              height: screenHeight * 0.02,
-              decoration: BoxDecoration(
-                color: const Color(0xffe5e9ec),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Center(
-                child: Text(
-                  number.toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
+            child: option == 0
+                ? Container(
+                    width: screenWidth * 0.02,
+                    height: screenHeight * 0.02,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffe5e9ec),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        number.toString(),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  )
+                : null,
           ),
           const SizedBox(
             width: 10,
@@ -190,7 +260,7 @@ class _QuizCardState extends State<QuizCard> {
           Text(
             text,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: option == 0 ? 15 : 60,
               fontFamily: 'Pretandard',
               fontWeight: FontWeight.w500,
               height: 1.1,
