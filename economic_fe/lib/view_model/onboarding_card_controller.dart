@@ -14,4 +14,8 @@ class OnboardingCardController extends GetxController {
   void clickedTestBtn(BuildContext context) {
     context.go('/test');
   }
+
+  void clickedTestMultiBtn(BuildContext context) {
+    context.go('/test/multi');
+  }
 }

@@ -5,6 +5,7 @@ import 'package:economic_fe/view/screens/onboarding_card_page.dart';
 import 'package:economic_fe/view/screens/login_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding_page.dart';
+import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,9 +23,14 @@ class UserRouter {
           builder: (context, state) => const OnboardingCardPage(),
         ),
         GoRoute(
-          path: '/test',
-          builder: (context, state) => const TestPage(),
-        ),
+            path: '/test',
+            builder: (context, state) => const TestPage(),
+            routes: [
+              GoRoute(
+                path: 'multi',
+                builder: (context, state) => const TestMultipleChoicePage(),
+              ),
+            ]),
       ],
     );
   }
