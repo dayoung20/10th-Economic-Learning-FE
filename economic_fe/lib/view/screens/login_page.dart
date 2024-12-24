@@ -27,11 +27,7 @@ class LoginPage extends StatelessWidget {
             Text(
               "리플의 학습자가 되시면\n더 자세한 단계와 해설을\n확인하실 수 있어요 :)",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: ScreenUtils.getWidth(context, 20),
-                fontWeight: FontWeight.w400,
-                letterSpacing: ScreenUtils.getWidth(context, -0.50),
-              ),
+              style: Palette.loginTitle(context),
             ),
             SizedBox(
               height: ScreenUtils.getHeight(context, 59),
