@@ -22,6 +22,15 @@ class Palette {
       FontFeature.enable('dlig'),
     ],
   );
+  static TextStyle appTitle = const TextStyle(
+    color: Color(0xFF111111),
+    fontFamily: 'Pretendard Variable',
+    fontSize: 20.0,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 1.3,
+    letterSpacing: -0.5,
+  );
 
   static TextStyle subtitle = const TextStyle(
     color: Color(0xFF000000),
