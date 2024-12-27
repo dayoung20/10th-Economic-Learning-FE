@@ -31,7 +31,7 @@ class UserRouter {
           builder: (context, state) => const LoginPage(),
         ),
         GoRoute(
-          path: '/leveltestResult',
+          path: '/leveltest_result',
           builder: (context, state) => const LeveltestResultPage(),
         ),
       ],
