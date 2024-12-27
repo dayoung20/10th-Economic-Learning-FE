@@ -1,5 +1,6 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/kakao_login_btn.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,21 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 157.06),
+              height: ScreenUtils.getHeight(context, 49),
+            ),
+            Text(
+              '가입하기',
+              style: Palette.pretendard(
+                context,
+                const Color(0xFF111111),
+                20,
+                FontWeight.w500,
+                1.3,
+                -0.5,
+              ),
+            ),
+            SizedBox(
+              height: ScreenUtils.getHeight(context, 82.07),
             ),
             Image.asset(
               "assets/icon_2.png",
@@ -27,14 +42,24 @@ class LoginPage extends StatelessWidget {
             Text(
               "리플의 학습자가 되시면\n더 자세한 단계와 해설을\n확인하실 수 있어요 :)",
               textAlign: TextAlign.center,
-              style: Palette.loginTitle(context),
+              style: Palette.pretendard(
+                context,
+                const Color(0xFF111111),
+                20,
+                FontWeight.w400,
+                1.6,
+                -0.5,
+              ),
             ),
             SizedBox(
               height: ScreenUtils.getHeight(context, 59),
             ),
             GestureDetector(
               onTap: () {}, // 서버 요청
-              child: const KakaoLoginBtn(),
+              child: CustomButton(
+                  text: '회원가입',
+                  onPress: () {},
+                  bgColor: Palette.buttonColorBlue),
             ),
           ],
         ),

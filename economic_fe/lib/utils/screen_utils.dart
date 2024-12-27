@@ -14,6 +14,6 @@ class ScreenUtils {
   }
 
   static double getHeight(BuildContext context, double height) {
-    return MediaQuery.of(context).size.height * height / 740;
+    return MediaQuery.of(context).size.height * height / 748;
   }
 }

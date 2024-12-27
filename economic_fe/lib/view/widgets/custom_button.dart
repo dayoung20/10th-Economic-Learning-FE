@@ -1,3 +1,5 @@
+import 'package:economic_fe/utils/screen_utils.dart';
+import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,7 +28,10 @@ class _CustomButtonState extends State<CustomButton> {
     return ElevatedButton(
       onPressed: widget.onPress,
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(280, 60), // width와 height 설정
+        minimumSize: Size(
+          ScreenUtils.getWidth(context, 280),
+          ScreenUtils.getHeight(context, 60),
+        ), // width와 height 설정
         backgroundColor: widget.bgColor, // 배경색 설정 (16진수 #00D6D6)
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16), // border-radius: 16px
@@ -36,12 +41,12 @@ class _CustomButtonState extends State<CustomButton> {
       ),
       child: Text(
         widget.text,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: widget.bgColor == Colors.white
+        style: Palette.pretendard(
+          context,
+          widget.bgColor == Colors.white
               ? Colors.black
               : Colors.white, // 텍스트 색상 설정
+          18, FontWeight.w600, 1.2, -0.45,
         ),
       ),
     );

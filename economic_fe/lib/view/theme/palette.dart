@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class Palette {
   //사용하는 색상들
   static const Color background = Color.fromARGB(255, 255, 255, 255);
-  static const Color buttonColorBlue = Color(0xFF00D6D6);
-  static const Color buttonColorGreen = Color(0xFF1EB692);
+  static const Color buttonColorBlue = Color(0xFF2AD6D6);
+  static const Color buttonColorGreen = Color(0xFF1DB691);
 
   //사용하는 text style
   static TextStyle title = const TextStyle(
@@ -68,13 +68,21 @@ class Palette {
     letterSpacing: -0.35,
   );
 
-  // 로그인 화면 TextStyle
-  static TextStyle loginTitle(BuildContext context) {
+  // Pretendard
+  static TextStyle pretendard(
+    BuildContext context,
+    Color color,
+    double fontSize,
+    FontWeight fontWeight,
+    double height,
+    double letterSpacing,
+  ) {
     return TextStyle(
-      fontFamily: 'Pretendard',
-      fontSize: ScreenUtils.getWidth(context, 20), // 화면 너비에 비례
-      fontWeight: FontWeight.w400,
-      letterSpacing: ScreenUtils.getWidth(context, -0.50),
+      color: color,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      height: ScreenUtils.getHeight(context, height),
+      letterSpacing: ScreenUtils.getWidth(context, letterSpacing),
     );
   }
 }
