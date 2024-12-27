@@ -1,7 +1,10 @@
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class TestMultipleChoicePage extends StatefulWidget {
   const TestMultipleChoicePage({super.key});
@@ -12,6 +15,8 @@ class TestMultipleChoicePage extends StatefulWidget {
 
 class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
   int? selectedOption;
+  // final QuizController quizController = Get.find<QuizController>();
+
   final question = 'Q. 다음 중 복리 효과가 경제적\n결과로 나타날 수 있는\n상황으로 적절한 것은?';
   final List<String> options = [
     '단기간 대출을 받은 경우',
@@ -42,15 +47,34 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
           style: Palette.appTitle,
         ),
       ),
-      body: Center(
-        // child: QuizCard(screenWidth, screenHeight,),
-        child: QuizCard(
-            screenHeight: screenHeight,
-            screenWidth: screenWidth,
-            onPress: () {},
-            option: 0,
-            question: question,
-            answerOptions: options),
+      body: Column(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: QuizCard(
+                screenHeight: screenHeight,
+                screenWidth: screenWidth,
+                onPress: () {},
+                option: 0,
+                question: question,
+                answerOptions: options),
+          ),
+          // CustomButton(
+          //   text: "다음 문제",
+          //   onPress: () {},
+          //   bgColor: const Color.fromARGB(255, 186, 209, 255),
+          // ),
+          // ElevatedButton(
+          //   onPressed: () {},
+          //   child: const Text("다음 문제"),
+          // ),
+          // Center(
+          //   child: Obx(() => Text(
+          //         'Selected Option: ${quizController.selectedOption.value}',
+          //         style: const TextStyle(fontSize: 24),
+          //       )),
+          // )
+        ],
       ),
     );
   }

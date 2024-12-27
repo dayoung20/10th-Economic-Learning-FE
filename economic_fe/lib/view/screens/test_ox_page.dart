@@ -42,8 +42,8 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
           style: Palette.appTitle,
         ),
       ),
-      body: Center(
-        // child: QuizCard(screenWidth, screenHeight,),
+      body: Align(
+        alignment: Alignment.topCenter,
         child: QuizCard(
           screenHeight: screenHeight,
           screenWidth: screenWidth,

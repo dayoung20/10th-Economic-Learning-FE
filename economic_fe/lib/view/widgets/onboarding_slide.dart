@@ -71,14 +71,14 @@ class OnboardingSlide extends StatelessWidget {
             const SizedBox(
               width: 8,
             ),
-            Container(
-                width: currentIdx == 3 ? 32 : 8,
-                height: 8,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: currentIdx == 3
-                        ? const Color(0xff767676)
-                        : const Color(0xff2ad6d6))),
+            // Container(
+            //     width: currentIdx == 3 ? 32 : 8,
+            //     height: 8,
+            //     decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(100),
+            //         color: currentIdx == 3
+            //             ? const Color(0xff767676)
+            //             : const Color(0xff2ad6d6))),
           ],
         ),
       ],

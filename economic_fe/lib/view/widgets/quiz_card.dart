@@ -1,4 +1,7 @@
+import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class QuizCard extends StatefulWidget {
   final double screenWidth;
@@ -24,6 +27,7 @@ class QuizCard extends StatefulWidget {
 
 class _QuizCardState extends State<QuizCard> {
   int? selectedOption;
+  // final QuizController quizController = Get.put(QuizController());
   final List<String>? oxOption = [" O", " X"];
   void selectOption(int index) {
     setState(() {
@@ -34,8 +38,12 @@ class _QuizCardState extends State<QuizCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.screenWidth * 0.8665,
-      height: widget.screenHeight * 0.8026,
+      // width: widget.screenWidth * 0.8665,
+      width: ScreenUtils.getHeight(context, 328),
+      height: widget.option == 0
+          ? ScreenUtils.getHeight(context, 570)
+          : ScreenUtils.getHeight(context, 370),
+      // height: widget.screenHeight * 0.6026,
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xffa2a2a2)),
         borderRadius: BorderRadius.circular(10),
@@ -43,7 +51,7 @@ class _QuizCardState extends State<QuizCard> {
       child: Column(
         children: [
           Flexible(
-            flex: 1,
+            flex: widget.option == 0 ? 4 : 1,
             child: quizQuestion(
               widget.screenWidth,
               Icons.bookmark,
@@ -51,9 +59,11 @@ class _QuizCardState extends State<QuizCard> {
             ),
           ),
           Flexible(
-            flex: 1,
-            child: QuizOptionsContainer(
-                widget.screenWidth, widget.screenHeight, widget.option),
+            flex: widget.option == 0 ? 7 : 1,
+            child: Center(
+              child: QuizOptionsContainer(
+                  widget.screenWidth, widget.screenHeight, widget.option),
+            ),
           ),
         ],
       ),
@@ -81,19 +91,19 @@ class _QuizCardState extends State<QuizCard> {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(
-                bookmark,
-                color: const Color(0xff067bd5),
-                size: 30,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Icon(
+          //       bookmark,
+          //       color: const Color(0xff067bd5),
+          //       size: 30,
+          //     ),
+          //     const SizedBox(
+          //       width: 10,
+          //     ),
+          //   ],
+          // ),
           const SizedBox(
             height: 20,
           ),
@@ -219,6 +229,7 @@ class _QuizCardState extends State<QuizCard> {
     int number,
     String text,
     int option,
+    // Color selectedColor,
   ) {
     return Container(
       width: option == 0 ? screenWidth * 0.75 : 138,
