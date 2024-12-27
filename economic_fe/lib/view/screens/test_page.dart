@@ -1,9 +1,25 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
+import 'package:economic_fe/view_model/test_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get.dart';
 
-class TestPage extends StatelessWidget {
+class TestPage extends StatefulWidget {
   const TestPage({super.key});
+
+  @override
+  State<TestPage> createState() => _TestPageState();
+}
+
+class _TestPageState extends State<TestPage> {
+  late final TestController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(TestController()..getStats());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +62,20 @@ class TestPage extends StatelessWidget {
             ),
             CustomButton(
               text: "레벨테스트 시작하기",
-              onPress: () {},
+              onPress: () {
+                controller.clickedTestMultiBtn(context);
+              },
               bgColor: Palette.buttonColorBlue,
             ),
             const SizedBox(
               height: 12,
             ),
             CustomButton(
-                text: "나중에 할게요", onPress: () {}, bgColor: Palette.background),
+                text: "나중에 할게요",
+                onPress: () {
+                  controller.clickedAfterBtn(context);
+                },
+                bgColor: Palette.background),
           ],
         ),
       ),

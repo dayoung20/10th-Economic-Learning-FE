@@ -81,7 +81,9 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
           ),
           CustomButton(
             text: "계정이 이미 있어요",
-            onPress: () {},
+            onPress: () {
+              controller.clickedLoginBtn(context);
+            },
             bgColor: Palette.buttonColorGreen,
           ),
         ],
