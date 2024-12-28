@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:economic_fe/view_model/profile_setting/profile_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,11 +17,6 @@ class BasicController extends GetxController {
   // 연령대 선택 상태
   var selectedAgeRange = Rx<String?>(null);
 
-  // 프로필 설정 화면으로 전환
-  void navigateToProfileSetting(BuildContext context) {
-    context.go('/profile_setting');
-  }
-
   // 한 줄 소개
   var userInput = ''.obs; // 사용자 입력 값
   var currentLength = 0.obs; // 현재 글자 수
@@ -31,6 +24,11 @@ class BasicController extends GetxController {
 
   // 저장하기 버튼 클릭 여부 추적
   var saveButtonClicked = false.obs; // 이 값을 통해 저장 버튼 클릭 여부를 추적
+
+  // 프로필 설정 화면으로 전환
+  void navigateToProfileSetting(BuildContext context) {
+    context.go('/profile_setting');
+  }
 
   // 닉네임 유효성 검사
   void validateNickname(String value) {
@@ -46,6 +44,9 @@ class BasicController extends GetxController {
       isValid.value = true;
       errorMessage.value = '';
     }
+
+    // 실시간으로 saveButton 상태 업데이트
+    _updateSaveButtonState();
   }
 
   // 성별 선택 상태 관리
@@ -65,6 +66,9 @@ class BasicController extends GetxController {
     } else {
       selectedAgeRange.value = ageRange;
     }
+
+    // 실시간으로 saveButton 상태 업데이트
+    _updateSaveButtonState();
   }
 
   // 텍스트 길이와 상태 업데이트
@@ -73,11 +77,19 @@ class BasicController extends GetxController {
     currentLength.value = value.length;
   }
 
+  // 저장하기 버튼 활성화 여부를 실시간으로 업데이트
+  void _updateSaveButtonState() {
+    // 닉네임이 유효하고, 연령대가 선택되었을 때만 버튼을 활성화
+    if (isValid.value && selectedAgeRange.value != null) {
+      saveButtonClicked.value = true;
+    } else {
+      saveButtonClicked.value = false;
+    }
+  }
+
   // 저장하기 버튼 클릭 상태 업데이트
-  void onSaveButtonClicked() {
-    saveButtonClicked.value = true; // 버튼 클릭 시 상태 변경
-    // ProfileSettingController에 있는 메서드 호출
+  void onSaveButtonClicked() async {
+    _updateSaveButtonState();
     Get.find<ProfileSettingController>().updateBasicSaveButtonClicked();
-    log('${saveButtonClicked.value}');
   }
 }

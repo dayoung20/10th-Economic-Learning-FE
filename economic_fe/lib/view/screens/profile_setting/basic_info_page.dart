@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
@@ -369,8 +371,7 @@ class BasicInfoPage extends StatelessWidget {
                       text: '저장하기',
                       onPress: () {
                         controller.onSaveButtonClicked();
-                        controller.navigateToProfileSetting(
-                            context); // 프로필 설정 화면으로 이동
+                        controller.navigateToProfileSetting(context);
                       },
                       bgColor: Palette.buttonColorBlue,
                     )

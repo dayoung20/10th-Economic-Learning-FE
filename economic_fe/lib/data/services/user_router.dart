@@ -8,6 +8,7 @@ import 'package:economic_fe/view/screens/login_page.dart';
 import 'package:economic_fe/view/screens/onboarding_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/basic_info_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
+import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
@@ -17,7 +18,7 @@ import 'package:go_router/go_router.dart';
 class UserRouter {
   static GoRouter getRouter() {
     return GoRouter(
-      initialLocation: '/profile_setting', // 초기 경로 설정
+      initialLocation: '/profile_setting/part', // 초기 경로 설정
       routes: [
         GoRoute(
           path: '/',
@@ -60,6 +61,10 @@ class UserRouter {
             GoRoute(
               path: 'job',
               builder: (context, state) => const JobSelectPage(),
+            ),
+            GoRoute(
+              path: 'part',
+              builder: (context, state) => const PartSelectPage(),
             ),
           ],
         ),
