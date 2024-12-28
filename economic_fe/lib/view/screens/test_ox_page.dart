@@ -33,13 +33,56 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: const BackButton(),
-        title: Text(
-          '레벨테스트',
-          style: Palette.appTitle,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: AppBar(
+          automaticallyImplyLeading: false, // 기본 뒤로가기 버튼 제거
+          elevation: 0,
+          backgroundColor: Colors.white, // AppBar 배경색
+          flexibleSpace: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // 상단 앱바
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      const Text(
+                        "레벨테스트",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Text(
+                        "1/9",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // 진행 바
+                const LinearProgressIndicator(
+                  value: 0.1, // 진행 퍼센트 (0.0 ~ 1.0)
+                  backgroundColor: Color(0xffe0e0e0),
+                  color: Color(0xff1eb692), // 진행 바 색상
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       body: Align(

@@ -76,9 +76,40 @@ class _TestPageState extends State<TestPage> {
                   controller.clickedAfterBtn(context);
                 },
                 bgColor: Palette.background),
+            // Stack(
+            //   alignment: Alignment.center,
+            //   children: [
+            //     ElevatedButton(
+            //       onPressed: () => {print("onpressed")},
+            //       child: const Text('버튼'),
+            //     ),
+            //     if (true) // 조건부 렌더링은 children 내에서 이루어짐
+            //       AbsorbPointer(
+            //         absorbing: true,
+            //         child: Container(
+            //           color: Colors.transparent, // 버튼이 보이도록 투명 처리
+            //           height: 48,
+            //           width: 100,
+            //         ),
+            //       ),
+            //   ],
+            // ),
           ],
         ),
       ),
+      // ElevatedButton(
+      //         onPressed: () => {print("onpressed")},
+      //         child: const Text('버튼'),
+      //       ),
+      //       if (_isDisabled)
+      //         AbsorbPointer(
+      //           absorbing: true,
+      //           child: Container(
+      //             color: Colors.transparent, // 버튼이 보이도록 투명 처리
+      //             height: 48,
+      //             width: 100,
+      //           ),
+      //         ),
     );
   }
 }
