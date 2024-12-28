@@ -7,6 +7,7 @@ import 'package:economic_fe/view/screens/login_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/basic_info_page.dart';
+import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
@@ -55,6 +56,10 @@ class UserRouter {
             GoRoute(
               path: 'basic',
               builder: (context, state) => const BasicInfoPage(),
+            ),
+            GoRoute(
+              path: 'job',
+              builder: (context, state) => const JobSelectPage(),
             ),
           ],
         ),

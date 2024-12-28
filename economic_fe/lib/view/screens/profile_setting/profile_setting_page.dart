@@ -37,7 +37,7 @@ class ProfileSettingPage extends StatelessWidget {
             SizedBox(
               height: ScreenUtils.getHeight(context, 37),
             ),
-            // "기본 정보" 버튼 상태에 따라 디자인 변경
+            // "기본 정보" 저장 상태에 따라 디자인 변경
             Obx(() {
               return ProfileSettingButton(
                 title: '기본 정보',
@@ -45,17 +45,25 @@ class ProfileSettingPage extends StatelessWidget {
                   // 기본 정보 입력 페이지로 이동
                   controller.navigateToBasic(context);
                 },
-                isSelected: controller.saveButtonClicked.value,
+                isSelected: controller.basicSaveButtonClicked.value,
                 icon: const Icon(Icons.person), // 클릭 여부에 따라 버튼 스타일 변경
               );
             }),
             SizedBox(
               height: ScreenUtils.getHeight(context, 16),
             ),
-            const ProfileSettingButton(
-              title: '업종',
-              icon: Icon(Icons.business_center),
-            ),
+            // "업종" 저장 상태에 따라 디자인 변경
+            Obx(() {
+              return ProfileSettingButton(
+                title: '업종',
+                onPress: () {
+                  // 업종 선택 페이지로 이동
+                  controller.navigateToJob(context);
+                },
+                isSelected: controller.jobSaveButtonClicked.value,
+                icon: const Icon(Icons.business_center), // 클릭 여부에 따라 버튼 스타일 변경
+              );
+            }),
             SizedBox(
               height: ScreenUtils.getHeight(context, 16),
             ),

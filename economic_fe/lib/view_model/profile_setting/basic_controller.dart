@@ -48,7 +48,7 @@ class BasicController extends GetxController {
     }
   }
 
-  // 버튼 선택 상태 관리
+  // 성별 선택 상태 관리
   void selectGender(String gender) {
     // 성별을 선택하면 해당 성별로 상태 업데이트
     if (selectedGender.value == gender) {
@@ -77,7 +77,7 @@ class BasicController extends GetxController {
   void onSaveButtonClicked() {
     saveButtonClicked.value = true; // 버튼 클릭 시 상태 변경
     // ProfileSettingController에 있는 메서드 호출
-    Get.find<ProfileSettingController>().updateSaveButtonClicked();
+    Get.find<ProfileSettingController>().updateBasicSaveButtonClicked();
     log('${saveButtonClicked.value}');
   }
 }

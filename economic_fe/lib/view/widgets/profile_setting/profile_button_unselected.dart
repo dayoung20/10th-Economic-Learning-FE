@@ -3,13 +3,19 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
 
 class ProfileButtonUnselected extends StatefulWidget {
-  final double width;
+  final double paddingWidth;
+  final double paddingHeight;
+  final double height;
+  final double fontSize;
   final String text;
 
   const ProfileButtonUnselected({
     super.key,
-    required this.width,
     required this.text,
+    required this.paddingWidth,
+    required this.paddingHeight,
+    required this.height,
+    required this.fontSize,
   });
 
   @override
@@ -21,8 +27,14 @@ class _ProfileButtonUnselectedState extends State<ProfileButtonUnselected> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ScreenUtils.getWidth(context, widget.width),
-      height: ScreenUtils.getHeight(context, 44),
+      // constraints: const BoxConstraints(
+      //   maxWidth: double.infinity, // 최대 너비를 화면에 맞게 설정
+      // ),
+      height: ScreenUtils.getHeight(context, widget.height),
+      padding: EdgeInsets.symmetric(
+        horizontal: ScreenUtils.getWidth(context, widget.paddingWidth),
+        vertical: ScreenUtils.getHeight(context, widget.paddingHeight),
+      ),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           side: BorderSide(
@@ -35,7 +47,13 @@ class _ProfileButtonUnselectedState extends State<ProfileButtonUnselected> {
         child: Text(
           widget.text,
           style: Palette.pretendard(
-              context, const Color(0xFFA2A2A2), 16, FontWeight.w400, 1.5, -0.4),
+            context,
+            const Color(0xFFA2A2A2),
+            widget.fontSize,
+            FontWeight.w400,
+            1.0,
+            -0.4,
+          ),
         ),
       ),
     );

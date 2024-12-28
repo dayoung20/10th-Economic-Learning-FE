@@ -144,24 +144,36 @@ class BasicInfoPage extends StatelessWidget {
                       onTap: () => controller.selectGender('남자'),
                       child: controller.selectedGender.value == '남자'
                           ? const ProfileButtonSelected(
-                              width: 136,
                               text: '남자',
+                              paddingWidth: 55,
+                              paddingHeight: 8,
+                              height: 40,
+                              fontSize: 16,
                             )
                           : const ProfileButtonUnselected(
-                              width: 136,
                               text: '남자',
+                              paddingWidth: 55,
+                              paddingHeight: 8,
+                              height: 40,
+                              fontSize: 16,
                             ),
                     ),
                     GestureDetector(
                       onTap: () => controller.selectGender('여자'),
                       child: controller.selectedGender.value == '여자'
                           ? const ProfileButtonSelected(
-                              width: 136,
                               text: '여자',
+                              paddingWidth: 55,
+                              paddingHeight: 8,
+                              height: 40,
+                              fontSize: 16,
                             )
                           : const ProfileButtonUnselected(
-                              width: 136,
                               text: '여자',
+                              paddingWidth: 55,
+                              paddingHeight: 8,
+                              height: 40,
+                              fontSize: 16,
                             ),
                     ),
                   ],
@@ -192,12 +204,18 @@ class BasicInfoPage extends StatelessWidget {
                           onTap: () => controller.selectAgeRange(ageRange),
                           child: controller.selectedAgeRange.value == ageRange
                               ? ProfileButtonSelected(
-                                  width: 66,
                                   text: ageRange,
+                                  paddingWidth: 20,
+                                  paddingHeight: 8,
+                                  height: 44,
+                                  fontSize: 14,
                                 )
                               : ProfileButtonUnselected(
-                                  width: 66,
                                   text: ageRange,
+                                  paddingWidth: 20,
+                                  paddingHeight: 8,
+                                  height: 44,
+                                  fontSize: 14,
                                 ),
                         );
                       }),
@@ -212,12 +230,18 @@ class BasicInfoPage extends StatelessWidget {
                           onTap: () => controller.selectAgeRange(ageRange),
                           child: controller.selectedAgeRange.value == ageRange
                               ? ProfileButtonSelected(
-                                  width: 66,
                                   text: ageRange,
+                                  paddingWidth: 20,
+                                  paddingHeight: 8,
+                                  height: 44,
+                                  fontSize: 14,
                                 )
                               : ProfileButtonUnselected(
-                                  width: 66,
                                   text: ageRange,
+                                  paddingWidth: 20,
+                                  paddingHeight: 12,
+                                  height: 44,
+                                  fontSize: 14,
                                 ),
                         );
                       }),

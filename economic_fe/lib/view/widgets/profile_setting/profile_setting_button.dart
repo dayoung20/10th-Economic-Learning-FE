@@ -58,36 +58,36 @@ class _ProfileSettingButtonState extends State<ProfileSettingButton> {
               ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                widget.icon,
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: ScreenUtils.getWidth(context, 6),
-                  ),
-                  child: Text(
-                    widget.title,
-                    style: Palette.pretendard(
-                        context,
-                        widget.isSelected
-                            ? const Color(0xff111111)
-                            : const Color(0xFFA2A2A2),
-                        16,
-                        FontWeight.w400,
-                        1.5,
-                        -0.4),
-                  ),
+                Row(
+                  children: [
+                    widget.icon,
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: ScreenUtils.getWidth(context, 6),
+                      ),
+                      child: Text(
+                        widget.title,
+                        style: Palette.pretendard(
+                            context,
+                            widget.isSelected
+                                ? const Color(0xff111111)
+                                : const Color(0xFFA2A2A2),
+                            16,
+                            FontWeight.w400,
+                            1.5,
+                            -0.4),
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: ScreenUtils.getWidth(context, 150),
-                  ),
-                  child: widget.isSelected
-                      ? const Icon(
-                          Icons.check_circle_outline,
-                          color: Color(0xff067BD5),
-                        )
-                      : const SizedBox(),
-                ),
+                widget.isSelected
+                    ? const Icon(
+                        Icons.check_circle_outline,
+                        color: Color(0xff067BD5),
+                      )
+                    : const SizedBox(),
               ],
             ),
           ),
