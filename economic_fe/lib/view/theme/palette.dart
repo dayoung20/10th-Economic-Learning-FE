@@ -80,14 +80,14 @@ class Palette {
   // Pretendard
   static TextStyle pretendard(
     BuildContext context,
-    Color color,
+    Color? color,
     double fontSize,
     FontWeight fontWeight,
     double height,
     double letterSpacing,
   ) {
     return TextStyle(
-      color: color,
+      color: color ?? Colors.white,
       fontSize: fontSize,
       fontWeight: fontWeight,
       height: ScreenUtils.getHeight(context, height),

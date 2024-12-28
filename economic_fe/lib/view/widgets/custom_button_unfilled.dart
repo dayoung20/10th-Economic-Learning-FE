@@ -4,25 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class CustomButton extends StatefulWidget {
+class CustomButtonUnfilled extends StatefulWidget {
   final String text;
   final void Function()? onPress;
-  // final double width;
-  // final double height;
-  final Color bgColor;
 
-  const CustomButton({
+  const CustomButtonUnfilled({
     super.key,
     required this.text,
     required this.onPress,
-    required this.bgColor,
   });
 
   @override
-  State<CustomButton> createState() => _CustomButtonState();
+  State<CustomButtonUnfilled> createState() => _CustomButtonUnfilledState();
 }
 
-class _CustomButtonState extends State<CustomButton> {
+class _CustomButtonUnfilledState extends State<CustomButtonUnfilled> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -32,7 +28,7 @@ class _CustomButtonState extends State<CustomButton> {
           ScreenUtils.getWidth(context, 280),
           ScreenUtils.getHeight(context, 60),
         ), // width와 height 설정
-        backgroundColor: widget.bgColor, // 배경색 설정 (16진수 #00D6D6)
+        backgroundColor: const Color(0xFFF2F3F5), // 배경색 설정 (16진수 #00D6D6)
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16), // border-radius: 16px
         ),
@@ -44,7 +40,7 @@ class _CustomButtonState extends State<CustomButton> {
         widget.text,
         style: Palette.pretendard(
           context,
-          null, // 텍스트 색상 설정
+          const Color(0xFFA2A2A2), // 텍스트 색상 설정
           18, FontWeight.w600, 1.2, -0.45,
         ),
       ),
