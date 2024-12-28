@@ -1,4 +1,8 @@
 import 'package:economic_fe/utils/screen_utils.dart';
+import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/next_button.dart';
+// import 'package:economic_fe/view/widgets/next_button.dart';
+import 'package:economic_fe/view_model/quiz_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -26,47 +30,73 @@ class QuizCard extends StatefulWidget {
 }
 
 class _QuizCardState extends State<QuizCard> {
-  int? selectedOption;
-  // final QuizController quizController = Get.put(QuizController());
+  // int? selectedOption;
+  late final QuizController controller;
   final List<String>? oxOption = [" O", " X"];
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(QuizController()..getStats());
+  }
+
   void selectOption(int index) {
     setState(() {
-      selectedOption = index;
+      // selectedOption = index;
+      controller.selectedNumber.value = index;
+      print('선택된 번호 : ${controller.selectedNumber.value}');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // width: widget.screenWidth * 0.8665,
-      width: ScreenUtils.getHeight(context, 328),
-      height: widget.option == 0
-          ? ScreenUtils.getHeight(context, 570)
-          : ScreenUtils.getHeight(context, 370),
-      // height: widget.screenHeight * 0.6026,
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xffa2a2a2)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Flexible(
-            flex: widget.option == 0 ? 4 : 1,
-            child: quizQuestion(
-              widget.screenWidth,
-              Icons.bookmark,
-              'Q. 다음 중 복리 효과가 경제적\n결과로 나타날 수 있는\n상황으로 적절한 것은?',
-            ),
+    return Column(
+      children: [
+        Container(
+          // width: widget.screenWidth * 0.8665,
+          width: ScreenUtils.getHeight(context, 328),
+          height: widget.option == 0
+              ? ScreenUtils.getHeight(context, 570)
+              : ScreenUtils.getHeight(context, 370),
+          // height: widget.screenHeight * 0.6026,
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xffa2a2a2)),
+            borderRadius: BorderRadius.circular(10),
           ),
-          Flexible(
-            flex: widget.option == 0 ? 7 : 1,
-            child: Center(
-              child: QuizOptionsContainer(
-                  widget.screenWidth, widget.screenHeight, widget.option),
-            ),
+          child: Column(
+            children: [
+              Flexible(
+                flex: widget.option == 0 ? 4 : 1,
+                child: quizQuestion(
+                  widget.screenWidth,
+                  Icons.bookmark,
+                  'Q. 다음 중 복리 효과가 경제적\n결과로 나타날 수 있는\n상황으로 적절한 것은?',
+                ),
+              ),
+              Flexible(
+                flex: widget.option == 0 ? 7 : 1,
+                child: Center(
+                  child: QuizOptionsContainer(
+                      widget.screenWidth, widget.screenHeight, widget.option),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Obx(() => NextButton(
+                  isEnabled: controller.selectedNumber.value != -1, // 활성화 상태 전달
+                  onPressed: () {
+                    print("다음 문제로 이동");
+                  },
+                )),
+          ],
+        ),
+      ],
     );
   }
 
@@ -91,19 +121,6 @@ class _QuizCardState extends State<QuizCard> {
           const SizedBox(
             height: 15,
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Icon(
-          //       bookmark,
-          //       color: const Color(0xff067bd5),
-          //       size: 30,
-          //     ),
-          //     const SizedBox(
-          //       width: 10,
-          //     ),
-          //   ],
-          // ),
           const SizedBox(
             height: 20,
           ),
@@ -146,10 +163,10 @@ class _QuizCardState extends State<QuizCard> {
                         child: quizOptionCard(
                           screenWidth,
                           screenHeight,
-                          selectedOption == index + 1
+                          controller.selectedNumber.value == index + 1
                               ? const Color(0xff1eb692)
                               : Colors.white,
-                          selectedOption == index + 1
+                          controller.selectedNumber.value == index + 1
                               ? const Color(0xff1eb692)
                               : const Color(0xffd3d3d3),
                           index + 1,
@@ -165,10 +182,10 @@ class _QuizCardState extends State<QuizCard> {
                         child: quizOptionCard(
                             screenWidth,
                             screenHeight,
-                            selectedOption == index + 1
+                            controller.selectedNumber.value == index + 1
                                 ? const Color(0xff1eb692)
                                 : Colors.white,
-                            selectedOption == index + 1
+                            controller.selectedNumber.value == index + 1
                                 ? const Color(0xff1eb692)
                                 : const Color(0xffd3d3d3),
                             index + 1,
@@ -187,10 +204,10 @@ class _QuizCardState extends State<QuizCard> {
                         child: quizOptionCard(
                             screenWidth,
                             screenHeight,
-                            selectedOption == index + 1
+                            controller.selectedNumber.value == index + 1
                                 ? const Color(0xff1eb692)
                                 : Colors.white,
-                            selectedOption == index + 1
+                            controller.selectedNumber.value == index + 1
                                 ? const Color(0xff1eb692)
                                 : const Color(0xffd3d3d3),
                             index + 1,
@@ -205,10 +222,10 @@ class _QuizCardState extends State<QuizCard> {
                         child: quizOptionCard(
                           138,
                           138,
-                          selectedOption == index + 1
+                          controller.selectedNumber.value == index + 1
                               ? const Color(0xff1eb692)
                               : Colors.white,
-                          selectedOption == index + 1
+                          controller.selectedNumber.value == index + 1
                               ? const Color(0xff1eb692)
                               : const Color(0xffd3d3d3),
                           index + 1,
@@ -235,9 +252,10 @@ class _QuizCardState extends State<QuizCard> {
       width: option == 0 ? screenWidth * 0.75 : 138,
       height: option == 0 ? screenHeight * 0.08 : 138,
       decoration: BoxDecoration(
-        color: background,
+        color: Colors.white,
         border: Border.all(
           color: border,
+          width: controller.selectedNumber.value == number ? 3.0 : 1.0,
         ),
         borderRadius: BorderRadius.circular(12),
       ),
@@ -275,7 +293,9 @@ class _QuizCardState extends State<QuizCard> {
               fontFamily: 'Pretandard',
               fontWeight: FontWeight.w500,
               height: 1.1,
-              color: selectedOption == number ? Colors.white : Colors.black,
+              color: controller.selectedNumber.value == number
+                  ? Colors.black
+                  : Colors.black,
             ),
           )
         ],
@@ -283,3 +303,34 @@ class _QuizCardState extends State<QuizCard> {
     );
   }
 }
+
+// class NextButton extends StatelessWidget {
+//   const NextButton({
+//     super.key,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ElevatedButton(
+//       onPressed: () => {print("onpressed")},
+//       style: ElevatedButton.styleFrom(
+//         minimumSize: Size(
+//           ScreenUtils.getWidth(context, 328),
+//           ScreenUtils.getHeight(context, 56),
+//         ),
+//         backgroundColor: const Color(0x001eb692),
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(16), // border-radius: 16px
+//         ),
+//         alignment: Alignment.center, // 텍스트 정렬
+//         padding: EdgeInsets.zero,
+//       ),
+//       child: const Text("다음 문제",
+//           style: TextStyle(
+//             color: Color(0xFF111111),
+//             fontSize: 20,
+//             fontWeight: FontWeight.w500,
+//           )),
+//     );
+//   }
+// }
