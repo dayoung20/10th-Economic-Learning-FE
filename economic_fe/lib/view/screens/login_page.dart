@@ -1,7 +1,5 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
-import 'package:economic_fe/view/widgets/custom_button.dart';
-import 'package:economic_fe/view/widgets/kakao_login_btn.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -15,21 +13,7 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 49),
-            ),
-            Text(
-              '가입하기',
-              style: Palette.pretendard(
-                context,
-                const Color(0xFF111111),
-                20,
-                FontWeight.w500,
-                1.3,
-                -0.5,
-              ),
-            ),
-            SizedBox(
-              height: ScreenUtils.getHeight(context, 82.07),
+              height: ScreenUtils.getHeight(context, 157.07),
             ),
             Image.asset(
               "assets/icon_2.png",
@@ -54,12 +38,15 @@ class LoginPage extends StatelessWidget {
             SizedBox(
               height: ScreenUtils.getHeight(context, 59),
             ),
-            GestureDetector(
-              onTap: () {}, // 서버 요청
-              child: CustomButton(
-                  text: '회원가입',
-                  onPress: () {},
-                  bgColor: Palette.buttonColorBlue),
+            IconButton(
+              onPressed: () {},
+              icon: Image(
+                image: const AssetImage(
+                  'assets/kakao_login_btn.png',
+                ),
+                width: ScreenUtils.getWidth(context, 300),
+                height: ScreenUtils.getHeight(context, 45),
+              ),
             ),
           ],
         ),

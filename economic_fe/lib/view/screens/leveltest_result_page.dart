@@ -1,23 +1,19 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
+import 'package:economic_fe/view_model/leveltest_result_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class LeveltestResultPage extends StatefulWidget {
+class LeveltestResultPage extends StatelessWidget {
   const LeveltestResultPage({super.key});
 
   @override
-  State<LeveltestResultPage> createState() => _LeveltestResultPageState();
-}
-
-class _LeveltestResultPageState extends State<LeveltestResultPage> {
-  String name = '리플'; // 사용자 이름
-  String level = 'Intermediate'; // 레벨테스트 결과 - 영어
-  String levelKor = '중급'; // 레벨테스트 결과 - 한국어
-  int correctNum = 5; // 맞춘 문제 개수
-
-  @override
   Widget build(BuildContext context) {
+    // GetX 컨트롤러 가져오기
+    final LevelTestResultController controller =
+        Get.put(LevelTestResultController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -27,17 +23,19 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
             height: ScreenUtils.getHeight(context, 60),
           ),
           Center(
-            child: Text(
-              '$name님의 레벨테스트 결과는?',
-              style: Palette.pretendard(
-                context,
-                const Color(0xFF111111),
-                20,
-                FontWeight.w600,
-                1.3,
-                -0.5,
-              ),
-            ),
+            child: Obx(() {
+              return Text(
+                '${controller.name.value}님의 레벨테스트 결과는?',
+                style: Palette.pretendard(
+                  context,
+                  const Color(0xFF111111),
+                  20,
+                  FontWeight.w600,
+                  1.3,
+                  -0.5,
+                ),
+              );
+            }),
           ),
           SizedBox(
             height: ScreenUtils.getHeight(context, 18),
@@ -53,28 +51,32 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  level,
-                  style: Palette.pretendard(
-                    context,
-                    const Color(0xFF1DB691),
-                    20,
-                    FontWeight.w500,
-                    1.2,
-                    -0.5,
-                  ),
-                ),
-                Text(
-                  levelKor,
-                  style: Palette.pretendard(
-                    context,
-                    const Color(0xFF1DB691),
-                    28,
-                    FontWeight.w700,
-                    1.2,
-                    -0.5,
-                  ),
-                ),
+                Obx(() {
+                  return Text(
+                    controller.level.value,
+                    style: Palette.pretendard(
+                      context,
+                      const Color(0xFF1DB691),
+                      20,
+                      FontWeight.w500,
+                      1.2,
+                      -0.5,
+                    ),
+                  );
+                }),
+                Obx(() {
+                  return Text(
+                    controller.levelKor.value,
+                    style: Palette.pretendard(
+                      context,
+                      const Color(0xFF1DB691),
+                      28,
+                      FontWeight.w700,
+                      1.2,
+                      -0.5,
+                    ),
+                  );
+                }),
               ],
             ),
           ),
@@ -107,30 +109,34 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                     -0.4,
                   ),
                 ),
-                Text(
-                  level,
-                  style: Palette.pretendard(
-                    context,
-                    const Color(0xFF1DB691),
-                    28,
-                    FontWeight.w700,
-                    1.2,
-                    -0.7,
-                  ),
-                ),
-                SizedBox(
-                  width: ScreenUtils.getWidth(context, 279),
-                  child: Text(
-                    '리플님은 중급 단계로 수준이 어쩌고 저쩌고 해서 이렇게 됩니다. 경제 단계에 대한 기초 지식이 풍부하시군요. 하지만 어쩌고는 부족하네요. 이럴 경우 일반 경제 국제 경제 어쩌고 파트를 조금 더 집중적으로 공부하셔서 실력을 기르시는게 좋아요.',
+                Obx(() {
+                  return Text(
+                    controller.level.value,
                     style: Palette.pretendard(
                       context,
-                      const Color(0xFF111111),
-                      16,
-                      FontWeight.w400,
-                      1.4,
-                      -0.4,
+                      const Color(0xFF1DB691),
+                      28,
+                      FontWeight.w700,
+                      1.2,
+                      -0.7,
                     ),
-                  ),
+                  );
+                }),
+                SizedBox(
+                  width: ScreenUtils.getWidth(context, 279),
+                  child: Obx(() {
+                    return Text(
+                      '${controller.name.value}님은 중급 단계로 수준이 어쩌고 저쩌고 해서 이렇게 됩니다.',
+                      style: Palette.pretendard(
+                        context,
+                        const Color(0xFF111111),
+                        16,
+                        FontWeight.w400,
+                        1.4,
+                        -0.4,
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),
@@ -153,17 +159,19 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                     -0.35,
                   ),
                 ),
-                Text(
-                  '$correctNum문제',
-                  style: Palette.pretendard(
-                    context,
-                    const Color(0xFF067BD5),
-                    14,
-                    FontWeight.w600,
-                    1.4,
-                    -0.35,
-                  ),
-                ),
+                Obx(() {
+                  return Text(
+                    '${controller.correctNum.value}문제',
+                    style: Palette.pretendard(
+                      context,
+                      const Color(0xFF067BD5),
+                      14,
+                      FontWeight.w600,
+                      1.4,
+                      -0.35,
+                    ),
+                  );
+                }),
                 Text(
                   '를 맞혔습니다!',
                   style: Palette.pretendard(
@@ -193,7 +201,9 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                 ),
                 CustomButton(
                   text: '시작하기',
-                  onPress: () {},
+                  onPress: () {
+                    controller.navigateToLogin(context);
+                  }, // 카카오 로그인 화면으로 전환
                   bgColor: Palette.buttonColorBlue,
                 ),
               ],
