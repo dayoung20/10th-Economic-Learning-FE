@@ -1,12 +1,11 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
+import 'package:economic_fe/view/widgets/profile_setting/basic_gender_button.dart';
 import 'package:economic_fe/view/widgets/profile_setting/basic_label.dart';
-import 'package:economic_fe/view/widgets/profile_setting/profile_button_selected.dart';
-import 'package:economic_fe/view/widgets/profile_setting/profile_button_unselected.dart';
 import 'package:economic_fe/view/widgets/profile_setting/profile_setting_app_bar.dart';
 import 'package:economic_fe/view_model/profile_setting/basic_controller.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +20,6 @@ class BasicInfoPage extends StatelessWidget {
     // GetX 컨트롤러 가져오기
     final BasicController controller = Get.put(BasicController());
 
-    // 연령대 리스트
-    final List<String> ageRanges = [
-      '10대',
-      '20대',
-      '30대',
-      '40대',
-      '50대',
-      '60대',
-      '70대',
-      '80대'
-    ];
-
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: ProfileSettingAppBar(
@@ -45,13 +32,83 @@ class BasicInfoPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 28),
+              height: ScreenUtils.getHeight(context, 10),
+            ),
+            // 프로필 사진 설정 부분
+            SizedBox(
+              height: ScreenUtils.getHeight(context, 88),
+              child: Stack(
+                children: [
+                  Container(
+                    width: ScreenUtils.getWidth(context, 88),
+                    height: ScreenUtils.getHeight(context, 88),
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFF3F3F3),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          ScreenUtils.getWidth(context, 43),
+                        ),
+                      ),
+                    ),
+                    child: Obx(() {
+                      return controller.selectedProfileImage.value != null
+                          ? ClipOval(
+                              child: Image.file(
+                                File(controller.selectedProfileImage.value!),
+                                fit: BoxFit.cover,
+                                width: ScreenUtils.getWidth(context, 88),
+                                height: ScreenUtils.getHeight(context, 88),
+                              ),
+                            )
+                          : Icon(
+                              Icons.person,
+                              size: ScreenUtils.getWidth(context, 43),
+                            );
+                    }),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    // 카메라 버튼
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.selectProfileImage(context);
+                      },
+                      child: Container(
+                        width: ScreenUtils.getWidth(context, 26),
+                        height: ScreenUtils.getHeight(context, 26),
+                        decoration: ShapeDecoration(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(26),
+                          ),
+                          shadows: const [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 4,
+                              offset: Offset(0, 0),
+                              spreadRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.camera_alt_outlined,
+                          size: ScreenUtils.getWidth(context, 15),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: ScreenUtils.getHeight(context, 18.8),
             ),
             const BasicLabel(
               label: '닉네임(필수)',
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 8),
+              height: ScreenUtils.getHeight(context, 4),
             ),
             SizedBox(
               width: ScreenUtils.getWidth(context, 281),
@@ -62,7 +119,31 @@ class BasicInfoPage extends StatelessWidget {
                   controller:
                       TextEditingController(text: controller.nickname.value),
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.account_circle),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Container(
+                        width: ScreenUtils.getWidth(context, 18),
+                        height: ScreenUtils.getHeight(context, 18),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFF3F3F3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(43),
+                          ),
+                          shadows: const [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 1,
+                              offset: Offset(0.20, 0.20),
+                              spreadRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: ScreenUtils.getWidth(context, 15),
+                        ),
+                      ),
+                    ),
                     suffixIcon: controller.isValid.value
                         ? const Icon(
                             Icons.check_circle_outline,
@@ -82,19 +163,6 @@ class BasicInfoPage extends StatelessWidget {
                       1.5,
                       -0.4,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFFA2A2A2),
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFFA2A2A2),
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    border: InputBorder.none,
                     labelText: '닉네임',
                   ),
                 );
@@ -127,8 +195,9 @@ class BasicInfoPage extends StatelessWidget {
                     );
             }),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 16),
+              height: ScreenUtils.getHeight(context, 10),
             ),
+            // 성별 선택
             const BasicLabel(
               label: '성별',
             ),
@@ -142,109 +211,85 @@ class BasicInfoPage extends StatelessWidget {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () => controller.selectGender('남자'),
-                      child: controller.selectedGender.value == '남자'
-                          ? const ProfileButtonSelected(
-                              text: '남자',
-                              paddingWidth: 55,
-                              paddingHeight: 8,
-                              height: 40,
-                              fontSize: 16,
-                            )
-                          : const ProfileButtonUnselected(
-                              text: '남자',
-                              paddingWidth: 55,
-                              paddingHeight: 8,
-                              height: 40,
-                              fontSize: 16,
-                            ),
+                    Container(
+                      width: ScreenUtils.getWidth(context, 125),
+                      height: ScreenUtils.getHeight(context, 46),
+                      padding: const EdgeInsets.all(4),
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1, color: Color(0xFFA2A2A2)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => controller.selectGender('남'),
+                            child: controller.selectedGender.value == '남'
+                                ? const BasicGenderButton(
+                                    isSelected: true,
+                                    text: '남',
+                                    textColor: Colors.black,
+                                  )
+                                : const BasicGenderButton(
+                                    isSelected: false,
+                                    text: '남',
+                                    textColor: Color(0xFFA2A2A2),
+                                  ),
+                          ),
+                          GestureDetector(
+                            onTap: () => controller.selectGender('여'),
+                            child: controller.selectedGender.value == '여'
+                                ? const BasicGenderButton(
+                                    isSelected: true,
+                                    text: '여',
+                                    textColor: Colors.black,
+                                  )
+                                : const BasicGenderButton(
+                                    isSelected: false,
+                                    text: '여',
+                                    textColor: Color(0xFFA2A2A2),
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () => controller.selectGender('여자'),
-                      child: controller.selectedGender.value == '여자'
-                          ? const ProfileButtonSelected(
-                              text: '여자',
-                              paddingWidth: 55,
-                              paddingHeight: 8,
-                              height: 40,
-                              fontSize: 16,
-                            )
-                          : const ProfileButtonUnselected(
-                              text: '여자',
-                              paddingWidth: 55,
-                              paddingHeight: 8,
-                              height: 40,
-                              fontSize: 16,
-                            ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-            SizedBox(
-              height: ScreenUtils.getHeight(context, 16),
-            ),
-            const BasicLabel(
-              label: '연령대(필수)',
-            ),
-            SizedBox(
-              height: ScreenUtils.getHeight(context, 8),
-            ),
-            // 연령대 선택 버튼 두 줄로 배치
-            SizedBox(
-              width: ScreenUtils.getWidth(context, 281),
-              child: Obx(() {
-                return Column(
-                  children: [
-                    // 첫 번째 줄 (4개의 버튼)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(4, (index) {
-                        String ageRange = ageRanges[index];
+                    // 생년월일 선택 위젯
+                    SizedBox(
+                      width: ScreenUtils.getWidth(context, 148),
+                      height: ScreenUtils.getHeight(context, 44),
+                      child: Obx(() {
                         return GestureDetector(
-                          onTap: () => controller.selectAgeRange(ageRange),
-                          child: controller.selectedAgeRange.value == ageRange
-                              ? ProfileButtonSelected(
-                                  text: ageRange,
-                                  paddingWidth: 20,
-                                  paddingHeight: 8,
-                                  height: 44,
-                                  fontSize: 14,
-                                )
-                              : ProfileButtonUnselected(
-                                  text: ageRange,
-                                  paddingWidth: 20,
-                                  paddingHeight: 8,
-                                  height: 44,
-                                  fontSize: 14,
-                                ),
-                        );
-                      }),
-                    ),
-                    SizedBox(height: ScreenUtils.getHeight(context, 12)),
-                    // 두 번째 줄 (4개의 버튼)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(4, (index) {
-                        String ageRange = ageRanges[index + 4]; // 나머지 4개 버튼
-                        return GestureDetector(
-                          onTap: () => controller.selectAgeRange(ageRange),
-                          child: controller.selectedAgeRange.value == ageRange
-                              ? ProfileButtonSelected(
-                                  text: ageRange,
-                                  paddingWidth: 20,
-                                  paddingHeight: 8,
-                                  height: 44,
-                                  fontSize: 14,
-                                )
-                              : ProfileButtonUnselected(
-                                  text: ageRange,
-                                  paddingWidth: 20,
-                                  paddingHeight: 12,
-                                  height: 44,
-                                  fontSize: 14,
-                                ),
+                          onTap: () =>
+                              controller.selectBirthday(context), // 날짜 선택
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 18, vertical: 10),
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1, color: Color(0xFFA2A2A2)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              controller.selectedBirthday.value ??
+                                  '생년월일', // 텍스트 표시
+                              style: Palette.pretendard(
+                                context,
+                                controller.selectedBirthday.value == null
+                                    ? const Color(0xFFA2A2A2)
+                                    : Colors.black,
+                                16,
+                                FontWeight.w400,
+                                1.6,
+                                -0.4,
+                              ),
+                            ),
+                          ),
                         );
                       }),
                     ),
@@ -253,8 +298,9 @@ class BasicInfoPage extends StatelessWidget {
               }),
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 16),
+              height: ScreenUtils.getHeight(context, 18),
             ),
+            // 한 줄 소개 입력칸
             const BasicLabel(
               label: '한 줄 소개',
             ),
@@ -360,12 +406,12 @@ class BasicInfoPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 14),
+              height: ScreenUtils.getHeight(context, 75),
             ),
             // 저장하기 버튼 활성화
             Obx(() {
               bool isButtonEnabled = controller.isValid.value &&
-                  controller.selectedAgeRange.value != null;
+                  controller.selectedBirthday.value != null;
               return isButtonEnabled
                   ? CustomButton(
                       text: '저장하기',
