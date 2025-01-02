@@ -15,4 +15,8 @@ class LevelSelectController extends GetxController {
   void clickedTestBtn(BuildContext context) {
     context.go('/test');
   }
+
+  void clickedQuizBtn(BuildContext context) {
+    context.go('/learning_list/quiz_level/quiz');
+  }
 }

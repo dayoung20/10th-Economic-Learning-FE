@@ -12,9 +12,11 @@ import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
+import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class UserRouter {
@@ -79,9 +81,14 @@ class UserRouter {
             builder: (context, state) => const LearningListPage(),
             routes: [
               GoRoute(
-                path: 'quiz_level',
-                builder: (context, state) => const LevelSelectPage(),
-              )
+                  path: 'quiz_level',
+                  builder: (context, state) => const LevelSelectPage(),
+                  routes: [
+                    GoRoute(
+                      path: 'quiz',
+                      builder: (context, state) => const QuizPage(),
+                    )
+                  ])
             ]),
       ],
     );

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class NextButton extends StatelessWidget {
   final bool isEnabled; // 버튼 활성화 상태
   final VoidCallback? onPressed; // 버튼 클릭 시 동작
+  final String? text;
 
   const NextButton({
     super.key,
     required this.isEnabled, // 필수 매개변수로 활성화 상태 받기
     this.onPressed, // 동작을 외부에서 주입받도록 처리
+    this.text,
   });
 
   @override
@@ -29,9 +31,9 @@ class NextButton extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.zero,
       ),
-      child: const Text(
-        "다음 문제",
-        style: TextStyle(
+      child: Text(
+        text ?? "다음 문제",
+        style: const TextStyle(
           color: Colors.white, // 텍스트 색상
           fontSize: 20,
           fontWeight: FontWeight.w500,
