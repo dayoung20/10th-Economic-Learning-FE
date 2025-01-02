@@ -11,6 +11,7 @@ import 'package:economic_fe/view/screens/profile_setting/basic_info_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
+import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
@@ -19,7 +20,7 @@ import 'package:go_router/go_router.dart';
 class UserRouter {
   static GoRouter getRouter() {
     return GoRouter(
-      initialLocation: '/learning_list', // 초기 경로 설정
+      initialLocation: '/learning_list/quiz_level', // 초기 경로 설정
       routes: [
         GoRoute(
           path: '/',
@@ -74,9 +75,14 @@ class UserRouter {
           builder: (context, state) => const HomePage(),
         ),
         GoRoute(
-          path: '/learning_list',
-          builder: (context, state) => const LearningListPage(),
-        ),
+            path: '/learning_list',
+            builder: (context, state) => const LearningListPage(),
+            routes: [
+              GoRoute(
+                path: 'quiz_level',
+                builder: (context, state) => const LevelSelectPage(),
+              )
+            ]),
       ],
     );
   }
