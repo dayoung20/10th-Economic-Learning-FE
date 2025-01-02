@@ -2,27 +2,28 @@ import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
 
-class ProfileSettingAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   // Implements PreferredSizeWidget
   final String title;
   final void Function()? onPress;
+  final IconData icon;
 
-  const ProfileSettingAppBar({
+  const CustomAppBar({
     super.key,
     required this.title,
     this.onPress,
+    required this.icon,
   });
 
   @override
-  State<ProfileSettingAppBar> createState() => _ProfileSettingAppBarState();
+  State<CustomAppBar> createState() => _CustomAppBarState();
 
   @override
   Size get preferredSize =>
       const Size.fromHeight(kToolbarHeight); // Set the height of the AppBar
 }
 
-class _ProfileSettingAppBarState extends State<ProfileSettingAppBar> {
+class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -40,8 +41,9 @@ class _ProfileSettingAppBarState extends State<ProfileSettingAppBar> {
       leading: IconButton(
         onPressed: widget.onPress,
         icon: Icon(
-          Icons.close,
+          widget.icon,
           size: ScreenUtils.getWidth(context, 24),
+          color: Colors.black,
         ),
       ),
     );
