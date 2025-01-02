@@ -6,7 +6,7 @@ import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
 import 'package:economic_fe/view/widgets/profile_setting/basic_gender_button.dart';
 import 'package:economic_fe/view/widgets/profile_setting/basic_label.dart';
-import 'package:economic_fe/view/widgets/profile_setting/profile_setting_app_bar.dart';
+import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/profile_setting/basic_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,11 +22,12 @@ class BasicInfoPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: ProfileSettingAppBar(
+      appBar: CustomAppBar(
         title: '기본 정보',
         onPress: () {
           controller.navigateToProfileSetting(context);
         },
+        icon: Icons.close,
       ),
       body: Center(
         child: Column(

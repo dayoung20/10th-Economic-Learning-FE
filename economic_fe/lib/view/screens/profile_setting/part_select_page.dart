@@ -2,7 +2,7 @@ import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
-import 'package:economic_fe/view/widgets/profile_setting/profile_setting_app_bar.dart';
+import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/profile_setting/select_button_line.dart';
 import 'package:economic_fe/view_model/profile_setting/part_select_controller.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +18,12 @@ class PartSelectPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: ProfileSettingAppBar(
+      appBar: CustomAppBar(
         title: '업종/직무',
         onPress: () {
           controller.navigateToProfileSetting(context);
         },
+        icon: Icons.close,
       ),
       body: Column(
         children: [

@@ -1,4 +1,5 @@
 import 'package:economic_fe/view/screens/home_page.dart';
+import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding_card_page.dart';
@@ -18,7 +19,7 @@ import 'package:go_router/go_router.dart';
 class UserRouter {
   static GoRouter getRouter() {
     return GoRouter(
-      initialLocation: '/', // 초기 경로 설정
+      initialLocation: '/learning_list', // 초기 경로 설정
       routes: [
         GoRoute(
           path: '/',
@@ -67,6 +68,14 @@ class UserRouter {
               builder: (context, state) => const PartSelectPage(),
             ),
           ],
+        ),
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/learning_list',
+          builder: (context, state) => const LearningListPage(),
         ),
       ],
     );
