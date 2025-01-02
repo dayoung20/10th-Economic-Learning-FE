@@ -3,6 +3,7 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/next_button.dart';
 // import 'package:economic_fe/view/widgets/next_button.dart';
 import 'package:economic_fe/view_model/quiz_controller.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -105,6 +106,54 @@ class _QuizCardState extends State<QuizCard> {
                           : "다음 문제",
                   isEnabled: controller.selectedNumber.value != -1, // 활성화 상태 전달
                   onPressed: () {
+                    widget.isQuiz && controller.isCorrectAnswer == 1
+                        ? showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                                // borderRadius: BorderRadius.vertical(
+                                //     top: Radius.circular(20)),
+                                ),
+                            builder: (context) {
+                              return Container(
+                                padding: const EdgeInsets.all(20),
+                                height: 183,
+                                width: 362,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/check_circle.svg', // SVG 파일 경로
+                                      height: 20, // 높이
+                                      width: 20, // 너비
+                                      color: const Color(
+                                          0xFF067BD5), // 색상 변경 (선택 사항)
+                                    ),
+                                    const Text(
+                                      '맞았어요!',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(
+                                      '여기에 모달의 내용을 입력하세요.',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    const Spacer(),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // 모달 닫기
+                                      },
+                                      child: const Text('닫기'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          )
+                        : null;
+
                     print("다음 문제로 이동");
                     if (widget.answer == controller.selectedNumber.value &&
                         widget.isQuiz) {
@@ -241,7 +290,7 @@ class _QuizCardState extends State<QuizCard> {
                       (index) => GestureDetector(
                         onTap: () {
                           selectOption(index + 1);
-                          print("tj");
+                          // print("tj");
                         },
                         child: quizOptionCard(
                             screenWidth,
