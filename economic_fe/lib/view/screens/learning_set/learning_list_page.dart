@@ -35,9 +35,12 @@ class _LearningListPageState extends State<LearningListPage> {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: '전체 학습 세트',
         icon: Icons.arrow_back_ios_new,
+        onPress: () {
+          controller.navigateToHome(context);
+        },
       ),
       body: ListView.builder(
         itemCount: setTitles.length, // 학습 세트 개수
