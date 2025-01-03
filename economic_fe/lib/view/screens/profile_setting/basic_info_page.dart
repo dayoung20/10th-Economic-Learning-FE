@@ -276,15 +276,11 @@ class BasicInfoPage extends StatelessWidget {
                             child: Text(
                               controller.selectedBirthday.value ??
                                   '생년월일', // 텍스트 표시
-                              style: Palette.pretendard(
-                                context,
-                                controller.selectedBirthday.value == null
-                                    ? const Color(0xFFA2A2A2)
-                                    : Colors.black,
-                                14,
-                                FontWeight.w400,
-                                1.6,
-                                -0.4,
+                              style: const TextStyle(
+                                color: Color(0xFFA2A2A2),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard Variable',
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),

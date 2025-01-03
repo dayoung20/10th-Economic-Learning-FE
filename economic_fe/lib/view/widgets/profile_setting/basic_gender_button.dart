@@ -24,7 +24,6 @@ class _BasicGenderButtonState extends State<BasicGenderButton> {
     return Container(
       width: 58,
       height: 38,
-      padding: const EdgeInsets.all(10),
       decoration: widget.isSelected
           ? ShapeDecoration(
               color: const Color(0xFFDEF7F7),
@@ -34,17 +33,19 @@ class _BasicGenderButtonState extends State<BasicGenderButton> {
               ),
             )
           : null,
-      child: Text(
-        widget.text,
-        style: Palette.pretendard(
-          context,
-          widget.textColor,
-          14,
-          FontWeight.w500,
-          1,
-          -0.4,
+      child: Center(
+        child: Text(
+          widget.text,
+          style: TextStyle(
+            color: widget.textColor,
+            fontSize: 16,
+            fontFamily: 'Pretendard Variable',
+            fontWeight: FontWeight.w500,
+            height: 1.50,
+            letterSpacing: -0.40,
+          ),
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
       ),
     );
   }
