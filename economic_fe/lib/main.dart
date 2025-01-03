@@ -1,5 +1,5 @@
 import 'package:economic_fe/data/services/user_router.dart';
-import 'package:economic_fe/view/screens/onboarding_page.dart';
+import 'package:economic_fe/view/screens/onboarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';

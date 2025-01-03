@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/user_model.dart';
+import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/onboarding_slide.dart';
@@ -39,9 +40,12 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
       backgroundColor: Palette.background,
       body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
+          SizedBox(
+            height: ScreenUtils.getHeight(context, 80),
+          ),
+          SizedBox(
+            height: ScreenUtils.getHeight(context, 500),
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
@@ -52,17 +56,17 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
               children: const [
                 OnboardingSlide(
                   title: "학습과 퀴즈로 누구나 쉽게",
-                  subtitle: "개념 학습과 퀴즈로\n누구나 쉽게 경제 학습이 가능해요.",
+                  subtitle: "개념 학습과 퀴즈로\n누구나 쉽게 경제를 학습해요!",
                   currentIdx: 0,
                 ),
                 OnboardingSlide(
                   title: "경제 뉴스와 AI챗봇",
-                  subtitle: "최신 경제 기사 확인하고\nAI로 모르는 내용 확인해요.",
+                  subtitle: "최신 경제 기사를 확인하고\nAI에게 모르는 내용을 질문해요!",
                   currentIdx: 1,
                 ),
                 OnboardingSlide(
                   title: "커뮤니티 소통",
-                  subtitle: "커뮤니티에서 다른 사람들과\n토론해요!",
+                  subtitle: "커뮤니티에서 내 의견을 공유하고\n다른 사람들과 토론해요!",
                   currentIdx: 2,
                 ),
               ],
@@ -82,6 +86,7 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
           CustomButton(
             text: "계정이 이미 있어요",
             onPress: () {
+              // 수정 필요
               controller.clickedLoginBtn(context);
             },
             bgColor: Palette.buttonColorGreen,
