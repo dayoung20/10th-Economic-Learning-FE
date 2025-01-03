@@ -108,6 +108,7 @@ class _QuizCardState extends State<QuizCard> {
                   onPressed: () {
                     widget.isQuiz && controller.isCorrectAnswer == 1
                         ? showModalBottomSheet(
+                            backgroundColor: const Color(0xFFE1F6FF),
                             context: context,
                             shape: const RoundedRectangleBorder(
                                 // borderRadius: BorderRadius.vertical(
@@ -121,38 +122,175 @@ class _QuizCardState extends State<QuizCard> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SvgPicture.asset(
-                                      'assets/check_circle.svg', // SVG 파일 경로
-                                      height: 20, // 높이
-                                      width: 20, // 너비
-                                      color: const Color(
-                                          0xFF067BD5), // 색상 변경 (선택 사항)
-                                    ),
-                                    const Text(
-                                      '맞았어요!',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/check_circle.svg', // SVG 파일 경로
+                                          height: 32, // 높이
+                                          width: 32, // 너비
+                                          color: const Color(
+                                              0xFF067BD5), // 색상 변경 (선택 사항)
+                                        ),
+                                        const SizedBox(
+                                          width: 11.3,
+                                        ),
+                                        const Text(
+                                          '맞았어요!',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w500,
+                                            height: 1.4,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 42,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Colors.white, // 배경 색상
+                                            foregroundColor:
+                                                Colors.black, // 글자 색상
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 15), // 내부 패딩
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10), // 모서리 둥글기
+                                              side: const BorderSide(
+                                                color: Colors.black, // 테두리 색상
+                                                width: 0.5, // 테두리 두께
+                                              ),
+                                            ),
+                                            // elevation: 5, // 그림자 높이
+                                          ),
+                                          child: const Text("해설보기"),
+                                        ),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                                Icons.bookmark_border)),
+                                      ],
                                     ),
                                     const SizedBox(height: 10),
-                                    const Text(
-                                      '여기에 모달의 내용을 입력하세요.',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
+                                    // const Text(
+                                    //   '여기에 모달의 내용을 입력하세요.',
+                                    //   style: TextStyle(fontSize: 16),
+                                    // ),
                                     const Spacer(),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context); // 모달 닫기
-                                      },
-                                      child: const Text('닫기'),
+                                    // ElevatedButton(
+                                    //   onPressed: () {
+                                    //     Navigator.pop(context); // 모달 닫기
+                                    //   },
+                                    //   child: const Text('닫기'),
+                                    // ),
+                                    NextButton(
+                                      isEnabled: true,
+                                      onPressed: () {},
+                                      btnColor: Colors.blue,
                                     ),
                                   ],
                                 ),
                               );
                             },
                           )
-                        : null;
+                        // : null;
+                        : widget.isQuiz && controller.isCorrectAnswer == 2
+                            ? showModalBottomSheet(
+                                backgroundColor: const Color(0xFFFFF2F1),
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                    // borderRadius: BorderRadius.vertical(
+                                    //     top: Radius.circular(20)),
+                                    ),
+                                builder: (context) {
+                                  return Container(
+                                    padding: const EdgeInsets.all(20),
+                                    height: 183,
+                                    width: 362,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/subtract.svg', // SVG 파일 경로
+                                              height: 32, // 높이
+                                              width: 32, // 너비
+                                              color: const Color(
+                                                  0xFFFF5468), // 색상 변경 (선택 사항)
+                                            ),
+                                            const SizedBox(
+                                              width: 11.3,
+                                            ),
+                                            const Text(
+                                              '아쉬워요',
+                                              style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.4,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 45,
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {},
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.white, // 배경 색상
+                                                foregroundColor:
+                                                    Colors.black, // 글자 색상
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 20,
+                                                        vertical: 15), // 내부 패딩
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10), // 모서리 둥글기
+                                                  side: const BorderSide(
+                                                    color:
+                                                        Colors.black, // 테두리 색상
+                                                    width: 0.5, // 테두리 두께
+                                                  ),
+                                                ),
+                                                // elevation: 5, // 그림자 높이
+                                              ),
+                                              child: const Text("해설보기"),
+                                            ),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                    Icons.bookmark_border)),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        // const Text(
+                                        //   '여기에 모달의 내용을 입력하세요.',
+                                        //   style: TextStyle(fontSize: 16),
+                                        // ),
+                                        const Spacer(),
+                                        // ElevatedButton(
+                                        //   onPressed: () {
+                                        //     Navigator.pop(context); // 모달 닫기
+                                        //   },
+                                        //   child: const Text('닫기'),
+                                        // ),
+                                        NextButton(
+                                          isEnabled: true,
+                                          onPressed: () {},
+                                          btnColor: Colors.red,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            : null;
 
                     print("다음 문제로 이동");
                     if (widget.answer == controller.selectedNumber.value &&
