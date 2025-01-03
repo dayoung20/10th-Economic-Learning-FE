@@ -22,7 +22,7 @@ import 'package:go_router/go_router.dart';
 class UserRouter {
   static GoRouter getRouter() {
     return GoRouter(
-      initialLocation: '/profile_setting/basic', // 초기 경로 설정
+      initialLocation: '/', // 초기 경로 설정
       routes: [
         GoRoute(
           path: '/',
