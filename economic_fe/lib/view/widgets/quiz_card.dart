@@ -322,7 +322,7 @@ class _QuizCardState extends State<QuizCard> {
           child: Column(
             children: [
               SizedBox(
-                height: 550,
+                height: widget.screenHeight * 0.7,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -356,7 +356,7 @@ class _QuizCardState extends State<QuizCard> {
                                 widget.question), // 유틸리티 함수 호출 (한글 단어 단위 줄바꿈)
                             style: const TextStyle(
                               color: Color(0xFF111111),
-                              fontSize: 20,
+                              fontSize: 18,
                               fontFamily: 'Pretendard Variable',
                               fontWeight: FontWeight.w500,
                               height: 1.70,
@@ -519,9 +519,11 @@ class _QuizCardState extends State<QuizCard> {
                         ? const BoxDecoration(color: Color(0xFFE1F6FF))
                         : const BoxDecoration(color: Color(0xFFFFF2F1)),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(33),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -579,10 +581,20 @@ class _QuizCardState extends State<QuizCard> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 4),
-                                    child: Image.asset(
-                                      'assets/bookmark.png',
-                                      width: 15,
-                                      height: 21,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        controller.isBookmarked.value =
+                                            !controller.isBookmarked.value;
+                                      },
+                                      child: Obx(() {
+                                        return Image.asset(
+                                          controller.isBookmarked.value
+                                              ? 'assets/bookmark_selected.png'
+                                              : 'assets/bookmark.png',
+                                          width: 15,
+                                          height: 21,
+                                        );
+                                      }),
                                     ),
                                   ),
                                 ],
@@ -1104,7 +1116,7 @@ class MultipleOptionContainer extends StatelessWidget {
               addZeroWidthJoiner(widget.answerOptions![optionNum - 1]),
               style: const TextStyle(
                 color: Color(0xFF111111),
-                fontSize: 18,
+                fontSize: 16,
                 fontFamily: 'Pretendard Variable',
                 fontWeight: FontWeight.w500,
                 height: 1.4,

@@ -84,38 +84,16 @@ class _QuizPageState extends State<QuizPage> {
         currentIndex: 1,
         totalIndex: 3,
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            width: screenWidth,
-            child: QuizCard(
-              screenHeight: screenHeight,
-              screenWidth: screenWidth,
-              onPress: () {},
-              option: 0,
-              question: question,
-              answerOptions: options,
-              isLast: false,
-              isQuiz: true,
-              answer: 2,
-            ),
-          ),
-          // CustomButton(
-          //   text: "다음 문제",
-          //   onPress: () {},
-          //   bgColor: const Color.fromARGB(255, 186, 209, 255),
-          // ),
-          // ElevatedButton(
-          //   onPressed: () {},
-          //   child: const Text("다음 문제"),
-          // ),
-          // Center(
-          //   child: Obx(() => Text(
-          //         'Selected Option: ${quizController.selectedOption.value}',
-          //         style: const TextStyle(fontSize: 24),
-          //       )),
-          // )
-        ],
+      body: QuizCard(
+        screenHeight: screenHeight,
+        screenWidth: screenWidth,
+        onPress: () {},
+        option: 0,
+        question: question,
+        answerOptions: options,
+        isLast: false,
+        isQuiz: true,
+        answer: 2,
       ),
     );
   }

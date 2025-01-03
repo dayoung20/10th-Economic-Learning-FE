@@ -35,50 +35,53 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildLevelButton(
-              label: 'Beginner(초급)',
-              isSelected: _selectedLevel == 'Beginner',
-              onTap: () {
-                setState(() {
-                  print("Beginner 클릭");
-                  _selectedLevel = 'Beginner';
-                  controller.selectedLevel = _selectedLevel;
-                  controller.clickedQuizBtn(context);
-                  // print(controller.selectedLevel);
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            _buildLevelButton(
-              label: 'Intermediate(중급)',
-              isSelected: _selectedLevel == 'Intermediate',
-              onTap: () {
-                setState(() {
-                  print("Intermediate 클릭");
-                  _selectedLevel = 'Intermediate';
-                  controller.selectedLevel = _selectedLevel;
-                  controller.clickedQuizBtn(context);
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            _buildLevelButton(
-              label: 'Advanced(고급)',
-              isSelected: _selectedLevel == 'Advanced',
-              onTap: () {
-                setState(() {
-                  print("advanced 클릭");
-                  _selectedLevel = 'Advanced';
-                  controller.selectedLevel = _selectedLevel;
-                  controller.clickedQuizBtn(context);
-                });
-              },
-            ),
-          ],
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 62,
+              ),
+              _buildLevelButton(
+                label: 'Beginner(초급)',
+                isSelected: _selectedLevel == 'Beginner',
+                onTap: () {
+                  setState(() {
+                    print("Beginner 클릭");
+                    _selectedLevel = 'Beginner';
+                    controller.selectedLevel = _selectedLevel;
+                    controller.clickedQuizBtn(context);
+                    // print(controller.selectedLevel);
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              _buildLevelButton(
+                label: 'Intermediate(중급)',
+                isSelected: _selectedLevel == 'Intermediate',
+                onTap: () {
+                  setState(() {
+                    print("Intermediate 클릭");
+                    _selectedLevel = 'Intermediate';
+                    controller.selectedLevel = _selectedLevel;
+                    controller.clickedQuizBtn(context);
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              _buildLevelButton(
+                label: 'Advanced(고급)',
+                isSelected: _selectedLevel == 'Advanced',
+                onTap: () {
+                  setState(() {
+                    print("advanced 클릭");
+                    _selectedLevel = 'Advanced';
+                    controller.selectedLevel = _selectedLevel;
+                    controller.clickedQuizBtn(context);
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -92,7 +95,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        width: 294,
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: isSelected
               ? const Color(0xFF1EB692)
@@ -100,16 +104,13 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.grey),
         ),
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 18,
-              color: isSelected
-                  ? Colors.white
-                  : Colors.black, // 선택 여부에 따라 텍스트 색상 변경
-              fontWeight: FontWeight.bold,
-            ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 18,
+            color:
+                isSelected ? Colors.white : Colors.black, // 선택 여부에 따라 텍스트 색상 변경
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
