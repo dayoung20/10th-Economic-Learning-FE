@@ -10,12 +10,14 @@ class CustomButton extends StatefulWidget {
   // final double width;
   // final double height;
   final Color bgColor;
+  final Color? textColor;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onPress,
     required this.bgColor,
+    this.textColor,
   });
 
   @override
@@ -44,8 +46,11 @@ class _CustomButtonState extends State<CustomButton> {
         widget.text,
         style: Palette.pretendard(
           context,
-          null, // 텍스트 색상 설정
-          18, FontWeight.w600, 1.2, -0.45,
+          widget.textColor,
+          18,
+          FontWeight.w600,
+          1.2,
+          -0.45,
         ),
       ),
     );
