@@ -22,8 +22,8 @@ class _BasicGenderButtonState extends State<BasicGenderButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ScreenUtils.getWidth(context, 58),
-      height: ScreenUtils.getHeight(context, 38),
+      width: 58,
+      height: 38,
       padding: const EdgeInsets.all(10),
       decoration: widget.isSelected
           ? ShapeDecoration(
@@ -39,7 +39,7 @@ class _BasicGenderButtonState extends State<BasicGenderButton> {
         style: Palette.pretendard(
           context,
           widget.textColor,
-          16,
+          14,
           FontWeight.w500,
           1,
           -0.4,

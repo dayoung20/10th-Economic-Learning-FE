@@ -37,18 +37,16 @@ class BasicInfoPage extends StatelessWidget {
             ),
             // 프로필 사진 설정 부분
             SizedBox(
-              height: ScreenUtils.getHeight(context, 88),
+              height: 88,
               child: Stack(
                 children: [
                   Container(
-                    width: ScreenUtils.getWidth(context, 88),
-                    height: ScreenUtils.getHeight(context, 88),
+                    width: 88,
+                    height: 88,
                     decoration: ShapeDecoration(
                       color: const Color(0xFFF3F3F3),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          ScreenUtils.getWidth(context, 43),
-                        ),
+                        borderRadius: BorderRadius.circular(43),
                       ),
                     ),
                     child: Obx(() {
@@ -206,15 +204,14 @@ class BasicInfoPage extends StatelessWidget {
               height: ScreenUtils.getHeight(context, 8),
             ),
             SizedBox(
-              width: ScreenUtils.getWidth(context, 280),
-              height: ScreenUtils.getHeight(context, 44),
+              width: 300,
+              height: 46,
               child: Obx(() {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: ScreenUtils.getWidth(context, 125),
-                      height: ScreenUtils.getHeight(context, 46),
+                      height: 46,
                       padding: const EdgeInsets.all(4),
                       decoration: ShapeDecoration(
                         color: Colors.white,
@@ -259,8 +256,8 @@ class BasicInfoPage extends StatelessWidget {
                     ),
                     // 생년월일 선택 위젯
                     SizedBox(
-                      width: ScreenUtils.getWidth(context, 148),
-                      height: ScreenUtils.getHeight(context, 44),
+                      width: 148,
+                      height: 44,
                       child: Obx(() {
                         return GestureDetector(
                           onTap: () =>
@@ -284,7 +281,7 @@ class BasicInfoPage extends StatelessWidget {
                                 controller.selectedBirthday.value == null
                                     ? const Color(0xFFA2A2A2)
                                     : Colors.black,
-                                16,
+                                14,
                                 FontWeight.w400,
                                 1.6,
                                 -0.4,
@@ -406,8 +403,8 @@ class BasicInfoPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: ScreenUtils.getHeight(context, 75),
+            const SizedBox(
+              height: 40,
             ),
             // 저장하기 버튼 활성화
             Obx(() {
