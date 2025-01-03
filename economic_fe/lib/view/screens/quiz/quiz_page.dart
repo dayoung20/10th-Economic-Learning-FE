@@ -1,36 +1,28 @@
-import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class TestOxPage extends StatefulWidget {
-  const TestOxPage({super.key});
+class QuizPage extends StatefulWidget {
+  const QuizPage({super.key});
 
   @override
-  State<TestOxPage> createState() => _TestMultipleChoicePageState();
+  State<QuizPage> createState() => _QuizPageState();
 }
 
-class _TestMultipleChoicePageState extends State<TestOxPage> {
-  int? selectedOption;
+class _QuizPageState extends State<QuizPage> {
   final question = 'Q. 다음 중 복리 효과가 경제적\n결과로 나타날 수 있는\n상황으로 적절한 것은?';
+  // int answer =
   final List<String> options = [
     '단기간 대출을 받은 경우',
     '장기간 투자한 예금 계좌의\n이자가 점점 커지는 경우',
     '정기적으로 단리로 계산된\n이자만 지급되는 경우',
     '원금만 같아도 되는 상황'
   ];
-
-  void selectOption(int index) {
-    setState(() {
-      selectedOption = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    int? selectedOption;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -56,7 +48,7 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
                         },
                       ),
                       const Text(
-                        "레벨테스트",
+                        "고급퀴즈",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -64,7 +56,7 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
                         ),
                       ),
                       const Text(
-                        "1/9",
+                        "1/3",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -85,18 +77,38 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
           ),
         ),
       ),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: QuizCard(
-          screenHeight: screenHeight,
-          screenWidth: screenWidth,
-          onPress: () {},
-          option: 1,
-          question: question,
-          // answerOptions: options,
-          isLast: false,
-          isQuiz: false,
-        ),
+      body: Column(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: QuizCard(
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
+              onPress: () {},
+              option: 0,
+              question: question,
+              answerOptions: options,
+              isLast: false,
+              isQuiz: true,
+              answer: 2,
+            ),
+          ),
+          // CustomButton(
+          //   text: "다음 문제",
+          //   onPress: () {},
+          //   bgColor: const Color.fromARGB(255, 186, 209, 255),
+          // ),
+          // ElevatedButton(
+          //   onPressed: () {},
+          //   child: const Text("다음 문제"),
+          // ),
+          // Center(
+          //   child: Obx(() => Text(
+          //         'Selected Option: ${quizController.selectedOption.value}',
+          //         style: const TextStyle(fontSize: 24),
+          //       )),
+          // )
+        ],
       ),
     );
   }

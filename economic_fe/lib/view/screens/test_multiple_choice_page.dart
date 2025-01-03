@@ -95,12 +95,15 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
           Align(
             alignment: Alignment.topCenter,
             child: QuizCard(
-                screenHeight: screenHeight,
-                screenWidth: screenWidth,
-                onPress: () {},
-                option: 0,
-                question: question,
-                answerOptions: options),
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
+              onPress: () {},
+              option: 0,
+              question: question,
+              answerOptions: options,
+              isLast: true,
+              isQuiz: false,
+            ),
           ),
           // CustomButton(
           //   text: "다음 문제",
