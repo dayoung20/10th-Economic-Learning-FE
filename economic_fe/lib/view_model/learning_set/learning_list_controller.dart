@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart'; // GoRouter import
 
 class LearningListController extends GetxController {
   // 각 아이템의 클릭 여부를 저장할 상태 변수
@@ -11,5 +13,10 @@ class LearningListController extends GetxController {
     } else {
       selectedItemIndex.value = index; // 선택된 아이템의 인덱스를 저장
     }
+  }
+
+  // 홈화면으로 전환
+  void navigateToHome(BuildContext context) {
+    context.go('/home');
   }
 }
