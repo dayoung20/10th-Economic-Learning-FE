@@ -30,6 +30,11 @@ class QuizController extends GetxController {
     Get.toNamed('/login');
   }
 
+  // 레벨테스트 종료 버튼 클릭
+  void finishLeveltest() {
+    Get.toNamed('/leveltest_result');
+  }
+
   // 선택된 옵션을 관리하는 상태
   var selectedOption = Rx<int?>(null); // 선택된 옵션 (null은 선택 안 됨)
 
