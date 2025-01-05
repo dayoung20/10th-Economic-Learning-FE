@@ -558,26 +558,33 @@ class _QuizCardState extends State<QuizCard> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    width: 88,
-                                    height: 40,
-                                    decoration: ShapeDecoration(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 1, color: Color(0xFFA2A2A2)),
-                                        borderRadius: BorderRadius.circular(7),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.viewDescription.value = true;
+                                    },
+                                    child: Container(
+                                      width: 88,
+                                      height: 40,
+                                      decoration: ShapeDecoration(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xFFA2A2A2)),
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                        ),
                                       ),
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        '해설보기',
-                                        style: TextStyle(
-                                          color: Color(0xFF111111),
-                                          fontSize: 14,
-                                          fontFamily: 'Pretendard Variable',
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.14,
+                                      child: const Center(
+                                        child: Text(
+                                          '해설보기',
+                                          style: TextStyle(
+                                            color: Color(0xFF111111),
+                                            fontSize: 14,
+                                            fontFamily: 'Pretendard Variable',
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.14,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -612,6 +619,86 @@ class _QuizCardState extends State<QuizCard> {
                           bgColor: controller.isCorrectAnswer.value == 1
                               ? const Color(0xff067BD5)
                               : const Color(0xffFF5468),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
+          );
+        }),
+        // 해설 창 띄울 시 화면 어둡게
+        Obx(() {
+          return Positioned(
+            child: controller.viewDescription.value
+                ? Container(
+                    width: widget.screenWidth,
+                    height: widget.screenHeight,
+                    color: Colors.black.withOpacity(0.5), // 어두운 배경 추가
+                  )
+                : const SizedBox(),
+          );
+        }),
+        // 해설 창
+        Obx(() {
+          return Positioned(
+            bottom: 0,
+            child: controller.viewDescription.value
+                ? Container(
+                    width: widget.screenWidth,
+                    height: 552,
+                    padding: const EdgeInsets.all(24),
+                    decoration: const ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: Color(0xFFA2A2A2)),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              '해설',
+                              style: TextStyle(
+                                color: Color(0xFF111111),
+                                fontSize: 18,
+                                fontFamily: 'Pretendard Variable',
+                                fontWeight: FontWeight.w600,
+                                height: 1.20,
+                                letterSpacing: -0.45,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                controller.viewDescription.value = false;
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const SingleChildScrollView(
+                          child: SizedBox(
+                            height: 384,
+                            child: Text(
+                              '들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다.',
+                              style: TextStyle(
+                                color: Color(0xFF111111),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard Variable',
+                                fontWeight: FontWeight.w400,
+                                height: 1.50,
+                                letterSpacing: -0.40,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

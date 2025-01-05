@@ -50,6 +50,9 @@ class QuizController extends GetxController {
   // (퀴즈의 경우) 북마크 상태를 관리하는 변수
   Rx<bool> isBookmarked = false.obs;
 
+  // (퀴즈의 경우) 해설 보기 버튼 클릭 여부
+  Rx<bool> viewDescription = false.obs;
+
   // 선택지 변경 시 호출되는 메서드
   void selectOption(int index) {
     // 이미 선택된 옵션을 변경
