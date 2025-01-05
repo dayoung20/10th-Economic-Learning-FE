@@ -84,7 +84,9 @@ class ProfileSettingPage extends StatelessWidget {
                   ? Center(
                       child: CustomButton(
                         text: '저장하기',
-                        onPress: () {},
+                        onPress: () {
+                          controller.toHomePage();
+                        },
                         bgColor: Palette.buttonColorBlue,
                       ),
                     )

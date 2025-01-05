@@ -55,4 +55,9 @@ class ProfileSettingController extends GetxController {
     partSaveButtonClicked.value =
         Get.find<PartSelectController>().saveButtonClicked.value;
   }
+
+  // 홈 화면으로 연결
+  void toHomePage() {
+    Get.toNamed('/home');
+  }
 }
