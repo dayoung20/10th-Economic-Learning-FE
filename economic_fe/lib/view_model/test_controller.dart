@@ -29,7 +29,8 @@ class TestController extends GetxController {
   }
 
   void clickedTestBtn(BuildContext context) {
-    context.go('/test');
+    // context.go('/test');
+    Get.toNamed('/test');
   }
 
   // void clickedTestMultiBtn(BuildContext context) {
@@ -37,10 +38,12 @@ class TestController extends GetxController {
   // }
   void clickedTestMultiBtn(BuildContext context) {
     // context.go('/test/ox');
-    context.go('/test/multi');
+    // context.go('/test/multi');
+    Get.toNamed('/test/multi');
   }
 
   void clickedAfterBtn(BuildContext context) {
-    context.go('/login');
+    // context.go('/login');
+    Get.toNamed('/login');
   }
 }

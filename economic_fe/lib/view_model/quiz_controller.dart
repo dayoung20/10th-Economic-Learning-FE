@@ -15,16 +15,19 @@ class QuizController extends GetxController {
   }
 
   void clickedTestBtn(BuildContext context) {
-    context.go('/home/learning_list/quiz_level/quiz');
+    // context.go('/home/learning_list/quiz_level/quiz');
+    Get.toNamed('/home/learning_list/quiz_level/quiz');
   }
 
   void clickedTestMultiBtn(BuildContext context) {
-    context.go('/test/ox');
+    // context.go('/test/ox');
     // context.go('/test/multi');
+    Get.toNamed('/test/ox');
   }
 
   void clickedAfterBtn(BuildContext context) {
-    context.go('/login');
+    // context.go('/login');
+    Get.toNamed('/login');
   }
 
   // 선택된 옵션을 관리하는 상태
