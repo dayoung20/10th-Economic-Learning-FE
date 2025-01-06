@@ -2,11 +2,11 @@ import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
 
-import 'package:economic_fe/view/screens/onboarding_card_page.dart';
+import 'package:economic_fe/view/screens/onboarding/onboarding_card_page.dart';
 
 import 'package:economic_fe/view/screens/login_page.dart';
 
-import 'package:economic_fe/view/screens/onboarding_page.dart';
+import 'package:economic_fe/view/screens/onboarding/onboarding_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/basic_info_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
@@ -22,7 +22,7 @@ import 'package:go_router/go_router.dart';
 class UserRouter {
   static GoRouter getRouter() {
     return GoRouter(
-      initialLocation: '/home', // 초기 경로 설정
+      initialLocation: '/', // 초기 경로 설정
       routes: [
         GoRoute(
           path: '/',

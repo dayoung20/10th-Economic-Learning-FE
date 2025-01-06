@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
               height: ScreenUtils.getHeight(context, 157.07),
             ),
             Image.asset(
-              "assets/icon_2.png",
+              "assets/icon.png",
               width: ScreenUtils.getWidth(context, 65.34),
               height: ScreenUtils.getHeight(context, 77.87),
             ),

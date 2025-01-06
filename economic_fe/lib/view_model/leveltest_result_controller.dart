@@ -16,8 +16,8 @@ class LevelTestResultController extends GetxController {
   // 맞춘 문제 개수
   var correctNum = 5.obs;
 
-  // 카카오 로그인 화면으로 전환
-  void navigateToLogin(BuildContext context) {
-    context.go('/login');
+  // 프로필 설정 화면으로 전환
+  void navigateToProfileSetting(BuildContext context) {
+    context.go('/profile_setting');
   }
 }

@@ -44,8 +44,8 @@ class OnboardingSlide extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: currentIdx == 0
-                        ? const Color(0xff767676)
-                        : const Color(0xff2ad6d6))),
+                        ? const Color(0xff2ad6d6)
+                        : const Color(0xff767676))),
             const SizedBox(
               width: 8,
             ),
@@ -55,8 +55,8 @@ class OnboardingSlide extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: currentIdx == 1
-                        ? const Color(0xff767676)
-                        : const Color(0xff2ad6d6))),
+                        ? const Color(0xff2ad6d6)
+                        : const Color(0xff767676))),
             const SizedBox(
               width: 8,
             ),
@@ -66,8 +66,8 @@ class OnboardingSlide extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: currentIdx == 2
-                        ? const Color(0xff767676)
-                        : const Color(0xff2ad6d6))),
+                        ? const Color(0xff2ad6d6)
+                        : const Color(0xff767676))),
             const SizedBox(
               width: 8,
             ),

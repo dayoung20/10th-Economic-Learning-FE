@@ -83,6 +83,9 @@ flutter:
     - family: Pretendard
       fonts:
         - asset: assets/fonts/PretendardVariable.ttf
+    - family: Palanquin
+      fonts:
+        - asset: assets/fonts/PalanquinDark-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
