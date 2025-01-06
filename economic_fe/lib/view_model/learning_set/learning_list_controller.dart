@@ -17,7 +17,6 @@ class LearningListController extends GetxController {
 
   // 홈화면으로 전환
   void navigateToHome(BuildContext context) {
-    // context.go('/home');
-    Get.toNamed('/home');
+    Get.offNamed('/home');
   }
 }
