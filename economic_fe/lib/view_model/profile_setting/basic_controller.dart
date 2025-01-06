@@ -27,9 +27,6 @@ class BasicController extends GetxController {
   // 생년월일
   var selectedBirthday = Rx<String?>(null);
 
-  // // 연령대 선택 상태
-  // var selectedAgeRange = Rx<String?>(null);
-
   // 한 줄 소개
   var userInput = ''.obs; // 사용자 입력 값
   var currentLength = 0.obs; // 현재 글자 수
@@ -40,7 +37,8 @@ class BasicController extends GetxController {
 
   // 프로필 설정 화면으로 전환
   void navigateToProfileSetting(BuildContext context) {
-    context.go('/profile_setting');
+    // context.go('/profile_setting');
+    Get.toNamed('/profile_setting');
   }
 
   // 프로필 사진 선택 함수 (갤러리 또는 카메라)
@@ -108,18 +106,6 @@ class BasicController extends GetxController {
       selectedGender.value = gender;
     }
   }
-
-  // // 연령대 선택
-  // void selectAgeRange(String ageRange) {
-  //   if (selectedAgeRange.value == ageRange) {
-  //     selectedAgeRange.value = null; // 이미 선택된 연령대 클릭 시 해제
-  //   } else {
-  //     selectedAgeRange.value = ageRange;
-  //   }
-
-  //   // 실시간으로 saveButton 상태 업데이트
-  //   _updateSaveButtonState();
-  // }
 
   // 생년월일 선택 함수
   Future<void> selectBirthday(BuildContext context) async {

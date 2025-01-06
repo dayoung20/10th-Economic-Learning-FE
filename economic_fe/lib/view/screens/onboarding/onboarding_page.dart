@@ -21,15 +21,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(OnboardingController()
-      ..getStats());
+    controller = Get.put(OnboardingController()..getStats());
   }
 
   @override
   Widget build(BuildContext context) {
     // 화면이 로드된 후 3초 뒤에 자동으로 이동
-    Future.delayed(Duration(seconds: 3), () {
-      context.go('/onboarding'); // '/onboarding'으로 이동
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.toNamed('/onboarding'); // '/onboarding'으로 이동
     });
 
     return Scaffold(
@@ -46,7 +45,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               width: ScreenUtils.getWidth(context, 65.34),
               height: ScreenUtils.getHeight(context, 77.87),
             ),
-            Text(
+            const Text(
               "Ripple",
               style: TextStyle(
                 color: Color(0xFF111111),

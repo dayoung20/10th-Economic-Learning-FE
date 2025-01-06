@@ -13,17 +13,20 @@ class OnboardingCardController extends GetxController {
   }
 
   void clickedTestBtn(BuildContext context) {
-    context.go('/test');
+    //context.go('/test');
+    Get.toNamed('/test');
   }
 
   // void clickedTestMultiBtn(BuildContext context) {
   //   context.go('/test/ox');
   // }
   void clickedTestMultiBtn(BuildContext context) {
-    context.go('/test/multi');
+    // context.go('/test/multi');
+    Get.toNamed('/test/multi');
   }
 
   void clickedLoginBtn(BuildContext context) {
-    context.go('/login');
+    // context.go('/login');
+    Get.toNamed('/login');
   }
 }

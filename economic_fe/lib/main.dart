@@ -32,13 +32,26 @@ Future<void> main() async {
 //   }
 // }
 
+// class RippleApp extends StatelessWidget {
+//   const RippleApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp.router(
+//       routerConfig: UserRouter.getRouter(),
+//     );
+//   }
+// }
+
 class RippleApp extends StatelessWidget {
   const RippleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: UserRouter.getRouter(),
+    return GetMaterialApp(
+      title: 'Ripple',
+      initialRoute: '/learning_list/quiz_level/quiz', // 초기 라우트 설정
+      getPages: UserRouter.getPages(), // 라우트 설정
     );
   }
 }

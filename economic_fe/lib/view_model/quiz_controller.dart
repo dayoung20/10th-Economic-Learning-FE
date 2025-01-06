@@ -15,16 +15,24 @@ class QuizController extends GetxController {
   }
 
   void clickedTestBtn(BuildContext context) {
-    context.go('/home/learning_list/quiz_level/quiz');
+    // context.go('/home/learning_list/quiz_level/quiz');
+    Get.toNamed('/home/learning_list/quiz_level/quiz');
   }
 
   void clickedTestMultiBtn(BuildContext context) {
-    context.go('/test/ox');
+    // context.go('/test/ox');
     // context.go('/test/multi');
+    Get.toNamed('/test/ox');
   }
 
   void clickedAfterBtn(BuildContext context) {
-    context.go('/login');
+    // context.go('/login');
+    Get.toNamed('/login');
+  }
+
+  // 레벨테스트 종료 버튼 클릭
+  void finishLeveltest() {
+    Get.toNamed('/leveltest_result');
   }
 
   // 선택된 옵션을 관리하는 상태
@@ -41,6 +49,9 @@ class QuizController extends GetxController {
 
   // (퀴즈의 경우) 북마크 상태를 관리하는 변수
   Rx<bool> isBookmarked = false.obs;
+
+  // (퀴즈의 경우) 해설 보기 버튼 클릭 여부
+  Rx<bool> viewDescription = false.obs;
 
   // 선택지 변경 시 호출되는 메서드
   void selectOption(int index) {

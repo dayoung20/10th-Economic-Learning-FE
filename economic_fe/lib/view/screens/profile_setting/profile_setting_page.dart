@@ -1,5 +1,6 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
 import 'package:economic_fe/view/widgets/profile_setting/profile_setting_button.dart';
@@ -18,23 +19,16 @@ class ProfileSettingPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Palette.background,
+      appBar: CustomAppBar(
+        title: '프로필 설정',
+        icon: Icons.arrow_back_ios_new,
+        onPress: () {
+          controller.goBack();
+        },
+      ),
       body: Center(
         child: Column(
           children: [
-            SizedBox(
-              height: ScreenUtils.getHeight(context, 49),
-            ),
-            Text(
-              '프로필 설정',
-              style: Palette.pretendard(
-                context,
-                const Color(0xFF111111),
-                20,
-                FontWeight.w500,
-                1.3,
-                -0.5,
-              ),
-            ),
             SizedBox(
               height: ScreenUtils.getHeight(context, 37),
             ),
@@ -90,7 +84,9 @@ class ProfileSettingPage extends StatelessWidget {
                   ? Center(
                       child: CustomButton(
                         text: '저장하기',
-                        onPress: () {},
+                        onPress: () {
+                          controller.toHomePage();
+                        },
                         bgColor: Palette.buttonColorBlue,
                       ),
                     )

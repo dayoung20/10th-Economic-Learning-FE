@@ -18,6 +18,7 @@ class LevelTestResultController extends GetxController {
 
   // 프로필 설정 화면으로 전환
   void navigateToProfileSetting(BuildContext context) {
-    context.go('/profile_setting');
+    // context.go('/profile_setting');
+    Get.toNamed('/profile_setting');
   }
 }
