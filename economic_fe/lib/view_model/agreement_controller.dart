@@ -5,7 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AgreementController extends GetxController {
   late BuildContext context;
-  var check = false.obs;
+  var checkOne = false.obs;
   static AgreementController get to => Get.find();
   void getStats() {
     // 통계 데이터 로드 또는 초기화 작업
@@ -18,7 +18,7 @@ class AgreementController extends GetxController {
   }
 
   void clickedAllowBtn(BuildContext context) {
-    check = true.obs;
+    checkOne = true.obs;
     Navigator.pop(context);
   }
 }

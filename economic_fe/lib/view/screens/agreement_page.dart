@@ -22,7 +22,7 @@ class _AgreementPageState extends State<AgreementPage> {
   void initState() {
     super.initState();
     controller = Get.put(AgreementController()..getStats());
-    isCheckedOne = controller.check.value;
+    // isCheckedOne = controller.checkOne.value;
   }
 
   @override
@@ -152,7 +152,8 @@ class _AgreementPageState extends State<AgreementPage> {
                 onTap: () {
                   setState(() {
                     isCheckedAll = !isCheckedAll;
-                    isCheckedOne = isCheckedAll;
+                    // isCheckedOne = isCheckedAll;
+                    controller.checkOne.value = isCheckedAll;
                     isCheckdeTwo = isCheckedAll;
                     isCheckedThree = isCheckedAll;
                   });
@@ -198,8 +199,8 @@ class _AgreementPageState extends State<AgreementPage> {
               ),
               GestureDetector(onTap: () {
                 setState(() {
-                  isCheckedOne = !isCheckedOne;
-                  controller.check.value = !controller.check.value;
+                  // isCheckedOne = !isCheckedOne;
+                  controller.checkOne.value = !controller.checkOne.value;
                 });
               },
                   //     Obx(() {
@@ -213,7 +214,7 @@ class _AgreementPageState extends State<AgreementPage> {
                   // ),
                   child: Obx(() {
                 return Image.asset(
-                  controller.check.value
+                  controller.checkOne.value
                       ? 'assets/check_fill.png'
                       : 'assets/check.png',
                 );

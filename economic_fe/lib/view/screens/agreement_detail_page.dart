@@ -180,8 +180,8 @@ class _AgreementDetailPageState extends State<AgreementDetailPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                controller.check.value = true;
-                print(controller.check.value);
+                controller.checkOne.value = true;
+                print(controller.checkOne.value);
                 Navigator.pop(context);
                 // controller.clickedAllowBtn(context);
               },
