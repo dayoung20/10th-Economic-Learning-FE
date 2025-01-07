@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/agreement_page.dart';
 import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
@@ -115,7 +116,12 @@ class UserRouter {
       GetPage(
           name: '/leveltest_result', page: () => const LeveltestResultPage()),
       GetPage(name: '/login', page: () => const LoginPage(), children: [
-        GetPage(name: '/agreement', page: () => const AgreementPage()),
+        GetPage(
+            name: '/agreement',
+            page: () => const AgreementPage(),
+            children: [
+              GetPage(name: '/detail', page: () => const AgreementDetailPage())
+            ]),
       ]),
       GetPage(
         name: '/profile_setting',

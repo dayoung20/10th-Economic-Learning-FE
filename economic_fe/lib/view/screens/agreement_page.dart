@@ -1,6 +1,9 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
+import 'package:economic_fe/view_model/agreement_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class AgreementPage extends StatefulWidget {
   const AgreementPage({super.key});
@@ -10,6 +13,18 @@ class AgreementPage extends StatefulWidget {
 }
 
 class _AgreementPageState extends State<AgreementPage> {
+  late final AgreementController controller;
+  bool isCheckedAll = false;
+  bool isCheckedOne = false;
+  bool isCheckdeTwo = false;
+  bool isCheckedThree = false;
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(AgreementController()..getStats());
+    isCheckedOne = controller.check.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +32,6 @@ class _AgreementPageState extends State<AgreementPage> {
       appBar: const CustomAppBar(title: "", icon: Icons.arrow_back),
       body: Column(
         children: [
-          // const SizedBox(
-          //   height: 25,
-          // ),
           Container(
             // padding: const EdgeInsets.fromLTRB(24, 30, , 11),
             padding: const EdgeInsets.only(left: 24, top: 30, bottom: 11),
@@ -131,10 +143,202 @@ class _AgreementPageState extends State<AgreementPage> {
           const SizedBox(
             height: 16,
           ),
-          const Row(
-            children: [],
-          )
+          Row(
+            children: [
+              const SizedBox(
+                width: 31,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isCheckedAll = !isCheckedAll;
+                    isCheckedOne = isCheckedAll;
+                    isCheckdeTwo = isCheckedAll;
+                    isCheckedThree = isCheckedAll;
+                  });
+                },
+                child: Image.asset(
+                  isCheckedAll ? 'assets/check_fill.png' : 'assets/check.png',
+                  width: 25.63,
+                  height: 31.74,
+                ),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              const Text(
+                "모두 동의합니다.",
+                style: TextStyle(
+                  color: Color(0xFF111111), // #111 in hex
+                  fontFamily: 'Pretendard Variable',
+                  fontSize: 16.0,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600, // Font weight 600
+                  height: 1.5, // Line height (150% of font size)
+                  letterSpacing: -0.4,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            width: 312,
+            height: 1,
+            color: Colors.grey,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 31,
+              ),
+              GestureDetector(onTap: () {
+                setState(() {
+                  isCheckedOne = !isCheckedOne;
+                  controller.check.value = !controller.check.value;
+                });
+              },
+                  //     Obx(() {
+                  //   // check 값이 변경될 때마다 UI가 자동으로 갱신됩니다.
+                  //   return Text(controller.check.value ? "Checked" : "Unchecked");
+                  // }),
+                  // child: Image.asset(
+                  //   isCheckedOne ? 'assets/check_fill.png' : 'assets/check.png',
+                  //   width: 25.63,
+                  //   height: 31.74,
+                  // ),
+                  child: Obx(() {
+                return Image.asset(
+                  controller.check.value
+                      ? 'assets/check_fill.png'
+                      : 'assets/check.png',
+                );
+              })),
+              const SizedBox(
+                width: 16,
+              ),
+              const Text(
+                "(필수) 리플 서비스 이용 약관",
+                style: TextStyle(
+                  color: Color(0xFF767676),
+                  fontFamily: 'Pretendard Variable',
+                  fontSize: 14.0,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400,
+                  height: 1.5,
+                  letterSpacing: -0.35,
+                ),
+              ),
+              const SizedBox(
+                width: 60,
+              ),
+              IconButton(
+                onPressed: () {
+                  controller.clickedDetailBtn(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: Color(0xFF767676),
+                  size: 20.0,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 17,
+          ),
+          // Container(
+          //   width: 312,
+          //   height: 1,
+          //   color: Colors.grey,
+          // ),
+          // const SizedBox(
+          //   height: 16,
+          // ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 31,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isCheckdeTwo = !isCheckdeTwo;
+                  });
+                },
+                child: Image.asset(
+                  isCheckdeTwo ? 'assets/check_fill.png' : 'assets/check.png',
+                  width: 25.63,
+                  height: 31.74,
+                ),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              const Text(
+                "(필수) 개인정보 수집・이용 동의",
+                style: TextStyle(
+                  color: Color(0xFF767676), // #767676 in hex
+                  fontFamily: 'Pretendard Variable',
+                  fontSize: 14.0,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400, // Font weight 400
+                  height: 1.5, // Line height (150% of font size)
+                  letterSpacing: -0.35,
+                ),
+              ),
+            ],
+          ),
 
+          const SizedBox(
+            height: 17,
+          ),
+          // Container(
+          //   width: 312,
+          //   height: 1,
+          //   color: Colors.grey,
+          // ),
+          // const SizedBox(
+          //   height: 16,
+          // ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 31,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isCheckedThree = !isCheckedThree;
+                  });
+                },
+                child: Image.asset(
+                  isCheckedThree ? 'assets/check_fill.png' : 'assets/check.png',
+                  width: 25.63,
+                  height: 31.74,
+                ),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              const Text(
+                "(필수) 만 14세 이상입니다.",
+                style: TextStyle(
+                  color: Color(0xFF767676), // #767676 in hex
+                  fontFamily: 'Pretendard Variable',
+                  fontSize: 14.0,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400, // Font weight 400
+                  height: 1.5, // Line height (150% of font size)
+                  letterSpacing: -0.35,
+                ),
+              ),
+            ],
+          ),
           // Container(
           //   padding: const EdgeInsets.only(left: 24, bottom: 14),
           //   child: const Text(
