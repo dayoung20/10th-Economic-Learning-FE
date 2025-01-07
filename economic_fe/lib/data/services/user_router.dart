@@ -1,3 +1,5 @@
+import 'package:economic_fe/view/screens/agreement_detail_page.dart';
+import 'package:economic_fe/view/screens/agreement_page.dart';
 import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
@@ -17,6 +19,7 @@ import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:go_router/go_router.dart';
 
@@ -112,7 +115,14 @@ class UserRouter {
       ),
       GetPage(
           name: '/leveltest_result', page: () => const LeveltestResultPage()),
-      GetPage(name: '/login', page: () => const LoginPage()),
+      GetPage(name: '/login', page: () => const LoginPage(), children: [
+        GetPage(
+            name: '/agreement',
+            page: () => const AgreementPage(),
+            children: [
+              GetPage(name: '/detail', page: () => const AgreementDetailPage())
+            ]),
+      ]),
       GetPage(
         name: '/profile_setting',
         page: () => const ProfileSettingPage(),
