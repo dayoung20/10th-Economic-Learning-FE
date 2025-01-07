@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
@@ -136,6 +137,7 @@ class UserRouter {
           ),
         ],
       ),
+      GetPage(name: '/chatbot', page: () => const ChatbotPage()),
     ];
   }
 }
