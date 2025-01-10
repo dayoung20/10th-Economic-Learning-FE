@@ -11,18 +11,63 @@ class DictionaryPage extends StatefulWidget {
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: CustomAppBar(
-        title: "용어사전",
-        rightIcon: true,
-        onTapTitle: () {
-          showCategoryModal(context);
-        },
+    return GestureDetector(
+      onTap: () {
+        _focusNode.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Palette.background,
+        appBar: CustomAppBar(
+          title: "용어사전",
+          rightIcon: true,
+          onTapTitle: () {
+            showCategoryModal(context);
+          },
+        ),
+        body: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 60,
+              // width: 328,
+              child: TextFormField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  hintText: '검색',
+                  hintStyle: const TextStyle(
+                    color: Color(0xFFA2A2A2),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                    letterSpacing: -0.4,
+                  ),
+                  // labelText: '검색',
+                  fillColor: Colors.grey[300],
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(52),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(52),
+                    borderSide: const BorderSide(color: Colors.transparent),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(52),
+                    // borderSide: const BorderSide(color: Colors.black),
+                  ),
+                  prefixIcon: const Icon(Icons.search),
+                ),
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: const CustomBottomBar(currentIndex: 1),
       ),
-      bottomNavigationBar: const CustomBottomBar(currentIndex: 1),
     );
   }
 
