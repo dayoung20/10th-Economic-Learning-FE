@@ -1,8 +1,8 @@
-
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 
 import 'package:economic_fe/view/screens/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/agreement_page.dart';
+import 'package:economic_fe/view/screens/dictionary_page.dart';
 
 import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
@@ -151,6 +151,7 @@ class UserRouter {
         ],
       ),
       GetPage(name: '/chatbot', page: () => const ChatbotPage()),
+      GetPage(name: '/dictionary', page: () => const DictionaryPage())
     ];
   }
 }
