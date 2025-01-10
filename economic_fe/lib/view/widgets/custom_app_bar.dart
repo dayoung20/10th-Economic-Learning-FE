@@ -6,19 +6,23 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   // Implements PreferredSizeWidget
   final String title;
   final void Function()? onPress;
-  final IconData icon;
+  final IconData? icon;
   final int? currentIndex;
   final int? totalIndex;
   final TextStyle? titleStyle;
+  final bool? rightIcon;
+  final void Function()? onTapTitle;
 
   const CustomAppBar({
     super.key,
     required this.title,
     this.onPress,
-    required this.icon,
+    this.icon,
     this.currentIndex,
     this.totalIndex,
     this.titleStyle,
+    this.rightIcon = false,
+    this.onTapTitle,
   });
 
   @override
@@ -33,8 +37,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        widget.title,
+      title: GestureDetector(
+        onTap: widget.onTapTitle,
+        child: Row(
+          mainAxisSize: MainAxisSize.min, // Row의 크기를 내용물에 맞게 설정
+          mainAxisAlignment: MainAxisAlignment.center, // Row 내부에서의 정렬
+          children: [
+            Text(
+              widget.title,
+            ),
+            if (widget.rightIcon == true) // 아이콘 조건부 표시
+              const Icon(Icons.arrow_drop_down),
+          ],
+        ),
       ),
       titleTextStyle: widget.titleStyle ??
           Palette.pretendard(
