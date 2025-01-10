@@ -9,6 +9,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final IconData icon;
   final int? currentIndex;
   final int? totalIndex;
+  final TextStyle? titleStyle;
 
   const CustomAppBar({
     super.key,
@@ -17,6 +18,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.icon,
     this.currentIndex,
     this.totalIndex,
+    this.titleStyle,
   });
 
   @override
@@ -31,15 +33,18 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(widget.title),
-      titleTextStyle: Palette.pretendard(
-        context,
-        const Color(0xFF111111),
-        20,
-        FontWeight.w500,
-        1.3,
-        -0.5,
+      title: Text(
+        widget.title,
       ),
+      titleTextStyle: widget.titleStyle ??
+          Palette.pretendard(
+            context,
+            const Color(0xFF111111),
+            20,
+            FontWeight.w500,
+            1.3,
+            -0.5,
+          ),
       centerTitle: true,
       backgroundColor: Palette.background,
       leading: IconButton(
