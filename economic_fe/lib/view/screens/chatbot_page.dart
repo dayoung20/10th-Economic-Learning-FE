@@ -26,7 +26,7 @@ class ChatbotPage extends StatelessWidget {
         child: Stack(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height - 210,
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -211,7 +211,7 @@ class ChatbotPage extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 0,
+              bottom: 10,
               left: 0,
               right: 0,
               child: Column(
