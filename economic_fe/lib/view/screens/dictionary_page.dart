@@ -1,7 +1,11 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
+import 'package:economic_fe/view_model/agreement_controller.dart';
+import 'package:economic_fe/view_model/dictionary_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class DictionaryPage extends StatefulWidget {
   const DictionaryPage({super.key});
@@ -11,6 +15,7 @@ class DictionaryPage extends StatefulWidget {
 }
 
 class _DictionaryPageState extends State<DictionaryPage> {
+  late final DictionaryController controller;
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final List<String> consonants = [
@@ -73,6 +78,12 @@ class _DictionaryPageState extends State<DictionaryPage> {
   ];
   int _selectedIndex = -1;
   // bool _selectedWord = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = Get.put(DictionaryController()..getStats());
+  }
 
   @override
   Widget build(BuildContext context) {
