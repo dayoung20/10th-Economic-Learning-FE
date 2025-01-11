@@ -42,8 +42,8 @@ class TestController extends GetxController {
     Get.toNamed('/test/multi');
   }
 
-  void clickedAfterBtn(BuildContext context) {
+  void clickedAfterBtn() {
     // context.go('/login');
-    Get.toNamed('/login');
+    Get.toNamed('/login_exist');
   }
 }

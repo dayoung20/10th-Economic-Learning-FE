@@ -88,7 +88,7 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // 카카오 로그인 화면으로 이동
+                  controller.clickedExistBtn();
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),

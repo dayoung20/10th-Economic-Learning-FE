@@ -92,7 +92,7 @@ class _TestPageState extends State<TestPage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    controller.clickedAfterBtn(context);
+                    controller.clickedAfterBtn();
                   },
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
