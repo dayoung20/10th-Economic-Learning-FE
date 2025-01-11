@@ -37,7 +37,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 154),
+              height: ScreenUtils.getHeight(context, 160),
             ),
             // 어플 로고
             Image.asset(
@@ -55,27 +55,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 letterSpacing: -0.90,
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
             const Text(
               "처음 시작하는 경제 학습",
               style: TextStyle(
-                color: Color(0xFF111111),
-                fontSize: 20,
+                color: Color(0xFF404040),
+                fontSize: 16,
                 fontWeight: FontWeight.w500,
                 height: 1.40,
-                letterSpacing: -0.80,
+                letterSpacing: -0.40,
               ),
             ),
-            // const SizedBox(
-            //   height: 260.5,
-            // ),
-            // CustomButton(
-            //   text: "시작하기",
-            //   onPress: () {
-            //     final controller = Get.find<OnboardingController>();
-            //     controller.clickedStartBtn(context);
-            //   },
-            //   bgColor: Palette.buttonColorBlue,
-            // ),
           ],
         ),
       ),

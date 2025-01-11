@@ -18,19 +18,16 @@ class OnboardingSlide extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Placeholder(fallbackHeight: 200, fallbackWidth: 200), // 이미지 자리
-        const SizedBox(height: 30),
+        const SizedBox(height: 35),
         Text(
           title,
           style: Palette.cardTitle,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 22),
         Text(
           subtitle,
           textAlign: TextAlign.center,
           style: Palette.cardSub,
-        ),
-        const SizedBox(
-          height: 3,
         ),
         const SizedBox(
           height: 60,

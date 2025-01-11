@@ -40,12 +40,13 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
       backgroundColor: Palette.background,
       body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            height: ScreenUtils.getHeight(context, 80),
+          const SizedBox(
+            height: 50,
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 500),
+            height: ScreenUtils.getHeight(context, 393),
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
@@ -72,24 +73,38 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
               ],
             ),
           ),
-          CustomButton(
-            text: "시작하기",
-            onPress: () {
-              // final controller = Get.find<OnboardingCardController>();
-              controller.clickedTestBtn(context);
-            },
-            bgColor: Palette.buttonColorBlue,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          CustomButton(
-            text: "계정이 이미 있어요",
-            onPress: () {
-              // 수정 필요
-              controller.clickedLoginBtn(context);
-            },
-            bgColor: Palette.buttonColorGreen,
+          Column(
+            children: [
+              CustomButton(
+                text: "시작하기",
+                onPress: () {
+                  // final controller = Get.find<OnboardingCardController>();
+                  controller.clickedTestBtn(context);
+                },
+                bgColor: Palette.buttonColorBlue,
+              ),
+              const SizedBox(
+                height: 14,
+              ),
+              GestureDetector(
+                onTap: () {
+                  // 카카오 로그인 화면으로 이동
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    '계정이 이미 있어요',
+                    style: TextStyle(
+                      color: Color(0xFF404040),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                      letterSpacing: -0.35,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       )),
