@@ -12,7 +12,7 @@ class LoginController extends GetxController {
     print("Stats initialized!");
   }
 
-  void clickedLoginBtn(BuildContext context) {
+  void clickedLoginBtn() {
     //context.go('/test');
     Get.toNamed('/login/agreement');
   }

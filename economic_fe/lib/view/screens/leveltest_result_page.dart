@@ -202,7 +202,7 @@ class LeveltestResultPage extends StatelessWidget {
                 CustomButton(
                   text: '시작하기',
                   onPress: () {
-                    controller.navigateToProfileSetting(context);
+                    controller.navigateToLogin();
                   }, // 카카오 로그인 화면으로 전환
                   bgColor: Palette.buttonColorBlue,
                 ),

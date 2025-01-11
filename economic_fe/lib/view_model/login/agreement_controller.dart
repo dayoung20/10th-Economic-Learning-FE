@@ -5,11 +5,23 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AgreementController extends GetxController {
   late BuildContext context;
-  var checkOne = false.obs;
+  //var checkOne = false.obs;
+
+  // 체크박스 상태 관리
+  RxBool isCheckedAll = false.obs; // '모두 동의합니다.' 체크 상태
+  RxBool isCheckedOne = false.obs; // '리플 서비스 이용 약관' 체크 상태
+  RxBool isCheckedTwo = false.obs; // '개인정보 수집・이용 동의' 체크 상태
+  RxBool isCheckedThree = false.obs; // '만 14세 이상입니다.' 체크 상태
+
   static AgreementController get to => Get.find();
   void getStats() {
     // 통계 데이터 로드 또는 초기화 작업
     print("Stats initialized!");
+  }
+
+  // 카카오로 시작하기 화면으로 돌아가기
+  void clickedBackBtn() {
+    Get.toNamed('/login');
   }
 
   void clickedDetailBtn(BuildContext context) {
@@ -17,8 +29,58 @@ class AgreementController extends GetxController {
     Get.toNamed('/login/agreement/detail');
   }
 
-  void clickedAllowBtn(BuildContext context) {
-    checkOne = true.obs;
-    Navigator.pop(context);
+  // 프로필 설정 화면으로 이동
+  void clickedConfirmBtn() {
+    Get.toNamed('/profile_setting');
+  }
+
+  // void clickedAllowBtn(BuildContext context) {
+  //   isCheckedOne.value = true;
+  //   _updateAllCheckboxStatus();
+  //   Navigator.pop(context);
+  // }
+
+  // '모두 동의합니다.' 체크박스를 눌렀을 때의 동작
+  void toggleAllCheckbox() {
+    if (isCheckedAll.value) {
+      isCheckedAll.value = false;
+      isCheckedOne.value = false;
+      isCheckedTwo.value = false;
+      isCheckedThree.value = false;
+    } else {
+      isCheckedAll.value = true;
+      isCheckedOne.value = true;
+      isCheckedTwo.value = true;
+      isCheckedThree.value = true;
+    }
+  }
+
+  // 개별 체크박스를 눌렀을 때의 동작
+  void toggleOneCheckbox() {
+    isCheckedOne.value = !isCheckedOne.value;
+    _updateAllCheckboxStatus();
+  }
+
+  void toggleTwoCheckbox() {
+    isCheckedTwo.value = !isCheckedTwo.value;
+    _updateAllCheckboxStatus();
+  }
+
+  void toggleThreeCheckbox() {
+    isCheckedThree.value = !isCheckedThree.value;
+    _updateAllCheckboxStatus();
+  }
+
+  // 개별 체크박스 상태에 따라 '모두 동의합니다.' 체크박스 상태를 업데이트
+  void _updateAllCheckboxStatus() {
+    // 하나라도 체크가 해제되면 isCheckedAll을 해제
+    if (!isCheckedOne.value || !isCheckedTwo.value || !isCheckedThree.value) {
+      isCheckedAll.value = false;
+    } else {
+      // 모든 개별 체크박스가 체크되면 isCheckedAll을 체크
+      if (isCheckedOne.value && isCheckedTwo.value && isCheckedThree.value) {
+        isCheckedAll.value = true;
+      }
+    }
   }
 }
