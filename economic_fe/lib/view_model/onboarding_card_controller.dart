@@ -29,4 +29,9 @@ class OnboardingCardController extends GetxController {
     // context.go('/login');
     Get.toNamed('/login');
   }
+
+  // 계정이 이미 있어요 -> 카카오 로그인
+  void clickedExistBtn() {
+    Get.toNamed('/login_exist');
+  }
 }

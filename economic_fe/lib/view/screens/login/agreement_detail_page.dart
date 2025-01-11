@@ -1,7 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:economic_fe/view_model/agreement_controller.dart';
+import 'package:economic_fe/view_model/login/agreement_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 

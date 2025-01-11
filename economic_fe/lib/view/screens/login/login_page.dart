@@ -1,6 +1,6 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
-import 'package:economic_fe/view_model/login_controller.dart';
+import 'package:economic_fe/view_model/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
