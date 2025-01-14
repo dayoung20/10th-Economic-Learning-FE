@@ -17,9 +17,10 @@ class ChatbotPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: '챗봇',
         icon: Icons.arrow_back_ios_new,
+        onPress: () => controller.goBack(),
       ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,

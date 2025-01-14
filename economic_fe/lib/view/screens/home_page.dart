@@ -1,9 +1,8 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
-import 'package:economic_fe/view/widgets/custom_button.dart';
+import 'package:economic_fe/view/widgets/home_app_bar.dart';
 import 'package:economic_fe/view_model/home_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,70 +39,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.background,
-        centerTitle: false,
-        // oo일 연속 학습 중
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-            shadows: const [
-              BoxShadow(
-                color: Color(0x33000000),
-                blurRadius: 4,
-                offset: Offset(0, 1),
-                spreadRadius: 0,
-              )
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/icon.png',
-                width: 14,
-                height: 16,
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              const Text(
-                '$dayCounts일 연속 학습 중',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF111111),
-                  fontSize: 12,
-                  fontFamily: 'Pretendard Variable',
-                  fontWeight: FontWeight.w500,
-                  height: 1.40,
-                  letterSpacing: -0.30,
-                ),
-              )
-            ],
-          ),
-        ),
-        actions: [
-          // 검색
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              size: 24,
-            ),
-          ),
-          // 알림
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications_none,
-              size: 24,
-            ),
-          ),
-        ],
-      ),
+      appBar: const HomeAppBar(dayCounts: dayCounts),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

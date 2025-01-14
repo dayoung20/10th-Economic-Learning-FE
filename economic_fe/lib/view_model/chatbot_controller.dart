@@ -132,4 +132,9 @@ class ChatbotController extends GetxController {
   void updateMessage(String value) {
     messageText.value = value;
   }
+
+  // 이전 화면으로
+  void goBack() {
+    Get.back();
+  }
 }
