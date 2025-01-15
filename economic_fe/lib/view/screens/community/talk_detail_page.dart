@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/models/community/comment.dart';
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/community/comment_widget.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/community/talk_detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -237,6 +238,7 @@ class TalkDetailPage extends StatelessWidget {
                                   child: CommentWidget(
                                     comment: comment,
                                     isReply: false,
+                                    isAuthor: comment.isAuthor,
                                   ),
                                 ),
                                 // 구분 선
@@ -277,6 +279,7 @@ class TalkDetailPage extends StatelessWidget {
                                                   child: CommentWidget(
                                                     comment: reply,
                                                     isReply: true,
+                                                    isAuthor: comment.isAuthor,
                                                   ),
                                                 ),
                                               ],
@@ -390,244 +393,6 @@ class TalkDetailPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CommentWidget extends StatelessWidget {
-  final Comment comment;
-  final bool isReply;
-
-  const CommentWidget({
-    super.key,
-    required this.comment,
-    required this.isReply,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // 댓글 작성자 프로필 사진
-            Row(
-              children: [
-                Image.asset(
-                  'assets/profile_example.png',
-                  width: 18,
-                  height: 18,
-                ),
-                const SizedBox(width: 7),
-                // 댓글 작성자 닉네임
-                Text(
-                  comment.author,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Color(0xFF404040),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    height: 1.50,
-                    letterSpacing: -0.35,
-                  ),
-                ),
-                const SizedBox(
-                  width: 7,
-                ),
-                // 댓글 작성일
-                Text(
-                  comment.date,
-                  style: const TextStyle(
-                    color: Color(0xFF767676),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    height: 1.50,
-                    letterSpacing: -0.30,
-                  ),
-                ),
-              ],
-            ),
-            // 더보기 버튼
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: GestureDetector(
-                onTap: () {
-                  _showOptionsDialog(context, comment.isAuthor);
-                },
-                child: const Icon(
-                  Icons.more_horiz,
-                  size: 20,
-                  color: Color(0xff404040),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        // 댓글 내용
-        SizedBox(
-          width: isReply
-              ? MediaQuery.of(context).size.width - 52
-              : MediaQuery.of(context).size.width - 32,
-          child: Text(
-            comment.content,
-            style: const TextStyle(
-              color: Color(0xFF404040),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              height: 1.50,
-              letterSpacing: -0.35,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 8.5,
-        ),
-        Row(
-          children: [
-            // 좋아요 수
-            const Padding(
-              padding: EdgeInsets.only(right: 5),
-              child: Icon(
-                Icons.favorite_border,
-                size: 18,
-                color: Color(0xff767676),
-              ),
-            ),
-            Text(
-              '${comment.likes}',
-              style: const TextStyle(
-                color: Color(0xFF767676),
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                height: 1.50,
-              ),
-            ),
-            const SizedBox(width: 8),
-            // 답글 수
-            isReply
-                ? const SizedBox()
-                : Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(right: 5),
-                        child: Icon(
-                          Icons.chat_bubble_outline,
-                          size: 18,
-                          color: Color(0xff767676),
-                        ),
-                      ),
-                      Text(
-                        '${comment.replies.length}',
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          height: 1.50,
-                        ),
-                      ),
-                    ],
-                  ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  // 옵션 창 함수
-  void _showOptionsDialog(BuildContext context, bool isAuthor) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Wrap(
-          children: [
-            // 옵션 1: 수정 또는 신고
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pop();
-                if (isAuthor) {
-                  _editComment(context);
-                } else {
-                  _reportComment(context);
-                }
-              },
-              leading: Icon(
-                isAuthor ? Icons.edit : Icons.flag,
-                color: isAuthor ? Colors.blue : Colors.red,
-              ),
-              title: Text(
-                isAuthor ? '수정' : '댓글 신고하기',
-                style: TextStyle(
-                  color: isAuthor ? Colors.blue : Colors.red,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            // 옵션 2: 삭제 (작성자일 경우에만)
-            if (isAuthor)
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _deleteComment(context);
-                },
-                leading: const Icon(Icons.delete, color: Colors.red),
-                title: const Text(
-                  '삭제',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            // 옵션 3: 닫기
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              leading: const Icon(Icons.close, color: Colors.grey),
-              title: const Text(
-                '닫기',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // 수정 기능 (샘플)
-  void _editComment(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('댓글 수정 기능 실행')),
-    );
-  }
-
-  // 삭제 기능 (샘플)
-  void _deleteComment(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('댓글 삭제 기능 실행')),
-    );
-  }
-
-  // 신고 기능 (샘플)
-  void _reportComment(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('댓글 신고 기능 실행')),
     );
   }
 }

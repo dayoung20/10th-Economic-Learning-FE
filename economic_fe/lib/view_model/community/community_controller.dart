@@ -34,4 +34,9 @@ class CommunityController extends GetxController {
   void toTalkDetailPage() {
     Get.toNamed('/community/talk_detail');
   }
+
+  // 일반 게시판 상세 페이지로 이동
+  void toDetailPage() {
+    Get.toNamed('/community/detail');
+  }
 }

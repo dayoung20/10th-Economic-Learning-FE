@@ -1,5 +1,6 @@
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
+import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
 
 import 'package:economic_fe/view/screens/login/agreement_detail_page.dart';
@@ -210,6 +211,11 @@ class UserRouter {
           GetPage(
             name: '/talk_detail',
             page: () => const TalkDetailPage(),
+          ),
+          // 일반 게시판 세부 페이지
+          GetPage(
+            name: '/detail',
+            page: () => const DetailPage(),
           ),
         ],
       )

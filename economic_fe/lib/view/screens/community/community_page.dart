@@ -289,8 +289,11 @@ class CommunityPage extends StatelessWidget {
                                                                 '${index + 1}일 전',
                                                             likes:
                                                                 100, // 인기순에 맞는 데이터 예시
-                                                            comments:
-                                                                50, // 인기순에 맞는 댓글 수
+                                                            comments: 50,
+                                                            onTap: () {
+                                                              controller
+                                                                  .toDetailPage();
+                                                            }, // 인기순에 맞는 댓글 수
                                                           );
                                                         } else {
                                                           // 최신순
@@ -303,8 +306,11 @@ class CommunityPage extends StatelessWidget {
                                                                 '${index + 1}일 전',
                                                             likes:
                                                                 10, // 최신순에 맞는 데이터 예시
-                                                            comments:
-                                                                5, // 최신순에 맞는 댓글 수
+                                                            comments: 5,
+                                                            onTap: () {
+                                                              controller
+                                                                  .toDetailPage();
+                                                            }, // 최신순에 맞는 댓글 수
                                                           );
                                                         }
                                                       },
@@ -451,7 +457,7 @@ class CommunityPage extends StatelessWidget {
               ),
             if (controller.isModalVisible.value)
               Positioned(
-                bottom: 75,
+                bottom: 135,
                 right: 15,
                 child: Container(
                   width: 156,
@@ -491,27 +497,53 @@ class CommunityPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/edit_square.png',
-                            width: 24,
-                            height: 24,
-                          ),
-                          const SizedBox(width: 6),
-                          const Text(
-                            '글쓰기',
-                            style: TextStyle(
-                              color: Color(0xFF404040),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              height: 1.40,
-                              letterSpacing: -0.35,
+                      GestureDetector(
+                        onTap: () {},
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/edit_square.png',
+                              width: 24,
+                              height: 24,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 6),
+                            const Text(
+                              '글쓰기',
+                              style: TextStyle(
+                                color: Color(0xFF404040),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                height: 1.40,
+                                letterSpacing: -0.35,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+            if (controller.isModalVisible.value)
+              Positioned(
+                bottom: 75,
+                right: 15,
+                child: GestureDetector(
+                  onTap: () {
+                    controller.toggleModal();
+                  },
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: const ShapeDecoration(
+                      color: Colors.white,
+                      shape: OvalBorder(),
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      size: 25,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
@@ -762,6 +794,7 @@ class ListItem extends StatelessWidget {
   final String date;
   final int likes;
   final int comments;
+  final Function() onTap;
 
   const ListItem({
     super.key,
@@ -770,6 +803,7 @@ class ListItem extends StatelessWidget {
     required this.date,
     required this.likes,
     required this.comments,
+    required this.onTap,
   });
 
   @override
@@ -782,31 +816,37 @@ class ListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Color(0xFF111111),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  height: 1.30,
-                  letterSpacing: -0.40,
+              GestureDetector(
+                onTap: onTap,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF111111),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 1.30,
+                    letterSpacing: -0.40,
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 4,
               ),
-              SizedBox(
-                width: 235,
-                height: 42,
-                child: Flexible(
-                  child: Text(
-                    description,
-                    style: const TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      height: 1.50,
-                      letterSpacing: -0.35,
+              GestureDetector(
+                onTap: onTap,
+                child: SizedBox(
+                  width: 235,
+                  height: 42,
+                  child: Flexible(
+                    child: Text(
+                      description,
+                      style: const TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        height: 1.50,
+                        letterSpacing: -0.35,
+                      ),
                     ),
                   ),
                 ),
@@ -872,13 +912,16 @@ class ListItem extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            width: 66,
-            height: 66,
-            decoration: ShapeDecoration(
-              color: const Color(0xFFD9D9D9),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7)),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              width: 66,
+              height: 66,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFD9D9D9),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7)),
+              ),
             ),
           ),
         ],
