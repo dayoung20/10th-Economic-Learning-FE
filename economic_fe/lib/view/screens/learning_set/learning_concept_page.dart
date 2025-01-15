@@ -1,6 +1,9 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
+import 'package:economic_fe/view_model/learning_set/learning_concept_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class LearningConceptPage extends StatefulWidget {
   const LearningConceptPage({super.key});
@@ -11,6 +14,8 @@ class LearningConceptPage extends StatefulWidget {
 
 class _LearningConceptPageState extends State<LearningConceptPage> {
   bool isSelected = false;
+  String selectedLevel = "초급";
+  List<String> level = ["초급", "중급", "고급"];
   @override
   void initState() {
     super.initState();
@@ -19,6 +24,9 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final controller = Get.find<LearningConceptController>();
+    final LearningConceptController controller =
+        Get.put(LearningConceptController());
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: const CustomAppBar(
@@ -61,9 +69,133 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                       // border: Border
                     ),
                     alignment: Alignment.center,
-                    child: const Text(
-                      "중급",
-                      style: TextStyle(color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(
+                          () => Text(
+                            controller.selectedIndex.value == -1
+                                ? "초급"
+                                : controller
+                                    .level[controller.selectedIndex.value],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              height: 1.4,
+                              letterSpacing: -0.4,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.white,
+                              builder: (BuildContext context) {
+                                List<String> level = [
+                                  "초급",
+                                  "중급",
+                                  "고급",
+                                ];
+                                return StatefulBuilder(
+                                  builder: (BuildContext context,
+                                      StateSetter setState) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.8,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 16),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text(
+                                                "카테고리",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                icon: const Icon(Icons.close),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Expanded(
+                                            child: ListView.builder(
+                                              itemCount:
+                                                  controller.level.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return ListTile(
+                                                  contentPadding:
+                                                      EdgeInsets.zero,
+                                                  title: Text(
+                                                    controller.level[index],
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: controller
+                                                                  .selectedIndex ==
+                                                              index
+                                                          ? const Color(
+                                                              0xFF2BD6D6)
+                                                          : Colors.black,
+                                                      fontWeight: controller
+                                                                  .selectedIndex ==
+                                                              index
+                                                          ? FontWeight.bold
+                                                          : FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                  trailing: controller
+                                                              .selectedIndex ==
+                                                          index
+                                                      ? Image.asset(
+                                                          'assets/check_fill.png', // 이미지 경로
+                                                          width: 24,
+                                                          height: 24,
+                                                        )
+                                                      : null,
+                                                  onTap: () {
+                                                    print("ddddd");
+                                                    setState(() {
+                                                      controller.selectedIndex
+                                                              .value =
+                                                          index; // 선택된 항목 업데이트
+                                                    });
+                                                    print(controller
+                                                        .selectedIndex.value);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
