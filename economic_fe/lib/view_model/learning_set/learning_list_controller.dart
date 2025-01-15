@@ -19,4 +19,8 @@ class LearningListController extends GetxController {
   void navigateToHome(BuildContext context) {
     Get.offNamed('/home');
   }
+
+  void clickedLearningConcept(BuildContext context) {
+    Get.offNamed('/learning_list/learning_concept');
+  }
 }

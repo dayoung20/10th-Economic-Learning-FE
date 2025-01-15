@@ -119,35 +119,41 @@ class _LearningListItemState extends State<LearningListItem> {
             SizedBox(
               height: ScreenUtils.getHeight(context, 8),
             ),
-            Container(
-              width: ScreenUtils.getWidth(context, 332),
-              height: ScreenUtils.getHeight(context, 58),
-              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 18),
-              decoration: ShapeDecoration(
-                color: const Color(0xFFF2F3F5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            GestureDetector(
+              onTap: () {
+                controller.clickedLearningConcept(context);
+              },
+              child: Container(
+                width: ScreenUtils.getWidth(context, 332),
+                height: ScreenUtils.getHeight(context, 58),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 21, vertical: 18),
+                decoration: ShapeDecoration(
+                  color: const Color(0xFFF2F3F5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '개념학습',
-                    style: Palette.pretendard(
-                      context,
-                      const Color(0xFF404040),
-                      16,
-                      FontWeight.w600,
-                      1.4,
-                      -0.4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '개념학습',
+                      style: Palette.pretendard(
+                        context,
+                        const Color(0xFF404040),
+                        16,
+                        FontWeight.w600,
+                        1.4,
+                        -0.4,
+                      ),
                     ),
-                  ),
-                  const Icon(
-                    Icons.check_circle_outline,
-                    color: Color(0xffa2a2a2),
-                  ),
-                ],
+                    const Icon(
+                      Icons.check_circle_outline,
+                      color: Color(0xffa2a2a2),
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(
