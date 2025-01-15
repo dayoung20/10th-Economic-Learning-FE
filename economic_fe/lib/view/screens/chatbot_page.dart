@@ -328,38 +328,41 @@ class ChatbotPage extends StatelessWidget {
                           // 텍스트 입력창
                           Expanded(
                             child: Obx(() {
-                              return TextField(
-                                controller: controller.messageController,
-                                onChanged: (value) {
-                                  controller.updateMessage(value);
-                                },
-                                decoration: InputDecoration(
-                                  hintText: '메시지를 입력해주세요.',
-                                  hintStyle: const TextStyle(
-                                    color: Color(0xFFA2A2A2),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: -0.40,
+                              return SizedBox(
+                                width: 280,
+                                child: TextField(
+                                  controller: controller.messageController,
+                                  onChanged: (value) {
+                                    controller.updateMessage(value);
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: '메시지를 입력해주세요.',
+                                    hintStyle: const TextStyle(
+                                      color: Color(0xFFA2A2A2),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: -0.40,
+                                    ),
+                                    border: InputBorder.none,
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        controller.sendMessage();
+                                      },
+                                      icon: controller
+                                              .messageText.value.isNotEmpty
+                                          ? Image.asset(
+                                              'assets/send_active.png',
+                                              width: 24,
+                                            )
+                                          : Image.asset(
+                                              'assets/send.png',
+                                              width: 24,
+                                            ),
+                                    ),
                                   ),
-                                  border: InputBorder.none,
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.sendMessage();
-                                    },
-                                    icon:
-                                        controller.messageText.value.isNotEmpty
-                                            ? Image.asset(
-                                                'assets/send_active.png',
-                                                width: 24,
-                                              )
-                                            : Image.asset(
-                                                'assets/send.png',
-                                                width: 24,
-                                              ),
-                                  ),
+                                  maxLines: 5, // 최대 줄 수
+                                  minLines: 1, // 최소 줄 수
                                 ),
-                                maxLines: 5, // 최대 줄 수
-                                minLines: 1, // 최소 줄 수
                               );
                             }),
                           ),

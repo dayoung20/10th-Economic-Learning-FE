@@ -24,57 +24,61 @@ class CommunityPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 12),
                 Center(
-                  child: Container(
-                    width: 328,
-                    height: 122,
-                    decoration: ShapeDecoration(
-                      image: DecorationImage(
-                        image: const AssetImage('assets/talk_image_sample.png'),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.35), // 어두운 필터 추가
-                          BlendMode.darken, // 어두운 필터 적용
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                            width: 1, color: Color(0xFFA2A2A2)),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/talk_image_sample.png'),
-                            fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () => controller.toTalkDetailPage(),
+                    child: Container(
+                      width: 328,
+                      height: 122,
+                      decoration: ShapeDecoration(
+                        image: DecorationImage(
+                          image:
+                              const AssetImage('assets/talk_image_sample.png'),
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.35), // 어두운 필터 추가
+                            BlendMode.darken, // 어두운 필터 적용
                           ),
                         ),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '저축은 어떻게?\n체계적으로? 아님?',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                                height: 1.2,
-                                letterSpacing: -0.55,
-                              ),
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1, color: Color(0xFFA2A2A2)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/talk_image_sample.png'),
+                              fit: BoxFit.cover,
                             ),
-                            Text(
-                              '현재 뜨거운 톡톡!',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: -0.35,
+                          ),
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '저축은 어떻게?\n체계적으로? 아님?',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.2,
+                                  letterSpacing: -0.55,
+                                ),
                               ),
-                            ),
-                          ],
+                              Text(
+                                '현재 뜨거운 톡톡!',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: -0.35,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -396,10 +400,18 @@ class CommunityPage extends StatelessWidget {
                                                     .selectedOrder.value ==
                                                 0) {
                                               // 인기순
-                                              return const TalkListItem();
+                                              return TalkListItem(
+                                                onTap: () {
+                                                  controller.toTalkDetailPage();
+                                                },
+                                              );
                                             } else {
                                               // 최신순
-                                              return const TalkListItem();
+                                              return TalkListItem(
+                                                onTap: () {
+                                                  controller.toTalkDetailPage();
+                                                },
+                                              );
                                             }
                                           },
                                           separatorBuilder: (context, index) {
@@ -530,8 +542,10 @@ class CommunityPage extends StatelessWidget {
 }
 
 class TalkListItem extends StatelessWidget {
+  final Function() onTap;
   const TalkListItem({
     super.key,
+    required this.onTap,
   });
 
   @override
@@ -540,24 +554,27 @@ class TalkListItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         // 경제톡톡 이미지
-        Container(
-          width: 97,
-          height: 118,
-          decoration: ShapeDecoration(
-            image: const DecorationImage(
-              image: AssetImage('assets/talk_image_sample.png'),
-              fit: BoxFit.cover,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(7),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 97,
+            height: 118,
+            decoration: ShapeDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/talk_image_sample.png'),
+                fit: BoxFit.cover,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(7),
+              ),
             ),
           ),
         ),
-        const Column(
+        Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 219,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -586,29 +603,32 @@ class TalkListItem extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            SizedBox(
-              width: 219,
-              height: 60,
-              child: Flexible(
-                child: Text(
-                  '현재 경제 상황에서 가장 중요한 투자 전략은 무엇이라고 생각하나요? 현재 경제 상황에서 가장 중요한 투자 전략...',
-                  style: TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    height: 1.30,
-                    letterSpacing: -0.38,
+            GestureDetector(
+              onTap: onTap,
+              child: const SizedBox(
+                width: 219,
+                height: 60,
+                child: Flexible(
+                  child: Text(
+                    '현재 경제 상황에서 가장 중요한 투자 전략은 무엇이라고 생각하나요? 현재 경제 상황에서 가장 중요한 투자 전략...',
+                    style: TextStyle(
+                      color: Color(0xFF111111),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      height: 1.30,
+                      letterSpacing: -0.38,
+                    ),
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
