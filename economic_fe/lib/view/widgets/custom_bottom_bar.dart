@@ -1,6 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -100,7 +101,27 @@ class CustomBottomBar extends StatelessWidget {
           ),
         ],
         currentIndex: currentIndex,
-        onTap: (index) {},
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Get.toNamed('/home'); // 홈 페이지로 이동
+              break;
+            case 1:
+              Get.toNamed('/dictionary'); // 용어사전 페이지로 이동
+              break;
+            case 2:
+              // Get.toNamed('/news');  // 기사 페이지로 이동
+              break;
+            case 3:
+              Get.toNamed('/community'); // 커뮤니티 페이지로 이동
+              break;
+            case 4:
+              // Get.toNamed('/profile');  // 마이페이지로 이동
+              break;
+            default:
+              break;
+          }
+        },
       ),
     );
   }
