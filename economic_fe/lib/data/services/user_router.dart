@@ -2,6 +2,8 @@ import 'package:economic_fe/view/screens/article/article_detail_page.dart';
 import 'package:economic_fe/view/screens/article/article_list_page.dart';
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
+import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
+import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
 
@@ -193,6 +195,10 @@ class UserRouter {
                 page: () => const QuizPage(),
               ),
             ],
+          ),
+          GetPage(
+            name: '/learning_concept',
+            page: () => const LearningConceptTotalPage(),
           ),
         ],
       ),
