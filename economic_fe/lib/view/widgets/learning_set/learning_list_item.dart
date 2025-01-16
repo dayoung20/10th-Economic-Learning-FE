@@ -148,9 +148,11 @@ class _LearningListItemState extends State<LearningListItem> {
                         -0.4,
                       ),
                     ),
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: Color(0xffa2a2a2),
+                    Icon(
+                      controller.learningState[widget.index]![0]
+                          ? Icons.check_circle_outline
+                          : Icons.abc,
+                      color: const Color(0xffa2a2a2),
                     ),
                   ],
                 ),

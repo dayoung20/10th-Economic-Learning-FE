@@ -3,6 +3,20 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart'; // GoRouter import
 
 class LearningListController extends GetxController {
+  //각 아이템의 퀴즈, 개념학습 수행 여부
+  var learningState = {
+    0: [false, false],
+    1: [false, false],
+    2: [false, false],
+    3: [false, false],
+    4: [false, false],
+    5: [false, false],
+    6: [false, false],
+    7: [false, false],
+    8: [false, false],
+    9: [false, false],
+    10: [false, false],
+  }.obs;
   // 각 아이템의 클릭 여부를 저장할 상태 변수
   var selectedItemIndex = (-1).obs; // 초기값으로 -1을 설정하여 아무 것도 선택되지 않음을 나타냄
 
