@@ -1,6 +1,7 @@
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
+import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
 
 import 'package:economic_fe/view/screens/login/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/login/agreement_page.dart';
@@ -193,7 +194,7 @@ class UserRouter {
           ),
           GetPage(
             name: '/learning_concept',
-            page: () => const LearningConceptPage(),
+            page: () => const LearningConceptTotalPage(),
           ),
         ],
       ),

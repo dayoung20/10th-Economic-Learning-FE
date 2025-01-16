@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 class LearningConceptPage extends StatefulWidget {
-  const LearningConceptPage({super.key});
+  final currentStep;
+  const LearningConceptPage({super.key, required this.currentStep});
 
   @override
   State<LearningConceptPage> createState() => _LearningConceptPageState();
@@ -29,10 +30,13 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
         Get.put(LearningConceptController());
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: "금융 기초",
         icon: Icons.close,
-        currentIndex: 1,
+        onPress: () {
+          controller.clickedCloseBtn(context);
+        },
+        currentIndex: controller.currentStepIdx.value + 1,
         totalIndex: 3,
       ),
       body: SingleChildScrollView(
@@ -312,7 +316,15 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
             ElevatedButton(
               onPressed: () {
                 // 버튼 클릭 시 동작
-                print("버튼 클릭!");
+                // print("버튼 클릭!");
+                setState(() {
+                  if (controller.currentStepIdx == 0) {
+                    controller.clickedCloseBtn(context);
+                  } else {
+                    controller.currentStepIdx--;
+                    // controller.clickedBottomBtn(context);
+                  }
+                });
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(170, 53),
@@ -340,10 +352,20 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                print("버튼 클릭!");
+                // print("버튼 클릭!");
+                setState(() {
+                  if (controller.currentStepIdx == 2) {
+                    controller.currentStepIdx.value = 0;
+                    controller.clickedCloseBtn(context);
+                  } else {
+                    controller.currentStepIdx++;
+                  }
+                });
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF2F3F5), // 버튼 색상
+                backgroundColor: controller.currentStepIdx != 2
+                    ? const Color(0xFFF2F3F5)
+                    : const Color(0xFF00D6D6), // 버튼 색상
                 foregroundColor:
                     const Color.fromARGB(255, 255, 255, 255), // 텍스트 색상
                 padding: const EdgeInsets.only(top: 16.0, bottom: 12), // 버튼 크기
@@ -352,10 +374,12 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                   borderRadius: BorderRadius.circular(10), // 모서리를 30px로 둥글게 설정
                 ),
               ),
-              child: const Text(
-                "다음",
+              child: Text(
+                controller.currentStepIdx != 2 ? "다음" : "학습완료",
                 style: TextStyle(
-                  color: Color(0xFFA2A2A2),
+                  color: controller.currentStepIdx != 2
+                      ? const Color(0xFFA2A2A2)
+                      : Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                   height: 1.4,
