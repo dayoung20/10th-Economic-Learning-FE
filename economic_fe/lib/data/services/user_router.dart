@@ -1,7 +1,11 @@
+import 'package:economic_fe/view/screens/article/article_detail_page.dart';
+import 'package:economic_fe/view/screens/article/article_list_page.dart';
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
+import 'package:economic_fe/view/screens/community/detail_page.dart';
+import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
 
 import 'package:economic_fe/view/screens/login/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/login/agreement_page.dart';
@@ -210,7 +214,31 @@ class UserRouter {
       GetPage(
         name: '/community',
         page: () => const CommunityPage(),
-      )
+        children: [
+          // 경제 톡톡 세부 페이지
+          GetPage(
+            name: '/talk_detail',
+            page: () => const TalkDetailPage(),
+          ),
+          // 일반 게시판 세부 페이지
+          GetPage(
+            name: '/detail',
+            page: () => const DetailPage(),
+          ),
+        ],
+      ),
+      // 경제 기사
+      GetPage(
+        name: '/article',
+        page: () => const ArticleListPage(),
+        children: [
+          // 기사 세부 페이지
+          GetPage(
+            name: '/detail',
+            page: () => const ArticleDetailPage(),
+          ),
+        ],
+      ),
     ];
   }
 }
