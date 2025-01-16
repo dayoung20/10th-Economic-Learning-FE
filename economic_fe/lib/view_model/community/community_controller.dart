@@ -29,4 +29,14 @@ class CommunityController extends GetxController {
   void toChatPage() {
     Get.toNamed('/chatbot');
   }
+
+  // 경제톡톡 상세 페이지로 이동
+  void toTalkDetailPage() {
+    Get.toNamed('/community/talk_detail');
+  }
+
+  // 일반 게시판 상세 페이지로 이동
+  void toDetailPage() {
+    Get.toNamed('/community/detail');
+  }
 }
