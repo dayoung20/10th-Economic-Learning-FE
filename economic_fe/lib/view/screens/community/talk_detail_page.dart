@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/models/community/comment.dart';
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/community/comment_widget.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/community/talk_detail_controller.dart';
@@ -370,25 +371,10 @@ class TalkDetailPage extends StatelessWidget {
           Positioned(
             bottom: 120,
             right: 16,
-            child: GestureDetector(
-              onTap: () => controller.toChatBot(),
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFF1DB691),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(26.50),
-                  ),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/chatbot_white.png',
-                    width: 28,
-                    height: 28,
-                  ),
-                ),
-              ),
+            child: ChatbotFAB(
+              onTap: () {
+                controller.toChatBot();
+              },
             ),
           ),
         ],

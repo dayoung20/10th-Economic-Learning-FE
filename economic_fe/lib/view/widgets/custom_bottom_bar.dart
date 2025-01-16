@@ -110,7 +110,7 @@ class CustomBottomBar extends StatelessWidget {
               Get.toNamed('/dictionary'); // 용어사전 페이지로 이동
               break;
             case 2:
-              // Get.toNamed('/news');  // 기사 페이지로 이동
+              Get.toNamed('/article'); // 기사 페이지로 이동
               break;
             case 3:
               Get.toNamed('/community'); // 커뮤니티 페이지로 이동
