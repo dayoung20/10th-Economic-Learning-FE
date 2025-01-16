@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/article/article_detail_page.dart';
 import 'package:economic_fe/view/screens/article/article_list_page.dart';
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
@@ -224,6 +225,13 @@ class UserRouter {
       GetPage(
         name: '/article',
         page: () => const ArticleListPage(),
+        children: [
+          // 기사 세부 페이지
+          GetPage(
+            name: '/detail',
+            page: () => const ArticleDetailPage(),
+          ),
+        ],
       ),
     ];
   }

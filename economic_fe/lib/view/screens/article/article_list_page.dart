@@ -166,9 +166,9 @@ class ArticleListPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // 카테고리 이름
-                                    const Text(
-                                      '경기 분석',
-                                      style: TextStyle(
+                                    Text(
+                                      article.category,
+                                      style: const TextStyle(
                                         color: Color(0xFF2AD6D6),
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
@@ -187,19 +187,24 @@ class ArticleListPage extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         // 기사 헤드라인
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              80,
-                                          child: const Text(
-                                            '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                                            style: TextStyle(
-                                              color: Color(0xFF111111),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.30,
-                                              letterSpacing: -0.40,
+                                        GestureDetector(
+                                          onTap: () {
+                                            controller.toDetailPage(article);
+                                          },
+                                          child: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                80,
+                                            child: Text(
+                                              article.headline,
+                                              style: const TextStyle(
+                                                color: Color(0xFF111111),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.30,
+                                                letterSpacing: -0.40,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -221,14 +226,14 @@ class ArticleListPage extends StatelessWidget {
                                     const SizedBox(
                                       height: 6,
                                     ),
-                                    const Row(
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         // 신문사
                                         Text(
-                                          '경기일보',
-                                          style: TextStyle(
+                                          article.publisher,
+                                          style: const TextStyle(
                                             color: Color(0xFF767676),
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
@@ -238,8 +243,8 @@ class ArticleListPage extends StatelessWidget {
                                         ),
                                         // 기사 업로드 시간
                                         Text(
-                                          '4시간 전',
-                                          style: TextStyle(
+                                          article.uploadTime,
+                                          style: const TextStyle(
                                             color: Color(0xFF767676),
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,

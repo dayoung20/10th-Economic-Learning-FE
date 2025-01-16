@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/article.dart';
+import 'package:economic_fe/view/screens/article/article_detail_page.dart';
 import 'package:get/get.dart';
 
 class ArticleListController extends GetxController {
@@ -27,9 +28,16 @@ class ArticleListController extends GetxController {
       headline: '[속보] 기사 제목 $index',
       publisher: '경기일보',
       uploadTime: '4시간 전',
-      isBookmarked: false.obs, // 북마크 상태를 관리
+      isBookmarked: false.obs,
+      url:
+          'https://www.hankookilbo.com/News/Read/A2022022411300004923', // 임시 기사 링크
     ),
   );
+
+  // 기사 세부페이지로 이동
+  void toDetailPage(Article article) {
+    Get.to(() => const ArticleDetailPage(), arguments: article);
+  }
 
   // 북마크 상태 토글 메서드
   void toggleBookmark(int articleId) {

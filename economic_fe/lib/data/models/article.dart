@@ -6,6 +6,7 @@ class Article {
   final String headline;
   final String publisher;
   final String uploadTime;
+  final String url; // 외부 링크
   final RxBool isBookmarked;
 
   Article({
@@ -14,6 +15,7 @@ class Article {
     required this.headline,
     required this.publisher,
     required this.uploadTime,
+    required this.url,
     required this.isBookmarked,
   });
 }
