@@ -1,6 +1,8 @@
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/category_tab.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view/widgets/home_app_bar.dart';
+import 'package:economic_fe/view/widgets/order_tab.dart';
 import 'package:economic_fe/view_model/community/community_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -703,85 +705,6 @@ class TalkListItem extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ],
-    );
-  }
-}
-
-class CategoryTab extends StatelessWidget {
-  final bool isSelected;
-  final String text;
-
-  const CategoryTab({
-    super.key,
-    required this.isSelected,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
-        decoration: ShapeDecoration(
-          color: isSelected ? const Color(0xff2BD6D6) : Colors.white,
-          shape: RoundedRectangleBorder(
-            side: isSelected
-                ? const BorderSide(width: 1, color: Color(0xff2BD6D6))
-                : const BorderSide(width: 1, color: Color(0xFFD9D9D9)),
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: isSelected ? Colors.white : const Color(0xffa2a2a2),
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.35,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class OrderTab extends StatelessWidget {
-  final bool isSelected;
-  final String text;
-
-  const OrderTab({
-    super.key,
-    required this.text,
-    required this.isSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: Icon(
-            Icons.check,
-            size: 15,
-            color:
-                isSelected ? const Color(0xff00D6D6) : const Color(0xffA2A2A2),
-          ),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            color:
-                isSelected ? const Color(0xff404040) : const Color(0xFFA2A2A2),
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            height: 1.50,
-            letterSpacing: -0.30,
-          ),
         ),
       ],
     );
