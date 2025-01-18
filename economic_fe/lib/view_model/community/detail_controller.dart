@@ -87,4 +87,9 @@ class DetailController extends GetxController {
   void toChatPage() {
     Get.toNamed('/chatbot');
   }
+
+  // 글쓰기 화면으로 이동
+  void toNewPost() {
+    Get.toNamed('/community/new_post');
+  }
 }

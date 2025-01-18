@@ -440,7 +440,9 @@ class DetailPage extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          controller.toNewPost();
+                        },
                         child: Row(
                           children: [
                             Image.asset(
