@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 
 Future<void> main() async {
   //await dotenv.load(fileName: ".env");
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   runApp(const RippleApp());
 }
 
@@ -50,7 +52,7 @@ class RippleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Ripple',
-      initialRoute: '/community/new_post',
+      initialRoute: '/test',
       getPages: UserRouter.getPages(), // 라우트 설정
     );
   }

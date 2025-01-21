@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart'; // GoRouter import
@@ -36,5 +37,17 @@ class LearningListController extends GetxController {
 
   void clickedLearningConcept(BuildContext context) {
     Get.offNamed('/learning_list/learning_concept');
+  }
+
+  Future<void> getLearningConcept(int learningSetId, String level) async {
+    try {
+      print("start");
+      dynamic response =
+          await RemoteDataSource.getLearningConcept(learningSetId, level);
+      print("출력");
+      print(response);
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
   }
 }

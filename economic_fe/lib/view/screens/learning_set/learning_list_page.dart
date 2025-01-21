@@ -14,6 +14,16 @@ class LearningListPage extends StatefulWidget {
 }
 
 class _LearningListPageState extends State<LearningListPage> {
+  final LearningListController controller = Get.put(LearningListController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("init state");
+    controller.getLearningConcept(1, "BEGINNER");
+    print("끝");
+  }
+
   @override
   Widget build(BuildContext context) {
     // 학습 세트 제목 리스트 (이 리스트를 통해 반복적으로 항목을 생성)
@@ -43,7 +53,7 @@ class _LearningListPageState extends State<LearningListPage> {
     //   10: [false, false],
     // };
     // GetX 컨트롤러 호출
-    final controller = Get.put(LearningListController());
+    // final controller = Get.put(LearningListController());
 
     return Scaffold(
       backgroundColor: Palette.background,

@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:flutter/material.dart';
@@ -19,4 +20,15 @@ class LearningConceptController extends GetxController {
   void clickedCloseBtn(BuildContext context) {
     Get.offNamed('/learning_list');
   }
+
+  // Future<void> getLearningConcept(int learningSetId, String level) async {
+  //   try {
+  //     print("start");
+  //     final response =
+  //         await RemoteDataSource.getLearningConcept(learningSetId, level);
+  //     print(response);
+  //   } catch (e) {
+  //     debugPrint('Error: $e');
+  //   }
+  // }
 }
