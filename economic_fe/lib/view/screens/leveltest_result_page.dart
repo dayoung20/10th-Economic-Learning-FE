@@ -181,7 +181,7 @@ class LeveltestResultPage extends StatelessWidget {
                     // 문제 및 해설 버튼
                     GestureDetector(
                       onTap: () {
-                        controller.navigateToLogin();
+                        controller.toAnswer();
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 32,

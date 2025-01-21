@@ -28,6 +28,7 @@ import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
+import 'package:economic_fe/view/screens/test_answer_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
@@ -139,9 +140,14 @@ class UserRouter {
         ],
       ),
       GetPage(
-        name: '/leveltest_result',
-        page: () => const LeveltestResultPage(),
-      ),
+          name: '/leveltest_result',
+          page: () => const LeveltestResultPage(),
+          children: [
+            GetPage(
+              name: '/answer',
+              page: () => const TestAnswerPage(),
+            ),
+          ]),
       // 카카오로 시작하기
       GetPage(
         name: '/login',

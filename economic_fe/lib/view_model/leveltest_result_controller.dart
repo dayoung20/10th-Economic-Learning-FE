@@ -12,6 +12,11 @@ class LevelTestResultController extends GetxController {
     Get.toNamed('/home');
   }
 
+  // 해설 화면으로 이동
+  void toAnswer() {
+    Get.toNamed('/leveltest_result/answer');
+  }
+
   // 모달창의 상태를 관리하는 변수
   var isModalVisible = false.obs;
 
