@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/finish_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,15 @@ class LearningConceptController extends GetxController {
     Get.to(() => LearningConceptPage(currentStep: currentStepIdx));
   }
 
+  // 학습 완료 창으로 이동
   void clickedFinishBtn(BuildContext context) {
-    Get.to(() => const LearningListPage());
+    // Get.to(() => const LearningListPage());
+    Get.to(() => const FinishPage(), arguments: {
+      'contents': '학습 주제',
+      'number': 1,
+      'category': 0,
+      'level': level,
+    });
   }
 
   void clickedCloseBtn(BuildContext context) {

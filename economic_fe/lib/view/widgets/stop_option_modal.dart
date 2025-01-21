@@ -1,4 +1,3 @@
-import 'package:economic_fe/view_model/learning_set/learning_concept_controller.dart';
 import 'package:flutter/material.dart';
 
 class StopOptionModal extends StatelessWidget {
@@ -8,6 +7,7 @@ class StopOptionModal extends StatelessWidget {
   final String contents;
   final String keepBtnText;
   final String stopBtnText;
+  final bool? isFinishPage;
 
   const StopOptionModal({
     super.key,
@@ -17,6 +17,7 @@ class StopOptionModal extends StatelessWidget {
     required this.stopBtnText,
     required this.keepFunc,
     required this.stopFunc,
+    this.isFinishPage = false,
   });
 
   @override
@@ -29,7 +30,9 @@ class StopOptionModal extends StatelessWidget {
         onTap: closeModal, // 모달창 닫기
         child: Container(
           height: MediaQuery.of(context).size.height,
-          color: Colors.black.withOpacity(0.5), // 어두운 배경
+          color: isFinishPage!
+              ? Colors.transparent
+              : Colors.black.withOpacity(0.5), // 어두운 배경
           child: GestureDetector(
             onTap: () {}, // 모달창 배경 클릭 방지
             child: DraggableScrollableSheet(
@@ -39,12 +42,23 @@ class StopOptionModal extends StatelessWidget {
               builder: (context, scrollController) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(color: Colors.white),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x19000000),
+                        blurRadius: 15,
+                        offset: Offset(0, -2),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
                         contents,
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Color(0xFF111111),
                           fontSize: 16,
