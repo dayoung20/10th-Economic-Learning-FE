@@ -19,6 +19,7 @@ class _TestPageState extends State<TestPage> {
   void initState() {
     super.initState();
     controller = Get.put(TestController()..getStats());
+    controller.getLevelTest();
   }
 
   @override
