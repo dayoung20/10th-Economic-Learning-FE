@@ -20,6 +20,7 @@ class _LearningConceptTotalPageState extends State<LearningConceptTotalPage> {
     // TODO: implement initState
     super.initState();
     controller.currentStepIdx.value = 0;
+    // controller.getLearningConcept(1, "BEGINNER");
   }
 
   @override
