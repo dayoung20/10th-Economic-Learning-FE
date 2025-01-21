@@ -1,24 +1,27 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart'; // GoRouter import
 
 class LevelTestResultController extends GetxController {
-  late BuildContext context;
-  // 사용자 이름
-  var name = '리플'.obs;
-
-  // 레벨 테스트 결과 (영어)
-  var level = 'Intermediate'.obs;
-
-  // 레벨 테스트 결과 (한국어)
-  var levelKor = '중급'.obs;
-
-  // 맞춘 문제 개수
-  var correctNum = 5.obs;
-
   // 카카오로 시작하기 화면으로 전환
   void navigateToLogin() {
     // context.go('/profile_setting');
     Get.toNamed('/login');
+  }
+
+  // 홈 화면으로 이동
+  void toHome() {
+    Get.toNamed('/home');
+  }
+
+  // 모달창의 상태를 관리하는 변수
+  var isModalVisible = false.obs;
+
+  // 모달창 열기
+  void showModal() {
+    isModalVisible.value = true;
+  }
+
+  // 모달창 닫기
+  void hideModal() {
+    isModalVisible.value = false;
   }
 }
