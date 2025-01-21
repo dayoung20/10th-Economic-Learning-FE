@@ -1,5 +1,5 @@
 import 'package:economic_fe/view/theme/palette.dart';
-import 'package:economic_fe/view_model/test_answer_controller.dart';
+import 'package:economic_fe/view_model/test/test_answer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

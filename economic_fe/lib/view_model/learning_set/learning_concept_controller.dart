@@ -19,4 +19,15 @@ class LearningConceptController extends GetxController {
   void clickedCloseBtn(BuildContext context) {
     Get.offNamed('/learning_list');
   }
+
+  // 학습 중단 확인창 표시 여부 관리
+  var isModalVisible = false.obs;
+
+  void showModal() {
+    isModalVisible.value = true;
+  }
+
+  void hideModal() {
+    isModalVisible.value = false;
+  }
 }
