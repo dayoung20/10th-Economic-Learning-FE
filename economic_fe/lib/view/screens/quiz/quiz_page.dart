@@ -1,7 +1,9 @@
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
+import 'package:economic_fe/view/widgets/stop_option_modal.dart';
+import 'package:economic_fe/view_model/quiz/quiz_page_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -11,6 +13,8 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  final QuizPageController controller = Get.put(QuizPageController());
+
   final question = 'Q. 다음 중 복리 효과가 경제적 결과로 나타날 수 있는 상황으로 적절한 것은?';
   // int answer =
   final List<String> options = [
@@ -78,22 +82,40 @@ class _QuizPageState extends State<QuizPage> {
       //     ),
       //   ),
       // ),
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: '고급퀴즈', // 레벨에 따른 이름 변경 필요
         icon: Icons.close,
+        onPress: () => controller.showModal(),
         currentIndex: 1,
         totalIndex: 3,
       ),
-      body: QuizCard(
-        screenHeight: screenHeight,
-        screenWidth: screenWidth,
-        onPress: () {},
-        option: 0,
-        question: question,
-        answerOptions: options,
-        isLast: false,
-        isQuiz: true,
-        answer: 2,
+      body: Stack(
+        children: [
+          QuizCard(
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
+            onPress: () {},
+            option: 0,
+            question: question,
+            answerOptions: options,
+            isLast: false,
+            isQuiz: true,
+            answer: 2,
+          ),
+          // 모달창
+          Obx(() {
+            return controller.isModalVisible.value
+                ? StopOptionModal(
+                    closeModal: () => controller.hideModal(),
+                    contents: '정말 퀴즈를 중단하시겠어요?',
+                    keepBtnText: '계속할래요',
+                    stopBtnText: '그만할래요',
+                    keepFunc: () => controller.hideModal(),
+                    stopFunc: () => controller.stopBtn(),
+                  )
+                : const SizedBox();
+          }),
+        ],
       ),
     );
   }

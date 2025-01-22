@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/finish_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,16 @@ class QuizController extends GetxController {
   // 레벨테스트 종료 버튼 클릭
   void finishLeveltest() {
     Get.toNamed('/leveltest_result');
+  }
+
+  // 퀴즈 종료 버튼 클릭
+  void finishQuiz() {
+    Get.to(() => const FinishPage(), arguments: {
+      'contents': '퀴즈 주제',
+      'number': 1,
+      'category': 1,
+      'level': '초급',
+    });
   }
 
   // 선택된 옵션을 관리하는 상태
