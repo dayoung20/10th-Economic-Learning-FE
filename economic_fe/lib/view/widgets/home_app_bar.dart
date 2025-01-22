@@ -13,6 +13,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      forceMaterialTransparency: true,
       backgroundColor: Palette.background,
       centerTitle: false,
       // oo일 연속 학습 중
