@@ -1,8 +1,9 @@
-import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
+import 'package:economic_fe/view/widgets/stop_option_modal.dart';
+import 'package:economic_fe/view_model/test/test_ox_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class TestOxPage extends StatefulWidget {
   const TestOxPage({super.key});
@@ -12,6 +13,8 @@ class TestOxPage extends StatefulWidget {
 }
 
 class _TestMultipleChoicePageState extends State<TestOxPage> {
+  final TestOxController controller = Get.put(TestOxController());
+
   int? selectedOption;
   final question = 'Q. 다음 중 복리 효과가 경제적 결과로 나타날 수 있는 상황으로 적절한 것은?';
   // final List<String> options = [
@@ -86,24 +89,42 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
       //     ),
       //   ),
       // ),
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: '레벨테스트',
         icon: Icons.close,
+        onPress: () => controller.showModal(),
         currentIndex: 1,
         totalIndex: 9,
       ),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: QuizCard(
-          screenHeight: screenHeight,
-          screenWidth: screenWidth,
-          onPress: () {},
-          option: 1,
-          question: question,
-          // answerOptions: options,
-          isLast: false,
-          isQuiz: false,
-        ),
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: QuizCard(
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
+              onPress: () {},
+              option: 1,
+              question: question,
+              // answerOptions: options,
+              isLast: false,
+              isQuiz: false,
+            ),
+          ),
+          // 모달창
+          Obx(() {
+            return controller.isModalVisible.value
+                ? StopOptionModal(
+                    closeModal: () => controller.hideModal(),
+                    contents: '정말 레벨테스트를 중단하시겠어요?',
+                    keepBtnText: '계속할래요',
+                    stopBtnText: '그만할래요',
+                    keepFunc: () => controller.hideModal(),
+                    stopFunc: () => controller.stopBtn(),
+                  )
+                : const SizedBox();
+          }),
+        ],
       ),
     );
   }

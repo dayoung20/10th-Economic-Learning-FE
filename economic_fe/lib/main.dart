@@ -52,7 +52,7 @@ class RippleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Ripple',
-      initialRoute: '/test',
+      initialRoute: '/',
       getPages: UserRouter.getPages(), // 라우트 설정
     );
   }

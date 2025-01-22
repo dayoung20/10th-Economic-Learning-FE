@@ -2,6 +2,7 @@ import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/next_button.dart';
+import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 
 // import 'package:economic_fe/view/widgets/next_button.dart';
 import 'package:economic_fe/view_model/quiz_controller.dart';

@@ -3,7 +3,7 @@ import 'package:economic_fe/view/screens/article/article_list_page.dart';
 import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
 import 'package:economic_fe/view/screens/community/new_post_page.dart';
-import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
+import 'package:economic_fe/view/screens/finish_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
@@ -28,13 +28,12 @@ import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
+import 'package:economic_fe/view/screens/test_answer_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
 import 'package:economic_fe/view/screens/test_page.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:go_router/go_router.dart';
 
 // class UserRouter {
 //   static GoRouter getRouter() {
@@ -139,9 +138,14 @@ class UserRouter {
         ],
       ),
       GetPage(
-        name: '/leveltest_result',
-        page: () => const LeveltestResultPage(),
-      ),
+          name: '/leveltest_result',
+          page: () => const LeveltestResultPage(),
+          children: [
+            GetPage(
+              name: '/answer',
+              page: () => const TestAnswerPage(),
+            ),
+          ]),
       // 카카오로 시작하기
       GetPage(
         name: '/login',
@@ -244,6 +248,11 @@ class UserRouter {
             page: () => const ArticleDetailPage(),
           ),
         ],
+      ),
+      // 완료 페이지
+      GetPage(
+        name: '/finish',
+        page: () => const FinishPage(),
       ),
     ];
   }
