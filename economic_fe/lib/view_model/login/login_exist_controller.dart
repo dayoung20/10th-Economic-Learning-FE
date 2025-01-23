@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:http/http.dart' as http;
@@ -8,8 +9,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginExistController extends GetxController {
   // 카카오 앱 클라이언트 ID
-  final String clientId = '64e53e97c7fc000c34c8c0fac99a1210';
-  final String redirectUri = 'http://localhost:3030/kakao/callback';
+  // String nativeAppKey = dotenv.env['NATIVE_APP_KEY']!;
+  final String clientId = dotenv.env['CLIENT_ID']!;
+  final String redirectUri = dotenv.env['REDIRECT_URI']!;
 
   // 1. 카카오 로그인 페이지로 리디렉션
   Future<void> openKakaoLogin() async {
