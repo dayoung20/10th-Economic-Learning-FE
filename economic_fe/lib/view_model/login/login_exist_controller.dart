@@ -1,8 +1,137 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginExistController extends GetxController {
-  // 홈 화면으로 이동 (로그인 로직 추가 필요)
-  void login() {
-    Get.toNamed('/home');
+  // 카카오 앱 클라이언트 ID
+  final String clientId = '64e53e97c7fc000c34c8c0fac99a1210';
+  final String redirectUri = 'http://localhost:3030/kakao/callback';
+
+  // 1. 카카오 로그인 페이지로 리디렉션
+  Future<void> openKakaoLogin() async {
+    final url =
+        'https://kauth.kakao.com/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&response_type=code';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  // 2. 인증 코드로 액세스 토큰 요청
+  Future<void> fetchAccessToken(String code) async {
+    const tokenUrl = 'https://kauth.kakao.com/oauth/token';
+
+    final response = await http.post(
+      Uri.parse(tokenUrl),
+      body: {
+        'grant_type': 'authorization_code',
+        'client_id': clientId,
+        'redirect_uri': redirectUri,
+        'code': code,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Access Token: ${response.body}');
+      // 추가: 토큰 저장 및 활용 로직
+    } else {
+      print('Failed to fetch access token: ${response.body}');
+    }
+  }
+
+  // 3. 로그인 플로우 실행
+  // void login() async {
+  //   // 카카오 로그인 요청
+  //   await openKakaoLogin();
+
+  //   print("리디렉션 전");
+  //   // 리디렉션 처리: Flutter WebView 또는 외부 브라우저에서 인증 코드 추출 필요
+  //   String? code = await _getAuthorizationCodeFromRedirectUri();
+  //   print("code : $code");
+  //   if (code != null) {
+  //     // 액세스 토큰 요청
+  //     await fetchAccessToken(code);
+  //   } else {
+  //     print("Authorization Code not found.");
+  //   }
+  // }
+  void login() async {
+    if (await isKakaoTalkInstalled()) {
+      try {
+        await UserApi.instance.loginWithKakaoTalk();
+        print('카카오톡으로 로그인 성공');
+        User user = await UserApi.instance.me();
+        print(
+            '사용자 정보 요청 성공${user.id} ${user.kakaoAccount?.profile?.nickname} ${user.kakaoAccount?.email}');
+        OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+        print(token);
+      } catch (error) {
+        print('카카오톡으로 로그인 실패 $error');
+
+        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+        if (error is PlatformException && error.code == 'CANCELED') {
+          return;
+        }
+        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+        try {
+          await UserApi.instance.loginWithKakaoAccount();
+          print('카카오계정으로 로그인 성공');
+        } catch (error) {
+          print('카카오계정으로 로그인 실패 $error');
+        }
+      }
+    } else {
+      try {
+        await UserApi.instance.loginWithKakaoAccount();
+        print('카카오계정으로 로그인 성공');
+      } catch (error) {
+        print('카카오계정으로 로그인 실패 $error');
+      }
+    }
+  }
+
+  // 4. 리디렉션된 URL에서 인증 코드 추출
+  Future<String?> _getAuthorizationCodeFromRedirectUri() async {
+    String? authorizationCode;
+
+    // WebViewController 초기화
+    final webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted) // 자바스크립트 허용
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.contains('code=')) {
+              final Uri uri = Uri.parse(request.url);
+              authorizationCode = uri.queryParameters['code'];
+              Get.back(); // WebView 닫기
+              return NavigationDecision.prevent; // 탐색 중단
+            }
+            return NavigationDecision.navigate; // 계속 탐색
+          },
+        ),
+      )
+      ..loadRequest(
+          Uri.parse('http://localhost:3030/kakao/callback')); // 리디렉션 URL 로드
+
+    // WebView 표시
+    await Get.dialog(
+      Scaffold(
+        appBar: AppBar(
+          title: const Text('카카오 로그인'),
+        ),
+        body: WebViewWidget(controller: webViewController),
+      ),
+    );
+
+    return authorizationCode; // 추출된 인증 코드 반환
   }
 }
+
+// class WebView {}
