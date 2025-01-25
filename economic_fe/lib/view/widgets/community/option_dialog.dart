@@ -16,68 +16,162 @@ class OptionsDialog {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (context) {
-        return Wrap(
-          children: [
-            // 옵션 1: 수정 또는 신고
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pop();
-                if (isAuthor) {
-                  onEdit(); // 수정 콜백 실행
-                } else {
-                  onReport(); // 신고 콜백 실행
-                }
-              },
-              leading: Icon(
-                isAuthor ? Icons.edit : Icons.flag,
-                color: isAuthor ? Colors.blue : Colors.red,
-              ),
-              title: Text(
-                isAuthor
-                    ? '수정'
-                    : isComment
-                        ? '댓글 신고하기'
-                        : '글 신고하기',
-                style: TextStyle(
-                  color: isAuthor ? Colors.blue : Colors.red,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            // 옵션 2: 삭제 (작성자일 경우에만)
-            if (isAuthor)
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Wrap(
+            children: [
+              // 옵션 1: 수정 또는 신고
               ListTile(
                 onTap: () {
-                  Navigator.of(context).pop();
-                  onDelete(); // 삭제 콜백 실행
+                  Navigator.of(context).pop(); // 모달 닫기
+                  if (isAuthor) {
+                    onEdit();
+                  } else {
+                    _showConfirmationDialog(
+                      context:
+                          Navigator.of(context, rootNavigator: true).context,
+                      content: isComment ? '댓글을 신고하시겠어요?' : '게시글을 신고하시겠어요?',
+                      onConfirm: () {
+                        onReport(); // 신고 처리 콜백 실행
+                      },
+                      isReport: true,
+                    );
+                  }
                 },
-                leading: const Icon(Icons.delete, color: Colors.red),
-                title: const Text(
-                  '삭제',
-                  style: TextStyle(
-                    color: Colors.red,
+                title: Text(
+                  isAuthor
+                      ? '수정'
+                      : isComment
+                          ? '댓글 신고하기'
+                          : '글 신고하기',
+                  style: const TextStyle(
+                    color: Color(0xFF111111),
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                    height: 1.30,
+                    letterSpacing: -0.60,
                   ),
                 ),
               ),
-            // 옵션 3: 닫기
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              leading: const Icon(Icons.close, color: Colors.grey),
-              title: const Text(
-                '닫기',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+              // 옵션 2: 삭제 (작성자일 경우에만)
+              if (isAuthor)
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context).pop(); // 모달 닫기
+                    _showConfirmationDialog(
+                      context:
+                          Navigator.of(context, rootNavigator: true).context,
+                      content: '글을 삭제하시겠어요?',
+                      onConfirm: onDelete,
+                      isReport: false,
+                    );
+                  },
+                  title: const Text(
+                    '삭제',
+                    style: TextStyle(
+                      color: Color(0xFF111111),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      height: 1.30,
+                      letterSpacing: -0.60,
+                    ),
+                  ),
+                ),
+              // 옵션 3: 닫기
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                title: const Text(
+                  '닫기',
+                  style: TextStyle(
+                    color: Color(0xFF111111),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 1.30,
+                    letterSpacing: -0.60,
+                  ),
                 ),
               ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // 신고 또는 삭제 확인 다이얼로그
+  static void _showConfirmationDialog({
+    required BuildContext context,
+    required String content,
+    required VoidCallback onConfirm,
+    required bool isReport,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: Container(
+            width: 312,
+            height: 108,
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  content,
+                  style: const TextStyle(
+                    color: Color(0xFF111111),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    height: 1.40,
+                    letterSpacing: -0.40,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        '취소',
+                        style: TextStyle(
+                          color: Color(0xFF9B9A99),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          height: 1.40,
+                          letterSpacing: -0.40,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 32,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop;
+                        onConfirm();
+                      },
+                      child: Text(
+                        isReport ? '신고' : '확인',
+                        style: TextStyle(
+                          color: isReport
+                              ? const Color(0xFFFF5468)
+                              : const Color(0xFF2AD6D6),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          height: 1.40,
+                          letterSpacing: -0.40,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
