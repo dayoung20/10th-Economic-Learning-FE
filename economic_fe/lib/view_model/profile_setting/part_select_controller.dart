@@ -29,7 +29,8 @@ class PartSelectController extends GetxController {
 
   // 저장하기 버튼 클릭 상태 업데이트
   void onSaveButtonClicked() {
-    saveButtonClicked.value = true; // 버튼 클릭 시 상태 변경
+    Get.find<ProfileSettingController>().updateJob(selectedPart.value!);
+    saveButtonClicked.value = true; // 상태 변경
     Get.find<ProfileSettingController>().updatePartSaveButtonClicked();
   }
 }

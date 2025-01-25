@@ -9,26 +9,36 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
-  static Future<dynamic> _postApi(String endPoint, String? jsonData) async {
+  /// authToken을 포함하도록 수정
+  static Future<dynamic> postApi(
+    String endPoint,
+    Map<String, dynamic> jsonData,
+  ) async {
     String apiUrl = '$baseUrl/$endPoint';
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    // String requestBody = jsonData;
-    debugPrint('POST 요청: $endPoint');
+    String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $authToken',
+    };
 
     try {
-      final response =
-          await http.post(Uri.parse(apiUrl), headers: headers, body: jsonData);
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonEncode(jsonData),
+      );
+
       if (response.statusCode == 200) {
         debugPrint('POST 요청 성공');
+        return response.statusCode;
       } else {
-        debugPrint('POST 요청 실패: (${response.statusCode})${response.body}');
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
       }
 
-      // 예외 처리를 위한 status code 반환
       return response.statusCode;
     } catch (e) {
       debugPrint('POST 요청 중 예외 발생: $e');
-      return;
+      return null;
     }
   }
 

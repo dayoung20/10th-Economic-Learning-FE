@@ -137,7 +137,13 @@ class BasicController extends GetxController {
 
   // 저장하기 버튼 클릭 상태 업데이트
   void onSaveButtonClicked() async {
-    _updateSaveButtonState();
+    Get.find<ProfileSettingController>().updateBasicInfo(
+      ageRange: selectedBirthday.value!,
+      gender: selectedGender.value!,
+      profileIntro: userInput.value,
+    );
+    Get.find<ProfileSettingController>().updateNickname(nickname.value);
+    saveButtonClicked.value = true; // 상태 변경
     Get.find<ProfileSettingController>().updateBasicSaveButtonClicked();
   }
 }

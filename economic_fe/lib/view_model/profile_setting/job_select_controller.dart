@@ -29,8 +29,8 @@ class JobSelectController extends GetxController {
 
   // 저장하기 버튼 클릭 상태 업데이트
   void onSaveButtonClicked() {
-    saveButtonClicked.value = true; // 버튼 클릭 시 상태 변경
-    // ProfileSettingController에 있는 메서드 호출
+    Get.find<ProfileSettingController>().updateBusinessType(selectedJob.value!);
+    saveButtonClicked.value = true; // 상태 변경
     Get.find<ProfileSettingController>().updateJobSaveButtonClicked();
   }
 }

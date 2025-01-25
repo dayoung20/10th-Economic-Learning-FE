@@ -1,14 +1,10 @@
-import 'package:economic_fe/data/models/user_model.dart';
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/onboarding_slide.dart';
 import 'package:economic_fe/view_model/onboarding_card_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class OnboardingCardPage extends StatefulWidget {
   const OnboardingCardPage({super.key});
