@@ -1,10 +1,7 @@
 import 'package:economic_fe/data/services/user_router.dart';
-import 'package:economic_fe/view/screens/onboarding/onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 Future<void> main() async {
@@ -16,38 +13,6 @@ Future<void> main() async {
   KakaoSdk.init(nativeAppKey: nativeAppKey);
   runApp(const RippleApp());
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     // return GetMaterialApp(
-//     //   title: '경제 지식 앱',
-//     //   theme: ThemeData(
-//     //     primarySwatch: Colors.blue,
-//     //   ),
-//     //   home: const Text("test11"),
-//     // );
-//     // return OnboardingPage();
-//     // return const MaterialApp(
-//     //   home: OnboardingPage(),
-//     // );
-//     runApp(const RippleApp());
-//   }
-// }
-
-// class RippleApp extends StatelessWidget {
-//   const RippleApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp.router(
-//       routerConfig: UserRouter.getRouter(),
-//     );
-//   }
-// }
 
 class RippleApp extends StatelessWidget {
   const RippleApp({super.key});
