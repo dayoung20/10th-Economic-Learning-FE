@@ -1,6 +1,14 @@
 import 'package:get/get.dart'; // GoRouter import
 
 class HomeController extends GetxController {
+  // 진도율 가시성 관리 (레벨테스트 진행 여부에 따른 로직으로 수정 필요)
+  var isProgressContainerVisible = true.obs;
+
+  // 레벨테스트 시작 화면으로
+  void toLevelTest() {
+    Get.toNamed('/test');
+  }
+
   // 전체 학습 세트 목록 화면으로 전환
   void navigateToLearningList() {
     Get.offNamed('/learning_list');
