@@ -21,7 +21,7 @@ class RippleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Ripple',
-      initialRoute: '/home',
+      initialRoute: '/learning_list',
       getPages: UserRouter.getPages(), // 라우트 설정
     );
   }

@@ -1,4 +1,5 @@
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 import 'package:economic_fe/view_model/learning_set/learning_concept_controller.dart';
@@ -303,6 +304,13 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                   ],
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 110,
+            right: 10,
+            child: ChatbotFAB(
+              onTap: () => controller.toChatbot(),
             ),
           ),
           Positioned(

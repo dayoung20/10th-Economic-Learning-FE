@@ -1,5 +1,6 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/learning_set/learning_list_item.dart';
 import 'package:economic_fe/view_model/learning_set/learning_list_controller.dart';
@@ -39,21 +40,6 @@ class _LearningListPageState extends State<LearningListPage> {
       '세금',
       '경제 지표'
     ];
-    // Map<int, List<bool>> learningState = {
-    //   0: [false, false],
-    //   1: [false, false],
-    //   2: [false, false],
-    //   3: [false, false],
-    //   4: [false, false],
-    //   5: [false, false],
-    //   6: [false, false],
-    //   7: [false, false],
-    //   8: [false, false],
-    //   9: [false, false],
-    //   10: [false, false],
-    // };
-    // GetX 컨트롤러 호출
-    // final controller = Get.put(LearningListController());
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -63,6 +49,9 @@ class _LearningListPageState extends State<LearningListPage> {
         onPress: () {
           controller.navigateToHome(context);
         },
+      ),
+      floatingActionButton: ChatbotFAB(
+        onTap: () => controller.toChatbot(),
       ),
       body: ListView.builder(
         itemCount: setTitles.length, // 학습 세트 개수
