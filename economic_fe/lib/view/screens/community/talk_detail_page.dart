@@ -1,8 +1,6 @@
-import 'package:economic_fe/data/models/community/comment.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/community/comment_widget.dart';
-import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/community/talk_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,16 +38,6 @@ class TalkDetailPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          // 더보기 버튼
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.more_horiz),
-            ),
-          ),
-        ],
       ),
       body: Stack(
         children: [

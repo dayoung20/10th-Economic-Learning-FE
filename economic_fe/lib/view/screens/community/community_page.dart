@@ -29,7 +29,7 @@ class CommunityPage extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () => controller.toTalkDetailPage(),
                     child: Container(
-                      width: 328,
+                      width: MediaQuery.of(context).size.width - 32,
                       height: 122,
                       decoration: ShapeDecoration(
                         image: DecorationImage(
@@ -587,21 +587,24 @@ class TalkListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // 경제톡톡 이미지
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 97,
-            height: 118,
-            decoration: ShapeDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/talk_image_sample.png'),
-                fit: BoxFit.cover,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7),
+        Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              width: 97,
+              height: 118,
+              decoration: ShapeDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/talk_image_sample.png'),
+                  fit: BoxFit.cover,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7),
+                ),
               ),
             ),
           ),
@@ -610,9 +613,9 @@ class TalkListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              width: 219,
-              child: Row(
+            SizedBox(
+              width: MediaQuery.of(context).size.width - (32 + 97 + 12),
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -644,10 +647,10 @@ class TalkListItem extends StatelessWidget {
             ),
             GestureDetector(
               onTap: onTap,
-              child: const SizedBox(
-                width: 219,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width - (32 + 97 + 12),
                 height: 60,
-                child: Flexible(
+                child: const Flexible(
                   child: Text(
                     '현재 경제 상황에서 가장 중요한 투자 전략은 무엇이라고 생각하나요? 현재 경제 상황에서 가장 중요한 투자 전략...',
                     style: TextStyle(
