@@ -1,5 +1,6 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
+import 'package:economic_fe/view/widgets/custom_snack_bar.dart';
 import 'package:economic_fe/view_model/quiz_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -325,6 +326,12 @@ class _QuizCardState extends State<QuizCard> {
                                       onTap: () {
                                         controller.isBookmarked.value =
                                             !controller.isBookmarked.value;
+                                        CustomSnackBar.show(
+                                            context: context,
+                                            message:
+                                                controller.isBookmarked.value
+                                                    ? '퀴즈를 스크랩했어요'
+                                                    : '스크랩을 취소했어요');
                                       },
                                       child: Obx(() {
                                         return Image.asset(
