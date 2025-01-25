@@ -1,11 +1,9 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
-import 'package:economic_fe/view_model/login/agreement_controller.dart';
 import 'package:economic_fe/view_model/dictionary_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class DictionaryPage extends StatefulWidget {
   const DictionaryPage({super.key});
@@ -77,10 +75,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
     },
   ];
   int _selectedIndex = -1;
-  // bool _selectedWord = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = Get.put(DictionaryController()..getStats());
   }
@@ -95,7 +91,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
         backgroundColor: Palette.background,
         appBar: CustomAppBar(
           title: "용어사전",
-          rightIcon: true,
           onTapTitle: () {
             showCategoryModal(context);
           },
@@ -155,7 +150,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           child: Container(
                             height: 30,
                             width: 45,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
                               color: _selectedIndex == index
                                   ? const Color(0xFF1EB692) // 선택된 항목은 초록색
@@ -167,19 +161,21 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                     : const Color(0xFF1EB692), // 나머지 항목은 회색 테두리
                               ),
                             ),
-                            child: Text(
-                              consonants[index], // 자음 리스트에서 해당 항목을 표시
-                              style: _selectedIndex == index
-                                  ? const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    )
-                                  : const TextStyle(
-                                      color: Color(0xFF767676),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                            child: Center(
+                              child: Text(
+                                consonants[index], // 자음 리스트에서 해당 항목을 표시
+                                style: _selectedIndex == index
+                                    ? const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      )
+                                    : const TextStyle(
+                                        color: Color(0xFF767676),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                              ),
                             ),
                           ),
                         ),
@@ -202,20 +198,11 @@ class _DictionaryPageState extends State<DictionaryPage> {
                         padding: const EdgeInsets.all(16),
                         decoration: const BoxDecoration(
                           color: Colors.white,
-                          // borderRadius: BorderRadius.circular(10),
-                          // border: Border.all(color: const Color(0xFFCFCFCF)),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.grey.withOpacity(0.1),
-                          //     blurRadius: 5,
-                          //     offset: const Offset(0, 2),
-                          //   ),
-                          // ],
                         ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 300,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -242,11 +229,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                 ],
                               ),
                             ),
-                            // const SizedBox(
-                            //   width: 5,
-                            // ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 0),
+                              padding: const EdgeInsets.only(left: 10),
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -257,11 +241,16 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                     print("Dd");
                                   });
                                 },
-                                child: Image.asset(
-                                  items[index]['selectedWord'] ?? false
-                                      ? "assets/bookmark_selected.png"
-                                      : "assets/bookmark.png",
-                                  height: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 11, vertical: 8),
+                                  child: Image.asset(
+                                    items[index]['selectedWord'] ?? false
+                                        ? "assets/bookmark_selected.png"
+                                        : "assets/bookmark.png",
+                                    width: 13,
+                                    height: 18.2,
+                                  ),
                                 ),
                               ),
                             )
