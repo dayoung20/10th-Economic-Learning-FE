@@ -84,8 +84,10 @@ class ProfileSettingPage extends StatelessWidget {
                   ? Center(
                       child: CustomButton(
                         text: '저장하기',
-                        onPress: () {
-                          controller.toHomePage();
+                        onPress: () async {
+                          const authToken =
+                              "Bearer eyJhbGciOiJIUz..."; // 실제 Authorization 키
+                          await controller.saveUserProfile(authToken);
                         },
                         bgColor: Palette.buttonColorBlue,
                       ),

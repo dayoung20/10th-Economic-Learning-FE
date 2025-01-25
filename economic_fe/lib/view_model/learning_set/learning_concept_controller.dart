@@ -13,6 +13,11 @@ class LearningConceptController extends GetxController {
     Get.to(() => LearningConceptPage(currentStep: currentStepIdx));
   }
 
+  // 챗봇 화면으로 이동
+  void toChatbot() {
+    Get.toNamed('/chatbot');
+  }
+
   // 학습 완료 창으로 이동
   void clickedFinishBtn(BuildContext context) {
     // Get.to(() => const LearningListPage());

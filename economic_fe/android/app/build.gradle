@@ -16,6 +16,15 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def dotenvFile = rootProject.file('.env')
+def dotenvProps = new Properties()
+
+if (dotenvFile.exists()) {
+    dotenvFile.withReader { reader ->
+        dotenvProps.load(reader)
+    }
+}
+
 android {
     namespace = "com.example.economic_fe"
     compileSdk = flutter.compileSdkVersion
@@ -39,7 +48,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        manifestPlaceholders += [KAKAO_NATIVE_APP_KEY: project.env.get("NATIVE_APP_KEY")]
+        // manifestPlaceholders += [KAKAO_NATIVE_APP_KEY: project.env.get("NATIVE_APP_KEY")]
+        manifestPlaceholders += [
+            KAKAO_NATIVE_APP_KEY: dotenvProps['NATIVE_APP_KEY'] ?: "default_key"
+        ]
     }
 
     buildTypes {

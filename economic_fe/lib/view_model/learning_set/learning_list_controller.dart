@@ -39,6 +39,11 @@ class LearningListController extends GetxController {
     Get.offNamed('/learning_list/learning_concept');
   }
 
+  // 챗봇 화면으로 전환
+  void toChatbot() {
+    Get.toNamed('/chatbot');
+  }
+
   Future<void> getLearningConcept(int learningSetId, String level) async {
     try {
       print("start");

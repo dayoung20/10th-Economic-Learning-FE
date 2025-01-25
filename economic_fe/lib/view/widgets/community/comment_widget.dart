@@ -1,7 +1,6 @@
 import 'package:economic_fe/data/models/community/comment.dart';
 import 'package:economic_fe/view/widgets/community/option_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CommentWidget extends StatelessWidget {
   final Comment comment;
@@ -167,9 +166,65 @@ class CommentWidget extends StatelessWidget {
         );
       },
       onReport: () {
-        // 신고 기능
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('댓글 신고 기능 실행')),
+        // // 신고 기능
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(content: Text('댓글 신고 기능 실행')),
+        // );
+        _onReport(context: context, content: '댓글이 신고되었습니다.');
+      },
+    );
+  }
+
+  // 신고 완료 메시지
+  static void _onReport({
+    required BuildContext context,
+    required String content,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: Container(
+            width: 312,
+            height: 108,
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  content,
+                  style: const TextStyle(
+                    color: Color(0xFF111111),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    height: 1.40,
+                    letterSpacing: -0.40,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      '확인',
+                      style: TextStyle(
+                        color: Color(0xFF2AD6D6),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        height: 1.40,
+                        letterSpacing: -0.40,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
