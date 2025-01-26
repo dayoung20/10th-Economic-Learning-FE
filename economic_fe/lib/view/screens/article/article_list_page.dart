@@ -55,11 +55,11 @@ class _ArticleListPageState extends State<ArticleListPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory("FINANCE");
+                        controller.selectCategory("전체");
                         controller.getNewsList(1, "RECENT", null);
                       },
                       child: CategoryTab(
-                        isSelected: controller.selectedCate.value == "FINANCE",
+                        isSelected: controller.selectedCate.value == "전체",
                         text: '전체',
                       ),
                     ),
@@ -173,6 +173,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                             GestureDetector(
                               onTap: () {
                                 controller.selectOrder(0);
+                                controller.getNewsList(1, "POPULAR",
+                                    controller.selectedCate.value);
                               },
                               child: OrderTab(
                                 text: '인기순',
@@ -185,6 +187,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                             GestureDetector(
                               onTap: () {
                                 controller.selectOrder(1);
+                                controller.getNewsList(
+                                    1, "RECENT", controller.selectedCate.value);
                               },
                               child: OrderTab(
                                 text: '최신순',
@@ -239,13 +243,6 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                             width: 1,
                                           ),
                                         ),
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //     color: Colors.grey.withOpacity(0.3),
-                                        //     blurRadius: 8,
-                                        //     offset: const Offset(0, 4),
-                                        //   ),
-                                        // ],
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
@@ -271,16 +268,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                             ),
                                           ),
                                           const SizedBox(height: 6),
-                                          // Text(
-                                          //   news.content ?? "내용 없음",
-                                          //   style:
-                                          //       const TextStyle(fontSize: 14),
-                                          // ),
-                                          // const SizedBox(height: 8),
                                           Text(
                                             news.publisher ?? "알 수 없음",
                                             style: const TextStyle(
-                                              color: Color(0xFF2BD6D6),
+                                              color: Color(0xFF767676),
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,
                                               height: 1.5,

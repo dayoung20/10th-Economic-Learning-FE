@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class ArticleListController extends GetxController {
   var selectedSort = "RECENT".obs; //
-  var selectedCate = "FINANCE".obs;
+  var selectedCate = "전체".obs;
 
   // 현재 선택된 카테고리 인덱스
   Rx<int> selectedCategoryIndex = 0.obs;
@@ -72,12 +72,12 @@ class ArticleListController extends GetxController {
         print("n : $response");
       }
 
-      print(response);
+      // print(response);
       final data = response as Map<String, dynamic>;
       final newsList = data['results']['newsList'] as List;
       // print(newsList);
-      print("Ddd");
-      print(newsList.map((news) => ArticleModel.fromJson(news)).toList());
+      // print("Ddd");
+      // print(newsList.map((news) => ArticleModel.fromJson(news)).toList());
       return newsList.map((news) => ArticleModel.fromJson(news)).toList();
       // for (final news in newsList) {
       //   // final title = news['title'];
