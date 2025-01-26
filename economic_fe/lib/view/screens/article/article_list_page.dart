@@ -55,102 +55,100 @@ class _ArticleListPageState extends State<ArticleListPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(0);
+                        controller.selectCategory("FINANCE");
                         controller.getNewsList(1, "RECENT", null);
                       },
                       child: CategoryTab(
-                        isSelected: controller.selectedCategoryIndex.value == 0,
+                        isSelected: controller.selectedCate.value == "FINANCE",
                         text: '전체',
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(1);
+                        controller.selectCategory("FINANCE");
                         controller.getNewsList(1, "RECENT", "FINANCE");
                       },
                       child: CategoryTab(
                           isSelected:
-                              controller.selectedCategoryIndex.value == 1,
+                              controller.selectedCate.value == "FINANCE",
                           text: 'FINANCE'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(2);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("INVESTMENT");
+                        controller.getNewsList(1, "RECENT", "INVESTMENT");
                       },
                       child: CategoryTab(
                           isSelected:
-                              controller.selectedCategoryIndex.value == 2,
+                              controller.selectedCate.value == "INVESTMENT",
                           text: 'INVESTMENT'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(3);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("NORMAL");
+                        controller.getNewsList(1, "RECENT", "NORMAL");
                       },
                       child: CategoryTab(
-                          isSelected:
-                              controller.selectedCategoryIndex.value == 3,
+                          isSelected: controller.selectedCate.value == "NORMAL",
                           text: 'NORMAL'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(4);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("GLOBAL");
+                        controller.getNewsList(1, "RECENT", "GLOBAL");
                       },
                       child: CategoryTab(
-                          isSelected:
-                              controller.selectedCategoryIndex.value == 4,
+                          isSelected: controller.selectedCate.value == "GLOBAL",
                           text: 'GLOBAL'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(5);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("INDUSTRY");
+                        controller.getNewsList(1, "RECENT", "INDUSTRY");
                       },
                       child: CategoryTab(
                           isSelected:
-                              controller.selectedCategoryIndex.value == 5,
+                              controller.selectedCate.value == "INDUSTRY",
                           text: 'INDUSTRY'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(6);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("REAL_ESTATE");
+                        controller.getNewsList(1, "RECENT", "REAL_ESTATE");
                       },
                       child: CategoryTab(
                           isSelected:
-                              controller.selectedCategoryIndex.value == 6,
+                              controller.selectedCate.value == "REAL_ESTATE",
                           text: 'REAL_ESTATE'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(7);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("ECONOMIC_ANALYSIS");
+                        controller.getNewsList(
+                            1, "RECENT", "ECONOMIC_ANALYSIS");
                       },
                       child: CategoryTab(
-                          isSelected:
-                              controller.selectedCategoryIndex.value == 7,
+                          isSelected: controller.selectedCate.value ==
+                              "ECONOMIC_ANALYSIS",
                           text: 'ECONOMIC_ANALYSIS'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(8);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("ECONOMIC_POLICY");
+                        controller.getNewsList(1, "RECENT", "ECONOMIC_POLICY");
                       },
                       child: CategoryTab(
-                          isSelected:
-                              controller.selectedCategoryIndex.value == 8,
+                          isSelected: controller.selectedCate.value ==
+                              "ECONOMIC_POLICY",
                           text: 'ECONOMIC_POLICY'),
                     ),
                     GestureDetector(
                       onTap: () {
-                        controller.selectCategory(9);
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.selectCategory("OTHER");
+                        controller.getNewsList(1, "RECENT", "OTHER");
                       },
                       child: CategoryTab(
-                          isSelected:
-                              controller.selectedCategoryIndex.value == 9,
+                          isSelected: controller.selectedCate.value == "OTHER",
                           text: 'OTHER'),
                     ),
                   ],
@@ -235,36 +233,59 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                         color: Colors.white,
                                         borderRadius:
                                             BorderRadius.circular(12.0),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.3),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
+                                        border: const Border(
+                                          bottom: BorderSide(
+                                            color: Color(0xFFD9D9D9),
+                                            width: 1,
                                           ),
-                                        ],
+                                        ),
+                                        // boxShadow: [
+                                        //   BoxShadow(
+                                        //     color: Colors.grey.withOpacity(0.3),
+                                        //     blurRadius: 8,
+                                        //     offset: const Offset(0, 4),
+                                        //   ),
+                                        // ],
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            news.title ?? "제목 없음",
+                                            "${news.category}",
                                             style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF2BD6D6),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: -0.3,
+                                              height: 1.3,
                                             ),
                                           ),
-                                          const SizedBox(height: 8),
                                           Text(
-                                            news.content ?? "내용 없음",
-                                            style:
-                                                const TextStyle(fontSize: 14),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            "출처: ${news.publisher ?? "알 수 없음"}",
+                                            news.title ?? "제목 없음",
                                             style: const TextStyle(
-                                                color: Colors.grey),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.3,
+                                              letterSpacing: -0.4,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 6),
+                                          // Text(
+                                          //   news.content ?? "내용 없음",
+                                          //   style:
+                                          //       const TextStyle(fontSize: 14),
+                                          // ),
+                                          // const SizedBox(height: 8),
+                                          Text(
+                                            news.publisher ?? "알 수 없음",
+                                            style: const TextStyle(
+                                              color: Color(0xFF2BD6D6),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.5,
+                                              letterSpacing: -0.3,
+                                            ),
                                           ),
                                         ],
                                       ),

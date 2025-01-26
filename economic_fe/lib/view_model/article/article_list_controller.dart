@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ArticleListController extends GetxController {
+  var selectedSort = "RECENT".obs; //
   var selectedCate = "FINANCE".obs;
-  var selectedSort = "RECENT".obs;
 
   // 현재 선택된 카테고리 인덱스
   Rx<int> selectedCategoryIndex = 0.obs;
 
   // 카테고리 탭 클릭 시 선택된 카테고리 인덱스 업데이트
-  void selectCategory(int index) {
-    selectedCategoryIndex.value = index;
+  void selectCategory(String index) {
+    // selectedCategoryIndex.value = idx;
+    selectedCate.value = index;
   }
 
   // 인기순 / 최신순 선택 상태 관리
@@ -41,7 +42,7 @@ class ArticleListController extends GetxController {
   );
 
   // 기사 세부페이지로 이동
-  void toDetailPage(Article article) {
+  void toDetailPage(ArticleModel article) {
     Get.to(() => const ArticleDetailPage(), arguments: article);
   }
 
@@ -65,10 +66,10 @@ class ArticleListController extends GetxController {
 
       if (category != null) {
         response = await RemoteDataSource.getNewsList(page, sort, category);
-        print("null : $response");
-      } else {
+        print("n   $response");
+      } else if (category == null || selectedCate == "전체") {
         response = await RemoteDataSource.getNewsList(page, sort, null);
-        print("null아님 : $response");
+        print("n : $response");
       }
 
       print(response);
