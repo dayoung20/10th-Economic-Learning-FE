@@ -1,5 +1,7 @@
 import 'package:economic_fe/data/models/article.dart';
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view/screens/article/article_detail_page.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ArticleListController extends GetxController {
@@ -48,5 +50,17 @@ class ArticleListController extends GetxController {
   // 챗봇 화면으로 이동
   void toChatbot() {
     Get.toNamed('/chatbot');
+  }
+
+  //뉴스 기사 목록 불러오기
+  Future<void> getNewsList(int page, String sort, String category) async {
+    try {
+      print("start");
+      dynamic response =
+          await RemoteDataSource.getNewsList(page, sort, category);
+      print(response);
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
   }
 }

@@ -7,13 +7,24 @@ import 'package:economic_fe/view_model/article/article_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ArticleListPage extends StatelessWidget {
+class ArticleListPage extends StatefulWidget {
   const ArticleListPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final ArticleListController controller = Get.put(ArticleListController());
+  State<ArticleListPage> createState() => _ArticleListPageState();
+}
 
+class _ArticleListPageState extends State<ArticleListPage> {
+  final ArticleListController controller = Get.put(ArticleListController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.getNewsList(1, "RECENT", "FINANCE");
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(

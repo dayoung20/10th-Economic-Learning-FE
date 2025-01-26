@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteDataSource {
+  //기본 api 엔드포인트
   static String baseUrl = dotenv.env['API_URL']!;
 
   /// API POST
@@ -126,6 +127,13 @@ class RemoteDataSource {
   /// api/v1/level-test/quiz 레벨 테스트 퀴즈 목록 조회
   static Future<dynamic> getLevelTest() async {
     dynamic response = await _getApi('api/v1/level-test/quiz');
+    return response;
+  }
+
+  static Future<dynamic> getNewsList(
+      int page, String sort, String category) async {
+    dynamic response =
+        await _getApi('api/news?page=$page&sort=$sort&category=$category');
     return response;
   }
 }

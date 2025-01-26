@@ -46,10 +46,10 @@ class LearningListController extends GetxController {
 
   Future<void> getLearningConcept(int learningSetId, String level) async {
     try {
-      print("start");
+      // print("start");
       dynamic response =
           await RemoteDataSource.getLearningConcept(learningSetId, level);
-      print("출력");
+      // print("출력");
       print(response);
     } catch (e) {
       debugPrint('Error: $e');
