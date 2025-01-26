@@ -53,12 +53,28 @@ class ArticleListController extends GetxController {
   }
 
   //뉴스 기사 목록 불러오기
-  Future<void> getNewsList(int page, String sort, String category) async {
+  Future<void> getNewsList(int page, String sort, String? category) async {
     try {
       print("start");
-      dynamic response =
-          await RemoteDataSource.getNewsList(page, sort, category);
+      dynamic response;
+
+      if (category != null) {
+        response = await RemoteDataSource.getNewsList(page, sort, category);
+        print("null : $response");
+      } else {
+        response = await RemoteDataSource.getNewsList(page, sort, null);
+        print("null아님 : $response");
+      }
+
       print(response);
+      final data = response as Map<String, dynamic>;
+      final newsList = data['results']['newsList'] as List;
+      print(newsList);
+
+      for (final news in newsList) {
+        final title = news['title'];
+        print("뉴스 제목 : $title");
+      }
     } catch (e) {
       debugPrint('Error: $e');
     }

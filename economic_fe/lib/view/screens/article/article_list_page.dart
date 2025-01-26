@@ -20,7 +20,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.getNewsList(1, "RECENT", "FINANCE");
+    controller.getNewsList(1, "RECENT", null);
   }
 
   @override
@@ -53,74 +53,104 @@ class _ArticleListPageState extends State<ArticleListPage> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     GestureDetector(
-                      onTap: () => controller.selectCategory(0),
+                      onTap: () {
+                        controller.selectCategory(0);
+                        controller.getNewsList(1, "RECENT", null);
+                      },
                       child: CategoryTab(
                         isSelected: controller.selectedCategoryIndex.value == 0,
                         text: '전체',
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(1),
+                      onTap: () {
+                        controller.selectCategory(1);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 1,
-                          text: '경기 분석'),
+                          text: 'FINANCE'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(2),
+                      onTap: () {
+                        controller.selectCategory(2);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 2,
-                          text: '경제 일반'),
+                          text: 'INVESTMENT'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(3),
+                      onTap: () {
+                        controller.selectCategory(3);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 3,
-                          text: '금융'),
+                          text: 'NORMAL'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(4),
+                      onTap: () {
+                        controller.selectCategory(4);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 4,
-                          text: '국제경제'),
+                          text: 'GLOBAL'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(5),
+                      onTap: () {
+                        controller.selectCategory(5);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 5,
-                          text: '부동산'),
+                          text: 'INDUSTRY'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(6),
+                      onTap: () {
+                        controller.selectCategory(6);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 6,
-                          text: '산업경제'),
+                          text: 'REAL_ESTATE'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(7),
+                      onTap: () {
+                        controller.selectCategory(7);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 7,
-                          text: '정부와 경제 정책'),
+                          text: 'ECONOMIC_ANALYSIS'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(8),
+                      onTap: () {
+                        controller.selectCategory(8);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 8,
-                          text: '투자'),
+                          text: 'ECONOMIC_POLICY'),
                     ),
                     GestureDetector(
-                      onTap: () => controller.selectCategory(9),
+                      onTap: () {
+                        controller.selectCategory(9);
+                        controller.getNewsList(1, "RECENT", "FINANCE");
+                      },
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCategoryIndex.value == 9,
-                          text: '기타'),
+                          text: 'OTHER'),
                     ),
                   ],
                 );
@@ -142,7 +172,9 @@ class _ArticleListPageState extends State<ArticleListPage> {
                           children: [
                             // 인기순/최신순 선택
                             GestureDetector(
-                              onTap: () => controller.selectOrder(0),
+                              onTap: () {
+                                controller.selectOrder(0);
+                              },
                               child: OrderTab(
                                 text: '인기순',
                                 isSelected: controller.selectedOrder.value == 0,
@@ -152,7 +184,9 @@ class _ArticleListPageState extends State<ArticleListPage> {
                               width: 6,
                             ),
                             GestureDetector(
-                              onTap: () => controller.selectOrder(1),
+                              onTap: () {
+                                controller.selectOrder(1);
+                              },
                               child: OrderTab(
                                 text: '최신순',
                                 isSelected: controller.selectedOrder.value == 1,

@@ -114,7 +114,11 @@ class RemoteDataSource {
 
       if (response.statusCode == 200) {
         debugPrint('GET 요청 성공');
-        return jsonDecode(response.body);
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return decodedResponse;
       } else {
         debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
         return response;
@@ -168,11 +172,19 @@ class RemoteDataSource {
   /// api/news
 
   static Future<dynamic> getNewsList(
-      int page, String sort, String category) async {
-    dynamic response = await _getApiWithHeader(
-      'api/news?page=$page&sort=$sort&category=$category',
-      accessToken,
-    );
+      int page, String sort, String? category) async {
+    dynamic response;
+    if (category != null) {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort&category=$category',
+        accessToken,
+      );
+    } else {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort',
+        accessToken,
+      );
+    }
 
     if (response != null) {
       print('응답 데이터 : $response');
