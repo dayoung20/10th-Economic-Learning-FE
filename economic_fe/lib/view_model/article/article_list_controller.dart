@@ -1,10 +1,14 @@
 import 'package:economic_fe/data/models/article.dart';
+import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view/screens/article/article_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ArticleListController extends GetxController {
+  var selectedCate = "FINANCE".obs;
+  var selectedSort = "RECENT".obs;
+
   // 현재 선택된 카테고리 인덱스
   Rx<int> selectedCategoryIndex = 0.obs;
 
@@ -53,7 +57,8 @@ class ArticleListController extends GetxController {
   }
 
   //뉴스 기사 목록 불러오기
-  Future<void> getNewsList(int page, String sort, String? category) async {
+  Future<List<ArticleModel>> getNewsList(
+      int page, String sort, String? category) async {
     try {
       print("start");
       dynamic response;
@@ -69,14 +74,18 @@ class ArticleListController extends GetxController {
       print(response);
       final data = response as Map<String, dynamic>;
       final newsList = data['results']['newsList'] as List;
-      print(newsList);
-
-      for (final news in newsList) {
-        final title = news['title'];
-        print("뉴스 제목 : $title");
-      }
+      // print(newsList);
+      print("Ddd");
+      print(newsList.map((news) => ArticleModel.fromJson(news)).toList());
+      return newsList.map((news) => ArticleModel.fromJson(news)).toList();
+      // for (final news in newsList) {
+      //   // final title = news['title'];
+      //   // print("뉴스 제목 : $title");
+      //   ArticleModel.fromJson(news);
+      // }
     } catch (e) {
       debugPrint('Error: $e');
+      return [];
     }
   }
 }

@@ -26,5 +26,16 @@ class ArticleModel with ChangeNotifier {
     this.createdDate,
   });
 
-  // void
+  factory ArticleModel.fromJson(Map<String, dynamic> json) {
+    return ArticleModel(
+      id: json['id'],
+      title: json['title'],
+      content: json['content'],
+      publisher: json['publisher'],
+      views: json['views'],
+      url: json['url'],
+      category: json['category'],
+      createdDate: json['createdDate'],
+    );
+  }
 }
