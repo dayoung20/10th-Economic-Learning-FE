@@ -7,6 +7,9 @@ class RemoteDataSource {
   //기본 api 엔드포인트
   static String baseUrl = dotenv.env['API_URL']!;
 
+  //로그인 전 임시 accessToken
+  static String accessToken = dotenv.env['BASE_TOKEN']!;
+
   /// API POST
   ///
   /// 데이터 생성시 사용
@@ -68,7 +71,7 @@ class RemoteDataSource {
     }
   }
 
-  /// API GET
+  /// API GET (token 없이 사용)
   ///
   /// 데이터 받아올 때 사용
   static Future<dynamic> _getApi(String endPoint) async {
@@ -77,6 +80,37 @@ class RemoteDataSource {
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        debugPrint('GET 요청 성공');
+        return jsonDecode(response.body);
+      } else {
+        debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+        return response;
+      }
+    } catch (e) {
+      debugPrint('GET 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
+  /// API GET (token 사용)
+  ///
+  /// 데이터 받아올 때 사용
+  static Future<dynamic> _getApiWithHeader(
+      String endPoint, String accessToken) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('GET 요청: $endPoint');
+
+    try {
+      final headers = {
+        'Authorization': 'Bearer $accessToken',
+        'accept': '*/*',
+      };
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
 
       if (response.statusCode == 200) {
         debugPrint('GET 요청 성공');
@@ -130,10 +164,21 @@ class RemoteDataSource {
     return response;
   }
 
+  /// 뉴스 목록 조회
+  /// api/news
+
   static Future<dynamic> getNewsList(
       int page, String sort, String category) async {
-    dynamic response =
-        await _getApi('api/news?page=$page&sort=$sort&category=$category');
+    dynamic response = await _getApiWithHeader(
+      'api/news?page=$page&sort=$sort&category=$category',
+      accessToken,
+    );
+
+    if (response != null) {
+      print('응답 데이터 : $response');
+    } else {
+      print('데이터 get 실패');
+    }
     return response;
   }
 }
