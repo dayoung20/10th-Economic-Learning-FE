@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
-import 'package:economic_fe/view/widgets/profile_setting/profile_button_unselected.dart';
 import 'package:economic_fe/view_model/mypage/mypage_home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -340,23 +338,28 @@ class _MypageHomePageState extends State<MypageHomePage> {
             const SizedBox(
               height: 28,
             ),
-            const MyContentsContainer(
+            MyContentsContainer(
               title: '나의 학습',
               subTitle: '스크랩 한 퀴즈, 학습, 틀린 문제를 확인해요',
+              onTap: () {},
             ),
             const SizedBox(
               height: 12,
             ),
-            const MyContentsContainer(
+            MyContentsContainer(
               title: '커뮤니티 활동',
               subTitle: '스크랩 및 좋아요 한 커뮤니티 내용을 확인해요',
+              onTap: () {},
             ),
             const SizedBox(
               height: 12,
             ),
-            const MyContentsContainer(
+            MyContentsContainer(
               title: '스크랩 한 기사',
               subTitle: '스크랩 한 기사 내용을 확인해요',
+              onTap: () {
+                Get.toNamed('/mypage/article');
+              },
             ),
           ],
         ),
@@ -368,54 +371,59 @@ class _MypageHomePageState extends State<MypageHomePage> {
 class MyContentsContainer extends StatelessWidget {
   final String title;
   final String subTitle;
+  final Function() onTap;
 
   const MyContentsContainer({
     super.key,
     required this.title,
     required this.subTitle,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width - 32,
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(width: 1, color: Color(0xFFA2A2A2)),
-          borderRadius: BorderRadius.circular(8),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: MediaQuery.of(context).size.width - 32,
+        height: 80,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 1, color: Color(0xFFA2A2A2)),
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xFF111111),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              height: 1.30,
-              letterSpacing: -0.35,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFF111111),
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                height: 1.30,
+                letterSpacing: -0.35,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 4,
-          ),
-          Text(
-            subTitle,
-            style: const TextStyle(
-              color: Color(0xFF404040),
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              height: 1.30,
-              letterSpacing: -0.30,
+            const SizedBox(
+              height: 4,
             ),
-          ),
-        ],
+            Text(
+              subTitle,
+              style: const TextStyle(
+                color: Color(0xFF404040),
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                height: 1.30,
+                letterSpacing: -0.30,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -16,6 +16,7 @@ import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
 import 'package:economic_fe/view/screens/login/login_exist_page.dart';
+import 'package:economic_fe/view/screens/mypage/bookmarked_articles_page.dart';
 import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding/onboarding_card_page.dart';
@@ -183,6 +184,13 @@ class UserRouter {
       GetPage(
         name: '/mypage',
         page: () => const MypageHomePage(),
+        children: [
+          // 스크랩 한 기사
+          GetPage(
+            name: '/article',
+            page: () => const BookmarkedArticlesPage(),
+          ),
+        ],
       ),
     ];
   }
