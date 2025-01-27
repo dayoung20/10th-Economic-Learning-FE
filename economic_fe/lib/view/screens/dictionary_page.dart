@@ -80,7 +80,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
   void initState() {
     super.initState();
     controller = Get.put(DictionaryController()..getStats());
-    controller.getDictionaryList(0, 'ㄱ');
+    controller.getDictionaryList(0, 'ㄱ', true);
   }
 
   @override
@@ -103,6 +103,11 @@ class _DictionaryPageState extends State<DictionaryPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: 60,
               child: TextFormField(
+                onChanged: (value) {
+                  // 텍스트가 변경될 때마다 controller.keyword를 업데이트
+                  controller.keyword.value = value;
+                  print(controller.keyword.value);
+                },
                 controller: _controller,
                 focusNode: _focusNode,
                 decoration: InputDecoration(
@@ -132,6 +137,15 @@ class _DictionaryPageState extends State<DictionaryPage> {
                   ),
                 ),
               ),
+            ),
+            TextButton(
+              onPressed: () {
+                // controller.
+                print(controller.keyword.value);
+                controller.typeValue.value = false;
+                controller.getKewordResult(0, controller.keyword.value);
+              },
+              child: const Text("검색"),
             ),
             // 자음 리스트 (가로 스크롤)
             Container(
@@ -274,7 +288,11 @@ class _DictionaryPageState extends State<DictionaryPage> {
             Obx(() {
               return FutureBuilder<List<DictionaryModel>>(
                 future: controller.getDictionaryList(
-                    1, controller.selectedConsonant.value),
+                    1,
+                    controller.typeValue.value
+                        ? controller.selectedConsonant.value
+                        : controller.keyword.value,
+                    controller.typeValue.value),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(

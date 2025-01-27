@@ -228,4 +228,25 @@ class RemoteDataSource {
 
     return response;
   }
+
+  /// 키워드 별 용어 조회
+  /// api/v1/terms/search/keyword
+  static Future<dynamic> getKewordResult(int page, String keyword) async {
+    dynamic response;
+
+    // 한글을 URL 인코딩
+    String encodedkeyword = Uri.encodeComponent(keyword);
+
+    response = await _getApiWithHeader(
+        'api/v1/terms/search/keyword?page=$page&keyword=$encodedkeyword',
+        accessToken);
+
+    if (response != null) {
+      print("키워드 검색 결과 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+
+    return response;
+  }
 }
