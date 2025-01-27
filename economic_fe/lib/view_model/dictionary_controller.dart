@@ -34,6 +34,7 @@ class DictionaryController extends GetxController {
         final termList = data['results']['termList'] as List;
         return termList.map((term) => DictionaryModel.fromJson(term)).toList();
       } else {
+        print("검색");
         response = await RemoteDataSource.getKewordResult(page, text);
         print("response : $response");
 
