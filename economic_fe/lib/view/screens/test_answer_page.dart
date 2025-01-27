@@ -191,7 +191,8 @@ class TestAnswerPage extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           Container(
-                                            padding: const EdgeInsets.all(10),
+                                            width: 24,
+                                            height: 24,
                                             decoration: ShapeDecoration(
                                               color: isSelected
                                                   ? isCorrect
@@ -206,17 +207,19 @@ class TestAnswerPage extends StatelessWidget {
                                                     BorderRadius.circular(4),
                                               ),
                                             ),
-                                            child: Text(
-                                              '${index + 1}', // 선지 번호
-                                              style: TextStyle(
-                                                color: isSelected
-                                                    ? Colors
-                                                        .white // 선택된 번호 텍스트 색상
-                                                    : const Color(
-                                                        0xFF111111), // 기본 번호 텍스트 색상
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                height: 1.40,
+                                            child: Center(
+                                              child: Text(
+                                                '${index + 1}', // 선지 번호
+                                                style: TextStyle(
+                                                  color: isSelected
+                                                      ? Colors
+                                                          .white // 선택된 번호 텍스트 색상
+                                                      : const Color(
+                                                          0xFF111111), // 기본 번호 텍스트 색상
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  height: 1.40,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -228,6 +231,7 @@ class TestAnswerPage extends StatelessWidget {
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,
                                               height: 1.40,
+                                              letterSpacing: -0.45,
                                             ),
                                           ),
                                         ],
