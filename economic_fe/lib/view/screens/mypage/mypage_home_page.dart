@@ -349,7 +349,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
             MyContentsContainer(
               title: '커뮤니티 활동',
               subTitle: '스크랩 및 좋아요 한 커뮤니티 내용을 확인해요',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/mypage/community');
+              },
             ),
             const SizedBox(
               height: 12,
