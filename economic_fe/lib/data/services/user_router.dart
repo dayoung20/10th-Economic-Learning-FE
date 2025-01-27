@@ -19,6 +19,7 @@ import 'package:economic_fe/view/screens/login/login_exist_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_articles_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_post_page.dart';
 import 'package:economic_fe/view/screens/mypage/community_activity_page.dart';
+import 'package:economic_fe/view/screens/mypage/my_learning_page.dart';
 import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
 import 'package:economic_fe/view/screens/mypage/setting_page.dart';
 
@@ -209,6 +210,11 @@ class UserRouter {
                 page: () => const BookmarkedPostPage(),
               ),
             ],
+          ),
+          // 나의 학습
+          GetPage(
+            name: '/learning',
+            page: () => const MyLearningPage(),
           ),
         ],
       ),
