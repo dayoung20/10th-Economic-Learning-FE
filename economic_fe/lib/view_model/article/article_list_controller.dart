@@ -66,24 +66,15 @@ class ArticleListController extends GetxController {
 
       if (category != null) {
         response = await RemoteDataSource.getNewsList(page, sort, category);
-        print("n   $response");
+        print("category != null $response");
       } else if (category == null || selectedCate == "전체") {
         response = await RemoteDataSource.getNewsList(page, sort, null);
         print("n : $response");
       }
 
-      // print(response);
       final data = response as Map<String, dynamic>;
       final newsList = data['results']['newsList'] as List;
-      // print(newsList);
-      // print("Ddd");
-      // print(newsList.map((news) => ArticleModel.fromJson(news)).toList());
       return newsList.map((news) => ArticleModel.fromJson(news)).toList();
-      // for (final news in newsList) {
-      //   // final title = news['title'];
-      //   // print("뉴스 제목 : $title");
-      //   ArticleModel.fromJson(news);
-      // }
     } catch (e) {
       debugPrint('Error: $e');
       return [];

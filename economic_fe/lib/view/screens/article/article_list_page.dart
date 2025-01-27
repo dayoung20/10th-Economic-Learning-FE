@@ -258,13 +258,18 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                               height: 1.3,
                                             ),
                                           ),
-                                          Text(
-                                            news.title ?? "제목 없음",
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.3,
-                                              letterSpacing: -0.4,
+                                          GestureDetector(
+                                            onTap: () {
+                                              controller.toDetailPage(news);
+                                            },
+                                            child: Text(
+                                              news.title ?? "제목 없음",
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.3,
+                                                letterSpacing: -0.4,
+                                              ),
                                             ),
                                           ),
                                           const SizedBox(height: 6),

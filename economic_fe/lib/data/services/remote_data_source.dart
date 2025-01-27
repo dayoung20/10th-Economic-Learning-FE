@@ -170,7 +170,6 @@ class RemoteDataSource {
 
   /// 뉴스 목록 조회
   /// api/news
-
   static Future<dynamic> getNewsList(
       int page, String sort, String? category) async {
     dynamic response;
@@ -191,6 +190,63 @@ class RemoteDataSource {
     } else {
       print('데이터 get 실패');
     }
+    return response;
+  }
+
+  /// 자음 별 용어 조회
+  /// api/v1/terms/search/consonant
+  static Future<dynamic> getDictionary(int page, String consonant) async {
+    dynamic response;
+
+    // 한글 자음을 URL 인코딩
+    String encodedConsonant = Uri.encodeComponent(consonant);
+
+    response = await _getApiWithHeader(
+        'api/v1/terms/search/consonant?page=$page&consonant=$encodedConsonant',
+        accessToken);
+
+    if (response != null) {
+      print("용어사전 응답 데이터 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+    return response;
+  }
+
+  /// 용어 상세 조회
+  /// api/v1/terms/{id}
+  static Future<dynamic> getDetailTerms(int id) async {
+    dynamic response;
+
+    response = await _getApiWithHeader('api/v1/terms/$id', accessToken);
+
+    if (response != null) {
+      print("용어 상세 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+
+    return response;
+  }
+
+  /// 키워드 별 용어 조회
+  /// api/v1/terms/search/keyword
+  static Future<dynamic> getKewordResult(int page, String keyword) async {
+    dynamic response;
+
+    // 한글을 URL 인코딩
+    String encodedkeyword = Uri.encodeComponent(keyword);
+
+    response = await _getApiWithHeader(
+        'api/v1/terms/search/keyword?page=$page&keyword=$encodedkeyword',
+        accessToken);
+
+    if (response != null) {
+      print("키워드 검색 결과 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+
     return response;
   }
 }
