@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/dictionary_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
@@ -146,6 +147,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           onTap: () {
                             setState(() {
                               _selectedIndex = index; // 클릭된 항목의 인덱스를 업데이트
+                              controller.selectedConsonant.value =
+                                  consonants[index];
+                              print(controller.selectedConsonant.value);
                             });
                           },
                           child: Container(
@@ -188,84 +192,200 @@ class _DictionaryPageState extends State<DictionaryPage> {
               ),
             ),
             // 단어와 설명을 보여주는 리스트
-            Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        padding: const EdgeInsets.all(16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: items.length,
+            //     itemBuilder: (context, index) {
+            //       return Column(
+            //         children: [
+            //           Container(
+            //             margin: const EdgeInsets.symmetric(vertical: 8),
+            //             padding: const EdgeInsets.all(16),
+            //             decoration: const BoxDecoration(
+            //               color: Colors.white,
+            //             ),
+            //             child: Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 SizedBox(
+            //                   child: Column(
+            //                     crossAxisAlignment: CrossAxisAlignment.start,
+            //                     children: [
+            //                       Text(
+            //                         items[index]['word']!, // 단어 표시
+            //                         style: const TextStyle(
+            //                             fontSize: 16,
+            //                             fontWeight: FontWeight.w500,
+            //                             color: Color.fromARGB(255, 0, 0, 0),
+            //                             height: 1.4,
+            //                             letterSpacing: -0.4),
+            //                       ),
+            //                       const SizedBox(height: 8), // 단어와 설명 간 간격
+            //                       Text(
+            //                         items[index]['description'] ?? "설명이 없습니다",
+            //                         style: const TextStyle(
+            //                           fontSize: 14,
+            //                           color: Color(0xFF767676),
+            //                           fontWeight: FontWeight.w400,
+            //                           height: 1.4,
+            //                           letterSpacing: -0.35,
+            //                         ),
+            //                       ),
+            //                     ],
+            //                   ),
+            //                 ),
+            //                 GestureDetector(
+            //                   onTap: () {
+            //                     setState(() {
+            //                       // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
+            //                       items[index]['selectedWord'] =
+            //                           !(items[index]['selectedWord'] ?? false);
+            //                       // print("Dd");
+            //                     });
+            //                   },
+            //                   child: Padding(
+            //                     padding: const EdgeInsets.only(
+            //                         left: 11, top: 8, bottom: 8),
+            //                     child: Image.asset(
+            //                       items[index]['selectedWord'] ?? false
+            //                           ? "assets/bookmark_selected.png"
+            //                           : "assets/bookmark.png",
+            //                       width: 13,
+            //                       height: 18.2,
+            //                     ),
+            //                   ),
+            //                 )
+            //               ],
+            //             ),
+            //           ),
+            //           if (index !=
+            //               items.length - 1) // 마지막 항목에는 Divider를 추가하지 않음
+            //             const Divider(
+            //               color: Color(0xFFEBEBEB), // 디바이더 색상
+            //               height: 1, // 높이 설정
+            //               thickness: 1, // 두께 설정
+            //             ),
+            //         ],
+            //       );
+            //     },
+            //   ),
+            // ),
+            Obx(() {
+              return FutureBuilder<List<DictionaryModel>>(
+                future: controller.getDictionaryList(
+                    1, controller.selectedConsonant.value),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  // 에러인 경우
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("에러 발생 : ${snapshot.error}"),
+                    );
+                  }
+
+                  // 데이터가 없을 때
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text("용어 사전 데이터가 없습니다."),
+                    );
+                  }
+                  final termList = snapshot.data!;
+
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: termList.length,
+                      itemBuilder: (context, index) {
+                        final terms = termList[index];
+                        return Column(
                           children: [
-                            SizedBox(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              padding: const EdgeInsets.all(16),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    items[index]['word']!, // 단어 표시
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        height: 1.4,
-                                        letterSpacing: -0.4),
-                                  ),
-                                  const SizedBox(height: 8), // 단어와 설명 간 간격
-                                  Text(
-                                    items[index]['description'] ?? "설명이 없습니다",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF767676),
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.4,
-                                      letterSpacing: -0.35,
+                                  SizedBox(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          // items[index]['word']!, // 단어 표시
+                                          terms.termName ?? "",
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color:
+                                                  Color.fromARGB(255, 0, 0, 0),
+                                              height: 1.4,
+                                              letterSpacing: -0.4),
+                                        ),
+                                        const SizedBox(
+                                            height: 8), // 단어와 설명 간 간격
+                                        Text(
+                                          // items[index]['description'] ??
+                                          //     "설명이 없습니다",
+                                          terms.termDescription ?? "",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xFF767676),
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.4,
+                                            letterSpacing: -0.35,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
+                                        items[index]['selectedWord'] =
+                                            !(items[index]['selectedWord'] ??
+                                                false);
+                                        // print("Dd");
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 11, top: 8, bottom: 8),
+                                      child: Image.asset(
+                                        items[index]['selectedWord'] ?? false
+                                            ? "assets/bookmark_selected.png"
+                                            : "assets/bookmark.png",
+                                        width: 13,
+                                        height: 18.2,
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
-                                  items[index]['selectedWord'] =
-                                      !(items[index]['selectedWord'] ?? false);
-                                  print("Dd");
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 11, top: 8, bottom: 8),
-                                child: Image.asset(
-                                  items[index]['selectedWord'] ?? false
-                                      ? "assets/bookmark_selected.png"
-                                      : "assets/bookmark.png",
-                                  width: 13,
-                                  height: 18.2,
-                                ),
+                            if (index !=
+                                items.length - 1) // 마지막 항목에는 Divider를 추가하지 않음
+                              const Divider(
+                                color: Color(0xFFEBEBEB), // 디바이더 색상
+                                height: 1, // 높이 설정
+                                thickness: 1, // 두께 설정
                               ),
-                            )
                           ],
-                        ),
-                      ),
-                      if (index !=
-                          items.length - 1) // 마지막 항목에는 Divider를 추가하지 않음
-                        const Divider(
-                          color: Color(0xFFEBEBEB), // 디바이더 색상
-                          height: 1, // 높이 설정
-                          thickness: 1, // 두께 설정
-                        ),
-                    ],
+                        );
+                      },
+                    ),
                   );
                 },
-              ),
-            ),
+              );
+            })
           ],
         ),
         bottomNavigationBar: const CustomBottomBar(currentIndex: 1),
