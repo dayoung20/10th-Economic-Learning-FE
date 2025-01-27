@@ -16,6 +16,7 @@ import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
 import 'package:economic_fe/view/screens/login/login_exist_page.dart';
+import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding/onboarding_card_page.dart';
 
@@ -177,6 +178,11 @@ class UserRouter {
       GetPage(
         name: '/finish',
         page: () => const FinishPage(),
+      ),
+      // 마이페이지
+      GetPage(
+        name: '/mypage',
+        page: () => const MypageHomePage(),
       ),
     ];
   }

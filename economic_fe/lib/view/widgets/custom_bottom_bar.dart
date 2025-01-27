@@ -116,7 +116,7 @@ class CustomBottomBar extends StatelessWidget {
               Get.toNamed('/community'); // 커뮤니티 페이지로 이동
               break;
             case 4:
-              // Get.toNamed('/profile');  // 마이페이지로 이동
+              Get.toNamed('/mypage'); // 마이페이지로 이동
               break;
             default:
               break;
