@@ -30,7 +30,12 @@ class _CommunityActivityPageState extends State<CommunityActivityPage> {
             const CategoryText(text: '스크랩'),
             CategoryOptions(
               text: '스크랩 한 글',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(
+                  '/mypage/community/post',
+                  arguments: '스크랩 한 글',
+                );
+              },
             ),
             const SizedBox(
               height: 31.5,
@@ -38,11 +43,21 @@ class _CommunityActivityPageState extends State<CommunityActivityPage> {
             const CategoryText(text: '좋아요'),
             CategoryOptions(
               text: '좋아요 한 글',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(
+                  '/mypage/community/post',
+                  arguments: '좋아요 한 글',
+                );
+              },
             ),
             CategoryOptions(
               text: '좋아요 한 댓글',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(
+                  '/mypage/community/post',
+                  arguments: '좋아요 한 댓글',
+                );
+              },
             ),
           ],
         ),
