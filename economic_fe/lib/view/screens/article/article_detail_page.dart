@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/article.dart';
+import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
@@ -18,7 +19,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
   late WebViewController webViewController;
   final ArticleDetailController controller = Get.put(ArticleDetailController());
   // 전달받은 기사 데이터
-  final Article article = Get.arguments as Article;
+  final ArticleModel article = Get.arguments as ArticleModel;
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
         icon: Icons.arrow_back_ios_new,
-        title: article.headline,
+        title: truncateWithEllipsis(article.title ?? "", 15),
         onPress: () {
           controller.goBack();
         },
@@ -50,5 +51,11 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
         height: 34,
       ),
     );
+  }
+
+  String truncateWithEllipsis(String text, int maxLength) {
+    return (text.length > maxLength)
+        ? '${text.substring(0, maxLength)}...'
+        : text;
   }
 }
