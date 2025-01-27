@@ -58,7 +58,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
           Padding(
             padding: const EdgeInsets.only(right: 20, left: 8),
             child: GestureDetector(
-              onTap: () {}, // 설정 화면으로
+              onTap: () {
+                Get.toNamed('/mypage/setting');
+              }, // 설정 화면으로
               child: const Icon(
                 Icons.settings_outlined,
                 size: 24,

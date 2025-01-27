@@ -1,5 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
+import 'package:economic_fe/view/widgets/mypage/category_options.dart';
+import 'package:economic_fe/view/widgets/mypage/category_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -44,69 +46,6 @@ class _CommunityActivityPageState extends State<CommunityActivityPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CategoryOptions extends StatelessWidget {
-  final String text;
-  final Function() onTap;
-
-  const CategoryOptions({
-    super.key,
-    required this.text,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, top: 27.5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            style: const TextStyle(
-              color: Color(0xFF111111),
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              height: 1.40,
-              letterSpacing: -0.40,
-            ),
-          ),
-          GestureDetector(
-            onTap: onTap,
-            child: const Icon(
-              Icons.arrow_forward_ios,
-              size: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CategoryText extends StatelessWidget {
-  final String text;
-
-  const CategoryText({
-    super.key,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Color(0xFF111111),
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        height: 1.30,
-        letterSpacing: -0.45,
       ),
     );
   }
