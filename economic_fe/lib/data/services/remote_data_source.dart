@@ -212,4 +212,20 @@ class RemoteDataSource {
     }
     return response;
   }
+
+  /// 용어 상세 조회
+  /// api/v1/terms/{id}
+  static Future<dynamic> getDetailTerms(int id) async {
+    dynamic response;
+
+    response = await _getApiWithHeader('api/v1/terms/$id', accessToken);
+
+    if (response != null) {
+      print("용어 상세 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+
+    return response;
+  }
 }

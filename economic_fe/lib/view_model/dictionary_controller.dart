@@ -32,4 +32,18 @@ class DictionaryController extends GetxController {
       return [];
     }
   }
+
+  //특정 용어 상세 보기
+  Future<void> getTermDetail(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+
+      response = await RemoteDataSource.getDetailTerms(id);
+      print("respose : $response");
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
 }
