@@ -4,7 +4,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteDataSource {
+  //기본 api 엔드포인트
   static String baseUrl = dotenv.env['API_URL']!;
+
+  //로그인 전 임시 accessToken
+  static String accessToken = dotenv.env['BASE_TOKEN']!;
 
   /// API POST
   ///
@@ -67,7 +71,7 @@ class RemoteDataSource {
     }
   }
 
-  /// API GET
+  /// API GET (token 없이 사용)
   ///
   /// 데이터 받아올 때 사용
   static Future<dynamic> _getApi(String endPoint) async {
@@ -80,6 +84,41 @@ class RemoteDataSource {
       if (response.statusCode == 200) {
         debugPrint('GET 요청 성공');
         return jsonDecode(response.body);
+      } else {
+        debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+        return response;
+      }
+    } catch (e) {
+      debugPrint('GET 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
+  /// API GET (token 사용)
+  ///
+  /// 데이터 받아올 때 사용
+  static Future<dynamic> _getApiWithHeader(
+      String endPoint, String accessToken) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('GET 요청: $endPoint');
+
+    try {
+      final headers = {
+        'Authorization': 'Bearer $accessToken',
+        'accept': '*/*',
+      };
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('GET 요청 성공');
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return decodedResponse;
       } else {
         debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
         return response;
@@ -126,6 +165,32 @@ class RemoteDataSource {
   /// api/v1/level-test/quiz 레벨 테스트 퀴즈 목록 조회
   static Future<dynamic> getLevelTest() async {
     dynamic response = await _getApi('api/v1/level-test/quiz');
+    return response;
+  }
+
+  /// 뉴스 목록 조회
+  /// api/news
+
+  static Future<dynamic> getNewsList(
+      int page, String sort, String? category) async {
+    dynamic response;
+    if (category != null) {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort&category=$category',
+        accessToken,
+      );
+    } else {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort',
+        accessToken,
+      );
+    }
+
+    if (response != null) {
+      print('응답 데이터 : $response');
+    } else {
+      print('데이터 get 실패');
+    }
     return response;
   }
 }
