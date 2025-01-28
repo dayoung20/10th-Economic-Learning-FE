@@ -16,6 +16,12 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
   final WrongQuizController controller = Get.put(WrongQuizController());
 
   @override
+  void initState() {
+    super.initState();
+    controller.fetchIncorrectQuestions(); // 초기 데이터 로드
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
@@ -33,7 +39,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                 Obx(
                   () => LevelContainer(
                     level: '초급',
-                    isSelected: controller.selectedLevel.value == '초급',
+                    isSelected: controller.selectedLevel.value == 'BEGINNER',
                     onTap: () => controller.updateSelectedLevel('초급'),
                   ),
                 ),
@@ -41,7 +47,8 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                 Obx(
                   () => LevelContainer(
                     level: '중급',
-                    isSelected: controller.selectedLevel.value == '중급',
+                    isSelected:
+                        controller.selectedLevel.value == 'INTERMEDIATE',
                     onTap: () => controller.updateSelectedLevel('중급'),
                   ),
                 ),
@@ -49,7 +56,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                 Obx(
                   () => LevelContainer(
                     level: '고급',
-                    isSelected: controller.selectedLevel.value == '고급',
+                    isSelected: controller.selectedLevel.value == 'ADVANCED',
                     onTap: () => controller.updateSelectedLevel('고급'),
                   ),
                 ),
@@ -116,36 +123,24 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                         width: 1,
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['category']!,
-                              style: const TextStyle(
-                                color: Color(0xFF767676),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item['title']!,
-                              style: const TextStyle(
-                                color: Color(0xFF404040),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          item['category']!,
+                          style: const TextStyle(
+                            color: Color(0xFF767676),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Icon(
-                            Icons.bookmark,
-                            color: Palette.buttonColorGreen,
+                        const SizedBox(height: 8),
+                        Text(
+                          item['title']!,
+                          style: const TextStyle(
+                            color: Color(0xFF404040),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],

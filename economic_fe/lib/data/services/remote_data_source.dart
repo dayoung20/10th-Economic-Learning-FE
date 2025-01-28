@@ -19,10 +19,10 @@ class RemoteDataSource {
     Map<String, dynamic> jsonData,
   ) async {
     String apiUrl = '$baseUrl/$endPoint';
-    String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $authToken',
+      'Authorization': 'Bearer $accessToken',
     };
 
     try {
@@ -248,5 +248,26 @@ class RemoteDataSource {
     }
 
     return response;
+  }
+
+  /// 틀린 문제 데이터 요청
+  /// api/v1/user/wrong-quizzes
+  static Future<dynamic> fetchIncorrectQuestions(String level) async {
+    String endpoint = 'api/v1/user/wrong-quizzes?level=$level';
+
+    try {
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response['isSuccess'] == true) {
+        debugPrint('틀린 문제 데이터 요청 성공');
+        return response['results']['failQuizList'];
+      } else {
+        debugPrint('데이터 요청 실패: ${response?['message'] ?? '알 수 없는 에러'}');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('요청 중 예외 발생: $e');
+      return null;
+    }
   }
 }
