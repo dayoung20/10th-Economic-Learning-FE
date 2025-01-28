@@ -341,8 +341,18 @@ class _MypageHomePageState extends State<MypageHomePage> {
               height: 28,
             ),
             MyContentsContainer(
-              title: '나의 학습',
-              subTitle: '스크랩 한 퀴즈, 학습, 틀린 문제를 확인해요',
+              title: '틀린 문제 다시 풀기',
+              subTitle: '퀴즈에서 틀린 문제를 다시 풀 수 있어요',
+              onTap: () {
+                Get.toNamed('/mypage/wrong');
+              },
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            MyContentsContainer(
+              title: '스크랩 한 나의 학습',
+              subTitle: '스크랩 한 퀴즈, 학습, 단어를 확인해요',
               onTap: () {
                 Get.toNamed('/mypage/learning');
               },
