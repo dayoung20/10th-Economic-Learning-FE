@@ -16,6 +16,12 @@ import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/leveltest_result_page.dart';
 import 'package:economic_fe/view/screens/login/login_exist_page.dart';
+import 'package:economic_fe/view/screens/mypage/bookmarked_articles_page.dart';
+import 'package:economic_fe/view/screens/mypage/bookmarked_post_page.dart';
+import 'package:economic_fe/view/screens/mypage/community_activity_page.dart';
+import 'package:economic_fe/view/screens/mypage/my_learning_page.dart';
+import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
+import 'package:economic_fe/view/screens/mypage/setting_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding/onboarding_card_page.dart';
 
@@ -177,6 +183,40 @@ class UserRouter {
       GetPage(
         name: '/finish',
         page: () => const FinishPage(),
+      ),
+      // 마이페이지
+      GetPage(
+        name: '/mypage',
+        page: () => const MypageHomePage(),
+        children: [
+          // 설정 및 약관
+          GetPage(
+            name: '/setting',
+            page: () => const SettingPage(),
+          ),
+          // 스크랩 한 기사
+          GetPage(
+            name: '/article',
+            page: () => const BookmarkedArticlesPage(),
+          ),
+          // 커뮤니티 활동
+          GetPage(
+            name: '/community',
+            page: () => const CommunityActivityPage(),
+            children: [
+              // 스크랩 한 글/좋아요 한 글/좋아요 한 댓글
+              GetPage(
+                name: '/post',
+                page: () => const BookmarkedPostPage(),
+              ),
+            ],
+          ),
+          // 나의 학습
+          GetPage(
+            name: '/learning',
+            page: () => const MyLearningPage(),
+          ),
+        ],
       ),
     ];
   }
