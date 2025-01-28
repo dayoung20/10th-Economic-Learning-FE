@@ -1,8 +1,10 @@
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:get/get.dart';
 
 class QuizPageController extends GetxController {
   // 학습 중단 확인창 표시 여부 관리
   var isModalVisible = false.obs;
+  var quizData = {}.obs;
 
   void showModal() {
     isModalVisible.value = true;
@@ -13,6 +15,20 @@ class QuizPageController extends GetxController {
   }
 
   void stopBtn() {
-    Get.toNamed('/learning_list');
+    Get.back();
+  }
+
+  // 퀴즈 데이터 가져오기
+  Future<void> fetchQuizById(int quizId) async {
+    try {
+      final response = await RemoteDataSource.fetchQuizById(quizId);
+      if (response != null && response['isSuccess'] == true) {
+        quizData.value = response['results'];
+      } else {
+        print('퀴즈 데이터 로드 실패: ${response?['message']}');
+      }
+    } catch (e) {
+      print('fetchQuizById 에러: $e');
+    }
   }
 }

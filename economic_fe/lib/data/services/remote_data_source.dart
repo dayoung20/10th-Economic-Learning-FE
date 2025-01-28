@@ -260,13 +260,37 @@ class RemoteDataSource {
 
       if (response != null && response['isSuccess'] == true) {
         debugPrint('틀린 문제 데이터 요청 성공');
-        return response['results']['failQuizList'];
+        return response;
       } else {
         debugPrint('데이터 요청 실패: ${response?['message'] ?? '알 수 없는 에러'}');
         return null;
       }
     } catch (e) {
       debugPrint('요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// 개별 퀴즈 조회
+  /// API: api/v1/learning/learning/quiz/{quizId}
+  static Future<dynamic> fetchQuizById(int quizId) async {
+    try {
+      // API Endpoint 구성
+      String endPoint = 'api/v1/learning/learning/quiz/$quizId';
+
+      // GET 요청 수행
+      final response = await _getApiWithHeader(endPoint, accessToken);
+
+      // 응답 데이터 처리
+      if (response != null) {
+        print("퀴즈 데이터 응답: $response");
+        return response;
+      } else {
+        print("퀴즈 데이터 요청 실패");
+        return null;
+      }
+    } catch (e) {
+      print("fetchQuizById 요청 중 예외 발생: $e");
       return null;
     }
   }

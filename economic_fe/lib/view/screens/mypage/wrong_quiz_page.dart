@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/level_container.dart';
@@ -106,48 +107,63 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
           const SizedBox(height: 15),
           // 탭별 데이터 리스트
           Expanded(
-            child: ListView.builder(
-              itemCount: controller.incorrectQuestions.length,
-              itemBuilder: (context, index) {
-                final item = controller.incorrectQuestions[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: const Color(0xFFD9D9D9),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item['category']!,
-                          style: const TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+            child: Obx(
+              () => controller.incorrectQuestions.isEmpty
+                  ? const Text('틀린 문제가 없습니다.')
+                  : ListView.builder(
+                      itemCount: controller.incorrectQuestions.length,
+                      itemBuilder: (context, index) {
+                        final item = controller.incorrectQuestions[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              // 개별 퀴즈 화면으로 이동
+                              Get.to(
+                                const QuizPage(),
+                                arguments: {
+                                  'quizId': item['id'],
+                                }, // 전달할 quizId
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: const Color(0xFFD9D9D9),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['category']!,
+                                    style: const TextStyle(
+                                      color: Color(0xFF767676),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    item['title']!,
+                                    style: const TextStyle(
+                                      color: Color(0xFF404040),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          item['title']!,
-                          style: const TextStyle(
-                            color: Color(0xFF404040),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
             ),
           ),
         ],

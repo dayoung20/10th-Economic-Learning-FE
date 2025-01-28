@@ -18,26 +18,46 @@ class WrongQuizController extends GetxController {
   //   {'category': '경제', 'title': 'GDP와 GNI'},
   // ];
 
-  /// 틀린 문제 데이터 요청 후 상태 업데이트
+  // 틀린 문제 가져오기
   Future<void> fetchIncorrectQuestions() async {
     try {
-      final List<dynamic>? response =
+      final response =
           await RemoteDataSource.fetchIncorrectQuestions(selectedLevel.value);
 
-      if (response != null) {
-        incorrectQuestions.assignAll(
-          response.map((item) => Map<String, dynamic>.from(item)).toList(),
-        );
-        debugPrint('틀린 문제 데이터를 성공적으로 불러왔습니다.');
+      if (response != null && response['isSuccess'] == true) {
+        final failQuizList = response['results']['failQuizList'] as List;
+
+        incorrectQuestions.value = failQuizList.map((quiz) {
+          return {
+            'id': int.tryParse(quiz['id'].toString()) ?? 0, // `id`를 정수로 변환
+            'title': quiz['name'] ?? '', // `name` 값이 없으면 빈 문자열로 처리
+            'category': quiz['learningSet'] ?? '' // `learningSet` 값 처리
+          };
+        }).toList();
       } else {
+        debugPrint('Fetch failed: ${response?['message']}');
         incorrectQuestions.clear();
-        debugPrint('틀린 문제 데이터가 비어 있습니다.');
       }
     } catch (e) {
-      incorrectQuestions.clear();
-      debugPrint('틀린 문제 데이터 요청 중 예외 발생: $e');
+      debugPrint('fetchIncorrectQuestions Error: $e');
     }
   }
+
+  // // 개별 퀴즈 화면으로 이동
+  // Future<void> fetchQuizDetails(int quizId) async {
+  //   try {
+  //     final response = await RemoteDataSource.fetchQuizById(quizId);
+  //     if (response != null && response['isSuccess'] == true) {
+  //       final quizData = response['results'];
+  //       // 퀴즈 화면으로 이동
+  //       Get.toNamed('/quiz', arguments: quizData);
+  //     } else {
+  //       Get.snackbar('Error', '퀴즈 데이터를 불러올 수 없습니다.');
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Error', '퀴즈 데이터를 가져오는 중 오류가 발생했습니다.');
+  //   }
+  // }
 
   /// UI에서 사용되는 레벨을 API 값으로 변환
   String _convertLevelToApiValue(String level) {
