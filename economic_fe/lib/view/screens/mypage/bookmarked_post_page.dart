@@ -16,6 +16,12 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
       Get.put(BookmarkedPostsController());
 
   @override
+  void initState() {
+    super.initState();
+    controller.fetchScrapedPosts(); // API 호출
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
@@ -29,7 +35,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
         if (controller.posts.isEmpty) {
           return const Center(
             child: Text(
-              '데이터가 없습니다.',
+              '스크랩 한 게시글이 없습니다.',
               style: TextStyle(
                 fontSize: 16,
                 color: Color(0xFF767676),
@@ -63,7 +69,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          post["category"]!,
+                          post["type"] ?? '',
                           style: const TextStyle(
                             color: Color(0xFF767676),
                             fontSize: 12,
@@ -73,7 +79,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                           ),
                         ),
                         Text(
-                          post["uploadTime"]!,
+                          post["createdDate"] ?? '',
                           style: const TextStyle(
                             color: Color(0xFF767676),
                             fontSize: 12,
@@ -92,7 +98,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                         // 게시글 상세 페이지 이동
                       },
                       child: Text(
-                        post["title"]!,
+                        post["title"] ?? '',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -108,7 +114,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                                 height: 6,
                               ),
                               Text(
-                                post["postTitle"]!,
+                                post["postTitle"] ?? '',
                                 style: const TextStyle(
                                   color: Color(0xFFA2A2A2),
                                   fontSize: 12,
