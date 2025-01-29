@@ -310,4 +310,26 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  /// 스크랩 한 개념 학습 조회
+  /// API: api/v1/user/scrap-concepts
+  static Future<dynamic> getScrapConcepts(String level) async {
+    String endpoint = 'api/v1/user/scrap-concepts?level=$level';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('스크랩한 학습 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('스크랩한 학습 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getScrapConcepts Error: $e');
+      return null;
+    }
+  }
 }

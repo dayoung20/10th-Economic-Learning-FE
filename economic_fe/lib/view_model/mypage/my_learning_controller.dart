@@ -13,14 +13,11 @@ class MyLearningController extends GetxController
     {'category': '경제', 'title': '수요와 공급'},
   ];
 
-  final List<Map<String, dynamic>> learningMaterials = [
-    {'category': '금융', 'title': '주식의 기초'},
-    {'category': '경제', 'title': '물가와 환율'},
-  ];
-
   var selectedConsonant = "ㄱ".obs;
   var keyword = "".obs;
   var typeValue = true.obs; //false : 검색
+  var selectedLevel = 'BEGINNER'.obs; // 초기값 설정
+  var scrapConcepts = <Map<String, dynamic>>[].obs;
 
   //용어 사전 데이터 불러오기
   Future<List<DictionaryModel>> getDictionaryList(
@@ -98,36 +95,6 @@ class MyLearningController extends GetxController
     'ㅎ'
   ];
 
-  // 스크랩한 단어 리스트 (임시 데이터 포함)
-  var scrapedWords = <DictionaryModel>[
-    DictionaryModel(
-      termName: "인플레이션",
-      termDescription: "물가 상승을 의미합니다.",
-    ),
-    DictionaryModel(
-      termName: "GDP",
-      termDescription: "국내총생산으로 한 국가에서 일정 기간 동안 생산된 총 상품과 서비스의 시장 가치입니다.",
-    ),
-    DictionaryModel(
-      termName: "환율",
-      termDescription: "다른 나라 화폐와의 교환 비율을 나타냅니다.",
-    ),
-    DictionaryModel(
-      termName: "금리",
-      termDescription: "돈을 빌리거나 맡길 때의 이자 비율을 의미합니다.",
-    ),
-    DictionaryModel(
-      termName: "리세션",
-      termDescription: "경제 활동이 줄어들고 경제 성장률이 감소하는 경기 후퇴를 뜻합니다.",
-    ),
-  ].obs;
-
-  // 현재 선택된 탭 데이터
-  RxList<Map<String, dynamic>> currentData = <Map<String, dynamic>>[].obs;
-
-  // 현재 선택된 레벨
-  RxString selectedLevel = '초급'.obs;
-
   // 버튼 텍스트
   RxString buttonText = '스크랩 한 모든 퀴즈 다시 풀기'.obs;
 
@@ -138,6 +105,7 @@ class MyLearningController extends GetxController
 
     // 초기 데이터 설정
     updateCurrentData(0);
+    fetchScrapConcepts(); // 초기 데이터 로드
 
     // 탭 변경 시 데이터와 버튼 텍스트 업데이트
     tabController.addListener(() {
@@ -150,11 +118,9 @@ class MyLearningController extends GetxController
   void updateCurrentData(int index) {
     switch (index) {
       case 0:
-        currentData.assignAll(quizzes);
         buttonText.value = '스크랩 한 모든 퀴즈 다시 풀기';
         break;
       case 1:
-        currentData.assignAll(learningMaterials);
         buttonText.value = '스크랩 한 모든 학습 다시 보기';
         break;
     }
@@ -162,5 +128,26 @@ class MyLearningController extends GetxController
 
   void updateSelectedLevel(String level) {
     selectedLevel.value = level;
+    fetchScrapConcepts(); // 레벨 변경 시 데이터 로드
+  }
+
+  Future<void> fetchScrapConcepts() async {
+    try {
+      final response =
+          await RemoteDataSource.getScrapConcepts(selectedLevel.value);
+      if (response != null && response['isSuccess'] == true) {
+        final List<dynamic> rawConcepts =
+            response['results']['scrapConceptList'] ?? [];
+        scrapConcepts.value = rawConcepts.map((concept) {
+          return Map<String, dynamic>.from(concept);
+        }).toList();
+      } else {
+        scrapConcepts.clear();
+        debugPrint('fetchScrapConcepts 실패: ${response?['message']}');
+      }
+    } catch (e) {
+      debugPrint('fetchScrapConcepts Error: $e');
+      scrapConcepts.clear();
+    }
   }
 }
