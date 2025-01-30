@@ -7,17 +7,12 @@ class MyLearningController extends GetxController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
 
-  // 탭별 데이터
-  final List<Map<String, dynamic>> quizzes = [
-    {'category': '금융', 'title': '저축과 이자'},
-    {'category': '경제', 'title': '수요와 공급'},
-  ];
-
   var selectedConsonant = "ㄱ".obs;
   var keyword = "".obs;
   var typeValue = true.obs; //false : 검색
   var selectedLevel = 'BEGINNER'.obs; // 초기값 설정
-  var scrapConcepts = <Map<String, dynamic>>[].obs;
+  var scrapConcepts = <Map<String, dynamic>>[].obs; // 스크랩한 개념 학습 목록
+  var scrapQuizzes = <Map<String, dynamic>>[].obs; // 스크랩한 퀴즈 목록
 
   //용어 사전 데이터 불러오기
   Future<List<DictionaryModel>> getDictionaryList(
@@ -105,7 +100,8 @@ class MyLearningController extends GetxController
 
     // 초기 데이터 설정
     updateCurrentData(0);
-    fetchScrapConcepts(); // 초기 데이터 로드
+    fetchScrapConcepts();
+    fetchScrapQuizzes();
 
     // 탭 변경 시 데이터와 버튼 텍스트 업데이트
     tabController.addListener(() {
@@ -129,6 +125,7 @@ class MyLearningController extends GetxController
   void updateSelectedLevel(String level) {
     selectedLevel.value = level;
     fetchScrapConcepts(); // 레벨 변경 시 데이터 로드
+    fetchScrapQuizzes();
   }
 
   Future<void> fetchScrapConcepts() async {
@@ -148,6 +145,26 @@ class MyLearningController extends GetxController
     } catch (e) {
       debugPrint('fetchScrapConcepts Error: $e');
       scrapConcepts.clear();
+    }
+  }
+
+  Future<void> fetchScrapQuizzes() async {
+    try {
+      final response =
+          await RemoteDataSource.getScrapQuizzes(selectedLevel.value);
+      if (response != null && response['isSuccess'] == true) {
+        final List<dynamic> rawQuizzes =
+            response['results']['scrapQuizList'] ?? [];
+        scrapQuizzes.value = rawQuizzes.map((concept) {
+          return Map<String, dynamic>.from(concept);
+        }).toList();
+      } else {
+        scrapQuizzes.clear();
+        debugPrint('fetchScrapQuizzes 실패: ${response?['message']}');
+      }
+    } catch (e) {
+      debugPrint('fetchScrapQuizzes Error: $e');
+      scrapQuizzes.clear();
     }
   }
 }
