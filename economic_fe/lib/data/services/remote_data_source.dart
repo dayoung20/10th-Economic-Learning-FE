@@ -386,4 +386,26 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  /// 레벨별 학습 진도율 조회
+  /// API: api/v1/user/progress
+  static Future<dynamic> getProgress() async {
+    String endpoint = 'api/v1/user/progress';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('학습 진도율 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('학습 진도율 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getProgress Error: $e');
+      return null;
+    }
+  }
 }
