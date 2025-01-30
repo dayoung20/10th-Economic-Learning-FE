@@ -311,6 +311,22 @@ class RemoteDataSource {
     }
   }
 
+  /// 좋아요 한 게시물 조회
+  /// API: api/v1/user/like-posts
+  static Future<dynamic> fetchLikedPosts() async {
+    const String endPoint = 'api/v1/user/like-posts';
+
+    final response = await _getApiWithHeader(endPoint, accessToken);
+
+    if (response != null && response['isSuccess']) {
+      debugPrint("좋아요 게시글 목록 응답: ${response['results']}");
+      return response['results'];
+    } else {
+      debugPrint("좋아요 게시글 목록 가져오기 실패");
+      return null;
+    }
+  }
+
   /// 스크랩 한 개념 학습 조회
   /// API: api/v1/user/scrap-concepts
   static Future<dynamic> getScrapConcepts(String level) async {
