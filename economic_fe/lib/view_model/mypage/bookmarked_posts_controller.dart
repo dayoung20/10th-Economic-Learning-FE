@@ -25,14 +25,22 @@ class BookmarkedPostsController extends GetxController {
       } else if (argument == '좋아요 한 글') {
         response = await RemoteDataSource.fetchLikedPosts();
       } else if (argument == '좋아요 한 댓글') {
-        response = await RemoteDataSource.fetchLikedPosts();
+        response = await RemoteDataSource.fetchLikedComments();
       } else {
         debugPrint("fetchData Error: 잘못된 argument 값입니다.");
         return;
       }
 
       if (response != null) {
-        final List<dynamic> rawPosts = response['postList'] ?? [];
+        final List<dynamic> rawPosts;
+
+        if (argument == '좋아요 한 댓글') {
+          // 좋아요 한 댓글 API의 경우
+          rawPosts = response['likeCommentResponses'] ?? [];
+        } else {
+          // 다른 API들의 경우
+          rawPosts = response['postList'] ?? [];
+        }
 
         // type 변환 로직 적용
         final List<Map<String, dynamic>> processedPosts = rawPosts.map((post) {
@@ -43,6 +51,7 @@ class BookmarkedPostsController extends GetxController {
           return {
             ...postMap, // 기존 데이터
             'type': transformedType, // 변환된 type 값
+            if (argument == '좋아요 한 댓글') 'postTitle': postMap['postName'] ?? ''
           };
         }).toList();
 

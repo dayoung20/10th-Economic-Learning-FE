@@ -91,7 +91,9 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                         // 게시글 상세 페이지 이동 (추후 구현 가능)
                       },
                       child: Text(
-                        post["title"] ?? '',
+                        controller.argument == "좋아요 한 댓글"
+                            ? post["content"] ?? ''
+                            : post["title"] ?? '',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -106,7 +108,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                         children: [
                           const SizedBox(height: 6),
                           Text(
-                            post["postTitle"] ?? '',
+                            post["postName"] ?? '',
                             style: const TextStyle(
                               color: Color(0xFFA2A2A2),
                               fontSize: 12,
