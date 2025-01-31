@@ -16,13 +16,11 @@ class WrongQuizPage extends StatefulWidget {
 class _WrongQuizPageState extends State<WrongQuizPage> {
   final WrongQuizController controller = Get.put(WrongQuizController());
 
-  @override
   void initState() {
     super.initState();
     controller.fetchIncorrectQuestions(); // 초기 데이터 로드
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,

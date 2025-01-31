@@ -21,7 +21,7 @@ class MyLearningController extends GetxController
     try {
       print("start");
       dynamic response;
-
+      
       if (type) {
         response = await RemoteDataSource.getDictionary(page, text);
         print("response :: $response");
