@@ -334,6 +334,48 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩
+  static Future<dynamic> postTermsScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 post 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap Error : $e");
+      return false;
+    }
+  }
+
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩 취소
+  static Future<dynamic> deleteScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 delete 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap delete Error : $e");
+      return false;
+    }
+  }
+
   /// 틀린 문제 데이터 요청
   /// api/v1/user/wrong-quizzes
   static Future<dynamic> fetchIncorrectQuestions(String level) async {
