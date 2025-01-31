@@ -492,4 +492,26 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  /// 사용자 프로필 등록 API
+  /// API: api/v1/user/profile
+  static Future<dynamic> registerUserProfile(
+      Map<String, dynamic> userProfile) async {
+    String endpoint = 'api/v1/user/profile';
+
+    try {
+      final response = await postApiWithJson(endpoint, userProfile);
+
+      if (response == 200) {
+        debugPrint('사용자 프로필 등록 성공');
+        return true;
+      } else {
+        debugPrint('사용자 프로필 등록 실패: $response');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('registerUserProfile Error: $e');
+      return false;
+    }
+  }
 }
