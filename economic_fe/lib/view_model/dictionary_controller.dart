@@ -76,4 +76,17 @@ class DictionaryController extends GetxController {
       debugPrint('Error: $e');
     }
   }
+
+  // 특정 용어 스크랩 하기
+  Future<void> postTermScrap(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await RemoteDataSource.postTermsScrap(id);
+      print("scrap response : $response");
+    } catch (e) {
+      debugPrint("Error: $e");
+    }
+  }
 }

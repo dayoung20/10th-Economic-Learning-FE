@@ -498,8 +498,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                 // items[index]['selectedWord'] =
                                                 //     !(items[index]['selectedWord'] ??
                                                 //         false);
-                                                terms.isScraped =
-                                                    !terms.isScraped! ?? false;
+                                                // terms.isScraped =
+                                                //     !terms.isScraped! ?? false;
+                                                controller.postTermScrap(
+                                                    terms.termId!);
                                                 print("Dd");
                                                 print(terms.isScraped);
                                               });
