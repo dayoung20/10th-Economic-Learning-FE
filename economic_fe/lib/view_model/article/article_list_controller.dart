@@ -27,19 +27,19 @@ class ArticleListController extends GetxController {
   }
 
   // 기사 리스트 데이터
-  List<Article> articles = List.generate(
-    10,
-    (index) => Article(
-      id: index,
-      category: '경기 분석',
-      headline: '[속보] 기사 제목 $index',
-      publisher: '경기일보',
-      uploadTime: '4시간 전',
-      isBookmarked: false.obs,
-      url:
-          'https://www.hankookilbo.com/News/Read/A2022022411300004923', // 임시 기사 링크
-    ),
-  );
+  // List<Article> articles = List.generate(
+  //   10,
+  //   (index) => Article(
+  //     id: index,
+  //     category: '경기 분석',
+  //     headline: '[속보] 기사 제목 $index',
+  //     publisher: '경기일보',
+  //     uploadTime: '4시간 전',
+  //     isBookmarked: false.obs,
+  //     url:
+  //         'https://www.hankookilbo.com/News/Read/A2022022411300004923', // 임시 기사 링크
+  //   ),
+  // );
 
   // 기사 세부페이지로 이동
   void toDetailPage(ArticleModel article) {
@@ -47,10 +47,10 @@ class ArticleListController extends GetxController {
   }
 
   // 북마크 상태 토글 메서드
-  void toggleBookmark(int articleId) {
-    final article = articles.firstWhere((article) => article.id == articleId);
-    article.isBookmarked.value = !article.isBookmarked.value;
-  }
+  // void toggleBookmark(int articleId) {
+  //   final article = articles.firstWhere((article) => article.id == articleId);
+  //   article.isBookmarked.value = !article.isBookmarked.value;
+  // }
 
   // 챗봇 화면으로 이동
   void toChatbot() {
@@ -78,6 +78,32 @@ class ArticleListController extends GetxController {
     } catch (e) {
       debugPrint('Error: $e');
       return [];
+    }
+  }
+
+  // 뉴스 스크랩
+  Future<void> postNewsScrap(int id) async {
+    try {
+      print("start");
+      dynamic response;
+
+      response = await RemoteDataSource.postNewsScrap(id);
+      print("뉴스 스크랩 : $response");
+    } catch (e) {
+      debugPrint("Error: $e");
+    }
+  }
+
+  // 특정 용어 스크랩 취소하기
+  Future<void> deleteNewsScrap(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await RemoteDataSource.deleteNewsScrap(id);
+      print("scrap delete response : $response");
+    } catch (e) {
+      debugPrint("Error : $e");
     }
   }
 }

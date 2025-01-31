@@ -19,7 +19,6 @@ class _ArticleListPageState extends State<ArticleListPage> {
   final ArticleListController controller = Get.put(ArticleListController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller.getNewsList(1, "RECENT", null);
   }
@@ -199,222 +198,168 @@ class _ArticleListPageState extends State<ArticleListPage> {
                         ),
                       ),
                       // 기사 목록
-                      Obx(() {
-                        return FutureBuilder<List<ArticleModel>>(
-                          future: controller.getNewsList(
-                              1,
-                              controller.selectedSort.value,
-                              controller.selectedCate.value),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            // 에러인 경우
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Text("에러 발생 ${snapshot.error}"),
-                              );
-                            }
-                            // 데이터가 없을때
-                            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return const Center(child: Text('뉴스 데이터가 없습니다.'));
-                            }
-                            final newsList = snapshot.data!;
+                      Obx(
+                        () {
+                          return FutureBuilder<List<ArticleModel>>(
+                            future: controller.getNewsList(
+                                1,
+                                controller.selectedSort.value,
+                                controller.selectedCate.value),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              // 에러인 경우
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text("에러 발생 ${snapshot.error}"),
+                                );
+                              }
+                              // 데이터가 없을때
+                              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(
+                                    child: Text('뉴스 데이터가 없습니다.'));
+                              }
+                              final newsList = snapshot.data!;
 
-                            return Expanded(
-                              child: ListView.builder(
-                                itemCount: newsList.length,
-                                itemBuilder: (context, index) {
-                                  final news = newsList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(16.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        border: const Border(
-                                          bottom: BorderSide(
-                                            color: Color(0xFFD9D9D9),
-                                            width: 1,
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: newsList.length,
+                                  itemBuilder: (context, index) {
+                                    final news = newsList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          border: const Border(
+                                            bottom: BorderSide(
+                                              color: Color(0xFFD9D9D9),
+                                              width: 1,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${news.category}",
-                                            style: const TextStyle(
-                                              color: Color(0xFF2BD6D6),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                              letterSpacing: -0.3,
-                                              height: 1.3,
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              controller.toDetailPage(news);
-                                            },
-                                            child: Text(
-                                              news.title ?? "제목 없음",
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                height: 1.3,
-                                                letterSpacing: -0.4,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 6),
-                                          Text(
-                                            news.publisher ?? "알 수 없음",
-                                            style: const TextStyle(
-                                              color: Color(0xFF767676),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.5,
-                                              letterSpacing: -0.3,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      })
-                      // Expanded(
-                      //   child: ListView.separated(
-                      //     shrinkWrap: true,
-                      //     itemCount: controller.articles.length, // 예시 데이터 갯수
-                      //     itemBuilder: (context, index) {
-                      //       final article = controller.articles[index];
-                      //       // 인기순과 최신순을 구분해서 데이터를 다르게 처리
-                      //       if (controller.selectedOrder.value == 0) {
-                      //         // 인기순
-                      //         return Padding(
-                      //           padding: const EdgeInsets.all(16),
-                      //           child: Column(
-                      //             crossAxisAlignment: CrossAxisAlignment.start,
-                      //             children: [
-                      //               // 카테고리 이름
-                      //               Text(
-                      //                 article.category,
-                      //                 style: const TextStyle(
-                      //                   color: Color(0xFF2AD6D6),
-                      //                   fontSize: 12,
-                      //                   fontWeight: FontWeight.w600,
-                      //                   height: 1.30,
-                      //                   letterSpacing: -0.30,
-                      //                 ),
-                      //               ),
-                      //               const SizedBox(
-                      //                 height: 6,
-                      //               ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${news.category}",
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF2BD6D6),
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    letterSpacing: -0.3,
+                                                    height: 1.3,
+                                                  ),
+                                                ),
+                                                // GestureDetector(
+                                                //   onTap: () {
+                                                //     controller
+                                                //         .toDetailPage(news);
+                                                //   },
+                                                //   child: Text(
+                                                //     news.title ?? "제목 없음",
+                                                //     style: const TextStyle(
+                                                //       fontSize: 16,
+                                                //       fontWeight:
+                                                //           FontWeight.w500,
+                                                //       height: 1.3,
+                                                //       letterSpacing: -0.4,
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    controller
+                                                        .toDetailPage(news);
+                                                  },
+                                                  child: Text(
+                                                    (news.title != null &&
+                                                            news.title!.length >
+                                                                30)
+                                                        ? '${news.title!.substring(0, 20)}...' // 20자까지만 표시하고 "..." 추가
+                                                        : news.title ?? "제목 없음",
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      height: 1.3,
+                                                      letterSpacing: -0.4,
+                                                    ),
+                                                  ),
+                                                ),
 
-                      //               Row(
-                      //                 mainAxisAlignment:
-                      //                     MainAxisAlignment.spaceBetween,
-                      //                 crossAxisAlignment:
-                      //                     CrossAxisAlignment.start,
-                      //                 children: [
-                      //                   // 기사 헤드라인
-                      //                   GestureDetector(
-                      //                     onTap: () {
-                      //                       controller.toDetailPage(article);
-                      //                     },
-                      //                     child: SizedBox(
-                      //                       width: MediaQuery.of(context)
-                      //                               .size
-                      //                               .width -
-                      //                           80,
-                      //                       child: Text(
-                      //                         article.headline,
-                      //                         style: const TextStyle(
-                      //                           color: Color(0xFF111111),
-                      //                           fontSize: 16,
-                      //                           fontWeight: FontWeight.w500,
-                      //                           height: 1.30,
-                      //                           letterSpacing: -0.40,
-                      //                         ),
-                      //                       ),
-                      //                     ),
-                      //                   ),
-                      //                   GestureDetector(
-                      //                     onTap: () => controller
-                      //                         .toggleBookmark(article.id),
-                      //                     child: Obx(() {
-                      //                       return Image.asset(
-                      //                         article.isBookmarked.value
-                      //                             ? 'assets/bookmark_selected.png' // 북마크 활성 상태
-                      //                             : 'assets/bookmark.png', // 북마크 비활성 상태
-                      //                         width: 13,
-                      //                         height: 18.38,
-                      //                       );
-                      //                     }),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //               const SizedBox(
-                      //                 height: 6,
-                      //               ),
-                      //               Row(
-                      //                 mainAxisAlignment:
-                      //                     MainAxisAlignment.spaceBetween,
-                      //                 children: [
-                      //                   // 신문사
-                      //                   Text(
-                      //                     article.publisher,
-                      //                     style: const TextStyle(
-                      //                       color: Color(0xFF767676),
-                      //                       fontSize: 12,
-                      //                       fontWeight: FontWeight.w400,
-                      //                       height: 1.50,
-                      //                       letterSpacing: -0.30,
-                      //                     ),
-                      //                   ),
-                      //                   // 기사 업로드 시간
-                      //                   Text(
-                      //                     article.uploadTime,
-                      //                     style: const TextStyle(
-                      //                       color: Color(0xFF767676),
-                      //                       fontSize: 12,
-                      //                       fontWeight: FontWeight.w400,
-                      //                       height: 1.50,
-                      //                       letterSpacing: -0.30,
-                      //                     ),
-                      //                   ),
-                      //                 ],
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         );
-                      //       } else {
-                      //         // 최신순
-                      //         return const SizedBox();
-                      //       }
-                      //     },
-                      //     separatorBuilder: (context, index) {
-                      //       return Padding(
-                      //         padding: const EdgeInsets.symmetric(vertical: 16),
-                      //         child: Container(
-                      //           height: 1,
-                      //           color: const Color(0xffd9d9d9),
-                      //         ),
-                      //       ); // 항목 사이에 구분선 추가
-                      //     },
-                      //   ),
-                      // ),
+                                                const SizedBox(height: 6),
+                                                Text(
+                                                  news.publisher ?? "알 수 없음",
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF767676),
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.5,
+                                                    letterSpacing: -0.3,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    if (news.isScraped!) {
+                                                      controller
+                                                          .deleteNewsScrap(
+                                                              news.id!);
+                                                    } else {
+                                                      controller.postNewsScrap(
+                                                          news.id!);
+                                                    }
+                                                  },
+                                                  child: Image.asset(
+                                                    news.isScraped ?? false
+                                                        ? 'assets/bookmark_selected.png'
+                                                        : 'assets/bookmark.png',
+                                                    width: 13,
+                                                    height: 18.3,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Text(
+                                                  news.createdDate!,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF767676),
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.5,
+                                                    letterSpacing: -0.3,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                 );

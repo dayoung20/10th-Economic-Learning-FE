@@ -14,6 +14,7 @@ class ArticleModel with ChangeNotifier {
   String? url;
   String? category;
   String? createdDate;
+  bool? isScraped;
 
   ArticleModel({
     this.id,
@@ -24,6 +25,7 @@ class ArticleModel with ChangeNotifier {
     this.url,
     this.category,
     this.createdDate,
+    this.isScraped,
   });
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class ArticleModel with ChangeNotifier {
       url: json['url'],
       category: json['category'],
       createdDate: json['createdDate'],
+      isScraped: json['isScraped'],
     );
   }
 }
