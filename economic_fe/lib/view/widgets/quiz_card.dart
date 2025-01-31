@@ -98,7 +98,7 @@ class _QuizCardState extends State<QuizCard> {
                       Container(
                         width: MediaQuery.of(context).size.width - 32,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 24),
+                            horizontal: 16, vertical: 24),
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(10),
@@ -124,7 +124,9 @@ class _QuizCardState extends State<QuizCard> {
                                     return controller.clickCheckBtn.value
                                         ? Padding(
                                             padding: const EdgeInsets.symmetric(
-                                                vertical: 8),
+                                              vertical: 8,
+                                              horizontal: 16,
+                                            ),
                                             child: MultipleOptionContainer(
                                               widget: widget,
                                               optionNum: index + 1,
@@ -148,7 +150,9 @@ class _QuizCardState extends State<QuizCard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 8),
+                                                vertical: 8,
+                                                horizontal: 16,
+                                              ),
                                               child: MultipleOptionContainer(
                                                 widget: widget,
                                                 optionNum: index + 1,
@@ -465,8 +469,8 @@ class OXOptionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 120,
+      width: (MediaQuery.of(context).size.width - 80) / 2,
+      height: (MediaQuery.of(context).size.width - 80) / 2,
       decoration: isSelected
           ? isQuiz
               ? ShapeDecoration(
@@ -506,7 +510,6 @@ class OXOptionContainer extends StatelessWidget {
             fontWeight: FontWeight.w500,
             height: 0.18,
           ),
-          textAlign: TextAlign.center,
         ),
       ),
     );

@@ -25,11 +25,10 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
         onPress: () => Get.back(),
       ),
       body: Obx(() {
-        // posts가 비어있는 경우 처리
         if (controller.posts.isEmpty) {
           return const Center(
             child: Text(
-              '데이터가 없습니다.',
+              '스크랩 된 데이터가 없습니다.',
               style: TextStyle(
                 fontSize: 16,
                 color: Color(0xFF767676),
@@ -59,11 +58,12 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // 게시글 유형 및 작성일
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          post["category"]!,
+                          post["type"] ?? '',
                           style: const TextStyle(
                             color: Color(0xFF767676),
                             fontSize: 12,
@@ -73,7 +73,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                           ),
                         ),
                         Text(
-                          post["uploadTime"]!,
+                          post["createdDate"] ?? '',
                           style: const TextStyle(
                             color: Color(0xFF767676),
                             fontSize: 12,
@@ -84,15 +84,16 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 6,
-                    ),
+                    const SizedBox(height: 6),
+                    // 게시글 제목
                     GestureDetector(
                       onTap: () {
-                        // 게시글 상세 페이지 이동
+                        // 게시글 상세 페이지 이동 (추후 구현 가능)
                       },
                       child: Text(
-                        post["title"]!,
+                        controller.argument == "좋아요 한 댓글"
+                            ? post["content"] ?? ''
+                            : post["title"] ?? '',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -101,25 +102,23 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                         ),
                       ),
                     ),
-                    controller.argument == "좋아요 한 댓글"
-                        ? Column(
-                            children: [
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Text(
-                                post["postTitle"]!,
-                                style: const TextStyle(
-                                  color: Color(0xFFA2A2A2),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.30,
-                                  letterSpacing: -0.30,
-                                ),
-                              ),
-                            ],
-                          )
-                        : const SizedBox(),
+                    // 좋아요 한 댓글의 경우 원문글 제목 표시
+                    if (controller.argument == "좋아요 한 댓글")
+                      Column(
+                        children: [
+                          const SizedBox(height: 6),
+                          Text(
+                            post["postName"] ?? '',
+                            style: const TextStyle(
+                              color: Color(0xFFA2A2A2),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              height: 1.30,
+                              letterSpacing: -0.30,
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

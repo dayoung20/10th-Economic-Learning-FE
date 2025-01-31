@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/level_container.dart';
@@ -15,7 +16,11 @@ class WrongQuizPage extends StatefulWidget {
 class _WrongQuizPageState extends State<WrongQuizPage> {
   final WrongQuizController controller = Get.put(WrongQuizController());
 
-  @override
+  void initState() {
+    super.initState();
+    controller.fetchIncorrectQuestions(); // 초기 데이터 로드
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
@@ -33,7 +38,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                 Obx(
                   () => LevelContainer(
                     level: '초급',
-                    isSelected: controller.selectedLevel.value == '초급',
+                    isSelected: controller.selectedLevel.value == 'BEGINNER',
                     onTap: () => controller.updateSelectedLevel('초급'),
                   ),
                 ),
@@ -41,7 +46,8 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                 Obx(
                   () => LevelContainer(
                     level: '중급',
-                    isSelected: controller.selectedLevel.value == '중급',
+                    isSelected:
+                        controller.selectedLevel.value == 'INTERMEDIATE',
                     onTap: () => controller.updateSelectedLevel('중급'),
                   ),
                 ),
@@ -49,7 +55,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                 Obx(
                   () => LevelContainer(
                     level: '고급',
-                    isSelected: controller.selectedLevel.value == '고급',
+                    isSelected: controller.selectedLevel.value == 'ADVANCED',
                     onTap: () => controller.updateSelectedLevel('고급'),
                   ),
                 ),
@@ -99,60 +105,63 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
           const SizedBox(height: 15),
           // 탭별 데이터 리스트
           Expanded(
-            child: ListView.builder(
-              itemCount: controller.incorrectQuestions.length,
-              itemBuilder: (context, index) {
-                final item = controller.incorrectQuestions[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: const Color(0xFFD9D9D9),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['category']!,
-                              style: const TextStyle(
-                                color: Color(0xFF767676),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+            child: Obx(
+              () => controller.incorrectQuestions.isEmpty
+                  ? const Text('틀린 문제가 없습니다.')
+                  : ListView.builder(
+                      itemCount: controller.incorrectQuestions.length,
+                      itemBuilder: (context, index) {
+                        final item = controller.incorrectQuestions[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              // 개별 퀴즈 화면으로 이동
+                              Get.to(
+                                const QuizPage(),
+                                arguments: {
+                                  'quizId': item['id'],
+                                }, // 전달할 quizId
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: const Color(0xFFD9D9D9),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['category']!,
+                                    style: const TextStyle(
+                                      color: Color(0xFF767676),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    item['title']!,
+                                    style: const TextStyle(
+                                      color: Color(0xFF404040),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item['title']!,
-                              style: const TextStyle(
-                                color: Color(0xFF404040),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Icon(
-                            Icons.bookmark,
-                            color: Palette.buttonColorGreen,
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
             ),
           ),
         ],

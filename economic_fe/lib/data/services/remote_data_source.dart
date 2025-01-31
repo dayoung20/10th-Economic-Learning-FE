@@ -19,10 +19,10 @@ class RemoteDataSource {
     Map<String, dynamic> jsonData,
   ) async {
     String apiUrl = '$baseUrl/$endPoint';
-    String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $authToken',
+      'Authorization': 'Bearer $accessToken',
     };
 
     try {
@@ -248,5 +248,164 @@ class RemoteDataSource {
     }
 
     return response;
+  }
+
+  /// 틀린 문제 데이터 요청
+  /// api/v1/user/wrong-quizzes
+  static Future<dynamic> fetchIncorrectQuestions(String level) async {
+    String endpoint = 'api/v1/user/wrong-quizzes?level=$level';
+
+    try {
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response['isSuccess'] == true) {
+        debugPrint('틀린 문제 데이터 요청 성공');
+        return response;
+      } else {
+        debugPrint('데이터 요청 실패: ${response?['message'] ?? '알 수 없는 에러'}');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// 개별 퀴즈 조회
+  /// API: api/v1/learning/learning/quiz/{quizId}
+  static Future<dynamic> fetchQuizById(int quizId) async {
+    try {
+      // API Endpoint 구성
+      String endPoint = 'api/v1/learning/learning/quiz/$quizId';
+
+      // GET 요청 수행
+      final response = await _getApiWithHeader(endPoint, accessToken);
+
+      // 응답 데이터 처리
+      if (response != null) {
+        print("퀴즈 데이터 응답: $response");
+        return response;
+      } else {
+        print("퀴즈 데이터 요청 실패");
+        return null;
+      }
+    } catch (e) {
+      print("fetchQuizById 요청 중 예외 발생: $e");
+      return null;
+    }
+  }
+
+  /// 스크랩 한 게시물 조회
+  /// API: api/v1/user/scrap-posts
+  static Future<dynamic> fetchScrapedPosts() async {
+    const String endPoint = 'api/v1/user/scrap-posts';
+
+    final response = await _getApiWithHeader(endPoint, accessToken);
+
+    if (response != null && response['isSuccess']) {
+      debugPrint("스크랩 게시글 목록 응답: ${response['results']}");
+      return response['results'];
+    } else {
+      debugPrint("스크랩 게시글 목록 가져오기 실패");
+      return null;
+    }
+  }
+
+  /// 좋아요 한 게시물 조회
+  /// API: api/v1/user/like-posts
+  static Future<dynamic> fetchLikedPosts() async {
+    const String endPoint = 'api/v1/user/like-posts';
+
+    final response = await _getApiWithHeader(endPoint, accessToken);
+
+    if (response != null && response['isSuccess']) {
+      debugPrint("좋아요 게시글 목록 응답: ${response['results']}");
+      return response['results'];
+    } else {
+      debugPrint("좋아요 게시글 목록 가져오기 실패");
+      return null;
+    }
+  }
+
+  /// 좋아요 한 댓글 조회
+  /// API: api/v1/user/like-comments
+  static Future<dynamic> fetchLikedComments() async {
+    const String endPoint = 'api/v1/user/like-comments';
+
+    final response = await _getApiWithHeader(endPoint, accessToken);
+
+    if (response != null && response['isSuccess']) {
+      debugPrint("좋아요 댓글 목록 응답: ${response['results']}");
+      return response['results'];
+    } else {
+      debugPrint("좋아요 댓글 목록 가져오기 실패");
+      return null;
+    }
+  }
+
+  /// 스크랩 한 개념 학습 조회
+  /// API: api/v1/user/scrap-concepts
+  static Future<dynamic> getScrapConcepts(String level) async {
+    String endpoint = 'api/v1/user/scrap-concepts?level=$level';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('스크랩한 학습 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('스크랩한 학습 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getScrapConcepts Error: $e');
+      return null;
+    }
+  }
+
+  /// 스크랩 한 퀴즈 조회
+  /// API: api/v1/user/scrap-quizzes
+  static Future<dynamic> getScrapQuizzes(String level) async {
+    String endpoint = 'api/v1/user/scrap-quizzes?level=$level';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('스크랩한 퀴즈 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('스크랩한 퀴즈 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getScrapConcepts Error: $e');
+      return null;
+    }
+  }
+
+  /// 레벨별 학습 진도율 조회
+  /// API: api/v1/user/progress
+  static Future<dynamic> getProgress() async {
+    String endpoint = 'api/v1/user/progress';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('학습 진도율 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('학습 진도율 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getProgress Error: $e');
+      return null;
+    }
   }
 }

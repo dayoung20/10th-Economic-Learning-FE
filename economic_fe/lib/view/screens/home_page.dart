@@ -22,12 +22,6 @@ class _HomePageState extends State<HomePage> {
     // 연속 학습일
     const int dayCounts = 3;
 
-    // 진도율
-    const double beginnerProgress = 0.92; // Beginner 진도율
-    const double intermediateProgress = 0.21; // Intermediate 진도율
-    const double advancedProgress = 0.02; // Advanced 진도율
-    const double maxHeight = 120.0; // 그래프의 최대 높이
-
     // 경제 톡톡 참여자 프로필 사진 리스트
     const List<String> profileImages = [
       'assets/profile_example.png',
@@ -118,163 +112,176 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               // 진도율 그래프
-                              SizedBox(
-                                width: 240,
-                                height: 156,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // Beginner
-                                    SizedBox(
-                                      width: 72,
-                                      height: 156,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          SizedBox(
-                                            width: 44,
-                                            child: Text(
-                                              '${(beginnerProgress * 100).toInt()}%',
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Color(0xFF111111),
+                              Obx(() {
+                                return SizedBox(
+                                  width: 240,
+                                  height: 156,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // Beginner
+                                      SizedBox(
+                                        width: 72,
+                                        height: 156,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              width: 44,
+                                              child: Text(
+                                                '${(controller.beginnerProgress.value * 100).toInt()}%',
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Color(0xFF111111),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.50,
+                                                  letterSpacing: -0.30,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 36,
+                                              height: controller.maxHeight *
+                                                  controller
+                                                      .beginnerProgress.value,
+                                              decoration: const ShapeDecoration(
+                                                color: Color(0xFFB1F2F2),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(4),
+                                                    topRight:
+                                                        Radius.circular(4),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const Text(
+                                              'Beginner',
+                                              style: TextStyle(
+                                                color: Color(0xFF404040),
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.50,
                                                 letterSpacing: -0.30,
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 36,
-                                            height:
-                                                maxHeight * beginnerProgress,
-                                            decoration: const ShapeDecoration(
-                                              color: Color(0xFFB1F2F2),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(4),
-                                                  topRight: Radius.circular(4),
+                                          ],
+                                        ),
+                                      ),
+                                      // Intermediate
+                                      SizedBox(
+                                        width: 72,
+                                        height: 156,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              width: 44,
+                                              child: Text(
+                                                '${(controller.intermediateProgress.value * 100).toInt()}%',
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Color(0xFF111111),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.50,
+                                                  letterSpacing: -0.30,
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          const Text(
-                                            'Beginner',
-                                            style: TextStyle(
-                                              color: Color(0xFF404040),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.50,
-                                              letterSpacing: -0.30,
+                                            Container(
+                                              width: 36,
+                                              height: controller.maxHeight *
+                                                  controller
+                                                      .intermediateProgress
+                                                      .value,
+                                              decoration: const ShapeDecoration(
+                                                color: Color(0xFFB1F2F2),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(4),
+                                                    topRight:
+                                                        Radius.circular(4),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Intermediate
-                                    SizedBox(
-                                      width: 72,
-                                      height: 156,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          SizedBox(
-                                            width: 44,
-                                            child: Text(
-                                              '${(intermediateProgress * 100).toInt()}%',
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Color(0xFF111111),
+                                            const Text(
+                                              'Intermediate',
+                                              style: TextStyle(
+                                                color: Color(0xFF404040),
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.50,
                                                 letterSpacing: -0.30,
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 36,
-                                            height: maxHeight *
-                                                intermediateProgress,
-                                            decoration: const ShapeDecoration(
-                                              color: Color(0xFFB1F2F2),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(4),
-                                                  topRight: Radius.circular(4),
+                                          ],
+                                        ),
+                                      ),
+                                      // Advanced
+                                      SizedBox(
+                                        width: 72,
+                                        height: 156,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              width: 44,
+                                              child: Text(
+                                                '${(controller.advancedProgress.value * 100).toInt()}%',
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Color(0xFF111111),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.50,
+                                                  letterSpacing: -0.30,
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          const Text(
-                                            'Intermediate',
-                                            style: TextStyle(
-                                              color: Color(0xFF404040),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.50,
-                                              letterSpacing: -0.30,
+                                            Container(
+                                              width: 36,
+                                              height: controller.maxHeight *
+                                                  controller
+                                                      .advancedProgress.value,
+                                              decoration: const ShapeDecoration(
+                                                color: Color(0xFFB1F2F2),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(4),
+                                                    topRight:
+                                                        Radius.circular(4),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Advanced
-                                    SizedBox(
-                                      width: 72,
-                                      height: 156,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          SizedBox(
-                                            width: 44,
-                                            child: Text(
-                                              '${(advancedProgress * 100).toInt()}%',
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Color(0xFF111111),
+                                            const Text(
+                                              'Advanced',
+                                              style: TextStyle(
+                                                color: Color(0xFF404040),
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.50,
                                                 letterSpacing: -0.30,
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 36,
-                                            height:
-                                                maxHeight * advancedProgress,
-                                            decoration: const ShapeDecoration(
-                                              color: Color(0xFFB1F2F2),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(4),
-                                                  topRight: Radius.circular(4),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const Text(
-                                            'Advanced',
-                                            style: TextStyle(
-                                              color: Color(0xFF404040),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.50,
-                                              letterSpacing: -0.30,
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                    ],
+                                  ),
+                                );
+                              }),
+
                               Container(
                                 width: 269,
                                 height: 44,
