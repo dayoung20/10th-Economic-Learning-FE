@@ -556,4 +556,60 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시글 목록 조회
+  /// api: api/v1/post
+  ///
+  /// 모든 카테고리 데이터를 가져와서 병합하여 반환
+  static Future<List<dynamic>> fetchAllPosts(String sort, String type) async {
+    List<dynamic> allPosts = [];
+
+    if (type == "ALL") {
+      // 전체 카티고리일 경우 모든 카테고리 조회
+      List<String> categories = [
+        "FREE",
+        "QUESTION",
+        "BOOK_RECOMMENDATION",
+        "INFORMATION"
+      ];
+      for (String category in categories) {
+        var posts = await _fetchCategoryPosts(sort, category);
+        allPosts.addAll(posts);
+      }
+    } else {
+      // 단일 카테고리 조회
+      allPosts = await _fetchCategoryPosts(sort, type);
+    }
+
+    return allPosts;
+  }
+
+  static Future<List<dynamic>> _fetchCategoryPosts(
+      String sort, String type) async {
+    List<dynamic> categoryPosts = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint = 'api/v1/post?page=$currentPage&sort=$sort&type=$type';
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          categoryPosts.addAll(results["postList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("게시글 조회 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("게시글 목록 조회 중 오류 발생: $e");
+    }
+
+    return categoryPosts;
+  }
 }
