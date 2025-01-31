@@ -236,6 +236,48 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/news/{id}/scrap
+  /// 뉴스 스크랩
+  static Future<dynamic> postNewsScrap(int id) async {
+    String endPoint = "api/news/$id/scrap";
+
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 post 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap Error : $e");
+      return false;
+    }
+  }
+
+  /// 뉴스 스크랩 취소
+  /// api/news/{id}/scrap
+  static Future<dynamic> deleteNewsScrap(int id) async {
+    String endPoint = "api/news/$id/scrap";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 delete 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap delete Error : $e");
+      return false;
+    }
+  }
+
   /// 자음 별 용어 조회
   /// api/v1/terms/search/consonant
   static Future<dynamic> getDictionary(int page, String consonant) async {

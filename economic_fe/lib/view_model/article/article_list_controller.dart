@@ -80,4 +80,30 @@ class ArticleListController extends GetxController {
       return [];
     }
   }
+
+  // 뉴스 스크랩
+  Future<void> postNewsScrap(int id) async {
+    try {
+      print("start");
+      dynamic response;
+
+      response = await RemoteDataSource.postNewsScrap(id);
+      print("뉴스 스크랩 : $response");
+    } catch (e) {
+      debugPrint("Error: $e");
+    }
+  }
+
+  // 특정 용어 스크랩 취소하기
+  Future<void> deleteNewsScrap(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await RemoteDataSource.deleteNewsScrap(id);
+      print("scrap delete response : $response");
+    } catch (e) {
+      debugPrint("Error : $e");
+    }
+  }
 }
