@@ -13,8 +13,8 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
-  /// authToken을 포함하도록 수정
-  static Future<dynamic> postApi(
+  /// jsonData 포함X
+  static Future<dynamic> postApiWithJson(
     String endPoint,
     Map<String, dynamic> jsonData,
   ) async {
@@ -30,6 +30,42 @@ class RemoteDataSource {
         Uri.parse(apiUrl),
         headers: headers,
         body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response.statusCode;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
+  static Future<dynamic> _postApi(
+    String endPoint,
+    // Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
       );
 
       if (response.statusCode == 200) {
@@ -137,7 +173,14 @@ class RemoteDataSource {
     debugPrint('DELETE 요청: $endPoint');
 
     try {
-      final response = await http.delete(Uri.parse(apiUrl));
+      final headers = {
+        'Authorization': 'Bearer $accessToken',
+        'accept': '*/*',
+      };
+      final response = await http.delete(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
 
       if (response.statusCode == 200) {
         debugPrint('DELETE 요청 성공');
@@ -191,6 +234,48 @@ class RemoteDataSource {
       print('데이터 get 실패');
     }
     return response;
+  }
+
+  /// api/news/{id}/scrap
+  /// 뉴스 스크랩
+  static Future<dynamic> postNewsScrap(int id) async {
+    String endPoint = "api/news/$id/scrap";
+
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 post 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap Error : $e");
+      return false;
+    }
+  }
+
+  /// 뉴스 스크랩 취소
+  /// api/news/{id}/scrap
+  static Future<dynamic> deleteNewsScrap(int id) async {
+    String endPoint = "api/news/$id/scrap";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 delete 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap delete Error : $e");
+      return false;
+    }
   }
 
   /// 자음 별 용어 조회
@@ -406,6 +491,48 @@ class RemoteDataSource {
     } catch (e) {
       debugPrint('getProgress Error: $e');
       return null;
+    }
+  }
+
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩
+  static Future<dynamic> postTermsScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 post 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap Error : $e");
+      return false;
+    }
+  }
+
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩 취소
+  static Future<dynamic> deleteScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 delete 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap delete Error : $e");
+      return false;
     }
   }
 }

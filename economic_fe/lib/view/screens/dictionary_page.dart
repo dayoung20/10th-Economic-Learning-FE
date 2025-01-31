@@ -491,28 +491,40 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                               ],
                                             ),
                                           ),
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     setState(() {
-                                          //       // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
-                                          //       items[index]['selectedWord'] =
-                                          //           !(items[index]['selectedWord'] ??
-                                          //               false);
-                                          //       // print("Dd");
-                                          //     });
-                                          //   },
-                                          //   child: Padding(
-                                          //     padding: const EdgeInsets.only(
-                                          //         left: 11, top: 8, bottom: 8),
-                                          //     child: Image.asset(
-                                          //       items[index]['selectedWord'] ?? false
-                                          //           ? "assets/bookmark_selected.png"
-                                          //           : "assets/bookmark.png",
-                                          //       width: 13,
-                                          //       height: 18.2,
-                                          //     ),
-                                          //   ),
-                                          // )
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
+                                                // items[index]['selectedWord'] =
+                                                //     !(items[index]['selectedWord'] ??
+                                                //         false);
+                                                // terms.isScraped =
+                                                //     !terms.isScraped! ?? false;
+                                                // controller.postTermScrap(
+                                                //     terms.termId!);
+                                                if (terms.isScraped!) {
+                                                  controller.deleteTermScrap(
+                                                      terms.termId!);
+                                                } else {
+                                                  controller.postTermScrap(
+                                                      terms.termId!);
+                                                }
+                                                print("Dd");
+                                                print(terms.isScraped);
+                                              });
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 11, top: 8, bottom: 8),
+                                              child: Image.asset(
+                                                terms.isScraped ?? false
+                                                    ? "assets/bookmark_selected.png"
+                                                    : "assets/bookmark.png",
+                                                width: 13,
+                                                height: 18.2,
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),

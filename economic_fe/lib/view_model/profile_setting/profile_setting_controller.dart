@@ -111,7 +111,7 @@ class ProfileSettingController extends GetxController {
       return;
     }
 
-    final response = await RemoteDataSource.postApi(
+    final response = await RemoteDataSource.postApiWithJson(
       'api/v1/user/profile',
       userProfile.value.toJson(), // Token 전달
     );
