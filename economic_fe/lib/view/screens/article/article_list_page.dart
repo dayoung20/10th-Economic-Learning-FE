@@ -313,23 +313,41 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                 ),
                                               ],
                                             ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (news.isScraped!) {
-                                                  controller.deleteNewsScrap(
-                                                      news.id!);
-                                                } else {
-                                                  controller
-                                                      .postNewsScrap(news.id!);
-                                                }
-                                              },
-                                              child: Image.asset(
-                                                news.isScraped ?? false
-                                                    ? 'assets/bookmark_selected.png'
-                                                    : 'assets/bookmark.png',
-                                                width: 13,
-                                                height: 18.3,
-                                              ),
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    if (news.isScraped!) {
+                                                      controller
+                                                          .deleteNewsScrap(
+                                                              news.id!);
+                                                    } else {
+                                                      controller.postNewsScrap(
+                                                          news.id!);
+                                                    }
+                                                  },
+                                                  child: Image.asset(
+                                                    news.isScraped ?? false
+                                                        ? 'assets/bookmark_selected.png'
+                                                        : 'assets/bookmark.png',
+                                                    width: 13,
+                                                    height: 18.3,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Text(
+                                                  news.createdDate!,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF767676),
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.5,
+                                                    letterSpacing: -0.3,
+                                                  ),
+                                                ),
+                                              ],
                                             )
                                           ],
                                         ),
