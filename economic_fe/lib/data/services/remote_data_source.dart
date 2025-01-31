@@ -19,7 +19,6 @@ class RemoteDataSource {
     Map<String, dynamic> jsonData,
   ) async {
     String apiUrl = '$baseUrl/$endPoint';
-    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken',
@@ -406,6 +405,28 @@ class RemoteDataSource {
     } catch (e) {
       debugPrint('getProgress Error: $e');
       return null;
+    }
+  }
+
+  /// 사용자 프로필 등록 API
+  /// API: api/v1/user/profile
+  static Future<dynamic> registerUserProfile(
+      Map<String, dynamic> userProfile) async {
+    String endpoint = 'api/v1/user/profile';
+
+    try {
+      final response = await postApi(endpoint, userProfile);
+
+      if (response == 200) {
+        debugPrint('사용자 프로필 등록 성공');
+        return true;
+      } else {
+        debugPrint('사용자 프로필 등록 실패: $response');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('registerUserProfile Error: $e');
+      return false;
     }
   }
 }
