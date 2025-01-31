@@ -89,4 +89,17 @@ class DictionaryController extends GetxController {
       debugPrint("Error: $e");
     }
   }
+
+  // 특정 용어 스크랩 취소하기
+  Future<void> deleteTermScrap(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await RemoteDataSource.deleteScrap(id);
+      print("scrap delete response : $response");
+    } catch (e) {
+      debugPrint("Error : $e");
+    }
+  }
 }

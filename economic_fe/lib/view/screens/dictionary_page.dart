@@ -500,8 +500,15 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                 //         false);
                                                 // terms.isScraped =
                                                 //     !terms.isScraped! ?? false;
-                                                controller.postTermScrap(
-                                                    terms.termId!);
+                                                // controller.postTermScrap(
+                                                //     terms.termId!);
+                                                if (terms.isScraped!) {
+                                                  controller.deleteTermScrap(
+                                                      terms.termId!);
+                                                } else {
+                                                  controller.postTermScrap(
+                                                      terms.termId!);
+                                                }
                                                 print("Dd");
                                                 print(terms.isScraped);
                                               });

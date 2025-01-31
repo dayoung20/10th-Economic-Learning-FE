@@ -173,7 +173,14 @@ class RemoteDataSource {
     debugPrint('DELETE 요청: $endPoint');
 
     try {
-      final response = await http.delete(Uri.parse(apiUrl));
+      final headers = {
+        'Authorization': 'Bearer $accessToken',
+        'accept': '*/*',
+      };
+      final response = await http.delete(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
 
       if (response.statusCode == 200) {
         debugPrint('DELETE 요청 성공');
@@ -458,9 +465,32 @@ class RemoteDataSource {
         return true;
       } else {
         debugPrint("스크랩 실패");
+        return false;
       }
     } catch (e) {
       debugPrint("scrap Error : $e");
+      return false;
+    }
+  }
+
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩 취소
+  static Future<dynamic> deleteScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 delete 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap delete Error : $e");
+      return false;
     }
   }
 }
