@@ -315,8 +315,13 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                controller
-                                                    .postNewsScrap(news.id!);
+                                                if (news.isScraped!) {
+                                                  controller.deleteNewsScrap(
+                                                      news.id!);
+                                                } else {
+                                                  controller
+                                                      .postNewsScrap(news.id!);
+                                                }
                                               },
                                               child: Image.asset(
                                                 news.isScraped ?? false
