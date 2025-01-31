@@ -9,11 +9,13 @@ class DictionaryModel with ChangeNotifier {
   int? termId;
   String? termName;
   String? termDescription;
+  bool? isScraped;
 
   DictionaryModel({
     this.termId,
     this.termName,
     this.termDescription,
+    this.isScraped,
   });
 
   factory DictionaryModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class DictionaryModel with ChangeNotifier {
       termId: json['termId'],
       termName: json['termName'],
       termDescription: json['termDescription'],
+      isScraped: json['isScraped'],
     );
   }
 }
