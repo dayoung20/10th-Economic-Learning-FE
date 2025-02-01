@@ -602,4 +602,24 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  /// api/v1/chatbot
+  /// 챗봇에게 메세지 보내기
+  static Future<dynamic> postChatbotMessage(String message) async {
+    String endPoint = "api/v1/chatbot?message=$message";
+
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("대화 전송 성공");
+        return response;
+      } else {
+        debugPrint("대화 전송 실패");
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error : $e');
+    }
+  }
 }

@@ -222,7 +222,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               //   Obx(
                               // () {
                               FutureBuilder<List<ChatbotModel>>(
-                            future: controller.getChatbotList(0),
+                            future: controller.getChatbotList(1),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -689,7 +689,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                     border: InputBorder.none,
                                     suffixIcon: IconButton(
                                       onPressed: () {
-                                        controller.sendMessage();
+                                        // controller.sendMessage();
+                                        controller.postChatbotMessage();
+                                        controller.messageController.clear();
                                       },
                                       icon: controller
                                               .messageText.value.isNotEmpty

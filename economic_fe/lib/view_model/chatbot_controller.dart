@@ -140,6 +140,7 @@ class ChatbotController extends GetxController {
     Get.back();
   }
 
+  // 챗봇 대화 내역 조회
   Future<List<ChatbotModel>> getChatbotList(int page) async {
     try {
       print("start");
@@ -152,6 +153,19 @@ class ChatbotController extends GetxController {
     } catch (e) {
       debugPrint('Error: $e');
       return [];
+    }
+  }
+
+  // 챗봇에 메시지 전송
+  Future<void> postChatbotMessage() async {
+    String message = messageController.text;
+    try {
+      print("start");
+
+      dynamic response = await RemoteDataSource.postChatbotMessage(message);
+      print("메시지 전송 : $response");
+    } catch (e) {
+      debugPrint("Error : $e");
     }
   }
 }
