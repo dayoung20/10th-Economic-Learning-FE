@@ -585,6 +585,54 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                       )
                                                     : const SizedBox(),
                                                 const SizedBox(height: 10),
+                                                // 챗봇 이용 꿀팁
+                                                controller.chatbotTip.value
+                                                    ? Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 16,
+                                                                vertical: 10),
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          color:
+                                                              // message.isSystemMessage
+                                                              // message.message != null
+                                                              const Color(
+                                                                  0xFFF2F3F5),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            side: const BorderSide(
+                                                                width: 0.50,
+                                                                color: Color(
+                                                                    0xFFA2A2A2)),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                        ),
+                                                        child: Container(
+                                                          constraints:
+                                                              const BoxConstraints(
+                                                                  maxWidth:
+                                                                      250),
+                                                          child: const Text(
+                                                            "d",
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF404040),
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              height: 1.40,
+                                                              letterSpacing:
+                                                                  -0.40,
+                                                            ),
+                                                          ),
+                                                        ))
+                                                    : const SizedBox()
                                               ],
                                             ),
                                           ],
@@ -603,7 +651,12 @@ class _ChatbotPageState extends State<ChatbotPage> {
                             controller.currentPage++;
                             print("cr : ${controller.currentPage}");
                           },
-                          icon: const Icon(Icons.abc_outlined)),
+                          icon: const Icon(Icons.arrow_downward_outlined)),
+                      TextButton(
+                          onPressed: () {
+                            controller.deleteMessage();
+                          },
+                          child: const Text("초기화"))
                     ],
                   ),
                 ),
@@ -646,7 +699,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               // 챗봇 이용꿀팁
                               GestureDetector(
                                 onTap: () {
-                                  controller.sendTipMessages();
+                                  // controller.sendTipMessages();
+                                  print("tap");
+                                  controller.chatbotTip.value =
+                                      !controller.chatbotTip.value;
+                                  print(controller.chatbotTip.value);
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,

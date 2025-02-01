@@ -622,4 +622,25 @@ class RemoteDataSource {
       debugPrint('Error : $e');
     }
   }
+
+  /// api/v1/chatbot/clear
+  /// 대화 내역 초기화
+  static Future<bool> deleteMessage() async {
+    String endPoint = "api/v1/chatbot/clear";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("메시지 delete 성공");
+        return true;
+      } else {
+        debugPrint("메시지 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("delete Error : $e");
+      return false;
+    }
+  }
 }

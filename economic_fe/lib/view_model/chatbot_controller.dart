@@ -9,6 +9,9 @@ class ChatbotController extends GetxController {
   // 메시지 리스트
   var messages = <Message>[].obs;
   var currentPage = 0.obs;
+  var chatbotTip = false.obs;
+
+  int totalPage = 0;
 
   // 텍스트 입력 컨트롤러
   final TextEditingController messageController = TextEditingController();
@@ -150,6 +153,8 @@ class ChatbotController extends GetxController {
       print("response :: $response");
       final data = response as Map<String, dynamic>;
       final chatResponses = data['results']['chatResponses'] as List;
+      totalPage = data['results']['totalPage'];
+      print("전체 페이지 : $totalPage");
       return chatResponses.map((chat) => ChatbotModel.fromJson(chat)).toList();
     } catch (e) {
       debugPrint('Error: $e');
@@ -165,6 +170,20 @@ class ChatbotController extends GetxController {
 
       dynamic response = await RemoteDataSource.postChatbotMessage(message);
       print("메시지 전송 : $response");
+    } catch (e) {
+      debugPrint("Error : $e");
+    }
+  }
+
+  // 챗봇 메세지 초기화
+  Future<void> deleteMessage() async {
+    try {
+      print("start");
+
+      dynamic response = await RemoteDataSource.deleteMessage();
+      if (response != null) {
+        print("response : $response");
+      }
     } catch (e) {
       debugPrint("Error : $e");
     }
