@@ -606,8 +606,8 @@ class RemoteDataSource {
   /// api/v1/chatbot
   /// 챗봇에게 메세지 보내기
   static Future<dynamic> postChatbotMessage(String message) async {
-    String endPoint = "api/v1/chatbot?message=$message";
-
+    String encodedmsg = Uri.encodeComponent(message);
+    String endPoint = "api/v1/chatbot?message=$encodedmsg";
     try {
       final response = await _postApi(endPoint);
 
