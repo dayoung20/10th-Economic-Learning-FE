@@ -62,7 +62,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   @override
   Widget build(BuildContext context) {
     // 앱 초기화 시 챗봇 기본 메시지 전송
-    controller.sendInitialMessages();
+    // controller.sendInitialMessages();
 
     return Scaffold(
       backgroundColor: Palette.background,
