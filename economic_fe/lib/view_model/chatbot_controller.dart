@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 class ChatbotController extends GetxController {
   // 메시지 리스트
   var messages = <Message>[].obs;
+  var currentPage = 0.obs;
 
   // 텍스트 입력 컨트롤러
   final TextEditingController messageController = TextEditingController();
