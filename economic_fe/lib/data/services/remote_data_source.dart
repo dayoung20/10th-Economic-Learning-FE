@@ -580,4 +580,26 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// api/v1/chatbot/list
+  /// 대화 내역 조회
+  static Future<dynamic> getMessageList(int page) async {
+    String endPoint = 'api/v1/chatbot/list?page=$page';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('대화 내역 조회 성공');
+        return response;
+      } else {
+        debugPrint('대화 내역 조회  실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      return null;
+    }
+  }
 }

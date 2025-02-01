@@ -140,18 +140,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
             ),
             TextButton(
               onPressed: () {
-                // controller.
-                print(controller.keyword.value);
                 controller.typeValue.value = false;
                 controller.getKewordResult(0, controller.keyword.value);
-                // controller.getDictionaryList(
-                //     1,
-                //     controller.typeValue.value
-                //         ? controller.selectedConsonant.value
-                //         : controller.keyword.value,
-                //     controller.typeValue.value);
-                print("검색ㅇㅇㅇㅇㅇㅇ");
-                print(controller.typeValue.value);
               },
               child: const Text("검색"),
             ),

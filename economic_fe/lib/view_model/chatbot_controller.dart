@@ -1,4 +1,6 @@
+import 'package:economic_fe/data/models/chatbot/chatbot_model.dart';
 import 'package:economic_fe/data/models/chatbot/message.dart';
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -136,5 +138,20 @@ class ChatbotController extends GetxController {
   // 이전 화면으로
   void goBack() {
     Get.back();
+  }
+
+  Future<List<ChatbotModel>> getChatbotList(int page) async {
+    try {
+      print("start");
+      dynamic response = await RemoteDataSource.getMessageList(page);
+
+      print("response :: $response");
+      final data = response as Map<String, dynamic>;
+      final chatResponses = data['results']['chatResponses'] as List;
+      return chatResponses.map((chat) => ChatbotModel.fromJson(chat)).toList();
+    } catch (e) {
+      debugPrint('Error: $e');
+      return [];
+    }
   }
 }
