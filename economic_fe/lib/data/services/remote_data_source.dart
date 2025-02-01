@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class RemoteDataSource {
   //기본 api 엔드포인트
@@ -611,5 +613,94 @@ class RemoteDataSource {
     }
 
     return categoryPosts;
+  }
+
+  /// 이미지 업로드 API
+  /// 서버에 이미지 업로드 후 `imageId` 반환
+  /// API: api/v1/image
+  static Future<int?> uploadImage(File imageFile) async {
+    String apiUrl = '$baseUrl/api/v1/image';
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+        if (jsonResponse['isSuccess']) {
+          return jsonResponse['results']['imageId']; // imageId 반환
+        }
+      }
+      debugPrint('이미지 업로드 실패: ${response.statusCode}');
+    } catch (e) {
+      debugPrint('이미지 업로드 중 예외 발생: $e');
+    }
+    return null; // 실패 시 null 반환
+  }
+
+  /// 게시물 이미지 삭제 API
+  /// API: `DELETE api/v1/image/{imageId}`
+  static Future<bool> deleteImage(int imageId) async {
+    String endPoint = 'api/v1/image/$imageId';
+    int statusCode = await _deleteApi(endPoint);
+
+    if (statusCode == 200) {
+      debugPrint('이미지 삭제 성공');
+      return true;
+    } else {
+      debugPrint('이미지 삭제 실패: $statusCode');
+      return false;
+    }
+  }
+
+  /// 게시물 작성 API (`multipart/form-data`)
+  /// API: api/v1/post
+  static Future<bool> createPost({
+    required String title,
+    required String content,
+    required String type,
+    List<int>? imageIds,
+  }) async {
+    String apiUrl = '$baseUrl/api/v1/post';
+
+    try {
+      // `post` JSON 데이터 생성
+      Map<String, dynamic> postData = {
+        "title": title,
+        "content": content,
+        "type": type,
+        "imageIds": imageIds ?? [],
+      };
+
+      // JSON 데이터를 `utf8.encode()`로 변환 후 `MultipartFile.fromBytes()`로 추가
+      var postJsonBytes = utf8.encode(jsonEncode(postData));
+
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+        ..headers['Authorization'] = 'Bearer $accessToken'
+        ..headers['accept'] = '*/*'
+        ..files.add(http.MultipartFile.fromBytes(
+          'post',
+          postJsonBytes,
+          filename: 'post.json',
+        ));
+
+      // 요청 보내기
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      // 응답 처리
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('게시물 작성 성공');
+        return true;
+      } else {
+        debugPrint('게시물 작성 실패: (${response.statusCode}) $responseBody');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('createPost Error: $e');
+      return false;
+    }
   }
 }

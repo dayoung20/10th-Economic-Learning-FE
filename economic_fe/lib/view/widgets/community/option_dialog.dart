@@ -27,7 +27,7 @@ class OptionsDialog {
                   if (isAuthor) {
                     onEdit();
                   } else {
-                    _showConfirmationDialog(
+                    showConfirmationDialog(
                       context:
                           Navigator.of(context, rootNavigator: true).context,
                       content: isComment ? '댓글을 신고하시겠어요?' : '게시글을 신고하시겠어요?',
@@ -58,7 +58,7 @@ class OptionsDialog {
                 ListTile(
                   onTap: () {
                     Navigator.of(context).pop(); // 모달 닫기
-                    _showConfirmationDialog(
+                    showConfirmationDialog(
                       context:
                           Navigator.of(context, rootNavigator: true).context,
                       content: '글을 삭제하시겠어요?',
@@ -101,7 +101,7 @@ class OptionsDialog {
   }
 
   // 신고 또는 삭제 확인 다이얼로그
-  static void _showConfirmationDialog({
+  static void showConfirmationDialog({
     required BuildContext context,
     required String content,
     required VoidCallback onConfirm,
