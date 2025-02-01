@@ -561,32 +561,7 @@ class RemoteDataSource {
 
   /// 게시글 목록 조회
   /// api: api/v1/post
-  ///
-  /// 모든 카테고리 데이터를 가져와서 병합하여 반환
-  static Future<List<dynamic>> fetchAllPosts(String sort, String type) async {
-    List<dynamic> allPosts = [];
-
-    if (type == "ALL") {
-      // 전체 카티고리일 경우 모든 카테고리 조회
-      List<String> categories = [
-        "FREE",
-        "QUESTION",
-        "BOOK_RECOMMENDATION",
-        "INFORMATION"
-      ];
-      for (String category in categories) {
-        var posts = await _fetchCategoryPosts(sort, category);
-        allPosts.addAll(posts);
-      }
-    } else {
-      // 단일 카테고리 조회
-      allPosts = await _fetchCategoryPosts(sort, type);
-    }
-
-    return allPosts;
-  }
-
-  static Future<List<dynamic>> _fetchCategoryPosts(
+  static Future<List<dynamic>> fetchCategoryPosts(
       String sort, String type) async {
     List<dynamic> categoryPosts = [];
     int currentPage = 0;
@@ -594,7 +569,15 @@ class RemoteDataSource {
 
     try {
       while (currentPage <= totalPages) {
-        String endPoint = 'api/v1/post?page=$currentPage&sort=$sort&type=$type';
+        String endPoint;
+
+        if (type == "ALL") {
+          // 전체 카테고리일 경우 `type` 파라미터 없이 요청
+          endPoint = 'api/v1/post?page=$currentPage&sort=$sort';
+        } else {
+          // 특정 카테고리 조회 시 `type` 포함
+          endPoint = 'api/v1/post?page=$currentPage&sort=$sort&type=$type';
+        }
 
         var response = await _getApiWithHeader(endPoint, accessToken);
 
