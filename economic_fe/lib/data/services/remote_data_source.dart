@@ -205,6 +205,28 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/learning
+  /// 레벨별 학습 세트 조회
+  static Future<dynamic> postLearningSet() async {
+    String endPoint = 'api/v1/learning';
+
+    try {
+      final response = await _postApi(endPoint); // API 요청
+      print("Raw Response: $response");
+
+      if (response is http.Response) {
+        final jsonResponse = jsonDecode(response.body); // JSON 변환
+        print("Decoded Response: $jsonResponse");
+        return jsonResponse;
+      }
+
+      return response; // 혹시 다른 데이터 타입일 경우 그대로 반환
+    } catch (e) {
+      debugPrint("API Error: $e");
+      return {}; // 에러 발생 시 빈 Map 반환
+    }
+  }
+
   /// 레벨 테스트 퀴즈 목록 조회
   /// api/v1/level-test/quiz
   static Future<dynamic> getLevelTest() async {

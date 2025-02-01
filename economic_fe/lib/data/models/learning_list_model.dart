@@ -1,4 +1,5 @@
-// 뉴스 모델
+// 전체 학습세트 모델
+// learning_list_page에서 활용
 
 import 'dart:convert';
 
@@ -6,24 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class LearningListModel with ChangeNotifier {
-  int? termId;
-  String? termName;
-  String? termDescription;
-  bool? isScraped;
+  int? id;
+  String? name;
+  bool? isLearningSetCompleted;
+  bool? isConceptCompleted;
+  bool? isQuizCompleted;
 
   LearningListModel({
-    this.termId,
-    this.termName,
-    this.termDescription,
-    this.isScraped,
+    this.id,
+    this.name,
+    this.isLearningSetCompleted,
+    this.isConceptCompleted,
+    this.isQuizCompleted,
   });
 
   factory LearningListModel.fromJson(Map<String, dynamic> json) {
     return LearningListModel(
-      termId: json['termId'],
-      termName: json['termName'],
-      termDescription: json['termDescription'],
-      isScraped: json['isScraped'],
+      id: json['id'],
+      name: json['name'],
+      isLearningSetCompleted: json['isLearningSetCompleted'],
+      isConceptCompleted: json['isConceptCompleted'],
+      isQuizCompleted: json['isQuizCompleted'],
     );
   }
 }

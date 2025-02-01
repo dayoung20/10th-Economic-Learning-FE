@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/dictionary_model.dart';
+import 'package:economic_fe/data/models/learning_list_model.dart';
 import 'package:economic_fe/data/models/learning_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,28 @@ class LearningListController extends GetxController {
           .toList();
     } catch (e) {
       debugPrint('Error: $e');
+      return [];
+    }
+  }
+
+  Future<List<LearningListModel>> postLearningSet() async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await RemoteDataSource.postLearningSet();
+
+      print("learning set : $response");
+
+      final data = response as Map<String, dynamic>;
+      final learningList = data['results']['learningSetPreviewList'] as List;
+
+      // print(learningList);
+      return learningList
+          .map((learningSet) => LearningListModel.fromJson(learningSet))
+          .toList();
+    } catch (e) {
+      debugPrint("Error : $e");
       return [];
     }
   }
