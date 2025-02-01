@@ -1,3 +1,5 @@
+import 'package:economic_fe/data/models/dictionary_model.dart';
+import 'package:economic_fe/data/models/learning_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,15 +46,29 @@ class LearningListController extends GetxController {
     Get.toNamed('/chatbot');
   }
 
-  Future<void> getLearningConcept(int learningSetId, String level) async {
+  Future<List<LearningModel>> getLearningConcept(
+      int learningSetId, String level) async {
     try {
-      // print("start");
-      dynamic response =
+      print("start");
+
+      dynamic response;
+
+      response =
           await RemoteDataSource.getLearningConcept(learningSetId, level);
-      // print("출력");
-      print(response);
+
+      print("response :: $response");
+
+      final data = response as Map<String, dynamic>;
+      final conceptList = data['results']['conceptList'] as List;
+
+      print("conceptList ::: $conceptList");
+
+      return conceptList
+          .map((concept) => LearningModel.fromJson(concept))
+          .toList();
     } catch (e) {
       debugPrint('Error: $e');
+      return [];
     }
   }
 }

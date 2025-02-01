@@ -196,15 +196,17 @@ class RemoteDataSource {
 
   /// 개념 학습 세트 조회
   /// api/v1/learning/{learningSetId}/concepts
+  /// api/v1/learning/1/concepts?level=BEGINNER
   static Future<dynamic> getLearningConcept(
       int learningSetId, String level) async {
-    dynamic response =
-        await _getApi('api/v1/learning/$learningSetId/concepts?level=$level');
+    dynamic response = await _getApiWithHeader(
+        'api/v1/learning/$learningSetId/concepts?level=$level', accessToken);
     print(response);
     return response;
   }
 
-  /// api/v1/level-test/quiz 레벨 테스트 퀴즈 목록 조회
+  /// 레벨 테스트 퀴즈 목록 조회
+  /// api/v1/level-test/quiz
   static Future<dynamic> getLevelTest() async {
     dynamic response = await _getApi('api/v1/level-test/quiz');
     return response;
