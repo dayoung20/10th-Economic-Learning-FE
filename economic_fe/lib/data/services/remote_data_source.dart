@@ -196,15 +196,39 @@ class RemoteDataSource {
 
   /// 개념 학습 세트 조회
   /// api/v1/learning/{learningSetId}/concepts
+  /// api/v1/learning/1/concepts?level=BEGINNER
   static Future<dynamic> getLearningConcept(
       int learningSetId, String level) async {
-    dynamic response =
-        await _getApi('api/v1/learning/$learningSetId/concepts?level=$level');
+    dynamic response = await _getApiWithHeader(
+        'api/v1/learning/$learningSetId/concepts?level=$level', accessToken);
     print(response);
     return response;
   }
 
-  /// api/v1/level-test/quiz 레벨 테스트 퀴즈 목록 조회
+  /// api/v1/learning
+  /// 레벨별 학습 세트 조회
+  static Future<dynamic> postLearningSet() async {
+    String endPoint = 'api/v1/learning';
+
+    try {
+      final response = await _postApi(endPoint); // API 요청
+      print("Raw Response: $response");
+
+      if (response is http.Response) {
+        final jsonResponse = jsonDecode(response.body); // JSON 변환
+        print("Decoded Response: $jsonResponse");
+        return jsonResponse;
+      }
+
+      return response; // 혹시 다른 데이터 타입일 경우 그대로 반환
+    } catch (e) {
+      debugPrint("API Error: $e");
+      return {}; // 에러 발생 시 빈 Map 반환
+    }
+  }
+
+  /// 레벨 테스트 퀴즈 목록 조회
+  /// api/v1/level-test/quiz
   static Future<dynamic> getLevelTest() async {
     dynamic response = await _getApi('api/v1/level-test/quiz');
     return response;
@@ -553,6 +577,69 @@ class RemoteDataSource {
       }
     } catch (e) {
       debugPrint('registerUserProfile Error: $e');
+      return false;
+    }
+  }
+
+  /// api/v1/chatbot/list
+  /// 대화 내역 조회
+  static Future<dynamic> getMessageList(int page) async {
+    String endPoint = 'api/v1/chatbot/list?page=$page';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('대화 내역 조회 성공');
+        return response;
+      } else {
+        debugPrint('대화 내역 조회  실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      return null;
+    }
+  }
+
+  /// api/v1/chatbot
+  /// 챗봇에게 메세지 보내기
+  static Future<dynamic> postChatbotMessage(String message) async {
+    String encodedmsg = Uri.encodeComponent(message);
+    String endPoint = "api/v1/chatbot?message=$encodedmsg";
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("대화 전송 성공");
+        return response;
+      } else {
+        debugPrint("대화 전송 실패");
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error : $e');
+    }
+  }
+
+  /// api/v1/chatbot/clear
+  /// 대화 내역 초기화
+  static Future<bool> deleteMessage() async {
+    String endPoint = "api/v1/chatbot/clear";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("메시지 delete 성공");
+        return true;
+      } else {
+        debugPrint("메시지 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("delete Error : $e");
       return false;
     }
   }
