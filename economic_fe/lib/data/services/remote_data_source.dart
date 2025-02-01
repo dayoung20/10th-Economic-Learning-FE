@@ -13,13 +13,12 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
-  /// jsonData 포함X
+  /// jsonData 포함O
   static Future<dynamic> postApiWithJson(
     String endPoint,
     Map<String, dynamic> jsonData,
   ) async {
     String apiUrl = '$baseUrl/$endPoint';
-    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken',
@@ -335,6 +334,48 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩
+  static Future<dynamic> postTermsScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _postApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 post 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap Error : $e");
+      return false;
+    }
+  }
+
+  /// api/v1/terms/{id}/scrap
+  /// 용어 스크랩 취소
+  static Future<dynamic> deleteScrap(int id) async {
+    String endPoint = "api/v1/terms/$id/scrap";
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response != null) {
+        debugPrint("스크랩 delete 성공");
+        return true;
+      } else {
+        debugPrint("스크랩 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("scrap delete Error : $e");
+      return false;
+    }
+  }
+
   /// 틀린 문제 데이터 요청
   /// api/v1/user/wrong-quizzes
   static Future<dynamic> fetchIncorrectQuestions(String level) async {
@@ -494,44 +535,24 @@ class RemoteDataSource {
     }
   }
 
-  /// api/v1/terms/{id}/scrap
-  /// 용어 스크랩
-  static Future<dynamic> postTermsScrap(int id) async {
-    String endPoint = "api/v1/terms/$id/scrap";
+  /// 사용자 프로필 등록 API
+  /// API: api/v1/user/profile
+  static Future<dynamic> registerUserProfile(
+      Map<String, dynamic> userProfile) async {
+    String endpoint = 'api/v1/user/profile';
 
     try {
-      final response = await _postApi(endPoint);
+      final response = await postApiWithJson(endpoint, userProfile);
 
-      if (response != null) {
-        debugPrint("스크랩 post 성공");
+      if (response == 200) {
+        debugPrint('사용자 프로필 등록 성공');
         return true;
       } else {
-        debugPrint("스크랩 실패");
+        debugPrint('사용자 프로필 등록 실패: $response');
         return false;
       }
     } catch (e) {
-      debugPrint("scrap Error : $e");
-      return false;
-    }
-  }
-
-  /// api/v1/terms/{id}/scrap
-  /// 용어 스크랩 취소
-  static Future<dynamic> deleteScrap(int id) async {
-    String endPoint = "api/v1/terms/$id/scrap";
-
-    try {
-      final response = await _deleteApi(endPoint);
-
-      if (response != null) {
-        debugPrint("스크랩 delete 성공");
-        return true;
-      } else {
-        debugPrint("스크랩 delete 실패");
-        return false;
-      }
-    } catch (e) {
-      debugPrint("scrap delete Error : $e");
+      debugPrint('registerUserProfile Error: $e');
       return false;
     }
   }

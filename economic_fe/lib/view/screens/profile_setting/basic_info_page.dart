@@ -25,7 +25,7 @@ class BasicInfoPage extends StatelessWidget {
       appBar: CustomAppBar(
         title: '기본 정보',
         onPress: () {
-          controller.navigateToProfileSetting(context);
+          Get.back();
         },
         icon: Icons.close,
       ),
@@ -104,7 +104,7 @@ class BasicInfoPage extends StatelessWidget {
               height: ScreenUtils.getHeight(context, 18.8),
             ),
             const BasicLabel(
-              label: '닉네임(필수)',
+              label: '닉네임',
             ),
             SizedBox(
               height: ScreenUtils.getHeight(context, 4),
@@ -114,9 +114,11 @@ class BasicInfoPage extends StatelessWidget {
               height: ScreenUtils.getHeight(context, 44),
               child: Obx(() {
                 return TextField(
-                  onChanged: controller.validateNickname, // 입력 값에 따라 유효성 검사
-                  controller:
-                      TextEditingController(text: controller.nickname.value),
+                  onChanged: (value) {
+                    controller.nickname.value = value; // 닉네임 업데이트
+                    controller.validateNickname(value);
+                  },
+                  controller: controller.nicknameController,
                   decoration: InputDecoration(
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -224,32 +226,28 @@ class BasicInfoPage extends StatelessWidget {
                       child: Row(
                         children: [
                           GestureDetector(
-                            onTap: () => controller.selectGender('남'),
-                            child: controller.selectedGender.value == '남'
-                                ? const BasicGenderButton(
-                                    isSelected: true,
-                                    text: '남',
-                                    textColor: Colors.black,
-                                  )
-                                : const BasicGenderButton(
-                                    isSelected: false,
-                                    text: '남',
-                                    textColor: Color(0xFFA2A2A2),
-                                  ),
+                            onTap: () => controller.selectGender('MALE'),
+                            child: BasicGenderButton(
+                              text: '남',
+                              textColor:
+                                  controller.selectedGender.value == 'MALE'
+                                      ? Colors.black
+                                      : const Color(0xffa2a2a2),
+                              isSelected:
+                                  controller.selectedGender.value == 'MALE',
+                            ),
                           ),
                           GestureDetector(
-                            onTap: () => controller.selectGender('여'),
-                            child: controller.selectedGender.value == '여'
-                                ? const BasicGenderButton(
-                                    isSelected: true,
-                                    text: '여',
-                                    textColor: Colors.black,
-                                  )
-                                : const BasicGenderButton(
-                                    isSelected: false,
-                                    text: '여',
-                                    textColor: Color(0xFFA2A2A2),
-                                  ),
+                            onTap: () => controller.selectGender('FEMALE'),
+                            child: BasicGenderButton(
+                              text: '여',
+                              textColor:
+                                  controller.selectedGender.value == 'FEMALE'
+                                      ? Colors.black
+                                      : const Color(0xffa2a2a2),
+                              isSelected:
+                                  controller.selectedGender.value == 'FEMALE',
+                            ),
                           ),
                         ],
                       ),
@@ -330,31 +328,28 @@ class BasicInfoPage extends StatelessWidget {
                         ),
                         SizedBox(
                           width: ScreenUtils.getWidth(context, 216),
-                          child: Obx(() {
-                            return TextField(
-                              controller: TextEditingController(
-                                  text: controller.userInput.value),
-                              onChanged: controller.onTextChanged,
-                              maxLines: 5,
-                              inputFormatters: [
-                                // 글자 수가 maxLength를 초과하지 않도록 제한
-                                LengthLimitingTextInputFormatter(
-                                    controller.maxLength),
-                              ],
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '한 줄 소개를 입력하세요.',
-                                hintStyle: Palette.pretendard(
-                                  context,
-                                  const Color(0xFFA2A2A2),
-                                  16,
-                                  FontWeight.w400,
-                                  1.5,
-                                  -0.4,
-                                ),
+                          child: TextField(
+                            controller: controller.userInputController,
+                            onChanged: controller.onTextChanged,
+                            maxLines: 5,
+                            inputFormatters: [
+                              // 글자 수가 maxLength를 초과하지 않도록 제한
+                              LengthLimitingTextInputFormatter(
+                                  controller.maxLength),
+                            ],
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '한 줄 소개를 입력하세요.',
+                              hintStyle: Palette.pretendard(
+                                context,
+                                const Color(0xFFA2A2A2),
+                                16,
+                                FontWeight.w400,
+                                1.5,
+                                -0.4,
                               ),
-                            );
-                          }),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -404,22 +399,16 @@ class BasicInfoPage extends StatelessWidget {
             ),
             // 저장하기 버튼 활성화
             Obx(() {
-              bool isButtonEnabled = controller.isValid.value &&
-                  controller.selectedBirthday.value != null;
-              return isButtonEnabled
+              return controller.isValid.value &&
+                      controller.selectedBirthday.value != null
                   ? CustomButton(
                       text: '저장하기',
-                      onPress: () {
-                        controller.onSaveButtonClicked();
-                        controller.navigateToProfileSetting(context);
-                      },
-                      bgColor: Palette.buttonColorBlue,
+                      onPress: () => controller.onSaveButtonClicked(),
+                      bgColor: Palette.buttonColorGreen,
                     )
                   : CustomButtonUnfilled(
                       text: '저장하기',
-                      onPress: () {
-                        // 저장할 수 없으므로 아무 동작도 하지 않음
-                      },
+                      onPress: () {},
                     );
             }),
           ],

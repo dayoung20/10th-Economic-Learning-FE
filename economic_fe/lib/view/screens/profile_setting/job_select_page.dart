@@ -21,7 +21,7 @@ class JobSelectPage extends StatelessWidget {
       appBar: CustomAppBar(
         title: '업종/직무',
         onPress: () {
-          controller.navigateToProfileSetting(context);
+          controller.navigateToProfileSetting();
         },
         icon: Icons.close,
       ),
@@ -105,8 +105,7 @@ class JobSelectPage extends StatelessWidget {
                       text: '저장하기',
                       onPress: () {
                         controller.onSaveButtonClicked();
-                        controller.navigateToProfileSetting(
-                            context); // 프로필 설정 화면으로 이동
+                        controller.navigateToProfileSetting(); // 프로필 설정 화면으로 이동
                       },
                       bgColor: Palette.buttonColorBlue,
                     ),

@@ -37,11 +37,10 @@ class ProfileSettingPage extends StatelessWidget {
               return ProfileSettingButton(
                 title: '기본 정보',
                 onPress: () {
-                  // 기본 정보 입력 페이지로 이동
-                  controller.navigateToBasic(context);
+                  Get.toNamed('/profile_setting/basic');
                 },
                 isSelected: controller.basicSaveButtonClicked.value,
-                icon: const Icon(Icons.person), // 클릭 여부에 따라 버튼 스타일 변경
+                icon: const Icon(Icons.person),
               );
             }),
             SizedBox(
@@ -52,11 +51,10 @@ class ProfileSettingPage extends StatelessWidget {
               return ProfileSettingButton(
                 title: '업종',
                 onPress: () {
-                  // 업종 선택 페이지로 이동
-                  controller.navigateToJob(context);
+                  Get.toNamed('/profile_setting/job');
                 },
                 isSelected: controller.jobSaveButtonClicked.value,
-                icon: const Icon(Icons.business_center), // 클릭 여부에 따라 버튼 스타일 변경
+                icon: const Icon(Icons.business_center),
               );
             }),
             SizedBox(
@@ -67,11 +65,10 @@ class ProfileSettingPage extends StatelessWidget {
               return ProfileSettingButton(
                 title: '직무',
                 onPress: () {
-                  // 직무 선택 페이지로 이동
-                  controller.navigateToPart(context);
+                  Get.toNamed('/profile_setting/part');
                 },
                 isSelected: controller.partSaveButtonClicked.value,
-                icon: const Icon(Icons.badge), // 클릭 여부에 따라 버튼 스타일 변경
+                icon: const Icon(Icons.badge),
               );
             }),
             SizedBox(
@@ -79,15 +76,12 @@ class ProfileSettingPage extends StatelessWidget {
             ),
             // 저장하기 버튼 활성화
             Obx(() {
-              bool isButtonEnabled = controller.basicSaveButtonClicked.value;
-              return isButtonEnabled
+              return controller.isProfileReady
                   ? Center(
                       child: CustomButton(
                         text: '저장하기',
                         onPress: () async {
-                          const authToken =
-                              "Bearer eyJhbGciOiJIUz..."; // 실제 Authorization 키
-                          await controller.saveUserProfile(authToken);
+                          await controller.saveUserProfile();
                         },
                         bgColor: Palette.buttonColorBlue,
                       ),
@@ -95,9 +89,7 @@ class ProfileSettingPage extends StatelessWidget {
                   : Center(
                       child: CustomButtonUnfilled(
                         text: '저장하기',
-                        onPress: () {
-                          // 저장할 수 없으므로 아무 동작도 하지 않음
-                        },
+                        onPress: () {},
                       ),
                     );
             }),

@@ -1,34 +1,48 @@
 class UserProfile {
   String nickname;
+  String birthDate;
+  String gender;
+  String profileIntro;
   String businessType;
   String job;
-  String ageRange;
-  String gender;
-  String? profileIntro;
   bool isLearningAlarmAllowed;
   bool isCommunityAlarmAllowed;
 
   UserProfile({
     required this.nickname,
+    required this.birthDate,
+    required this.gender,
+    required this.profileIntro,
     required this.businessType,
     required this.job,
-    required this.ageRange,
-    required this.gender,
-    this.profileIntro,
-    this.isLearningAlarmAllowed = false,
-    this.isCommunityAlarmAllowed = false,
+    this.isLearningAlarmAllowed = true, // 기본값
+    this.isCommunityAlarmAllowed = true, // 기본값
   });
+
+  // JSON 변환
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      nickname: json['nickname'] ?? '',
+      birthDate: json['birthDate'] ?? '',
+      gender: json['gender'] ?? '',
+      profileIntro: json['profileIntro'] ?? '',
+      businessType: json['businessType'] ?? '',
+      job: json['job'] ?? '',
+      isLearningAlarmAllowed: json['isLearningAlarmAllowed'] ?? true,
+      isCommunityAlarmAllowed: json['isCommunityAlarmAllowed'] ?? true,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      'nickname': nickname,
-      'businessType': businessType,
-      'job': job,
-      'ageRange': ageRange,
-      'gender': gender,
-      'profileIntro': profileIntro,
-      'isLearningAlarmAllowed': isLearningAlarmAllowed,
-      'isCommunityAlarmAllowed': isCommunityAlarmAllowed,
+      "nickname": nickname,
+      "birthDate": birthDate,
+      "gender": gender,
+      "profileIntro": profileIntro,
+      "businessType": businessType,
+      "job": job,
+      "isLearningAlarmAllowed": isLearningAlarmAllowed,
+      "isCommunityAlarmAllowed": isCommunityAlarmAllowed,
     };
   }
 }
