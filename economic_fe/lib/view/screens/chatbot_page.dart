@@ -163,6 +163,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                 ),
                                               ),
                                             ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
                                             Column(
                                               crossAxisAlignment:
                                                   message.sender == "USER"
@@ -183,7 +186,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                   decoration: ShapeDecoration(
                                                     color:
                                                         // message.isSystemMessage
-                                                        message.message != null
+                                                        message.sender != "USER"
                                                             ? const Color(
                                                                 0xFFF2F3F5)
                                                             : const Color(
@@ -206,12 +209,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                     child: Text(
                                                       message.message!,
                                                       style: TextStyle(
-                                                        color:
-                                                            message.message !=
-                                                                    null
-                                                                ? const Color(
-                                                                    0xFF404040)
-                                                                : Colors.white,
+                                                        color: message.sender !=
+                                                                "USER"
+                                                            ? const Color(
+                                                                0xFF404040)
+                                                            : Colors.white,
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.w400,
