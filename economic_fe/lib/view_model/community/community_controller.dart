@@ -20,9 +20,9 @@ class CommunityController extends GetxController {
     Get.toNamed('/community/talk_detail');
   }
 
-  // 일반 게시판 상세 페이지로 이동
-  void toDetailPage() {
-    Get.toNamed('/community/detail');
+  /// 상세 페이지로 이동
+  void toDetailPage(int postId) {
+    Get.toNamed('/community/detail', arguments: postId);
   }
 
   // 글쓰기 화면으로 이동

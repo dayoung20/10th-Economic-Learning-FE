@@ -686,4 +686,39 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시글 상세 조회 API
+  /// API: api/v1/post/{id}
+  static Future<Map<String, dynamic>?> getPostDetail(int postId) async {
+    final response =
+        await _getApiWithHeader("api/v1/post/$postId", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("게시글 상세 조회 응답: $response"); // Debugging
+      return response["results"]; // "results" 필드만 반환하도록 수정
+    } else {
+      print("게시글 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
+
+  /// 내가 작성한 게시글 조회
+  /// API: api/v1/user/posts
+  static Future<List<int>> fetchMyPosts() async {
+    String endPoint = 'api/v1/user/posts';
+    var response = await _getApiWithHeader(endPoint, accessToken);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<int> myPostIds = posts.map<int>((post) => post['id']).toList();
+
+      debugPrint("내가 작성한 게시글 ID 리스트: $myPostIds"); // 로그 추가
+
+      return myPostIds; // 내가 작성한 게시글 ID 리스트 반환
+    } else {
+      debugPrint("내 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
 }

@@ -281,21 +281,30 @@ class _CommunityPageState extends State<CommunityPage> {
                                                               var post =
                                                                   posts[index];
 
-                                                              return ListItem(
-                                                                title: post[
-                                                                    "title"],
-                                                                description: post[
-                                                                    "content"],
-                                                                date: post[
-                                                                    "createdDate"],
-                                                                likes: post[
-                                                                    "likeCount"],
-                                                                comments: post[
-                                                                    "commentCount"],
+                                                              return GestureDetector(
                                                                 onTap: () {
                                                                   controller
-                                                                      .toDetailPage();
+                                                                      .toDetailPage(
+                                                                          post[
+                                                                              "id"]);
                                                                 },
+                                                                child: ListItem(
+                                                                  title: post[
+                                                                      "title"],
+                                                                  description: post[
+                                                                      "content"],
+                                                                  date: post[
+                                                                      "createdDate"],
+                                                                  likes: post[
+                                                                      "likeCount"],
+                                                                  comments: post[
+                                                                      "commentCount"],
+                                                                  onTap: () {
+                                                                    controller
+                                                                        .toDetailPage(
+                                                                            post["id"]);
+                                                                  },
+                                                                ),
                                                               );
                                                             },
                                                             separatorBuilder:

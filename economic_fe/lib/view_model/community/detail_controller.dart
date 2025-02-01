@@ -1,65 +1,173 @@
+// import 'package:economic_fe/data/models/community/comment.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:get/get.dart';
+
+// class DetailController extends GetxController {
+//   // 뒤로 가기
+//   void goBack() {
+//     Get.back();
+//   }
+
+//   // 텍스트 입력 컨트롤러
+//   final TextEditingController messageController = TextEditingController();
+
+//   // 메시지 입력 상태 관리
+//   var messageText = ''.obs;
+
+//   // 메시지 입력 중일 때 호출되는 함수
+//   void updateMessage(String value) {
+//     messageText.value = value;
+//   }
+
+//   // 메시지 전송 함수
+//   void sendMessage() async {
+//     final messageText = messageController.text;
+//     if (messageText.isNotEmpty) {
+//       // 메시지 전송 후 텍스트 필드 초기화
+//       messageController.clear();
+//     }
+//     addComment(messageText);
+//   }
+
+//   // 댓글 데이터 모델 (예시)
+//   RxList<Comment> comments = RxList<Comment>([
+//     Comment(
+//       content:
+//           '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
+//       author: '닉네임1',
+//       date: '1일 전',
+//       likes: 1,
+//       isAuthor: false,
+//     ),
+//     Comment(
+//       content:
+//           '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
+//       author: '닉네임1',
+//       date: '1일 전',
+//       likes: 1,
+//       replies: [
+//         Comment(
+//           content:
+//               '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
+//           author: '닉네임1',
+//           date: '1일 전',
+//           likes: 1,
+//           isAuthor: false,
+//         ),
+//       ],
+//       isAuthor: false,
+//     ),
+//   ]);
+
+//   // 댓글 추가 함수
+//   void addComment(String message) {
+//     if (message.isNotEmpty) {
+//       comments.add(
+//         Comment(
+//           content: message,
+//           author: '사용자',
+//           replies: [],
+//           date: '추가 필요',
+//           likes: 0,
+//           isAuthor: true,
+//         ),
+//       );
+//     }
+//   }
+
+//   // 플로팅 버튼 클릭 시 옵션 창을 보여주는 상태 관리
+//   RxBool isModalVisible = false.obs;
+
+//   // 옵션 창 표시/숨기기
+//   void toggleModal() {
+//     isModalVisible.value = !isModalVisible.value;
+//   }
+
+//   // 챗봇 화면으로 이동
+//   void toChatPage() {
+//     Get.toNamed('/chatbot');
+//   }
+
+//   // 글쓰기 화면으로 이동
+//   void toNewPost() {
+//     Get.toNamed('/community/new_post');
+//   }
+// }
+
 import 'package:economic_fe/data/models/community/comment.dart';
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class DetailController extends GetxController {
-  // 뒤로 가기
-  void goBack() {
-    Get.back();
-  }
+  RxBool isLoading = true.obs;
+  RxMap<String, dynamic> postDetail = <String, dynamic>{}.obs;
+  RxList<Comment> comments = RxList<Comment>();
+  RxBool isAuthor = false.obs;
+  RxList<int> myPostIds = <int>[].obs;
 
-  // 텍스트 입력 컨트롤러
   final TextEditingController messageController = TextEditingController();
-
-  // 메시지 입력 상태 관리
   var messageText = ''.obs;
+  RxBool isModalVisible = false.obs;
 
-  // 메시지 입력 중일 때 호출되는 함수
-  void updateMessage(String value) {
-    messageText.value = value;
-  }
-
-  // 메시지 전송 함수
-  void sendMessage() async {
-    final messageText = messageController.text;
-    if (messageText.isNotEmpty) {
-      // 메시지 전송 후 텍스트 필드 초기화
-      messageController.clear();
+  @override
+  void onInit() {
+    super.onInit();
+    int? postId = Get.arguments as int?;
+    if (postId != null) {
+      fetchPostDetail(postId);
     }
-    addComment(messageText);
   }
 
-  // 댓글 데이터 모델 (예시)
-  RxList<Comment> comments = RxList<Comment>([
-    Comment(
-      content:
-          '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
-      author: '닉네임1',
-      date: '1일 전',
-      likes: 1,
-      isAuthor: false,
-    ),
-    Comment(
-      content:
-          '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
-      author: '닉네임1',
-      date: '1일 전',
-      likes: 1,
-      replies: [
-        Comment(
-          content:
-              '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
-          author: '닉네임1',
-          date: '1일 전',
-          likes: 1,
-          isAuthor: false,
-        ),
-      ],
-      isAuthor: false,
-    ),
-  ]);
+  /// 게시글 상세 조회
+  Future<void> fetchPostDetail(int postId) async {
+    try {
+      isLoading(true);
+      final postData = await RemoteDataSource.getPostDetail(postId);
 
-  // 댓글 추가 함수
+      if (postData != null) {
+        postDetail.value = postData;
+
+        comments.value = _parseComments(
+            postData['commentListResponse']['commentResponseList']);
+
+        // 내가 작성한 게시글 ID 리스트 가져오기
+        List<int> myPostIds = await RemoteDataSource.fetchMyPosts();
+        debugPrint("내가 작성한 게시글 ID 리스트: $myPostIds"); // 로그 추가
+
+        isAuthor.value = myPostIds.contains(postId);
+        debugPrint("현재 게시글 ID: $postId, isAuthor: ${isAuthor.value}"); // 로그 추가
+      }
+    } catch (e) {
+      debugPrint('게시글 상세 조회 중 오류 발생: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  /// 내가 작성한 게시글 조회
+  Future<void> fetchMyPosts() async {
+    myPostIds.value = await RemoteDataSource.fetchMyPosts();
+  }
+
+  /// 댓글 파싱 (서버 데이터 → Comment 모델)
+  List<Comment> _parseComments(List<dynamic> commentList) {
+    return commentList.map<Comment>((comment) {
+      return Comment(
+        content: comment['content'],
+        author: comment['author'] ?? '익명',
+        date: comment['createdDate'] ?? '방금 전',
+        likes: comment['likeCount'] ?? 0,
+        isAuthor: comment['isAuthor'] ?? false,
+        replies: comment['commentListResponse'] != null
+            ? _parseComments(
+                comment['commentListResponse']['commentResponseList'])
+            : [],
+      );
+    }).toList();
+  }
+
+  /// 댓글 추가
   void addComment(String message) {
     if (message.isNotEmpty) {
       comments.add(
@@ -67,7 +175,7 @@ class DetailController extends GetxController {
           content: message,
           author: '사용자',
           replies: [],
-          date: '추가 필요',
+          date: '방금 전',
           likes: 0,
           isAuthor: true,
         ),
@@ -75,20 +183,36 @@ class DetailController extends GetxController {
     }
   }
 
-  // 플로팅 버튼 클릭 시 옵션 창을 보여주는 상태 관리
-  RxBool isModalVisible = false.obs;
+  /// 메시지 입력 중일 때 호출되는 함수
+  void updateMessage(String value) {
+    messageText.value = value;
+  }
 
-  // 옵션 창 표시/숨기기
+  /// 댓글 전송
+  void sendMessage() async {
+    final message = messageController.text;
+    if (message.isNotEmpty) {
+      messageController.clear();
+      addComment(message);
+    }
+  }
+
+  /// 뒤로 가기
+  void goBack() {
+    Get.back();
+  }
+
+  /// 옵션 모달 토글
   void toggleModal() {
     isModalVisible.value = !isModalVisible.value;
   }
 
-  // 챗봇 화면으로 이동
+  /// 챗봇 화면 이동
   void toChatPage() {
     Get.toNamed('/chatbot');
   }
 
-  // 글쓰기 화면으로 이동
+  /// 글쓰기 화면 이동
   void toNewPost() {
     Get.toNamed('/community/new_post');
   }
