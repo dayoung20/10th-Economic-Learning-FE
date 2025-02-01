@@ -299,6 +299,8 @@ class _CommunityPageState extends State<CommunityPage> {
                                                                       "likeCount"],
                                                                   comments: post[
                                                                       "commentCount"],
+                                                                  imageUrl: post[
+                                                                      "imageUrl"],
                                                                   onTap: () {
                                                                     controller
                                                                         .toDetailPage(
@@ -700,6 +702,7 @@ class ListItem extends StatelessWidget {
   final String date;
   final int likes;
   final int comments;
+  final String? imageUrl;
   final Function() onTap;
 
   const ListItem({
@@ -710,6 +713,7 @@ class ListItem extends StatelessWidget {
     required this.likes,
     required this.comments,
     required this.onTap,
+    this.imageUrl,
   });
 
   @override
@@ -818,18 +822,30 @@ class ListItem extends StatelessWidget {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: onTap,
-            child: Container(
-              width: 66,
-              height: 66,
-              decoration: ShapeDecoration(
-                color: const Color(0xFFD9D9D9),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7)),
+          // 이미지가 있는 경우에만 표시
+          if (imageUrl != null && imageUrl!.isNotEmpty)
+            GestureDetector(
+              onTap: onTap,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: Image.network(
+                  imageUrl!,
+                  width: 66,
+                  height: 66,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 66,
+                    height: 66,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: const Icon(Icons.image_not_supported,
+                        color: Colors.grey),
+                  ),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
