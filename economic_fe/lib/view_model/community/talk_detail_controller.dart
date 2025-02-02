@@ -32,6 +32,7 @@ class TalkDetailController extends GetxController {
   // 댓글 데이터 모델 (예시)
   RxList<Comment> comments = RxList<Comment>([
     Comment(
+      id: -1,
       content:
           '이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다.이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다. 이곳은 댓글 내용이 들어갑니다...',
       author: '닉네임1',
@@ -45,6 +46,7 @@ class TalkDetailController extends GetxController {
           date: '1일 전',
           likes: 1,
           isAuthor: false,
+          id: -1,
         ),
       ],
       isAuthor: false,
@@ -62,6 +64,7 @@ class TalkDetailController extends GetxController {
           date: '추가 필요',
           likes: 0,
           isAuthor: true,
+          id: -1,
         ),
       );
     }

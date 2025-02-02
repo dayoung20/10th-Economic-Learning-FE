@@ -723,9 +723,34 @@ class RemoteDataSource {
   }
 
   /// 게시물 댓글 추가 API
-  /// API: api/v1/user/profile
+  /// API: api/v1/post/{id}/comments
   static Future<bool> addComment(int postId, String content) async {
     String endpoint = 'api/v1/post/$postId/comments';
+    Map<String, dynamic> jsonData = {
+      "content": content,
+    };
+
+    try {
+      final response = await postApiWithJson(endpoint, jsonData);
+
+      if (response == 200) {
+        debugPrint('댓글 추가 성공');
+        return true;
+      } else {
+        debugPrint('댓글 추가 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 추가 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 댓글 답글 추가 API
+  /// API: api/v1/post/{id}/comments/{commentsId}/reply
+  static Future<bool> addReply(
+      int postId, int commentsId, String content) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentsId/reply';
     Map<String, dynamic> jsonData = {
       "content": content,
     };

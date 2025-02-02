@@ -9,6 +9,7 @@ class DetailController extends GetxController {
   RxList<Comment> comments = RxList<Comment>();
   RxBool isAuthor = false.obs;
   RxList<int> myPostIds = <int>[].obs;
+  final int currentUserId = 4; // 임시 유저 ID
 
   final TextEditingController messageController = TextEditingController();
   var messageText = ''.obs;
@@ -23,7 +24,6 @@ class DetailController extends GetxController {
     }
   }
 
-  /// 게시글 상세 조회
   Future<void> fetchPostDetail(int postId) async {
     try {
       isLoading(true);
@@ -31,19 +31,14 @@ class DetailController extends GetxController {
 
       if (postData != null) {
         postDetail.value = postData;
-
         comments.value = _parseComments(
             postData['commentListResponse']['commentResponseList']);
 
-        // 내가 작성한 게시글 ID 리스트 가져오기
-        List<int> myPostIds = await RemoteDataSource.fetchMyPosts();
-        debugPrint("내가 작성한 게시글 ID 리스트: $myPostIds"); // 로그 추가
-
+        await fetchMyPosts();
         isAuthor.value = myPostIds.contains(postId);
-        debugPrint("현재 게시글 ID: $postId, isAuthor: ${isAuthor.value}"); // 로그 추가
       }
     } catch (e) {
-      debugPrint('게시글 상세 조회 중 오류 발생: $e');
+      print('게시글 상세 조회 중 오류 발생: $e');
     } finally {
       isLoading(false);
     }
@@ -58,60 +53,68 @@ class DetailController extends GetxController {
   List<Comment> _parseComments(List<dynamic> commentList) {
     return commentList.map<Comment>((comment) {
       return Comment(
-        content: comment['content'],
-        author: comment['author'] ?? '익명',
+        id: comment['id'],
+        content:
+            comment['isDeleted'] == true ? "삭제된 댓글입니다." : comment['content'],
+        author: comment['commenterName'] ?? '익명',
         date: comment['createdDate'] ?? '방금 전',
         likes: comment['likeCount'] ?? 0,
-        isAuthor: comment['isAuthor'] ?? false,
-        replies: comment['commentListResponse'] != null
-            ? _parseComments(
-                comment['commentListResponse']['commentResponseList'])
+        isAuthor:
+            comment['commenterId'] == currentUserId, // 현재 사용자가 작성한 댓글인지 확인
+        replies: comment['children'] != null
+            ? _parseComments(comment['children'])
             : [],
       );
     }).toList();
   }
 
-  /// 댓글 추가
-  void addComment(String message) {
-    if (message.isNotEmpty) {
-      comments.add(
-        Comment(
-          content: message,
-          author: '사용자',
-          replies: [],
-          date: '방금 전',
-          likes: 0,
-          isAuthor: true,
-        ),
-      );
-    }
-  }
+  // 답글을 작성 중인 댓글 ID
+  RxInt replyingToCommentId = (-1).obs;
+  RxString replyToAuthor = RxString("");
 
   /// 댓글 입력값 변경 감지
   void updateMessage(String value) {
     messageText.value = value;
   }
 
-  // /// 댓글 전송
-  // void sendMessage() async {
-  //   final message = messageController.text;
-  //   if (message.isNotEmpty) {
-  //     messageController.clear();
-  //     addComment(message);
-  //   }
-  // }
+  /// 답글 작성 모드 활성화
+  void activateReplyMode(int commentId, String author) {
+    replyingToCommentId.value = commentId;
+    replyToAuthor.value = author;
+    messageController.clear();
+    messageText.value = '';
+    Future.delayed(const Duration(milliseconds: 200), () {
+      FocusScope.of(Get.context!).requestFocus(FocusNode()); // 입력창 자동 활성화
+    });
+  }
 
-  /// 댓글 추가 요청
+  /// 답글 작성 모드 해제 (일반 댓글 작성 모드)
+  void disableReplyMode() {
+    replyingToCommentId.value = -1;
+    replyToAuthor.value = "";
+  }
+
+  /// 댓글 또는 답글 추가 요청
   Future<void> sendMessage() async {
     String message = messageController.text;
     if (message.isEmpty) return;
 
     int postId = postDetail["id"]; // 현재 게시글 ID
-    bool success = await RemoteDataSource.addComment(postId, message);
+    bool success;
+
+    if (replyingToCommentId.value == -1) {
+      // 일반 댓글 작성
+      success = await RemoteDataSource.addComment(postId, message);
+    } else {
+      // 답글 작성
+      success = await RemoteDataSource.addReply(
+          postId, replyingToCommentId.value, message);
+    }
 
     if (success) {
       messageController.clear();
       messageText.value = '';
+      replyingToCommentId.value = -1; // 답글 모드 해제
       fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
     } else {
       Get.snackbar("오류", "댓글 작성에 실패했습니다.");
