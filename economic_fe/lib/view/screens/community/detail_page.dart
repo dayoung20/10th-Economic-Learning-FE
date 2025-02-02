@@ -307,8 +307,19 @@ class _DetailPageState extends State<DetailPage> {
       context: context,
       isAuthor: isAuthor,
       isComment: false,
-      onEdit: () => ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('게시글 수정 기능 실행'))),
+      onEdit: () {
+        // 현재 게시글 정보 가져오기
+        Map<String, dynamic> postInfo = {
+          "id": controller.postDetail["id"],
+          "title": controller.postDetail["title"],
+          "content": controller.postDetail["content"],
+          "category": controller.postDetail["type"],
+          "images": controller.postDetail["imageList"] ?? [],
+        };
+
+        // `NewPostPage`로 기존 게시글 정보 전달
+        Get.toNamed('/community/new_post', arguments: postInfo);
+      },
       onDelete: () => ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('게시글 삭제 기능 실행'))),
       onReport: () => ScaffoldMessenger.of(context)

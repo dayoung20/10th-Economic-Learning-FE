@@ -88,8 +88,10 @@ class RemoteDataSource {
   /// 데이터 일부 수정시 사용
   static Future<dynamic> _patchApi(String endPoint, String? jsonData) async {
     String apiUrl = '$baseUrl/$endPoint';
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    // String requestBody = jsonData;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
     debugPrint('PATCH 요청: $endPoint');
 
     try {
@@ -893,6 +895,28 @@ class RemoteDataSource {
       }
     } catch (e) {
       debugPrint('게시물 스크랩 취소 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 수정 api
+  /// API: api/v1/post/{id}
+  static Future<bool> editPost(
+      int postId, Map<String, dynamic> postData) async {
+    String endpoint = 'api/v1/post/$postId';
+
+    try {
+      final response = await _patchApi(endpoint, jsonEncode(postData));
+
+      if (response == 200) {
+        debugPrint('게시물 수정 성공');
+        return true;
+      } else {
+        debugPrint('게시물 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 수정 중 예외 발생: $e');
       return false;
     }
   }

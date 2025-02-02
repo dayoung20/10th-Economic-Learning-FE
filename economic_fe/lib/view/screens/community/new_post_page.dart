@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/category_tab.dart';
 import 'package:economic_fe/view_model/community/new_post_controller.dart';
@@ -159,7 +161,7 @@ class NewPostPage extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () => controller.confirmDeleteImage(
-                                        index, context), // 사진 삭제 다이얼로그 적용
+                                        index, context),
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 10),
                                       child: Container(
@@ -171,8 +173,15 @@ class NewPostPage extends StatelessWidget {
                                                 0.45,
                                         decoration: ShapeDecoration(
                                           image: DecorationImage(
-                                            image: FileImage(controller
-                                                .attachedImages[index]['file']),
+                                            image: controller
+                                                        .attachedImages[index]
+                                                    ['file'] is File
+                                                ? FileImage(controller
+                                                        .attachedImages[index]
+                                                    ['file'])
+                                                : NetworkImage(controller
+                                                        .attachedImages[index]
+                                                    ['file']) as ImageProvider,
                                             fit: BoxFit.cover,
                                           ),
                                           shape: RoundedRectangleBorder(
