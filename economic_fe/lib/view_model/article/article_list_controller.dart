@@ -68,7 +68,7 @@ class ArticleListController extends GetxController {
       print("start");
       dynamic response;
 
-      response = await RemoteDataSource.postNewsScrap(id);
+      response = await remoteDataSource.postNewsScrap(id);
       print("뉴스 스크랩 : $response");
     } catch (e) {
       debugPrint("Error: $e");

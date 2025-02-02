@@ -85,7 +85,7 @@ class DictionaryController extends GetxController {
       print("start");
 
       dynamic response;
-      response = await RemoteDataSource.postTermsScrap(id);
+      response = await remoteDataSource.postTermsScrap(id);
       print("scrap response : $response");
     } catch (e) {
       debugPrint("Error: $e");

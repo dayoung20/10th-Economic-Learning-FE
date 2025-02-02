@@ -369,11 +369,11 @@ class RemoteDataSource {
 
   /// api/v1/learning
   /// 레벨별 학습 세트 조회
-  static Future<dynamic> postLearningSet() async {
+  Future<dynamic> postLearningSet() async {
     String endPoint = 'api/v1/learning';
 
     try {
-      final response = await _postApi(endPoint); // API 요청
+      final response = await _postApiTest(endPoint); // API 요청
       print("Raw Response: $response");
 
       if (response is http.Response) {
@@ -422,11 +422,11 @@ class RemoteDataSource {
 
   /// api/news/{id}/scrap
   /// 뉴스 스크랩
-  static Future<dynamic> postNewsScrap(int id) async {
+  Future<dynamic> postNewsScrap(int id) async {
     String endPoint = "api/news/$id/scrap";
 
     try {
-      final response = await _postApi(endPoint);
+      final response = await _postApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 post 성공");
@@ -443,11 +443,11 @@ class RemoteDataSource {
 
   /// 뉴스 스크랩 취소
   /// api/news/{id}/scrap
-  static Future<dynamic> deleteNewsScrap(int id) async {
+  Future<dynamic> deleteNewsScrap(int id) async {
     String endPoint = "api/news/$id/scrap";
 
     try {
-      final response = await _deleteApi(endPoint);
+      final response = await _deleteApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 delete 성공");
@@ -521,11 +521,11 @@ class RemoteDataSource {
 
   /// api/v1/terms/{id}/scrap
   /// 용어 스크랩
-  static Future<dynamic> postTermsScrap(int id) async {
+  Future<dynamic> postTermsScrap(int id) async {
     String endPoint = "api/v1/terms/$id/scrap";
 
     try {
-      final response = await _postApi(endPoint);
+      final response = await _postApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 post 성공");
@@ -542,11 +542,11 @@ class RemoteDataSource {
 
   /// api/v1/terms/{id}/scrap
   /// 용어 스크랩 취소
-  static Future<dynamic> deleteScrap(int id) async {
+  Future<dynamic> deleteScrap(int id) async {
     String endPoint = "api/v1/terms/$id/scrap";
 
     try {
-      final response = await _deleteApi(endPoint);
+      final response = await _deleteApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 delete 성공");
@@ -722,12 +722,11 @@ class RemoteDataSource {
 
   /// 사용자 프로필 등록 API
   /// API: api/v1/user/profile
-  static Future<dynamic> registerUserProfile(
-      Map<String, dynamic> userProfile) async {
+  Future<dynamic> registerUserProfile(Map<String, dynamic> userProfile) async {
     String endpoint = 'api/v1/user/profile';
 
     try {
-      final response = await postApiWithJson(endpoint, userProfile);
+      final response = await postApiWithJsonTest(endpoint, userProfile);
 
       if (response == 200) {
         debugPrint('사용자 프로필 등록 성공');
@@ -766,11 +765,11 @@ class RemoteDataSource {
 
   /// api/v1/chatbot
   /// 챗봇에게 메세지 보내기
-  static Future<dynamic> postChatbotMessage(String message) async {
+  Future<dynamic> postChatbotMessage(String message) async {
     String encodedmsg = Uri.encodeComponent(message);
     String endPoint = "api/v1/chatbot?message=$encodedmsg";
     try {
-      final response = await _postApi(endPoint);
+      final response = await _postApiTest(endPoint);
 
       if (response != null) {
         debugPrint("대화 전송 성공");
@@ -786,11 +785,11 @@ class RemoteDataSource {
 
   /// api/v1/chatbot/clear
   /// 대화 내역 초기화
-  static Future<bool> deleteMessage() async {
+  Future<bool> deleteMessage() async {
     String endPoint = "api/v1/chatbot/clear";
 
     try {
-      final response = await _deleteApi(endPoint);
+      final response = await _deleteApiTest(endPoint);
 
       if (response != null) {
         debugPrint("메시지 delete 성공");

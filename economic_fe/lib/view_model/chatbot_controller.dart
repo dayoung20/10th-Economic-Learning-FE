@@ -165,7 +165,7 @@ class ChatbotController extends GetxController {
     try {
       print("start");
 
-      dynamic response = await RemoteDataSource.postChatbotMessage(message);
+      dynamic response = await remoteDataSource.postChatbotMessage(message);
       print("메시지 전송 : $response");
     } catch (e) {
       debugPrint("Error : $e");
