@@ -20,9 +20,11 @@ class WrongQuizController extends GetxController {
 
   // 틀린 문제 가져오기
   Future<void> fetchIncorrectQuestions() async {
+    final remoteDataSource = RemoteDataSource();
+
     try {
       final response =
-          await RemoteDataSource.fetchIncorrectQuestions(selectedLevel.value);
+          await remoteDataSource.fetchIncorrectQuestions(selectedLevel.value);
 
       if (response != null && response['isSuccess'] == true) {
         final failQuizList = response['results']['failQuizList'] as List;

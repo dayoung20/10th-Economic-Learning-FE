@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart'; // GoRouter import
 
 class LearningListController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
+
   //각 아이템의 퀴즈, 개념학습 수행 여부
   var learningState = {
     0: [false, false],
@@ -55,7 +57,7 @@ class LearningListController extends GetxController {
       dynamic response;
 
       response =
-          await RemoteDataSource.getLearningConcept(learningSetId, level);
+          await remoteDataSource.getLearningConcept(learningSetId, level);
 
       print("response :: $response");
 
@@ -78,7 +80,7 @@ class LearningListController extends GetxController {
       print("start");
 
       dynamic response;
-      response = await RemoteDataSource.postLearningSet();
+      response = await remoteDataSource.postLearningSet();
 
       print("learning set : $response");
 

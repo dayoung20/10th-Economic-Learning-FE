@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart'; // GoRouter import
 
 class DictionaryController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
+
   late BuildContext context;
 
   var selectedConsonant = "ㄱ".obs;
@@ -27,7 +29,7 @@ class DictionaryController extends GetxController {
       dynamic response;
 
       if (type) {
-        response = await RemoteDataSource.getDictionary(page, text);
+        response = await remoteDataSource.getDictionary(page, text);
         print("response :: $response");
 
         final data = response as Map<String, dynamic>;
@@ -35,7 +37,7 @@ class DictionaryController extends GetxController {
         return termList.map((term) => DictionaryModel.fromJson(term)).toList();
       } else {
         print("검색");
-        response = await RemoteDataSource.getKewordResult(page, text);
+        response = await remoteDataSource.getKewordResult(page, text);
         print("response : $response");
 
         final data = response as Map<String, dynamic>;
@@ -55,7 +57,7 @@ class DictionaryController extends GetxController {
 
       dynamic response;
 
-      response = await RemoteDataSource.getKewordResult(page, keyword);
+      response = await remoteDataSource.getKewordResult(page, keyword);
       print("response : $response");
       // final data = response as Map<String, dynamic>;
     } catch (e) {
@@ -70,7 +72,7 @@ class DictionaryController extends GetxController {
 
       dynamic response;
 
-      response = await RemoteDataSource.getDetailTerms(id);
+      response = await remoteDataSource.getDetailTerms(id);
       print("respose : $response");
     } catch (e) {
       debugPrint('Error: $e');
@@ -83,7 +85,7 @@ class DictionaryController extends GetxController {
       print("start");
 
       dynamic response;
-      response = await RemoteDataSource.postTermsScrap(id);
+      response = await remoteDataSource.postTermsScrap(id);
       print("scrap response : $response");
     } catch (e) {
       debugPrint("Error: $e");
@@ -96,7 +98,7 @@ class DictionaryController extends GetxController {
       print("start");
 
       dynamic response;
-      response = await RemoteDataSource.deleteScrap(id);
+      response = await remoteDataSource.deleteScrap(id);
       print("scrap delete response : $response");
     } catch (e) {
       debugPrint("Error : $e");

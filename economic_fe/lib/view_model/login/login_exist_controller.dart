@@ -1,9 +1,11 @@
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -47,32 +49,19 @@ class LoginExistController extends GetxController {
     }
   }
 
-  // 3. 로그인 플로우 실행
-  // void login() async {
-  //   // 카카오 로그인 요청
-  //   await openKakaoLogin();
-
-  //   print("리디렉션 전");
-  //   // 리디렉션 처리: Flutter WebView 또는 외부 브라우저에서 인증 코드 추출 필요
-  //   String? code = await _getAuthorizationCodeFromRedirectUri();
-  //   print("code : $code");
-  //   if (code != null) {
-  //     // 액세스 토큰 요청
-  //     await fetchAccessToken(code);
-  //   } else {
-  //     print("Authorization Code not found.");
-  //   }
-  // }
   void login() async {
     if (await isKakaoTalkInstalled()) {
       try {
         await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공');
         User user = await UserApi.instance.me();
-        print(
-            '사용자 정보 요청 성공${user.id} ${user.kakaoAccount?.profile?.nickname} ${user.kakaoAccount?.email}');
+        // print(
+        //     '사용자 정보 요청 성공${user.id} ${user.kakaoAccount?.profile?.nickname} ${user.kakaoAccount?.email}');
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-        print(token);
+        print("토큰${token.accessToken}");
+
+        getlogin(token.accessToken);
+        toArticle();
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');
 
@@ -134,6 +123,44 @@ class LoginExistController extends GetxController {
 
     return authorizationCode; // 추출된 인증 코드 반환
   }
-}
 
-// class WebView {}
+  // 백엔드에서 토큰 받아오기
+  Future<void> getlogin(String accessToken) async {
+    try {
+      print("start");
+
+      dynamic response;
+
+      response = await RemoteDataSource.getlogin(accessToken);
+      print("response :::: ${response['results']}");
+      await saveToken("accessToken", response['results']);
+      // String? access = await getToken("accessToken");
+      // print(access);
+    } catch (e) {
+      debugPrint("Error : $e");
+    }
+  }
+
+  // 토큰 저장
+  Future<void> saveToken(String sessionKey, String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(sessionKey, token);
+  }
+
+  // 토큰 불러오기
+  Future<String?> getToken(String sessionKey) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(sessionKey);
+  }
+
+  // 토큰 삭제
+  Future<void> deleteToken(String sessionKey) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(sessionKey);
+  }
+
+  // 테스트용
+  void toArticle() {
+    Get.toNamed('/article');
+  }
+}

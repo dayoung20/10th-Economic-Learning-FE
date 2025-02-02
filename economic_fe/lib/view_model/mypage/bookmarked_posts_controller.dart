@@ -17,15 +17,17 @@ class BookmarkedPostsController extends GetxController {
 
   /// Get.arguments 값에 따라 다른 API 호출
   Future<void> fetchData() async {
+    final remoteDataSource = RemoteDataSource();
+
     try {
       dynamic response;
 
       if (argument == '스크랩 한 글') {
-        response = await RemoteDataSource.fetchScrapedPosts();
+        response = await remoteDataSource.fetchScrapedPosts();
       } else if (argument == '좋아요 한 글') {
-        response = await RemoteDataSource.fetchLikedPosts();
+        response = await remoteDataSource.fetchLikedPosts();
       } else if (argument == '좋아요 한 댓글') {
-        response = await RemoteDataSource.fetchLikedComments();
+        response = await remoteDataSource.fetchLikedComments();
       } else {
         debugPrint("fetchData Error: 잘못된 argument 값입니다.");
         return;

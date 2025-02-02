@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GoRouter import
 
 class HomeController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
+
   // 진도율 가시성 관리 (레벨테스트 진행 여부에 따른 로직으로 수정 필요)
   var isProgressContainerVisible = true.obs;
 
@@ -61,7 +63,7 @@ class HomeController extends GetxController {
   /// 레벨별 학습 진도율 조회
   Future<void> fetchProgress() async {
     try {
-      final response = await RemoteDataSource.getProgress();
+      final response = await remoteDataSource.getProgress();
 
       if (response != null && response['isSuccess'] == true) {
         final progressData = response['results']['progress'] ?? {};
