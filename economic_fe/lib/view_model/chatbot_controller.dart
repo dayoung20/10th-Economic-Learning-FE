@@ -177,7 +177,7 @@ class ChatbotController extends GetxController {
     try {
       print("start");
 
-      dynamic response = await RemoteDataSource.deleteMessage();
+      dynamic response = await remoteDataSource.deleteMessage();
       if (response != null) {
         print("response : $response");
       }

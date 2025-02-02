@@ -81,7 +81,7 @@ class ArticleListController extends GetxController {
       print("start");
 
       dynamic response;
-      response = await RemoteDataSource.deleteNewsScrap(id);
+      response = await remoteDataSource.deleteNewsScrap(id);
       print("scrap delete response : $response");
     } catch (e) {
       debugPrint("Error : $e");
