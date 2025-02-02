@@ -203,8 +203,8 @@ class _CommentWidgetState extends State<CommentWidget> {
         controller.activateEditMode(widget.comment.id, widget.comment.content);
       },
       onDelete: () {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('댓글 삭제 기능 실행')));
+        Navigator.of(context).pop();
+        controller.deleteComment(widget.comment.id);
       },
       onReport: () {
         ScaffoldMessenger.of(context)

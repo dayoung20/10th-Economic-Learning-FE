@@ -346,6 +346,21 @@ class DetailController extends GetxController {
     }
   }
 
+  /// 댓글 삭제
+  Future<void> deleteComment(int commentId) async {
+    int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
+    bool success = await RemoteDataSource.deleteComment(postId, commentId);
+
+    if (success) {
+      Get.snackbar("삭제 완료", "댓글이 삭제되었습니다.");
+
+      // 댓글 삭제 후 즉시 UI에서 반영
+      comments.removeWhere((comment) => comment.id == commentId);
+    } else {
+      Get.snackbar("삭제 실패", "댓글 삭제에 실패했습니다.");
+    }
+  }
+
   /// 뒤로 가기
   void goBack() {
     Get.back();

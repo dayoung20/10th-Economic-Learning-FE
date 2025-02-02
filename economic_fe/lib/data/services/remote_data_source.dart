@@ -966,4 +966,25 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시물 댓글 삭제 api
+  /// API: api/v1/post/{id}/comments/{commentId}
+  static Future<bool> deleteComment(int postId, int commentId) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentId';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('댓글 삭제 성공');
+        return true;
+      } else {
+        debugPrint('댓글 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
