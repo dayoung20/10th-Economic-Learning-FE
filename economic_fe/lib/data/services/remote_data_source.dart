@@ -945,4 +945,25 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시물 삭제 api
+  /// API: api/v1/post/{id}
+  static Future<bool> deletePost(int postId) async {
+    String endpoint = 'api/v1/post/$postId';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 삭제 성공');
+        return true;
+      } else {
+        debugPrint('게시물 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
 }

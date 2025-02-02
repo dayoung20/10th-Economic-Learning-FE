@@ -352,8 +352,12 @@ class _DetailPageState extends State<DetailPage> {
         // `NewPostPage`로 기존 게시글 정보 전달
         Get.toNamed('/community/new_post', arguments: postInfo);
       },
-      onDelete: () => ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('게시글 삭제 기능 실행'))),
+      // onDelete: () => ScaffoldMessenger.of(context)
+      //     .showSnackBar(const SnackBar(content: Text('게시글 삭제 기능 실행'))),
+      onDelete: () {
+        Navigator.of(context).pop();
+        controller.deletePost();
+      },
       onReport: () => ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('게시글 신고 기능 실행'))),
     );

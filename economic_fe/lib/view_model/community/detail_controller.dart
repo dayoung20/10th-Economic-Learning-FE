@@ -333,6 +333,19 @@ class DetailController extends GetxController {
     }
   }
 
+  /// 게시물 삭제 기능
+  Future<void> deletePost() async {
+    int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
+    bool success = await RemoteDataSource.deletePost(postId);
+
+    if (success) {
+      Get.snackbar("삭제 성공", "게시물이 성공적으로 삭제되었습니다.");
+      Get.offNamed('/community'); // 삭제 후 커뮤니티 화면으로 이동
+    } else {
+      Get.snackbar("삭제 실패", "게시물 삭제에 실패했습니다.");
+    }
+  }
+
   /// 뒤로 가기
   void goBack() {
     Get.back();
