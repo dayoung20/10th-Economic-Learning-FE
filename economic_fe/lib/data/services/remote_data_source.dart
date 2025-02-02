@@ -49,6 +49,45 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
+  /// jsonData 포함O
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> postApiWithJsonTest(
+    String endPoint,
+    Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response.statusCode;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
   /// jsonData 포함X
   static Future<dynamic> _postApi(
     String endPoint,
@@ -59,6 +98,43 @@ class RemoteDataSource {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response.statusCode;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> _postApiTest(
+    String endPoint,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    String? access = await getToken("accessToken");
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
     };
 
     try {
@@ -213,6 +289,37 @@ class RemoteDataSource {
     try {
       final headers = {
         'Authorization': 'Bearer $accessToken',
+        'accept': '*/*',
+      };
+      final response = await http.delete(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('DELETE 요청 성공');
+      } else {
+        debugPrint('DELETE 요청 실패: (${response.statusCode})${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('DELETE 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
+  /// API DELETE
+  ///
+  /// 데이터 삭제시 사용
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> _deleteApiTest(String endPoint) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('DELETE 요청: $endPoint');
+    String? access = await getToken("accessToken");
+    try {
+      final headers = {
+        'Authorization': 'Bearer $access',
         'accept': '*/*',
       };
       final response = await http.delete(
