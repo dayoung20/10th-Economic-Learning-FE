@@ -218,6 +218,37 @@ class _DetailPageState extends State<DetailPage> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   child: Column(
                     children: [
+                      // 댓글 수정 중 UI
+                      Obx(() {
+                        if (controller.isEditingComment.value) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                            margin: const EdgeInsets.only(bottom: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "댓글 수정 중...",
+                                  style: TextStyle(
+                                      color: Colors.black87, fontSize: 14),
+                                ),
+                                GestureDetector(
+                                  onTap: controller.disableEditMode,
+                                  child: const Icon(Icons.close,
+                                      size: 18, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      }),
                       // 답글 작성 모드 UI
                       Obx(() {
                         if (controller.replyingToCommentId.value != -1) {
@@ -249,7 +280,6 @@ class _DetailPageState extends State<DetailPage> {
                           return const SizedBox(); // 일반 댓글 모드일 때는 아무것도 표시 안함
                         }
                       }),
-
                       // 실제 댓글 입력창
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -278,7 +308,9 @@ class _DetailPageState extends State<DetailPage> {
                               ),
                               GestureDetector(
                                 onTap: controller.messageText.value.isNotEmpty
-                                    ? controller.sendMessage
+                                    ? (controller.isEditingComment.value
+                                        ? controller.editComment
+                                        : controller.sendMessage)
                                     : null,
                                 child: Image.asset(
                                   controller.messageText.value.isNotEmpty

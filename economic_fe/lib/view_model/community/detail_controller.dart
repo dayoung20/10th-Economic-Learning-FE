@@ -279,6 +279,60 @@ class DetailController extends GetxController {
     }
   }
 
+  // 댓글 수정 상태 변수
+  RxBool isEditingComment = false.obs;
+  RxInt editingCommentId = (-1).obs;
+  RxString editingCommentText = "".obs;
+
+  /// 댓글 수정 모드 활성화
+  void activateEditMode(int commentId, String content) {
+    isEditingComment.value = true;
+    editingCommentId.value = commentId;
+    editingCommentText.value = content;
+    messageController.text = content;
+  }
+
+  /// 댓글 수정 모드 해제
+  void disableEditMode() {
+    isEditingComment.value = false;
+    editingCommentId.value = -1;
+    editingCommentText.value = "";
+    messageController.clear();
+  }
+
+  /// 댓글 수정 API 호출
+  Future<void> editComment() async {
+    if (messageController.text.isEmpty) return;
+
+    int postId = postDetail["id"];
+    int commentId = editingCommentId.value;
+    String updatedContent = messageController.text;
+
+    bool success =
+        await RemoteDataSource.editComment(postId, commentId, updatedContent);
+
+    if (success) {
+      // UI에 즉시 반영
+      int index = comments.indexWhere((c) => c.id == commentId);
+      if (index != -1) {
+        comments[index] = Comment(
+          id: comments[index].id,
+          content: updatedContent,
+          author: comments[index].author,
+          date: comments[index].date,
+          likes: comments[index].likes,
+          isAuthor: comments[index].isAuthor,
+          replies: comments[index].replies,
+          isLiked: comments[index].isLiked,
+        );
+        comments.refresh();
+      }
+      disableEditMode();
+    } else {
+      Get.snackbar("오류", "댓글 수정에 실패했습니다.");
+    }
+  }
+
   /// 뒤로 가기
   void goBack() {
     Get.back();

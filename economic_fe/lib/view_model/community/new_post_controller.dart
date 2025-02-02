@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:economic_fe/data/services/image_picker_service.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view/widgets/community/option_dialog.dart';
-import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';

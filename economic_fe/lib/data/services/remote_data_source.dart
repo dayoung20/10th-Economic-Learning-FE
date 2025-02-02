@@ -920,4 +920,29 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시물 댓글 수정 api
+  /// API: api/v1/post/{id}/comments/{commentId}
+  static Future<bool> editComment(
+      int postId, int commentId, String content) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentId';
+    Map<String, dynamic> jsonData = {
+      "content": content,
+    };
+
+    try {
+      final response = await _patchApi(endpoint, jsonEncode(jsonData));
+
+      if (response == 200) {
+        debugPrint('댓글 수정 성공');
+        return true;
+      } else {
+        debugPrint('댓글 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 수정 중 예외 발생: $e');
+      return false;
+    }
+  }
 }

@@ -5,7 +5,7 @@ import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CommentWidget extends StatelessWidget {
+class CommentWidget extends StatefulWidget {
   final Comment comment;
   final bool isReply;
   final bool isAuthor;
@@ -18,6 +18,13 @@ class CommentWidget extends StatelessWidget {
   });
 
   @override
+  State<CommentWidget> createState() => _CommentWidgetState();
+}
+
+class _CommentWidgetState extends State<CommentWidget> {
+  final DetailController controller = Get.find<DetailController>();
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -26,8 +33,8 @@ class CommentWidget extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start, // 상단 정렬
             children: [
-              // ✅ 답글이면 turn_left 아이콘을 프로필 왼쪽에 배치
-              if (isReply)
+              // 답글이면 turn_left 아이콘을 프로필 왼쪽에 배치
+              if (widget.isReply)
                 Padding(
                   padding: const EdgeInsets.only(right: 6, left: 16),
                   child: Transform.rotate(
@@ -40,10 +47,10 @@ class CommentWidget extends StatelessWidget {
                   ),
                 ),
 
-              // ✅ 프로필 + 댓글 내용 + 버튼을 묶어서 turn_left 오른쪽에 배치
+              // 프로필 + 댓글 내용 + 버튼을 묶어서 turn_left 오른쪽에 배치
               Expanded(
                 child: Padding(
-                  padding: isReply
+                  padding: widget.isReply
                       ? const EdgeInsets.only(right: 16)
                       : const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -59,7 +66,7 @@ class CommentWidget extends StatelessWidget {
                           ),
                           const SizedBox(width: 7),
                           Text(
-                            comment.author,
+                            widget.comment.author,
                             style: const TextStyle(
                               color: Color(0xFF404040),
                               fontSize: 14,
@@ -70,7 +77,7 @@ class CommentWidget extends StatelessWidget {
                           ),
                           const SizedBox(width: 7),
                           Text(
-                            comment.date,
+                            widget.comment.date,
                             style: const TextStyle(
                               color: Color(0xFF767676),
                               fontSize: 12,
@@ -84,7 +91,7 @@ class CommentWidget extends StatelessWidget {
                           // 더보기 버튼 (수정/삭제/신고)
                           GestureDetector(
                             onTap: () {
-                              _handleOptions(context, isAuthor);
+                              _handleOptions(context, widget.isAuthor);
                             },
                             child: const Icon(Icons.more_horiz,
                                 size: 20, color: Colors.grey),
@@ -95,7 +102,7 @@ class CommentWidget extends StatelessWidget {
 
                       // 댓글 내용
                       Text(
-                        comment.content,
+                        widget.comment.content,
                         style: const TextStyle(
                           color: Color(0xFF404040),
                           fontSize: 14,
@@ -113,38 +120,38 @@ class CommentWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 5),
                             child: GestureDetector(
                               onTap: () {
-                                isReply
+                                widget.isReply
                                     ? null
-                                    : Get.find<DetailController>()
-                                        .likeCommentToggle(comment.id);
+                                    : controller
+                                        .likeCommentToggle(widget.comment.id);
                               },
                               child: Icon(
-                                comment.isLiked
+                                widget.comment.isLiked
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                                 size: 18,
-                                color: comment.isLiked
+                                color: widget.comment.isLiked
                                     ? Palette.buttonColorBlue
                                     : Colors.grey,
                               ),
                             ),
                           ),
-                          Text("${comment.likes}"),
+                          Text("${widget.comment.likes}"),
 
                           // 답글 버튼
-                          if (!isReply) ...[
+                          if (!widget.isReply) ...[
                             const SizedBox(width: 8),
                             GestureDetector(
                               onTap: () {
-                                Get.find<DetailController>().activateReplyMode(
-                                    comment.id, comment.author);
+                                controller.activateReplyMode(
+                                    widget.comment.id, widget.comment.author);
                               },
                               child: Row(
                                 children: [
                                   const Icon(Icons.chat_bubble_outline,
                                       size: 18, color: Colors.grey),
                                   const SizedBox(width: 5),
-                                  Text("${comment.replies.length}"),
+                                  Text("${widget.comment.replies.length}"),
                                 ],
                               ),
                             ),
@@ -159,7 +166,7 @@ class CommentWidget extends StatelessWidget {
           ),
         ),
 
-        // ✅ 댓글/답글 사이 구분선 추가
+        // 댓글/답글 사이 구분선 추가
         const Padding(
           padding: EdgeInsets.only(top: 10),
           child: Divider(
@@ -168,10 +175,10 @@ class CommentWidget extends StatelessWidget {
           ),
         ),
 
-        // ✅ 답글 리스트 추가 (들여쓰기 적용)
-        if (comment.replies.isNotEmpty)
+        // 답글 리스트 추가 (들여쓰기 적용)
+        if (widget.comment.replies.isNotEmpty)
           Column(
-            children: comment.replies.map((reply) {
+            children: widget.comment.replies.map((reply) {
               return Column(
                 children: [
                   CommentWidget(
@@ -179,16 +186,6 @@ class CommentWidget extends StatelessWidget {
                     isReply: true,
                     isAuthor: reply.isAuthor,
                   ),
-
-                  // // ✅ 답글 사이 구분선 추가
-                  // const Padding(
-                  //   padding: EdgeInsets.symmetric(
-                  //       vertical: 5, horizontal: 20), // 답글 안쪽 들여쓰기 고려
-                  //   child: Divider(
-                  //     color: Color(0xFFD9D9D9),
-                  //     thickness: 1,
-                  //   ),
-                  // ),
                 ],
               );
             }).toList(),
@@ -203,8 +200,7 @@ class CommentWidget extends StatelessWidget {
       isAuthor: isAuthor,
       isComment: true,
       onEdit: () {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('댓글 수정 기능 실행')));
+        controller.activateEditMode(widget.comment.id, widget.comment.content);
       },
       onDelete: () {
         ScaffoldMessenger.of(context)
