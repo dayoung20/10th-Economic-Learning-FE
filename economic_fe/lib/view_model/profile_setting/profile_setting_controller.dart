@@ -6,6 +6,8 @@ import 'package:economic_fe/view_model/profile_setting/part_select_controller.da
 import 'package:get/get.dart';
 
 class ProfileSettingController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
+
   // 저장 버튼 상태
   var basicSaveButtonClicked = false.obs;
   var jobSaveButtonClicked = false.obs;
@@ -113,7 +115,7 @@ class ProfileSettingController extends GetxController {
     print("🚀 전송 데이터: ${userProfile.value.toJson()}");
 
     bool success =
-        await RemoteDataSource.registerUserProfile(userProfile.value.toJson());
+        await remoteDataSource.registerUserProfile(userProfile.value.toJson());
 
     if (success) {
       Get.snackbar('성공', '프로필 등록이 완료되었습니다.');

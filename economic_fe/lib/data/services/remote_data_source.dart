@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
 
 class RemoteDataSource {
@@ -50,6 +51,45 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
+  /// jsonData 포함O
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> postApiWithJsonTest(
+    String endPoint,
+    Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response.statusCode;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
   /// jsonData 포함X
   static Future<dynamic> _postApi(
     String endPoint,
@@ -60,6 +100,43 @@ class RemoteDataSource {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $accessToken',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response.statusCode;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> _postApiTest(
+    String endPoint,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    String? access = await getToken("accessToken");
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
     };
 
     try {
@@ -168,6 +245,44 @@ class RemoteDataSource {
     }
   }
 
+  /// API GET (token 사용)
+  ///
+  /// 데이터 받아올 때 사용
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> _getApiWithHeaderTest(
+      String endPoint, String accessToken) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('GET 요청: $endPoint');
+
+    String? access = await getToken("accessToken");
+
+    try {
+      final headers = {
+        'Authorization': 'Bearer $access',
+        'accept': '*/*',
+      };
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('GET 요청 성공');
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return decodedResponse;
+      } else {
+        debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+        return response;
+      }
+    } catch (e) {
+      debugPrint('GET 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
   /// API DELETE
   ///
   /// 데이터 삭제시 사용
@@ -198,17 +313,88 @@ class RemoteDataSource {
     }
   }
 
+  /// API DELETE
+  ///
+  /// 데이터 삭제시 사용
+  /// 앱에 저장된 accessToken 사용
+  Future<dynamic> _deleteApiTest(String endPoint) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('DELETE 요청: $endPoint');
+    String? access = await getToken("accessToken");
+    try {
+      final headers = {
+        'Authorization': 'Bearer $access',
+        'accept': '*/*',
+      };
+      final response = await http.delete(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('DELETE 요청 성공');
+      } else {
+        debugPrint('DELETE 요청 실패: (${response.statusCode})${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('DELETE 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
+  // 토큰 저장
+  Future<void> saveToken(String sessionKey, String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(sessionKey, token);
+  }
+
+  // 토큰 불러오기
+  Future<String?> getToken(String sessionKey) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(sessionKey);
+  }
+
+  // 토큰 삭제
+  Future<void> deleteToken(String sessionKey) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(sessionKey);
+  }
+
   /// 개념 학습 세트 조회
   /// api/v1/learning/{learningSetId}/concepts
-  static Future<dynamic> getLearningConcept(
-      int learningSetId, String level) async {
-    dynamic response =
-        await _getApi('api/v1/learning/$learningSetId/concepts?level=$level');
+  Future<dynamic> getLearningConcept(int learningSetId, String level) async {
+    dynamic response = await _getApiWithHeaderTest(
+        'api/v1/learning/$learningSetId/concepts?level=$level', accessToken);
     print(response);
     return response;
   }
 
-  /// api/v1/level-test/quiz 레벨 테스트 퀴즈 목록 조회
+  /// api/v1/learning
+  /// 레벨별 학습 세트 조회
+  Future<dynamic> postLearningSet() async {
+    String endPoint = 'api/v1/learning';
+
+    try {
+      final response = await _postApiTest(endPoint); // API 요청
+      print("Raw Response: $response");
+
+      if (response is http.Response) {
+        final jsonResponse = jsonDecode(response.body); // JSON 변환
+        print("Decoded Response: $jsonResponse");
+        return jsonResponse;
+      }
+
+      return response; // 혹시 다른 데이터 타입일 경우 그대로 반환
+    } catch (e) {
+      debugPrint("API Error: $e");
+      return {}; // 에러 발생 시 빈 Map 반환
+    }
+  }
+
+  /// 레벨 테스트 퀴즈 목록 조회
+  /// api/v1/level-test/quiz
   static Future<dynamic> getLevelTest() async {
     dynamic response = await _getApi('api/v1/level-test/quiz');
     return response;
@@ -216,16 +402,15 @@ class RemoteDataSource {
 
   /// 뉴스 목록 조회
   /// api/news
-  static Future<dynamic> getNewsList(
-      int page, String sort, String? category) async {
+  Future<dynamic> getNewsList(int page, String sort, String? category) async {
     dynamic response;
     if (category != null) {
-      response = await _getApiWithHeader(
+      response = await _getApiWithHeaderTest(
         'api/news?page=$page&sort=$sort&category=$category',
         accessToken,
       );
     } else {
-      response = await _getApiWithHeader(
+      response = await _getApiWithHeaderTest(
         'api/news?page=$page&sort=$sort',
         accessToken,
       );
@@ -241,11 +426,11 @@ class RemoteDataSource {
 
   /// api/news/{id}/scrap
   /// 뉴스 스크랩
-  static Future<dynamic> postNewsScrap(int id) async {
+  Future<dynamic> postNewsScrap(int id) async {
     String endPoint = "api/news/$id/scrap";
 
     try {
-      final response = await _postApi(endPoint);
+      final response = await _postApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 post 성공");
@@ -262,11 +447,11 @@ class RemoteDataSource {
 
   /// 뉴스 스크랩 취소
   /// api/news/{id}/scrap
-  static Future<dynamic> deleteNewsScrap(int id) async {
+  Future<dynamic> deleteNewsScrap(int id) async {
     String endPoint = "api/news/$id/scrap";
 
     try {
-      final response = await _deleteApi(endPoint);
+      final response = await _deleteApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 delete 성공");
@@ -283,13 +468,13 @@ class RemoteDataSource {
 
   /// 자음 별 용어 조회
   /// api/v1/terms/search/consonant
-  static Future<dynamic> getDictionary(int page, String consonant) async {
+  Future<dynamic> getDictionary(int page, String consonant) async {
     dynamic response;
 
     // 한글 자음을 URL 인코딩
     String encodedConsonant = Uri.encodeComponent(consonant);
 
-    response = await _getApiWithHeader(
+    response = await _getApiWithHeaderTest(
         'api/v1/terms/search/consonant?page=$page&consonant=$encodedConsonant',
         accessToken);
 
@@ -303,10 +488,10 @@ class RemoteDataSource {
 
   /// 용어 상세 조회
   /// api/v1/terms/{id}
-  static Future<dynamic> getDetailTerms(int id) async {
+  Future<dynamic> getDetailTerms(int id) async {
     dynamic response;
 
-    response = await _getApiWithHeader('api/v1/terms/$id', accessToken);
+    response = await _getApiWithHeaderTest('api/v1/terms/$id', accessToken);
 
     if (response != null) {
       print("용어 상세 : $response");
@@ -319,13 +504,13 @@ class RemoteDataSource {
 
   /// 키워드 별 용어 조회
   /// api/v1/terms/search/keyword
-  static Future<dynamic> getKewordResult(int page, String keyword) async {
+  Future<dynamic> getKewordResult(int page, String keyword) async {
     dynamic response;
 
     // 한글을 URL 인코딩
     String encodedkeyword = Uri.encodeComponent(keyword);
 
-    response = await _getApiWithHeader(
+    response = await _getApiWithHeaderTest(
         'api/v1/terms/search/keyword?page=$page&keyword=$encodedkeyword',
         accessToken);
 
@@ -340,11 +525,11 @@ class RemoteDataSource {
 
   /// api/v1/terms/{id}/scrap
   /// 용어 스크랩
-  static Future<dynamic> postTermsScrap(int id) async {
+  Future<dynamic> postTermsScrap(int id) async {
     String endPoint = "api/v1/terms/$id/scrap";
 
     try {
-      final response = await _postApi(endPoint);
+      final response = await _postApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 post 성공");
@@ -361,11 +546,11 @@ class RemoteDataSource {
 
   /// api/v1/terms/{id}/scrap
   /// 용어 스크랩 취소
-  static Future<dynamic> deleteScrap(int id) async {
+  Future<dynamic> deleteScrap(int id) async {
     String endPoint = "api/v1/terms/$id/scrap";
 
     try {
-      final response = await _deleteApi(endPoint);
+      final response = await _deleteApiTest(endPoint);
 
       if (response != null) {
         debugPrint("스크랩 delete 성공");
@@ -382,11 +567,11 @@ class RemoteDataSource {
 
   /// 틀린 문제 데이터 요청
   /// api/v1/user/wrong-quizzes
-  static Future<dynamic> fetchIncorrectQuestions(String level) async {
+  Future<dynamic> fetchIncorrectQuestions(String level) async {
     String endpoint = 'api/v1/user/wrong-quizzes?level=$level';
 
     try {
-      final response = await _getApiWithHeader(endpoint, accessToken);
+      final response = await _getApiWithHeaderTest(endpoint, accessToken);
 
       if (response != null && response['isSuccess'] == true) {
         debugPrint('틀린 문제 데이터 요청 성공');
@@ -403,13 +588,13 @@ class RemoteDataSource {
 
   /// 개별 퀴즈 조회
   /// API: api/v1/learning/learning/quiz/{quizId}
-  static Future<dynamic> fetchQuizById(int quizId) async {
+  Future<dynamic> fetchQuizById(int quizId) async {
     try {
       // API Endpoint 구성
       String endPoint = 'api/v1/learning/learning/quiz/$quizId';
 
       // GET 요청 수행
-      final response = await _getApiWithHeader(endPoint, accessToken);
+      final response = await _getApiWithHeaderTest(endPoint, accessToken);
 
       // 응답 데이터 처리
       if (response != null) {
@@ -427,10 +612,10 @@ class RemoteDataSource {
 
   /// 스크랩 한 게시물 조회
   /// API: api/v1/user/scrap-posts
-  static Future<dynamic> fetchScrapedPosts() async {
+  Future<dynamic> fetchScrapedPosts() async {
     const String endPoint = 'api/v1/user/scrap-posts';
 
-    final response = await _getApiWithHeader(endPoint, accessToken);
+    final response = await _getApiWithHeaderTest(endPoint, accessToken);
 
     if (response != null && response['isSuccess']) {
       debugPrint("스크랩 게시글 목록 응답: ${response['results']}");
@@ -443,10 +628,10 @@ class RemoteDataSource {
 
   /// 좋아요 한 게시물 조회
   /// API: api/v1/user/like-posts
-  static Future<dynamic> fetchLikedPosts() async {
+  Future<dynamic> fetchLikedPosts() async {
     const String endPoint = 'api/v1/user/like-posts';
 
-    final response = await _getApiWithHeader(endPoint, accessToken);
+    final response = await _getApiWithHeaderTest(endPoint, accessToken);
 
     if (response != null && response['isSuccess']) {
       debugPrint("좋아요 게시글 목록 응답: ${response['results']}");
@@ -459,10 +644,10 @@ class RemoteDataSource {
 
   /// 좋아요 한 댓글 조회
   /// API: api/v1/user/like-comments
-  static Future<dynamic> fetchLikedComments() async {
+  Future<dynamic> fetchLikedComments() async {
     const String endPoint = 'api/v1/user/like-comments';
 
-    final response = await _getApiWithHeader(endPoint, accessToken);
+    final response = await _getApiWithHeaderTest(endPoint, accessToken);
 
     if (response != null && response['isSuccess']) {
       debugPrint("좋아요 댓글 목록 응답: ${response['results']}");
@@ -475,12 +660,12 @@ class RemoteDataSource {
 
   /// 스크랩 한 개념 학습 조회
   /// API: api/v1/user/scrap-concepts
-  static Future<dynamic> getScrapConcepts(String level) async {
+  Future<dynamic> getScrapConcepts(String level) async {
     String endpoint = 'api/v1/user/scrap-concepts?level=$level';
 
     try {
       // _getApiWithHeader 호출
-      final response = await _getApiWithHeader(endpoint, accessToken);
+      final response = await _getApiWithHeaderTest(endpoint, accessToken);
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('스크랩한 학습 데이터 로드 성공');
@@ -497,12 +682,12 @@ class RemoteDataSource {
 
   /// 스크랩 한 퀴즈 조회
   /// API: api/v1/user/scrap-quizzes
-  static Future<dynamic> getScrapQuizzes(String level) async {
+  Future<dynamic> getScrapQuizzes(String level) async {
     String endpoint = 'api/v1/user/scrap-quizzes?level=$level';
 
     try {
       // _getApiWithHeader 호출
-      final response = await _getApiWithHeader(endpoint, accessToken);
+      final response = await _getApiWithHeaderTest(endpoint, accessToken);
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('스크랩한 퀴즈 데이터 로드 성공');
@@ -519,12 +704,12 @@ class RemoteDataSource {
 
   /// 레벨별 학습 진도율 조회
   /// API: api/v1/user/progress
-  static Future<dynamic> getProgress() async {
+  Future<dynamic> getProgress() async {
     String endpoint = 'api/v1/user/progress';
 
     try {
       // _getApiWithHeader 호출
-      final response = await _getApiWithHeader(endpoint, accessToken);
+      final response = await _getApiWithHeaderTest(endpoint, accessToken);
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('학습 진도율 데이터 로드 성공');
@@ -541,12 +726,11 @@ class RemoteDataSource {
 
   /// 사용자 프로필 등록 API
   /// API: api/v1/user/profile
-  static Future<dynamic> registerUserProfile(
-      Map<String, dynamic> userProfile) async {
+  Future<dynamic> registerUserProfile(Map<String, dynamic> userProfile) async {
     String endpoint = 'api/v1/user/profile';
 
     try {
-      final response = await postApiWithJson(endpoint, userProfile);
+      final response = await postApiWithJsonTest(endpoint, userProfile);
 
       if (response == 200) {
         debugPrint('사용자 프로필 등록 성공');
@@ -558,6 +742,88 @@ class RemoteDataSource {
     } catch (e) {
       debugPrint('registerUserProfile Error: $e');
       return false;
+    }
+  }
+
+  /// api/v1/chatbot/list
+  /// 대화 내역 조회
+  Future<dynamic> getMessageList(int page) async {
+    String endPoint = 'api/v1/chatbot/list?page=$page';
+
+    try {
+      // _getApiWithHeader 호출
+      final response = await _getApiWithHeaderTest(endPoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('대화 내역 조회 성공');
+        return response;
+      } else {
+        debugPrint('대화 내역 조회  실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      return null;
+    }
+  }
+
+  /// api/v1/chatbot
+  /// 챗봇에게 메세지 보내기
+  Future<dynamic> postChatbotMessage(String message) async {
+    String encodedmsg = Uri.encodeComponent(message);
+    String endPoint = "api/v1/chatbot?message=$encodedmsg";
+    try {
+      final response = await _postApiTest(endPoint);
+
+      if (response != null) {
+        debugPrint("대화 전송 성공");
+        return response;
+      } else {
+        debugPrint("대화 전송 실패");
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error : $e');
+    }
+  }
+
+  /// api/v1/chatbot/clear
+  /// 대화 내역 초기화
+  Future<bool> deleteMessage() async {
+    String endPoint = "api/v1/chatbot/clear";
+
+    try {
+      final response = await _deleteApiTest(endPoint);
+
+      if (response != null) {
+        debugPrint("메시지 delete 성공");
+        return true;
+      } else {
+        debugPrint("메시지 delete 실패");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("delete Error : $e");
+      return false;
+    }
+  }
+
+  /// api/v2/auth/login/kakao
+  /// 카카오 로그인 (v2)
+  static Future<dynamic> getlogin(String accessToken) async {
+    String endPoint = "api/v2/auth/login/kakao?accessToken=$accessToken";
+    try {
+      final response = await _getApi(endPoint);
+
+      if (response != null) {
+        debugPrint("성공");
+        return response;
+      } else {
+        debugPrint("실패");
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error : $e');
     }
   }
 

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 
 class MyLearningController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  final remoteDataSource = RemoteDataSource();
+
   late TabController tabController;
 
   var selectedConsonant = "ㄱ".obs;
@@ -21,9 +23,9 @@ class MyLearningController extends GetxController
     try {
       print("start");
       dynamic response;
-      
+
       if (type) {
-        response = await RemoteDataSource.getDictionary(page, text);
+        response = await remoteDataSource.getDictionary(page, text);
         print("response :: $response");
 
         final data = response as Map<String, dynamic>;
@@ -31,7 +33,7 @@ class MyLearningController extends GetxController
         return termList.map((term) => DictionaryModel.fromJson(term)).toList();
       } else {
         print("검색");
-        response = await RemoteDataSource.getKewordResult(page, text);
+        response = await remoteDataSource.getKewordResult(page, text);
         print("response : $response");
 
         final data = response as Map<String, dynamic>;
@@ -51,7 +53,7 @@ class MyLearningController extends GetxController
 
       dynamic response;
 
-      response = await RemoteDataSource.getKewordResult(page, keyword);
+      response = await remoteDataSource.getKewordResult(page, keyword);
       print("response : $response");
       // final data = response as Map<String, dynamic>;
     } catch (e) {
@@ -66,7 +68,7 @@ class MyLearningController extends GetxController
 
       dynamic response;
 
-      response = await RemoteDataSource.getDetailTerms(id);
+      response = await remoteDataSource.getDetailTerms(id);
       print("respose : $response");
     } catch (e) {
       debugPrint('Error: $e');
@@ -131,7 +133,7 @@ class MyLearningController extends GetxController
   Future<void> fetchScrapConcepts() async {
     try {
       final response =
-          await RemoteDataSource.getScrapConcepts(selectedLevel.value);
+          await remoteDataSource.getScrapConcepts(selectedLevel.value);
       if (response != null && response['isSuccess'] == true) {
         final List<dynamic> rawConcepts =
             response['results']['scrapConceptList'] ?? [];
@@ -151,7 +153,7 @@ class MyLearningController extends GetxController
   Future<void> fetchScrapQuizzes() async {
     try {
       final response =
-          await RemoteDataSource.getScrapQuizzes(selectedLevel.value);
+          await remoteDataSource.getScrapQuizzes(selectedLevel.value);
       if (response != null && response['isSuccess'] == true) {
         final List<dynamic> rawQuizzes =
             response['results']['scrapQuizList'] ?? [];

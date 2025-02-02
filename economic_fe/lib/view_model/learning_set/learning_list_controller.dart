@@ -1,9 +1,14 @@
+import 'package:economic_fe/data/models/dictionary_model.dart';
+import 'package:economic_fe/data/models/learning_list_model.dart';
+import 'package:economic_fe/data/models/learning_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart'; // GoRouter import
 
 class LearningListController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
+
   //각 아이템의 퀴즈, 개념학습 수행 여부
   var learningState = {
     0: [false, false],
@@ -44,15 +49,51 @@ class LearningListController extends GetxController {
     Get.toNamed('/chatbot');
   }
 
-  Future<void> getLearningConcept(int learningSetId, String level) async {
+  Future<List<LearningModel>> getLearningConcept(
+      int learningSetId, String level) async {
     try {
-      // print("start");
-      dynamic response =
-          await RemoteDataSource.getLearningConcept(learningSetId, level);
-      // print("출력");
-      print(response);
+      print("start");
+
+      dynamic response;
+
+      response =
+          await remoteDataSource.getLearningConcept(learningSetId, level);
+
+      print("response :: $response");
+
+      final data = response as Map<String, dynamic>;
+      final conceptList = data['results']['conceptList'] as List;
+
+      print("conceptList ::: $conceptList");
+
+      return conceptList
+          .map((concept) => LearningModel.fromJson(concept))
+          .toList();
     } catch (e) {
       debugPrint('Error: $e');
+      return [];
+    }
+  }
+
+  Future<List<LearningListModel>> postLearningSet() async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await remoteDataSource.postLearningSet();
+
+      print("learning set : $response");
+
+      final data = response as Map<String, dynamic>;
+      final learningList = data['results']['learningSetPreviewList'] as List;
+
+      // print(learningList);
+      return learningList
+          .map((learningSet) => LearningListModel.fromJson(learningSet))
+          .toList();
+    } catch (e) {
+      debugPrint("Error : $e");
+      return [];
     }
   }
 }

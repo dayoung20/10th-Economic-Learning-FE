@@ -1,19 +1,68 @@
+import 'package:economic_fe/data/models/chatbot/chatbot_model.dart';
 import 'package:economic_fe/data/models/chatbot/message.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/chatbot_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-class ChatbotPage extends StatelessWidget {
+class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(ChatbotController()); // Controller 인스턴스화
+  State<ChatbotPage> createState() => _ChatbotPageState();
+}
 
+class _ChatbotPageState extends State<ChatbotPage> {
+  final controller = Get.put(ChatbotController()); // Controller 인스턴스화
+  // int currentPage = 0;
+  bool isLoading = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        // 스크롤 끝에 도달하면
+        if (!isLoading) {
+          setState(() {
+            isLoading = true;
+            controller.currentPage++;
+            print("current : ${controller.currentPage}");
+          });
+          controller
+              .getChatbotList(controller.currentPage.value)
+              .then((newData) {
+            setState(() {
+              isLoading = false;
+            });
+          }).catchError((e) {
+            setState(() {
+              isLoading = false;
+            });
+            print("Error: $e");
+          });
+        }
+      }
+    });
+    controller.getChatbotList(0);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // 앱 초기화 시 챗봇 기본 메시지 전송
-    controller.sendInitialMessages();
+    // controller.sendInitialMessages();
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -35,78 +84,60 @@ class ChatbotPage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: // 메시지 리스트 (각 메시지와 시간 표시)
-                            Obx(() {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.messages.length,
-                            itemBuilder: (context, index) {
-                              final message = controller.messages[index];
-                              if (message.isDateMessage!) {
-                                return Center(
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    decoration: ShapeDecoration(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            width: 0.50,
-                                            color: Color(0xFFA2A2A2)),
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      message.text,
-                                      style: const TextStyle(
-                                        color: Color(0xFF404040),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.4,
-                                        letterSpacing: -0.30,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                bool showChatbotIcon = false;
-                                bool showTime = false;
-
-                                // 첫 번째 챗봇 메시지에만 챗봇 아이콘 표시
-                                if (index == 0 ||
-                                    controller.messages[index - 1].time !=
-                                        message.time ||
-                                    controller
-                                        .messages[index - 1].isUserMessage) {
-                                  showChatbotIcon = !message.isUserMessage;
+                        child: Obx(
+                          () {
+                            return FutureBuilder<List<ChatbotModel>>(
+                              future: controller
+                                  .getChatbotList(controller.currentPage.value),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                // 에러인 경우
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text("에러 발생 : ${snapshot.error}"),
+                                  );
                                 }
 
-                                // 마지막 메시지에만 전송 시각 표시
-                                if (index == controller.messages.length - 1 ||
-                                    controller.messages[index + 1].time !=
-                                        message.time ||
-                                    controller.messages[index + 1]
-                                            .isUserMessage !=
-                                        message.isUserMessage) {
-                                  showTime = true;
+                                // 데이터가 없을 때
+                                if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  return const Center(
+                                    child: Text("데이터가 없습니다."),
+                                  );
                                 }
 
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: message.isUserMessage
-                                      ? MainAxisAlignment.end
-                                      : MainAxisAlignment.start,
-                                  children: [
-                                    // 쳇봇 아이콘
-                                    message.isUserMessage
-                                        ? const SizedBox()
-                                        : showChatbotIcon
-                                            ? Container(
-                                                width: 40,
-                                                height: 40,
+                                final chatResponses = snapshot.data!;
+
+                                return Expanded(
+                                  child: ListView.builder(
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: chatResponses.length,
+                                    itemBuilder: (context, index) {
+                                      final message = chatResponses[index];
+                                      if (index == 0 ||
+                                          _isDifferentDate(
+                                              message.createdAt!,
+                                              chatResponses[index - 1]
+                                                  .createdAt!)) {
+                                        //날짜 표시 위젯 여부 message.isDateMessage!
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Center(
+                                              child: Container(
                                                 padding:
-                                                    const EdgeInsets.all(8),
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 4),
                                                 decoration: ShapeDecoration(
                                                   color: Colors.white,
                                                   shape: RoundedRectangleBorder(
@@ -116,96 +147,348 @@ class ChatbotPage extends StatelessWidget {
                                                             Color(0xFFA2A2A2)),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            20),
+                                                            50),
                                                   ),
                                                 ),
-                                                child: Image.asset(
-                                                    'assets/icon.png'),
-                                              )
-                                            : const SizedBox(
-                                                width: 40,
-                                              ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: message.isUserMessage
-                                          ? CrossAxisAlignment.end
-                                          : CrossAxisAlignment.start,
-                                      children: [
-                                        message.isUserMessage
-                                            ? const SizedBox()
-                                            : showChatbotIcon
-                                                ? const Text(
-                                                    '챗봇',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF767676),
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      height: 1.40,
-                                                      letterSpacing: -0.35,
-                                                    ),
-                                                  )
-                                                : const SizedBox(),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 10),
-                                          decoration: ShapeDecoration(
-                                            color: message.isSystemMessage
-                                                ? const Color(0xFFF2F3F5)
-                                                : const Color(0xFF1DB691),
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(
-                                                  width: 0.50,
-                                                  color: Color(0xFFA2A2A2)),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                          ),
-                                          child: Container(
-                                            constraints: const BoxConstraints(
-                                                maxWidth: 250),
-                                            child: Text(
-                                              message.text,
-                                              style: TextStyle(
-                                                color: message.isSystemMessage
-                                                    ? const Color(0xFF404040)
-                                                    : Colors.white,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                height: 1.40,
-                                                letterSpacing: -0.40,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        // 전송 시각 표시
-                                        showTime
-                                            ? Text(
-                                                message.time,
-                                                style: const TextStyle(
-                                                  color: Color(0xFFA2A2A2),
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.40,
-                                                  letterSpacing: -0.30,
+                                                child: Text(
+                                                  // DateTime.now().toString(),
+                                                  message.createdAt!,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF404040),
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.4,
+                                                    letterSpacing: -0.30,
+                                                  ),
                                                 ),
-                                              )
-                                            : const SizedBox(),
-                                        const SizedBox(height: 10),
-                                      ],
-                                    ),
-                                  ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  message.sender == "USER"
+                                                      ? CrossAxisAlignment.end
+                                                      : CrossAxisAlignment
+                                                          .start,
+                                              children: [
+                                                message.sender == "USER"
+                                                    ? const SizedBox()
+                                                    : const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 10),
+                                                  decoration: ShapeDecoration(
+                                                    color:
+                                                        // message.isSystemMessage
+                                                        message.sender != "USER"
+                                                            ? const Color(
+                                                                0xFFF2F3F5)
+                                                            : const Color(
+                                                                0xFF1DB691),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      side: const BorderSide(
+                                                          width: 0.50,
+                                                          color: Color(
+                                                              0xFFA2A2A2)),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                  ),
+                                                  child: Container(
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxWidth: 250),
+                                                    child: Text(
+                                                      message.message!,
+                                                      style: TextStyle(
+                                                        color: message.sender !=
+                                                                "USER"
+                                                            ? const Color(
+                                                                0xFF404040)
+                                                            : Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        height: 1.40,
+                                                        letterSpacing: -0.40,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      } else {
+                                        bool showChatbotIcon = false;
+                                        bool showTime = false;
+
+                                        // 첫 번째 챗봇 메시지에만 챗봇 아이콘 표시
+                                        if (index == 0 ||
+                                            chatResponses[index - 1]
+                                                    .createdAt !=
+                                                message.createdAt ||
+                                            chatResponses[index - 1].sender ==
+                                                "USER") {
+                                          showChatbotIcon =
+                                              !(message.sender == "USER");
+                                        }
+
+                                        // 마지막 메시지에만 전송 시각 표시
+                                        // if (index == chatResponses.length - 1 ||
+                                        //     chatResponses[index + 1].createdAt !=
+                                        //         message.createdAt ||
+                                        //     (chatResponses[index + 1].sender ==
+                                        //             "USER") !=
+                                        //         (message.sender == "USER")) {
+                                        //   showTime = true;
+                                        // }
+
+                                        if (index == chatResponses.length - 1) {
+                                          showTime = true; // 마지막 메시지
+                                        } else {
+                                          DateTime currentTime = DateTime.parse(
+                                              message.createdAt!);
+                                          DateTime nextTime = DateTime.parse(
+                                              chatResponses[index + 1]
+                                                  .createdAt!);
+
+                                          // 같은 날짜인지 확인 (초 단위 비교)
+                                          bool isSameTime = currentTime
+                                                  .difference(nextTime)
+                                                  .inSeconds ==
+                                              0;
+
+                                          // 다음 메시지와 시간이 다르거나, 보낸 사람이 다르면 시간 표시
+                                          if (!isSameTime ||
+                                              chatResponses[index + 1].sender !=
+                                                  message.sender) {
+                                            showTime = true;
+                                          }
+                                        }
+
+                                        return Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              // message.isUserMessage
+                                              message.sender == "USER"
+                                                  ? MainAxisAlignment.end
+                                                  : MainAxisAlignment.start,
+                                          children: [
+                                            // 쳇봇 아이콘
+                                            message.sender == "USER"
+                                                ? const SizedBox()
+                                                : showChatbotIcon
+                                                    ? Container(
+                                                        width: 40,
+                                                        height: 40,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            side: const BorderSide(
+                                                                width: 0.50,
+                                                                color: Color(
+                                                                    0xFFA2A2A2)),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                        ),
+                                                        child: Image.asset(
+                                                            'assets/icon.png'),
+                                                      )
+                                                    : const SizedBox(
+                                                        width: 40,
+                                                      ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  message.sender == "USER"
+                                                      ? CrossAxisAlignment.end
+                                                      : CrossAxisAlignment
+                                                          .start,
+                                              children: [
+                                                message.sender == "USER"
+                                                    ? const SizedBox()
+                                                    : showChatbotIcon
+                                                        ? const Text(
+                                                            '챗봇',
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF767676),
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              height: 1.40,
+                                                              letterSpacing:
+                                                                  -0.35,
+                                                            ),
+                                                          )
+                                                        : const SizedBox(),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 10),
+                                                  decoration: ShapeDecoration(
+                                                    color:
+                                                        // message.isSystemMessage
+                                                        // message.message != null
+                                                        message.sender != "USER"
+                                                            ? const Color(
+                                                                0xFFF2F3F5)
+                                                            : const Color(
+                                                                0xFF1DB691),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      side: const BorderSide(
+                                                          width: 0.50,
+                                                          color: Color(
+                                                              0xFFA2A2A2)),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                  ),
+                                                  child: Container(
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxWidth: 250),
+                                                    child: Text(
+                                                      message.message!,
+                                                      style: TextStyle(
+                                                        color: message.sender !=
+                                                                "USER"
+                                                            ? const Color(
+                                                                0xFF404040)
+                                                            : Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        height: 1.40,
+                                                        letterSpacing: -0.40,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // 전송 시각 표시
+                                                showTime
+                                                    ? Text(
+                                                        // message.createdAt!,
+                                                        // DateFormat(
+                                                        //         'a HH:mm', 'ko')
+                                                        //     .format(DateTime
+                                                        //         .parse(message
+                                                        //             .createdAt!)),
+                                                        DateFormat('HH:mm')
+                                                            .format(DateTime
+                                                                .parse(message
+                                                                    .createdAt!)),
+                                                        style: const TextStyle(
+                                                          color:
+                                                              Color(0xFFA2A2A2),
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          height: 1.40,
+                                                          letterSpacing: -0.30,
+                                                        ),
+                                                      )
+                                                    : const SizedBox(),
+                                                const SizedBox(height: 10),
+                                                // 챗봇 이용 꿀팁
+                                                controller.chatbotTip.value
+                                                    ? Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 16,
+                                                                vertical: 10),
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          color:
+                                                              // message.isSystemMessage
+                                                              // message.message != null
+                                                              const Color(
+                                                                  0xFFF2F3F5),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            side: const BorderSide(
+                                                                width: 0.50,
+                                                                color: Color(
+                                                                    0xFFA2A2A2)),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                        ),
+                                                        child: Container(
+                                                          constraints:
+                                                              const BoxConstraints(
+                                                                  maxWidth:
+                                                                      250),
+                                                          child: const Text(
+                                                            "d",
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF404040),
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              height: 1.40,
+                                                              letterSpacing:
+                                                                  -0.40,
+                                                            ),
+                                                          ),
+                                                        ))
+                                                    : const SizedBox()
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  ),
                                 );
-                              }
-                            },
-                          );
-                        }),
+                              },
+                            );
+                          },
+                        ),
                       ),
+                      IconButton(
+                          onPressed: () {
+                            controller.currentPage++;
+                            print("cr : ${controller.currentPage}");
+                          },
+                          icon: const Icon(Icons.arrow_downward_outlined)),
+                      TextButton(
+                          onPressed: () {
+                            controller.deleteMessage();
+                          },
+                          child: const Text("초기화"))
                     ],
                   ),
                 ),
@@ -248,7 +531,11 @@ class ChatbotPage extends StatelessWidget {
                               // 챗봇 이용꿀팁
                               GestureDetector(
                                 onTap: () {
-                                  controller.sendTipMessages();
+                                  // controller.sendTipMessages();
+                                  print("tap");
+                                  controller.chatbotTip.value =
+                                      !controller.chatbotTip.value;
+                                  print(controller.chatbotTip.value);
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -346,7 +633,9 @@ class ChatbotPage extends StatelessWidget {
                                     border: InputBorder.none,
                                     suffixIcon: IconButton(
                                       onPressed: () {
-                                        controller.sendMessage();
+                                        // controller.sendMessage();
+                                        controller.postChatbotMessage();
+                                        controller.messageController.clear();
                                       },
                                       icon: controller
                                               .messageText.value.isNotEmpty
@@ -377,5 +666,14 @@ class ChatbotPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _isDifferentDate(String date1, String date2) {
+    DateTime parsedDate1 = DateTime.parse(date1);
+    DateTime parsedDate2 = DateTime.parse(date2);
+
+    return parsedDate1.year != parsedDate2.year ||
+        parsedDate1.month != parsedDate2.month ||
+        parsedDate1.day != parsedDate2.day;
   }
 }

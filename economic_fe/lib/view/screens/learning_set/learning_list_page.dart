@@ -21,7 +21,8 @@ class _LearningListPageState extends State<LearningListPage> {
     // TODO: implement initState
     super.initState();
     print("init state");
-    controller.getLearningConcept(1, "BEGINNER");
+    // controller.getLearningConcept(2, "BEGINNER");
+    controller.postLearningSet();
     print("끝");
   }
 
