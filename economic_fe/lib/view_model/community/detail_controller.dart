@@ -36,6 +36,9 @@ class DetailController extends GetxController {
 
         await fetchMyPosts();
         isAuthor.value = myPostIds.contains(postId);
+
+        await fetchLikedPosts();
+        isLikedPost.value = myPostIds.contains(postId);
       }
     } catch (e) {
       print('게시글 상세 조회 중 오류 발생: $e');
@@ -47,6 +50,15 @@ class DetailController extends GetxController {
   /// 내가 작성한 게시글 조회
   Future<void> fetchMyPosts() async {
     myPostIds.value = await RemoteDataSource.fetchMyPosts();
+  }
+
+  /// 내가 좋아요 한 게시물 조회
+  Future<void> fetchLikedPosts() async {
+    // myPostIds.value = await RemoteDataSource.fetchLikedPosts();
+    final postLists = await RemoteDataSource.fetchLikedPosts();
+    List<dynamic> posts = postLists['postList'];
+    myPostIds.value = posts.map<int>((post) => post['id']).toList();
+    debugPrint("내가 좋아요한 게시글 ID 리스트: $myPostIds"); // 로그 추가
   }
 
   /// 댓글 파싱 (서버 데이터 → Comment 모델)
@@ -118,6 +130,44 @@ class DetailController extends GetxController {
       fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
     } else {
       Get.snackbar("오류", "댓글 작성에 실패했습니다.");
+    }
+  }
+
+  /// 게시글 좋아요 여부
+  RxBool isLikedPost = false.obs;
+
+  /// 게시글 좋아요 토글
+  void likePostToggle() {
+    if (isLikedPost.value) {
+      deleteLikedPost();
+    } else {
+      likePost();
+    }
+  }
+
+  /// 게시글 좋아요 api 연동
+  Future<void> likePost() async {
+    int postId = postDetail["id"]; // 현재 게시글 ID
+    bool success = await RemoteDataSource.likePost(postId);
+
+    if (success) {
+      isLikedPost.value = true;
+      fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
+    } else {
+      Get.snackbar("오류", "게시글 좋아요에 실패했습니다.");
+    }
+  }
+
+  /// 게시글 좋아요 취소 api 연동
+  Future<void> deleteLikedPost() async {
+    int postId = postDetail["id"]; // 현재 게시글 ID
+    bool success = await RemoteDataSource.deleteLikedPost(postId);
+
+    if (success) {
+      isLikedPost.value = false;
+      fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
+    } else {
+      Get.snackbar("오류", "게시글 좋아요 취소에 실패했습니다.");
     }
   }
 

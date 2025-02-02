@@ -1,4 +1,3 @@
-import 'package:economic_fe/data/models/community/comment.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/community/comment_widget.dart';
 import 'package:economic_fe/view/widgets/community/option_dialog.dart';
@@ -152,8 +151,18 @@ class _DetailPageState extends State<DetailPage> {
                             const SizedBox(height: 10),
                             Row(
                               children: [
-                                const Icon(Icons.favorite_border,
-                                    size: 18, color: Color(0xff767676)),
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.likePostToggle(),
+                                      child: Icon(
+                                        controller.isLikedPost.value
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        size: 18,
+                                        color: controller.isLikedPost.value
+                                            ? Palette.buttonColorBlue
+                                            : const Color(0xff767676),
+                                      ),
+                                    )),
                                 const SizedBox(width: 5),
                                 Text("${post["likeCount"] ?? 0}"),
                                 const SizedBox(width: 8),
