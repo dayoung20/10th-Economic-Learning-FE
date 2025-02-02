@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class DetailController extends GetxController {
+  final RemoteDataSource remoteDataSource = RemoteDataSource(); // 인스턴스 생성
+
   RxBool isLoading = true.obs;
   RxMap<String, dynamic> postDetail = <String, dynamic>{}.obs;
   RxList<Comment> comments = RxList<Comment>();
@@ -59,20 +61,22 @@ class DetailController extends GetxController {
 
   /// 내가 작성한 게시글 조회
   Future<void> fetchMyPosts() async {
-    myPostIds.value = await RemoteDataSource.fetchMyPosts();
+    var posts = await RemoteDataSource.fetchMyPosts();
+    myPostIds.value = posts;
   }
 
   /// 내가 좋아요 한 게시물 조회
   Future<void> fetchLikedPosts() async {
-    final postLists = await RemoteDataSource.fetchLikedPosts();
-    List<dynamic> posts = postLists['postList'];
-    likedPostIds.value = posts.map<int>((post) => post['id']).toList();
-    debugPrint("내가 좋아요한 게시글 ID 리스트: $likedPostIds"); // 로그 추가
+    final postLists = await remoteDataSource.fetchLikedPosts();
+    if (postLists != null) {
+      likedPostIds.value =
+          postLists.map<int>((post) => post['id'] as int).toList();
+    }
   }
 
   /// 내가 스크랩 한 게시물 조회
   Future<void> fetchScrappedPosts() async {
-    final postLists = await RemoteDataSource.fetchScrapedPosts();
+    final postLists = await remoteDataSource.fetchScrapedPosts();
     List<dynamic> posts = postLists['postList'];
     scrappedPostIds.value = posts.map<int>((post) => post['id']).toList();
     debugPrint("내가 스크랩한 게시글 ID 리스트: $scrappedPostIds"); // 로그 추가
@@ -81,7 +85,7 @@ class DetailController extends GetxController {
   /// 내가 좋아요 한 댓글 목록 조회
   Future<void> fetchLikedComments() async {
     try {
-      final commentLists = await RemoteDataSource.fetchLikedComments();
+      final commentLists = await remoteDataSource.fetchLikedComments();
       List<dynamic> likedComments = commentLists['likeCommentResponses'] ?? [];
 
       // 각 댓글별 좋아요 상태 저장
