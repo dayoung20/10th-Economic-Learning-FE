@@ -49,13 +49,15 @@ class LearningListController extends GetxController {
 
   Future<List<LearningModel>> getLearningConcept(
       int learningSetId, String level) async {
+    final remoteDataSource = RemoteDataSource();
+
     try {
       print("start");
 
       dynamic response;
 
       response =
-          await RemoteDataSource.getLearningConcept(learningSetId, level);
+          await remoteDataSource.getLearningConcept(learningSetId, level);
 
       print("response :: $response");
 

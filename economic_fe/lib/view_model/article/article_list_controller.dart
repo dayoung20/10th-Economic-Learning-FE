@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ArticleListController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
   var selectedSort = "RECENT".obs;
   var selectedCate = "전체".obs;
 
@@ -38,15 +39,17 @@ class ArticleListController extends GetxController {
   //뉴스 기사 목록 불러오기
   Future<List<ArticleModel>> getNewsList(
       int page, String sort, String? category) async {
+    // final remoteDataSource = RemoteDataSource();
+
     try {
       print("start");
       dynamic response;
 
       if (category != null) {
-        response = await RemoteDataSource.getNewsList(page, sort, category);
+        response = await remoteDataSource.getNewsList(page, sort, category);
         print("category != null $response");
       } else if (category == null || selectedCate == "전체") {
-        response = await RemoteDataSource.getNewsList(page, sort, null);
+        response = await remoteDataSource.getNewsList(page, sort, null);
         print("n : $response");
       }
 

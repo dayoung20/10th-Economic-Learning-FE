@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ChatbotController extends GetxController {
+  final remoteDataSource = RemoteDataSource();
+
   // 메시지 리스트
   var messages = <Message>[].obs;
   var currentPage = 0.obs;
@@ -143,7 +145,7 @@ class ChatbotController extends GetxController {
   Future<List<ChatbotModel>> getChatbotList(int page) async {
     try {
       print("start");
-      dynamic response = await RemoteDataSource.getMessageList(page);
+      dynamic response = await remoteDataSource.getMessageList(page);
 
       print("response :: $response");
       final data = response as Map<String, dynamic>;
