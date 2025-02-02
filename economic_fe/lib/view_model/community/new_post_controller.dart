@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:economic_fe/data/services/image_picker_service.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view/widgets/community/option_dialog.dart';
+import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -211,21 +212,14 @@ class NewPostController extends GetxController {
       Get.snackbar(isEditing.value ? '수정 성공' : '등록 성공',
           '게시물이 성공적으로 ${isEditing.value ? '수정' : '등록'}되었습니다.');
 
-      // 입력 필드 초기화
-      titleController.clear();
-      contentController.clear();
-      attachedImages.clear();
-      existingImageIds.clear();
-
-      Get.offNamed('/community');
-
-      // if (isEditing.value) {
-      //   // // 게시물 수정 모드 → 수정된 게시글 상세 페이지로 이동 (postId 전달)
-      //   // Get.offNamed('/community/detail', arguments: postId.value);
-      // } else {
-      //   // 게시물 등록 모드 → 커뮤니티 메인 페이지로 이동
-      //   Get.offNamed('/community');
-      // }
+      // 수정 후, 기존 게시글 상세 페이지를 갱신
+      if (isEditing.value) {
+        DetailController detailController = Get.find<DetailController>();
+        detailController.fetchPostDetail(postId.value); // 최신 데이터 다시 가져오기
+        Get.offNamed('/community/detail', arguments: postId); // 상세 페이지로 복귀
+      } else {
+        Get.offNamed('/community'); // 새 게시물 등록 시 커뮤니티 화면으로 이동
+      }
     } else {
       Get.snackbar(isEditing.value ? '수정 실패' : '등록 실패',
           '게시물 ${isEditing.value ? '수정' : '등록'} 중 오류가 발생했습니다.');

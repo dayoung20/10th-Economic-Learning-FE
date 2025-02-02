@@ -2,47 +2,45 @@ import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:get/get.dart';
 
 class CommunityController extends GetxController {
-  // 플로팅 버튼 클릭 시 옵션 창을 보여주는 상태 관리
   RxBool isModalVisible = false.obs;
+  Rx<int> selectedCategoryIndex = 0.obs;
+  Rx<int> selectedOrder = 0.obs;
+  RxBool isLoading = false.obs;
+  var postList = <dynamic>[].obs;
 
-  // 옵션 창 표시/숨기기
+  @override
+  void onInit() {
+    super.onInit();
+    fetchPosts(); // 초기 데이터 로드
+
+    // 페이지가 다시 활성화될 때마다 새로고침
+    ever(Get.currentRoute.obs, (route) {
+      if (route == '/community') {
+        fetchPosts();
+      }
+    });
+  }
+
   void toggleModal() {
     isModalVisible.value = !isModalVisible.value;
   }
 
-  // 챗봇 화면으로 이동
   void toChatPage() {
     Get.toNamed('/chatbot');
   }
 
-  // 경제톡톡 상세 페이지로 이동
   void toTalkDetailPage() {
     Get.toNamed('/community/talk_detail');
   }
 
-  /// 상세 페이지로 이동
   void toDetailPage(int postId) {
     Get.toNamed('/community/detail', arguments: postId);
   }
 
-  // 글쓰기 화면으로 이동
   void toNewPost() {
     Get.toNamed('/community/new_post');
   }
 
-  // 게시글 목록 저장
-  var postList = <dynamic>[].obs;
-
-  // 현재 선택된 카테고리 인덱스
-  Rx<int> selectedCategoryIndex = 0.obs;
-
-  // 인기순/최신순 선택 상태 관리
-  Rx<int> selectedOrder = 0.obs;
-
-  // 데이터 불러오기 상태
-  RxBool isLoading = false.obs;
-
-  // API에서 받아올 카테고리 타입
   String get selectedCategoryType {
     List<String> categoryTypes = [
       "ALL",
@@ -54,30 +52,32 @@ class CommunityController extends GetxController {
     return categoryTypes[selectedCategoryIndex.value];
   }
 
-  // 게시글 목록 가져오기
   Future<void> fetchPosts() async {
     isLoading.value = true;
-
-    // 선택된 정렬 방식 (인기순/최신순)
     String sort = selectedOrder.value == 0 ? "POPULAR" : "RECENT";
 
-    // API 호출
-    var posts =
-        await RemoteDataSource.fetchCategoryPosts(sort, selectedCategoryType);
-
-    postList.assignAll(posts);
-    isLoading.value = false;
+    try {
+      var posts =
+          await RemoteDataSource.fetchCategoryPosts(sort, selectedCategoryType);
+      postList.assignAll(posts);
+    } catch (e) {
+      print("Error fetching posts: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  // 카테고리 선택
   void selectCategory(int index) {
-    selectedCategoryIndex.value = index;
-    fetchPosts();
+    if (selectedCategoryIndex.value != index) {
+      selectedCategoryIndex.value = index;
+      fetchPosts();
+    }
   }
 
-  // 정렬 순서 변경
   void selectOrder(int index) {
-    selectedOrder.value = index;
-    fetchPosts();
+    if (selectedOrder.value != index) {
+      selectedOrder.value = index;
+      fetchPosts();
+    }
   }
 }

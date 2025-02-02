@@ -20,8 +20,8 @@ class DetailController extends GetxController {
   RxBool isModalVisible = false.obs;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     int? postId = Get.arguments as int?;
     if (postId != null) {
       fetchPostDetail(postId);
@@ -364,6 +364,11 @@ class DetailController extends GetxController {
   /// 뒤로 가기
   void goBack() {
     Get.back();
+  }
+
+  /// 커뮤니티 화면 이동
+  void goToCommunity() {
+    Get.until((route) => Get.currentRoute == '/community');
   }
 
   /// 옵션 모달 토글
