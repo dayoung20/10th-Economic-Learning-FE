@@ -10,6 +10,7 @@ class DetailController extends GetxController {
   RxBool isAuthor = false.obs;
   RxList<int> myPostIds = <int>[].obs; // 내가 작성한 게시물 id
   RxList<int> likedPostIds = <int>[].obs; // 내가 좋아요 한 게시물 id
+  RxList<int> scrappedPostIds = <int>[].obs; // 내가 스크랩 한 게시물 id
   RxMap<int, bool> likedCommentMap = <int, bool>{}.obs; // 각 댓글별 좋아요 상태
 
   final int currentUserId = 4; // 임시 유저 ID
@@ -45,6 +46,9 @@ class DetailController extends GetxController {
 
         await fetchLikedPosts();
         isLikedPost.value = likedPostIds.contains(postId);
+
+        await fetchScrappedPosts();
+        isScrappedPost.value = scrappedPostIds.contains(postId);
       }
     } catch (e) {
       print('게시글 상세 조회 중 오류 발생: $e');
@@ -63,7 +67,15 @@ class DetailController extends GetxController {
     final postLists = await RemoteDataSource.fetchLikedPosts();
     List<dynamic> posts = postLists['postList'];
     likedPostIds.value = posts.map<int>((post) => post['id']).toList();
-    debugPrint("내가 좋아요한 게시글 ID 리스트: $myPostIds"); // 로그 추가
+    debugPrint("내가 좋아요한 게시글 ID 리스트: $likedPostIds"); // 로그 추가
+  }
+
+  /// 내가 스크랩 한 게시물 조회
+  Future<void> fetchScrappedPosts() async {
+    final postLists = await RemoteDataSource.fetchScrapedPosts();
+    List<dynamic> posts = postLists['postList'];
+    scrappedPostIds.value = posts.map<int>((post) => post['id']).toList();
+    debugPrint("내가 스크랩한 게시글 ID 리스트: $scrappedPostIds"); // 로그 추가
   }
 
   /// 내가 좋아요 한 댓글 목록 조회
@@ -191,6 +203,44 @@ class DetailController extends GetxController {
       fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
     } else {
       Get.snackbar("오류", "게시글 좋아요 취소에 실패했습니다.");
+    }
+  }
+
+  /// 게시글 스크랩 여부
+  RxBool isScrappedPost = false.obs;
+
+  /// 게시글 스크랩 토글
+  void scrapPostToggle() {
+    if (isScrappedPost.value) {
+      deleteScrappedPost();
+    } else {
+      scrapPost();
+    }
+  }
+
+  /// 게시글 스크랩 api 연동
+  Future<void> scrapPost() async {
+    int postId = postDetail["id"]; // 현재 게시글 ID
+    bool success = await RemoteDataSource.scrapPost(postId);
+
+    if (success) {
+      isScrappedPost.value = true;
+      fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
+    } else {
+      Get.snackbar("오류", "게시글 스크랩에 실패했습니다.");
+    }
+  }
+
+  /// 게시글 스크랩 취소 api 연동
+  Future<void> deleteScrappedPost() async {
+    int postId = postDetail["id"]; // 현재 게시글 ID
+    bool success = await RemoteDataSource.deletePostScrap(postId);
+
+    if (success) {
+      isScrappedPost.value = false;
+      fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
+    } else {
+      Get.snackbar("오류", "게시글 스크랩 취소에 실패했습니다.");
     }
   }
 

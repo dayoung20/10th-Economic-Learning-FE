@@ -151,6 +151,7 @@ class _DetailPageState extends State<DetailPage> {
                             const SizedBox(height: 10),
                             Row(
                               children: [
+                                // 좋아요
                                 Obx(() => GestureDetector(
                                       onTap: () => controller.likePostToggle(),
                                       child: Icon(
@@ -166,13 +167,25 @@ class _DetailPageState extends State<DetailPage> {
                                 const SizedBox(width: 5),
                                 Text("${post["likeCount"] ?? 0}"),
                                 const SizedBox(width: 8),
+                                // 댓글
                                 const Icon(Icons.chat_bubble_outline,
                                     size: 18, color: Color(0xff767676)),
                                 const SizedBox(width: 5),
                                 Text("${post["commentCount"] ?? 0}"),
                                 const SizedBox(width: 8),
-                                const Icon(Icons.bookmark_border,
-                                    size: 18, color: Color(0xff767676)),
+                                // 스크랩
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.scrapPostToggle(),
+                                      child: Icon(
+                                        controller.isScrappedPost.value
+                                            ? Icons.bookmark
+                                            : Icons.bookmark_border,
+                                        size: 18,
+                                        color: controller.isScrappedPost.value
+                                            ? Palette.buttonColorBlue
+                                            : const Color(0xff767676),
+                                      ),
+                                    )),
                                 const SizedBox(width: 5),
                                 Text("${post["scrapCount"] ?? 0}"),
                               ],

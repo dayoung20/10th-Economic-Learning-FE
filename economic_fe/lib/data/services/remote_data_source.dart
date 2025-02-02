@@ -854,4 +854,46 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시물 스크랩 API
+  /// API: api/v1/post/{id}/scrap
+  static Future<bool> scrapPost(int postId) async {
+    String endpoint = 'api/v1/post/$postId/scrap';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 스크랩');
+        return true;
+      } else {
+        debugPrint('게시물 스크랩 좋아요 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 스크랩 좋아요 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 스크랩 취소 API
+  /// API: api/v1/post/{id}/scrap
+  static Future<bool> deletePostScrap(int postId) async {
+    String endPoint = 'api/v1/post/$postId/scrap';
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response == 200) {
+        debugPrint('게시물 스크랩 취소');
+        return true;
+      } else {
+        debugPrint('게시물 스크랩 취소 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 스크랩 취소 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
