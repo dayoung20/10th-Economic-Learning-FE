@@ -643,4 +643,23 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// api/v2/auth/login/kakao
+  /// 카카오 로그인 (v2)
+  static Future<dynamic> getlogin(String accessToken) async {
+    String endPoint = "api/v2/auth/login/kakao?accessToken=$accessToken";
+    try {
+      final response = await _getApi(endPoint);
+
+      if (response != null) {
+        debugPrint("성공");
+        return response;
+      } else {
+        debugPrint("실패");
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error : $e');
+    }
+  }
 }

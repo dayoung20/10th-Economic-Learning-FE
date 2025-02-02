@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -69,10 +70,12 @@ class LoginExistController extends GetxController {
         await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공');
         User user = await UserApi.instance.me();
-        print(
-            '사용자 정보 요청 성공${user.id} ${user.kakaoAccount?.profile?.nickname} ${user.kakaoAccount?.email}');
+        // print(
+        //     '사용자 정보 요청 성공${user.id} ${user.kakaoAccount?.profile?.nickname} ${user.kakaoAccount?.email}');
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-        print(token);
+        print("토큰${token.accessToken}");
+
+        getlogin(token.accessToken);
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');
 
@@ -134,6 +137,18 @@ class LoginExistController extends GetxController {
 
     return authorizationCode; // 추출된 인증 코드 반환
   }
-}
 
-// class WebView {}
+  // 백엔드에서 토큰 받아오기
+  Future<void> getlogin(String accessToken) async {
+    try {
+      print("start");
+
+      dynamic response;
+
+      response = await RemoteDataSource.getlogin(accessToken);
+      print("response :::: ${response['results']}");
+    } catch (e) {
+      debugPrint("Error : $e");
+    }
+  }
+}
