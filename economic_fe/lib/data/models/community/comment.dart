@@ -5,6 +5,7 @@ class Comment {
   String author;
   String date;
   int likes;
+  bool isLiked;
   bool isAuthor;
   List<Comment> replies;
 
@@ -14,6 +15,7 @@ class Comment {
     required this.author,
     required this.date,
     required this.likes,
+    required this.isLiked,
     required this.isAuthor,
     this.replies = const [],
   });

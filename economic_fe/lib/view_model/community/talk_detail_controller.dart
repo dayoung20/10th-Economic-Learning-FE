@@ -47,9 +47,11 @@ class TalkDetailController extends GetxController {
           likes: 1,
           isAuthor: false,
           id: -1,
+          isLiked: false,
         ),
       ],
       isAuthor: false,
+      isLiked: false,
     ),
   ]);
 
@@ -65,6 +67,7 @@ class TalkDetailController extends GetxController {
           likes: 0,
           isAuthor: true,
           id: -1,
+          isLiked: false,
         ),
       );
     }

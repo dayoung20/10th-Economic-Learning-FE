@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/community/comment.dart';
+import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/community/option_dialog.dart';
 import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -108,10 +109,25 @@ class CommentWidget extends StatelessWidget {
                       Row(
                         children: [
                           // 좋아요 수
-                          const Padding(
-                            padding: EdgeInsets.only(right: 5),
-                            child: Icon(Icons.favorite_border,
-                                size: 18, color: Colors.grey),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: GestureDetector(
+                              onTap: () {
+                                isReply
+                                    ? null
+                                    : Get.find<DetailController>()
+                                        .likeCommentToggle(comment.id);
+                              },
+                              child: Icon(
+                                comment.isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 18,
+                                color: comment.isLiked
+                                    ? Palette.buttonColorBlue
+                                    : Colors.grey,
+                              ),
+                            ),
                           ),
                           Text("${comment.likes}"),
 

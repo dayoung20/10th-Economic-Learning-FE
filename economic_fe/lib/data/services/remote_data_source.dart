@@ -812,4 +812,46 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 게시물 댓글 좋아요 API
+  /// API: api/v1/post/{id}/comments/{commentId}/like
+  static Future<bool> likeComment(int postId, int commentId) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentId/like';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 댓글 좋아요');
+        return true;
+      } else {
+        debugPrint('게시물 댓글 좋아요 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 댓글 좋아요 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 댓글 좋아요 취소 API
+  /// API: api/v1/post/{id}/comments/{commentId}/like
+  static Future<bool> deleteLikedComment(int postId, int commentId) async {
+    String endPoint = 'api/v1/post/$postId/comments/$commentId/like';
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response == 200) {
+        debugPrint('댓글 좋아요 취소');
+        return true;
+      } else {
+        debugPrint('댓글 좋아요 취소 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 좋아요 취소 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
