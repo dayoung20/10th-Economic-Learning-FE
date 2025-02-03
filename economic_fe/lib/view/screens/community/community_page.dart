@@ -796,7 +796,7 @@ class ListItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '$comments',
+                    comments < 0 ? '0' : '$comments',
                     style: const TextStyle(
                       color: Color(0xFF767676),
                       fontSize: 12,

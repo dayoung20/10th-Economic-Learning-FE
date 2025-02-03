@@ -91,7 +91,8 @@ class _CommentWidgetState extends State<CommentWidget> {
                           // 더보기 버튼 (수정/삭제/신고)
                           GestureDetector(
                             onTap: () {
-                              _handleOptions(context, widget.isAuthor);
+                              _handleOptions(
+                                  context, widget.isAuthor, widget.isReply);
                             },
                             child: const Icon(Icons.more_horiz,
                                 size: 20, color: Colors.grey),
@@ -100,17 +101,22 @@ class _CommentWidgetState extends State<CommentWidget> {
                       ),
                       const SizedBox(height: 10),
 
-                      // 댓글 내용
+                      // 댓글 내용 표시
                       Text(
-                        widget.comment.content,
-                        style: const TextStyle(
-                          color: Color(0xFF404040),
+                        widget.comment.isDeleted
+                            ? "삭제된 댓글입니다."
+                            : widget.comment.content,
+                        style: TextStyle(
+                          color: widget.comment.isDeleted
+                              ? Colors.grey
+                              : const Color(0xFF404040),
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.35,
                         ),
                       ),
+
                       const SizedBox(height: 8.5),
 
                       Row(
@@ -175,18 +181,14 @@ class _CommentWidgetState extends State<CommentWidget> {
           ),
         ),
 
-        // 답글 리스트 추가 (들여쓰기 적용)
+        // 대댓글 리스트 (삭제된 댓글이라도 답글이 있으면 그대로 유지)
         if (widget.comment.replies.isNotEmpty)
           Column(
             children: widget.comment.replies.map((reply) {
-              return Column(
-                children: [
-                  CommentWidget(
-                    comment: reply,
-                    isReply: true,
-                    isAuthor: reply.isAuthor,
-                  ),
-                ],
+              return CommentWidget(
+                comment: reply,
+                isReply: true,
+                isAuthor: reply.isAuthor,
               );
             }).toList(),
           ),
@@ -194,13 +196,19 @@ class _CommentWidgetState extends State<CommentWidget> {
     );
   }
 
-  void _handleOptions(BuildContext context, bool isAuthor) {
+  void _handleOptions(BuildContext context, bool isAuthor, bool isReply) {
     OptionsDialog.showOptionsDialog(
       context: context,
       isAuthor: isAuthor,
-      isComment: true,
+      isComment: !isReply, // 댓글이면 true, 대댓글이면 false
       onEdit: () {
-        controller.activateEditMode(widget.comment.id, widget.comment.content);
+        if (isReply) {
+          controller.activateReplyEditMode(
+              widget.comment.id, widget.comment.content);
+        } else {
+          controller.activateEditMode(
+              widget.comment.id, widget.comment.content);
+        }
       },
       onDelete: () {
         Navigator.of(context).pop();

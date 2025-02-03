@@ -68,10 +68,9 @@ class DetailController extends GetxController {
   /// 내가 좋아요 한 게시물 조회
   Future<void> fetchLikedPosts() async {
     final postLists = await remoteDataSource.fetchLikedPosts();
-    if (postLists != null) {
-      likedPostIds.value =
-          postLists.map<int>((post) => post['id'] as int).toList();
-    }
+    List<dynamic> posts = postLists['postList'];
+    likedPostIds.value = posts.map<int>((post) => post['id']).toList();
+    debugPrint("내가 좋아요한 게시글 ID 리스트: $likedPostIds"); // 로그 추가
   }
 
   /// 내가 스크랩 한 게시물 조회
@@ -113,8 +112,9 @@ class DetailController extends GetxController {
             comment['commenterId'] == currentUserId, // 현재 사용자가 작성한 댓글인지 확인
         isLiked: likedCommentMap[comment['id']] ?? false, // 개별 댓글 좋아요 상태 반영
         replies: comment['children'] != null
-            ? _parseComments(comment['children'])
+            ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리
             : [],
+        isDeleted: comment['isDeleted'],
       );
     }).toList();
   }
@@ -288,6 +288,11 @@ class DetailController extends GetxController {
   RxInt editingCommentId = (-1).obs;
   RxString editingCommentText = "".obs;
 
+  // 대댓글 수정 상태 변수
+  RxBool isEditingReply = false.obs;
+  RxInt editingReplyId = (-1).obs;
+  RxString editingReplyText = "".obs;
+
   /// 댓글 수정 모드 활성화
   void activateEditMode(int commentId, String content) {
     isEditingComment.value = true;
@@ -296,11 +301,27 @@ class DetailController extends GetxController {
     messageController.text = content;
   }
 
+  /// 대댓글 수정 모드 활성화
+  void activateReplyEditMode(int replyId, String content) {
+    isEditingReply.value = true;
+    editingReplyId.value = replyId;
+    editingReplyText.value = content;
+    messageController.text = content;
+  }
+
   /// 댓글 수정 모드 해제
   void disableEditMode() {
     isEditingComment.value = false;
     editingCommentId.value = -1;
     editingCommentText.value = "";
+    messageController.clear();
+  }
+
+  /// 대댓글 수정 모드 해제
+  void disableReplyEditMode() {
+    isEditingReply.value = false;
+    editingReplyId.value = -1;
+    editingReplyText.value = "";
     messageController.clear();
   }
 
@@ -328,12 +349,50 @@ class DetailController extends GetxController {
           isAuthor: comments[index].isAuthor,
           replies: comments[index].replies,
           isLiked: comments[index].isLiked,
+          isDeleted: comments[index].isDeleted,
         );
         comments.refresh();
       }
       disableEditMode();
     } else {
       Get.snackbar("오류", "댓글 수정에 실패했습니다.");
+    }
+  }
+
+  /// 대댓글 수정 API 호출
+  Future<void> editReply() async {
+    if (messageController.text.isEmpty) return;
+
+    int postId = postDetail["id"];
+    int replyId = editingReplyId.value;
+    String updatedContent = messageController.text;
+
+    bool success =
+        await RemoteDataSource.editComment(postId, replyId, updatedContent);
+
+    if (success) {
+      // UI에 즉시 반영
+      for (var comment in comments) {
+        int replyIndex = comment.replies.indexWhere((r) => r.id == replyId);
+        if (replyIndex != -1) {
+          comment.replies[replyIndex] = Comment(
+            id: replyId,
+            content: updatedContent,
+            author: comment.replies[replyIndex].author,
+            date: comment.replies[replyIndex].date,
+            likes: comment.replies[replyIndex].likes,
+            isAuthor: comment.replies[replyIndex].isAuthor,
+            replies: comment.replies[replyIndex].replies,
+            isLiked: comment.replies[replyIndex].isLiked,
+            isDeleted: comment.replies[replyIndex].isDeleted,
+          );
+          comments.refresh();
+          break;
+        }
+      }
+      disableReplyEditMode();
+    } else {
+      Get.snackbar("오류", "대댓글 수정에 실패했습니다.");
     }
   }
 
@@ -350,19 +409,53 @@ class DetailController extends GetxController {
     }
   }
 
-  /// 댓글 삭제
+  /// 댓글 또는 대댓글 삭제
   Future<void> deleteComment(int commentId) async {
     int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
+    debugPrint("삭제 요청: postId = $postId, commentId = $commentId");
+
     bool success = await RemoteDataSource.deleteComment(postId, commentId);
 
     if (success) {
-      Get.snackbar("삭제 완료", "댓글이 삭제되었습니다.");
-
-      // 댓글 삭제 후 즉시 UI에서 반영
-      comments.removeWhere((comment) => comment.id == commentId);
+      debugPrint("댓글 삭제 성공: $commentId");
+      _removeCommentOrReply(commentId); // UI에서 즉시 제거
     } else {
+      debugPrint("댓글 삭제 실패: $commentId");
       Get.snackbar("삭제 실패", "댓글 삭제에 실패했습니다.");
     }
+  }
+
+  /// 댓글 또는 대댓글을 UI에서 즉시 제거하는 함수
+  void _removeCommentOrReply(int commentId) {
+    for (var comment in comments) {
+      int replyIndex =
+          comment.replies.indexWhere((reply) => reply.id == commentId);
+
+      // 대댓글 삭제
+      if (replyIndex != -1) {
+        comment.replies.removeAt(replyIndex);
+        debugPrint("대댓글 삭제됨: $commentId");
+
+        // 모든 대댓글이 삭제되었고 댓글도 삭제 상태라면, 댓글도 삭제
+        if (comment.replies.isEmpty && comment.content == "삭제된 댓글입니다.") {
+          debugPrint("모든 대댓글 삭제됨, 댓글도 제거: ${comment.id}");
+          comments.removeWhere((c) => c.id == comment.id);
+        }
+
+        comments.refresh();
+        return;
+      }
+    }
+
+    // 일반 댓글 삭제
+    int commentIndex =
+        comments.indexWhere((comment) => comment.id == commentId);
+    if (commentIndex != -1) {
+      comments.removeAt(commentIndex);
+      debugPrint("일반 댓글 삭제됨: $commentId");
+    }
+
+    comments.refresh();
   }
 
   /// 뒤로 가기
