@@ -1,47 +1,83 @@
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:get/get.dart';
 
 class CommunityController extends GetxController {
-  // 현재 선택된 카테고리 인덱스
-  Rx<int> selectedCategoryIndex = 0.obs;
-
-  // 카테고리 탭 클릭 시 선택된 카테고리 인덱스 업데이트
-  void selectCategory(int index) {
-    selectedCategoryIndex.value = index;
-  }
-
-  // 인기순 / 최신순 선택 상태 관리
-  Rx<int> selectedOrder = 0.obs;
-
-  // 순서 변경
-  void selectOrder(int index) {
-    selectedOrder.value = index;
-  }
-
-  // 플로팅 버튼 클릭 시 옵션 창을 보여주는 상태 관리
   RxBool isModalVisible = false.obs;
+  Rx<int> selectedCategoryIndex = 0.obs;
+  Rx<int> selectedOrder = 0.obs;
+  RxBool isLoading = false.obs;
+  var postList = <dynamic>[].obs;
 
-  // 옵션 창 표시/숨기기
+  @override
+  void onInit() {
+    super.onInit();
+    fetchPosts(); // 초기 데이터 로드
+
+    // 페이지가 다시 활성화될 때마다 새로고침
+    ever(Get.currentRoute.obs, (route) {
+      if (route == '/community') {
+        fetchPosts();
+      }
+    });
+  }
+
   void toggleModal() {
     isModalVisible.value = !isModalVisible.value;
   }
 
-  // 챗봇 화면으로 이동
   void toChatPage() {
     Get.toNamed('/chatbot');
   }
 
-  // 경제톡톡 상세 페이지로 이동
   void toTalkDetailPage() {
     Get.toNamed('/community/talk_detail');
   }
 
-  // 일반 게시판 상세 페이지로 이동
-  void toDetailPage() {
-    Get.toNamed('/community/detail');
+  void toDetailPage(int postId) {
+    Get.toNamed('/community/detail', arguments: postId);
   }
 
-  // 글쓰기 화면으로 이동
   void toNewPost() {
     Get.toNamed('/community/new_post');
+  }
+
+  String get selectedCategoryType {
+    List<String> categoryTypes = [
+      "ALL",
+      "FREE",
+      "QUESTION",
+      "BOOK_RECOMMENDATION",
+      "INFORMATION"
+    ];
+    return categoryTypes[selectedCategoryIndex.value];
+  }
+
+  Future<void> fetchPosts() async {
+    isLoading.value = true;
+    String sort = selectedOrder.value == 0 ? "POPULAR" : "RECENT";
+
+    try {
+      var posts =
+          await RemoteDataSource.fetchCategoryPosts(sort, selectedCategoryType);
+      postList.assignAll(posts);
+    } catch (e) {
+      print("Error fetching posts: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void selectCategory(int index) {
+    if (selectedCategoryIndex.value != index) {
+      selectedCategoryIndex.value = index;
+      fetchPosts();
+    }
+  }
+
+  void selectOrder(int index) {
+    if (selectedOrder.value != index) {
+      selectedOrder.value = index;
+      fetchPosts();
+    }
   }
 }

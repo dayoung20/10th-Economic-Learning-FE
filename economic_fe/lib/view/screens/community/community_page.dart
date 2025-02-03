@@ -7,15 +7,19 @@ import 'package:economic_fe/view_model/community/community_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CommunityPage extends StatelessWidget {
+class CommunityPage extends StatefulWidget {
   const CommunityPage({super.key});
 
   @override
+  State<CommunityPage> createState() => _CommunityPageState();
+}
+
+class _CommunityPageState extends State<CommunityPage> {
+  final CommunityController controller = Get.put(CommunityController());
+  int dayCounts = 3;
+
+  @override
   Widget build(BuildContext context) {
-    final CommunityController controller = Get.put(CommunityController());
-
-    int dayCounts = 3;
-
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: HomeAppBar(dayCounts: dayCounts),
@@ -137,7 +141,7 @@ class CommunityPage extends StatelessWidget {
                         Expanded(
                           child: TabBarView(
                             children: [
-                              // 일반게시판 내용
+                              // 일반게시판 내용 (서버 데이터 적용)
                               Column(
                                 children: [
                                   SizedBox(
@@ -150,9 +154,8 @@ class CommunityPage extends StatelessWidget {
                                         child: Row(
                                           children: [
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectCategory(0);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectCategory(0),
                                               child: CategoryTab(
                                                 isSelected: controller
                                                         .selectedCategoryIndex
@@ -162,9 +165,8 @@ class CommunityPage extends StatelessWidget {
                                               ),
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectCategory(1);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectCategory(1),
                                               child: CategoryTab(
                                                 isSelected: controller
                                                         .selectedCategoryIndex
@@ -174,9 +176,8 @@ class CommunityPage extends StatelessWidget {
                                               ),
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectCategory(2);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectCategory(2),
                                               child: CategoryTab(
                                                 isSelected: controller
                                                         .selectedCategoryIndex
@@ -186,9 +187,8 @@ class CommunityPage extends StatelessWidget {
                                               ),
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectCategory(3);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectCategory(3),
                                               child: CategoryTab(
                                                 isSelected: controller
                                                         .selectedCategoryIndex
@@ -198,9 +198,8 @@ class CommunityPage extends StatelessWidget {
                                               ),
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectCategory(4);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectCategory(4),
                                               child: CategoryTab(
                                                 isSelected: controller
                                                         .selectedCategoryIndex
@@ -215,147 +214,128 @@ class CommunityPage extends StatelessWidget {
                                     ),
                                   ),
                                   Obx(() {
-                                    switch (controller
-                                        .selectedCategoryIndex.value) {
-                                      case 0: // 전체 카테고리 내용
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          child: Expanded(
-                                            child: Column(
-                                              children: [
-                                                // 인기순 / 최신순 선택
-                                                Row(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        controller
-                                                            .selectOrder(0);
-                                                      },
-                                                      child: OrderTab(
-                                                        text: '인기순',
-                                                        isSelected: controller
-                                                                .selectedOrder
-                                                                .value ==
-                                                            0,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 6,
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        controller
-                                                            .selectOrder(1);
-                                                      },
-                                                      child: OrderTab(
-                                                        text: '최신순',
-                                                        isSelected: controller
-                                                                .selectedOrder
-                                                                .value ==
-                                                            1,
-                                                      ),
-                                                    ),
-                                                  ],
+                                    // 선택된 카테고리에 따라 데이터 필터링
+                                    var posts = controller.postList;
+
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16),
+                                      child: Column(
+                                        children: [
+                                          // 인기순 / 최신순 선택
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  controller.selectOrder(0);
+                                                },
+                                                child: OrderTab(
+                                                  text: '인기순',
+                                                  isSelected: controller
+                                                          .selectedOrder
+                                                          .value ==
+                                                      0,
                                                 ),
-                                                const SizedBox(
-                                                  height: 5,
+                                              ),
+                                              const SizedBox(width: 6),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  controller.selectOrder(1);
+                                                },
+                                                child: OrderTab(
+                                                  text: '최신순',
+                                                  isSelected: controller
+                                                          .selectedOrder
+                                                          .value ==
+                                                      1,
                                                 ),
-                                                // 리스트
-                                                SizedBox(
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5),
+                                          // 리스트
+                                          controller.isLoading.value
+                                              ? const Center(
+                                                  child:
+                                                      CircularProgressIndicator()) // 로딩 UI
+                                              : SizedBox(
                                                   height: MediaQuery.of(context)
                                                           .size
                                                           .height -
                                                       475,
-                                                  child: SingleChildScrollView(
-                                                    child: ListView.separated(
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      itemCount:
-                                                          10, // 예시 데이터 갯수
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        // 인기순과 최신순을 구분해서 데이터를 다르게 처리
-                                                        if (controller
-                                                                .selectedOrder
-                                                                .value ==
-                                                            0) {
-                                                          // 인기순
-                                                          return ListItem(
-                                                            title:
-                                                                '돈 어케 쓰지 (인기순)',
-                                                            description:
-                                                                '이곳에는 내용이 들어갑니다. 이곳에는 내용이 들어갑니다. 이곳에는 내용이 들어갑니다...',
-                                                            date:
-                                                                '${index + 1}일 전',
-                                                            likes:
-                                                                100, // 인기순에 맞는 데이터 예시
-                                                            comments: 50,
-                                                            onTap: () {
-                                                              controller
-                                                                  .toDetailPage();
-                                                            }, // 인기순에 맞는 댓글 수
-                                                          );
-                                                        } else {
-                                                          // 최신순
-                                                          return ListItem(
-                                                            title:
-                                                                '돈 어케 쓰지 (최신순)',
-                                                            description:
-                                                                '이곳에는 내용이 들어갑니다. 이곳에는 내용이 들어갑니다. 이곳에는 내용이 들어갑니다...',
-                                                            date:
-                                                                '${index + 1}일 전',
-                                                            likes:
-                                                                10, // 최신순에 맞는 데이터 예시
-                                                            comments: 5,
-                                                            onTap: () {
-                                                              controller
-                                                                  .toDetailPage();
-                                                            }, // 최신순에 맞는 댓글 수
-                                                          );
-                                                        }
-                                                      },
-                                                      separatorBuilder:
-                                                          (context, index) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  vertical: 16),
-                                                          child: Container(
-                                                            height: 1,
-                                                            color: const Color(
-                                                                0xffd9d9d9),
+                                                  child: posts.isEmpty
+                                                      ? const Center(
+                                                          child: Text(
+                                                              '게시글이 없습니다.'))
+                                                      : SingleChildScrollView(
+                                                          child: ListView
+                                                              .separated(
+                                                            shrinkWrap: true,
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            itemCount:
+                                                                posts.length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              var post =
+                                                                  posts[index];
+
+                                                              return GestureDetector(
+                                                                onTap: () {
+                                                                  controller
+                                                                      .toDetailPage(
+                                                                          post[
+                                                                              "id"]);
+                                                                },
+                                                                child: ListItem(
+                                                                  title: post[
+                                                                      "title"],
+                                                                  description: post[
+                                                                      "content"],
+                                                                  date: post[
+                                                                      "createdDate"],
+                                                                  likes: post[
+                                                                      "likeCount"],
+                                                                  comments: post[
+                                                                      "commentCount"],
+                                                                  imageUrl: post[
+                                                                      "imageUrl"],
+                                                                  onTap: () {
+                                                                    controller
+                                                                        .toDetailPage(
+                                                                            post["id"]);
+                                                                  },
+                                                                ),
+                                                              );
+                                                            },
+                                                            separatorBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            16),
+                                                                child:
+                                                                    Container(
+                                                                  height: 1,
+                                                                  color: const Color(
+                                                                      0xffd9d9d9),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
-                                                        ); // 항목 사이에 구분선 추가
-                                                      },
-                                                    ),
-                                                  ),
+                                                        ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      case 1:
-                                        return const Center(
-                                            child: Text('자유 카테고리 내용'));
-                                      case 2:
-                                        return const Center(
-                                            child: Text('질문 카테고리 내용'));
-                                      case 3:
-                                        return const Center(
-                                            child: Text('책추천 카테고리 내용'));
-                                      case 4:
-                                        return const Center(
-                                            child: Text('정보 공유 카테고리 내용'));
-                                      default:
-                                        return const Center(
-                                            child: Text('전체 카테고리 내용'));
-                                    }
-                                  })
+                                        ],
+                                      ),
+                                    );
+                                  }),
                                 ],
                               ),
+
                               // 경제톡톡 화면
                               Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -722,6 +702,7 @@ class ListItem extends StatelessWidget {
   final String date;
   final int likes;
   final int comments;
+  final String? imageUrl;
   final Function() onTap;
 
   const ListItem({
@@ -732,6 +713,7 @@ class ListItem extends StatelessWidget {
     required this.likes,
     required this.comments,
     required this.onTap,
+    this.imageUrl,
   });
 
   @override
@@ -840,18 +822,30 @@ class ListItem extends StatelessWidget {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: onTap,
-            child: Container(
-              width: 66,
-              height: 66,
-              decoration: ShapeDecoration(
-                color: const Color(0xFFD9D9D9),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7)),
+          // 이미지가 있는 경우에만 표시
+          if (imageUrl != null && imageUrl!.isNotEmpty)
+            GestureDetector(
+              onTap: onTap,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7),
+                child: Image.network(
+                  imageUrl!,
+                  width: 66,
+                  height: 66,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 66,
+                    height: 66,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: const Icon(Icons.image_not_supported,
+                        color: Colors.grey),
+                  ),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

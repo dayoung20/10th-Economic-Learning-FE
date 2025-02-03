@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -163,8 +164,10 @@ class RemoteDataSource {
   /// 데이터 일부 수정시 사용
   static Future<dynamic> _patchApi(String endPoint, String? jsonData) async {
     String apiUrl = '$baseUrl/$endPoint';
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    // String requestBody = jsonData;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
     debugPrint('PATCH 요청: $endPoint');
 
     try {
@@ -820,6 +823,433 @@ class RemoteDataSource {
       }
     } catch (e) {
       debugPrint('Error : $e');
+    }
+  }
+
+  /// 게시글 목록 조회
+  /// api: api/v1/post
+  static Future<List<dynamic>> fetchCategoryPosts(
+      String sort, String type) async {
+    List<dynamic> categoryPosts = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint;
+
+        if (type == "ALL") {
+          // 전체 카테고리일 경우 `type` 파라미터 없이 요청
+          endPoint = 'api/v1/post?page=$currentPage&sort=$sort';
+        } else {
+          // 특정 카테고리 조회 시 `type` 포함
+          endPoint = 'api/v1/post?page=$currentPage&sort=$sort&type=$type';
+        }
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          categoryPosts.addAll(results["postList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("게시글 조회 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("게시글 목록 조회 중 오류 발생: $e");
+    }
+
+    return categoryPosts;
+  }
+
+  /// 이미지 업로드 API
+  /// 서버에 이미지 업로드 후 `imageId` 반환
+  /// API: api/v1/image
+  static Future<int?> uploadImage(File imageFile) async {
+    String apiUrl = '$baseUrl/api/v1/image';
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+        if (jsonResponse['isSuccess']) {
+          return jsonResponse['results']['imageId']; // imageId 반환
+        }
+      }
+      debugPrint('이미지 업로드 실패: ${response.statusCode}');
+    } catch (e) {
+      debugPrint('이미지 업로드 중 예외 발생: $e');
+    }
+    return null; // 실패 시 null 반환
+  }
+
+  /// 게시물 이미지 삭제 API
+  /// API: `DELETE api/v1/image/{imageId}`
+  static Future<bool> deleteImage(int imageId) async {
+    String endPoint = 'api/v1/image/$imageId';
+    int statusCode = await _deleteApi(endPoint);
+
+    if (statusCode == 200) {
+      debugPrint('이미지 삭제 성공');
+      return true;
+    } else {
+      debugPrint('이미지 삭제 실패: $statusCode');
+      return false;
+    }
+  }
+
+  /// 게시물 작성 API (`multipart/form-data`)
+  /// API: api/v1/post
+  static Future<bool> createPost({
+    required String title,
+    required String content,
+    required String type,
+    List<int>? imageIds,
+  }) async {
+    String apiUrl = '$baseUrl/api/v1/post';
+
+    try {
+      // `post` JSON 데이터 생성
+      Map<String, dynamic> postData = {
+        "title": title,
+        "content": content,
+        "type": type,
+        "imageIds": imageIds ?? [],
+      };
+
+      // JSON 데이터를 `utf8.encode()`로 변환 후 `MultipartFile.fromBytes()`로 추가
+      var postJsonBytes = utf8.encode(jsonEncode(postData));
+
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+        ..headers['Authorization'] = 'Bearer $accessToken'
+        ..headers['accept'] = '*/*'
+        ..files.add(http.MultipartFile.fromBytes(
+          'post',
+          postJsonBytes,
+          filename: 'post.json',
+        ));
+
+      // 요청 보내기
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      // 응답 처리
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('게시물 작성 성공');
+        return true;
+      } else {
+        debugPrint('게시물 작성 실패: (${response.statusCode}) $responseBody');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('createPost Error: $e');
+      return false;
+    }
+  }
+
+  /// 게시글 상세 조회 API
+  /// API: api/v1/post/{id}
+  static Future<Map<String, dynamic>?> getPostDetail(int postId) async {
+    final response =
+        await _getApiWithHeader("api/v1/post/$postId", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("게시글 상세 조회 응답: $response"); // Debugging
+      return response["results"]; // "results" 필드만 반환하도록 수정
+    } else {
+      print("게시글 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
+
+  /// 내가 작성한 게시글 조회
+  /// API: api/v1/user/posts
+  static Future<List<int>> fetchMyPosts() async {
+    String endPoint = 'api/v1/user/posts';
+    var response = await _getApiWithHeader(endPoint, accessToken);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<int> myPostIds = posts.map<int>((post) => post['id']).toList();
+
+      debugPrint("내가 작성한 게시글 ID 리스트: $myPostIds"); // 로그 추가
+
+      return myPostIds; // 내가 작성한 게시글 ID 리스트 반환
+    } else {
+      debugPrint("내 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
+  /// 게시물 댓글 추가 API
+  /// API: api/v1/post/{id}/comments
+  static Future<bool> addComment(int postId, String content) async {
+    String endpoint = 'api/v1/post/$postId/comments';
+    Map<String, dynamic> jsonData = {
+      "content": content,
+    };
+
+    try {
+      final response = await postApiWithJson(endpoint, jsonData);
+
+      if (response == 200) {
+        debugPrint('댓글 추가 성공');
+        return true;
+      } else {
+        debugPrint('댓글 추가 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 추가 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 댓글 답글 추가 API
+  /// API: api/v1/post/{id}/comments/{commentsId}/reply
+  static Future<bool> addReply(
+      int postId, int commentsId, String content) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentsId/reply';
+    Map<String, dynamic> jsonData = {
+      "content": content,
+    };
+
+    try {
+      final response = await postApiWithJson(endpoint, jsonData);
+
+      if (response == 200) {
+        debugPrint('댓글 추가 성공');
+        return true;
+      } else {
+        debugPrint('댓글 추가 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 추가 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 좋아요 API
+  /// API: api/v1/post/{id}/like
+  static Future<bool> likePost(int postId) async {
+    String endpoint = 'api/v1/post/$postId/like';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 좋아요');
+        return true;
+      } else {
+        debugPrint('게시물 좋아요 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 좋아요 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 좋아요 취소 API
+  /// API: api/v1/post/{id}/like
+  static Future<bool> deleteLikedPost(int postId) async {
+    String endPoint = 'api/v1/post/$postId/like';
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response == 200) {
+        debugPrint('게시물 좋아요 취소');
+        return true;
+      } else {
+        debugPrint('게시물 좋아요 취소 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 좋아요 취소 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 댓글 좋아요 API
+  /// API: api/v1/post/{id}/comments/{commentId}/like
+  static Future<bool> likeComment(int postId, int commentId) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentId/like';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 댓글 좋아요');
+        return true;
+      } else {
+        debugPrint('게시물 댓글 좋아요 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 댓글 좋아요 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 댓글 좋아요 취소 API
+  /// API: api/v1/post/{id}/comments/{commentId}/like
+  static Future<bool> deleteLikedComment(int postId, int commentId) async {
+    String endPoint = 'api/v1/post/$postId/comments/$commentId/like';
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response == 200) {
+        debugPrint('댓글 좋아요 취소');
+        return true;
+      } else {
+        debugPrint('댓글 좋아요 취소 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 좋아요 취소 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 스크랩 API
+  /// API: api/v1/post/{id}/scrap
+  static Future<bool> scrapPost(int postId) async {
+    String endpoint = 'api/v1/post/$postId/scrap';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 스크랩');
+        return true;
+      } else {
+        debugPrint('게시물 스크랩 좋아요 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 스크랩 좋아요 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 스크랩 취소 API
+  /// API: api/v1/post/{id}/scrap
+  static Future<bool> deletePostScrap(int postId) async {
+    String endPoint = 'api/v1/post/$postId/scrap';
+
+    try {
+      final response = await _deleteApi(endPoint);
+
+      if (response == 200) {
+        debugPrint('게시물 스크랩 취소');
+        return true;
+      } else {
+        debugPrint('게시물 스크랩 취소 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 스크랩 취소 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 수정 api
+  /// API: api/v1/post/{id}
+  static Future<bool> editPost(
+      int postId, Map<String, dynamic> postData) async {
+    String endpoint = 'api/v1/post/$postId';
+
+    try {
+      final response = await _patchApi(endpoint, jsonEncode(postData));
+
+      if (response == 200) {
+        debugPrint('게시물 수정 성공');
+        return true;
+      } else {
+        debugPrint('게시물 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 수정 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 댓글 수정 api
+  /// API: api/v1/post/{id}/comments/{commentId}
+  static Future<bool> editComment(
+      int postId, int commentId, String content) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentId';
+    Map<String, dynamic> jsonData = {
+      "content": content,
+    };
+
+    try {
+      final response = await _patchApi(endpoint, jsonEncode(jsonData));
+
+      if (response == 200) {
+        debugPrint('댓글 수정 성공');
+        return true;
+      } else {
+        debugPrint('댓글 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 수정 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 삭제 api
+  /// API: api/v1/post/{id}
+  static Future<bool> deletePost(int postId) async {
+    String endpoint = 'api/v1/post/$postId';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('게시물 삭제 성공');
+        return true;
+      } else {
+        debugPrint('게시물 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('게시물 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 게시물 댓글 삭제 api
+  /// API: api/v1/post/{id}/comments/{commentId}
+  static Future<bool> deleteComment(int postId, int commentId) async {
+    String endpoint = 'api/v1/post/$postId/comments/$commentId';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('댓글 삭제 성공');
+        return true;
+      } else {
+        debugPrint('댓글 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('댓글 삭제 중 예외 발생: $e');
+      return false;
     }
   }
 }
