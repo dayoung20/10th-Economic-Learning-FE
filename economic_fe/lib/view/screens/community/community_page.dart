@@ -30,65 +30,83 @@ class _CommunityPageState extends State<CommunityPage> {
               children: [
                 const SizedBox(height: 12),
                 Center(
-                  child: GestureDetector(
-                    onTap: () {}, // 오늘의 경제톡톡 연결 필요
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 32,
-                      height: 122,
-                      decoration: ShapeDecoration(
-                        image: DecorationImage(
-                          image:
-                              const AssetImage('assets/talk_image_sample.png'),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.35), // 어두운 필터 추가
-                            BlendMode.darken, // 어두운 필터 적용
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1, color: Color(0xFFA2A2A2)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/talk_image_sample.png'),
-                              fit: BoxFit.cover,
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    var todaysTok = controller.todaysTokDetail;
+                    if (todaysTok.isEmpty) {
+                      return const Center(child: Text("오늘의 경제톡톡을 불러올 수 없습니다."));
+                    }
+
+                    return GestureDetector(
+                      onTap: () {
+                        controller.toTalkDetailPage(todaysTok['id']);
+                      }, // 오늘의 경제톡톡 연결 필요
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 32,
+                        height: 122,
+                        decoration: ShapeDecoration(
+                          image: DecorationImage(
+                            image: todaysTok['imageUrl'] != null
+                                ? NetworkImage(todaysTok['imageUrl'])
+                                : const AssetImage(
+                                    'assets/talk_image_sample.png'), // 오늘의 경제톡톡 대표 이미지 연결 필요
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.35), // 어두운 필터 추가
+                              BlendMode.darken, // 어두운 필터 적용
                             ),
                           ),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '저축은 어떻게?\n체계적으로? 아님?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  height: 1.2,
-                                  letterSpacing: -0.55,
-                                ),
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFFA2A2A2)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: todaysTok['imageUrl'] != null
+                                    ? NetworkImage(todaysTok['imageUrl'])
+                                    : const AssetImage(
+                                        'assets/talk_image_sample.png'),
+                                fit: BoxFit.cover,
                               ),
-                              Text(
-                                '현재 뜨거운 톡톡!',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: -0.35,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  todaysTok['title'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.2,
+                                    letterSpacing: -0.55,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                const Text(
+                                  '현재 뜨거운 톡톡!',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: -0.35,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
 
                 const SizedBox(height: 14),

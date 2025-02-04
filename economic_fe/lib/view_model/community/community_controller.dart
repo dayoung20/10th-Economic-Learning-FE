@@ -9,16 +9,19 @@ class CommunityController extends GetxController {
   RxBool isLoading = false.obs;
   var postList = <dynamic>[].obs;
   var tokPostList = <dynamic>[].obs;
+  RxMap<String, dynamic> todaysTokDetail = <String, dynamic>{}.obs;
 
   @override
   void onInit() {
     super.onInit();
+    fetchTodaysTok();
     fetchPosts(); // 초기 데이터 로드
     fetchTokPosts();
 
     // 페이지가 다시 활성화될 때마다 새로고침
     ever(Get.currentRoute.obs, (route) {
       if (route == '/community') {
+        fetchTodaysTok();
         fetchPosts();
         fetchTokPosts();
       }
@@ -83,6 +86,22 @@ class CommunityController extends GetxController {
       print("Error fetching tokPosts: $e");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  /// 오늘의 경제톡톡 주제 조회
+  Future<void> fetchTodaysTok() async {
+    try {
+      isLoading(true);
+      final todaysTok = await RemoteDataSource.getTodaysTok();
+
+      if (todaysTok != null) {
+        todaysTokDetail.value = todaysTok;
+      }
+    } catch (e) {
+      print('오늘의 경제톡톡 주제 조회 중 오류 발생: $e');
+    } finally {
+      isLoading(false);
     }
   }
 

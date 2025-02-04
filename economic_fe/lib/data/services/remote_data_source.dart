@@ -1302,4 +1302,19 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  /// 오늘의 경제톡톡 주제 조회
+  /// API: api/v1/post/toktok-today
+  static Future<Map<String, dynamic>?> getTodaysTok() async {
+    final response =
+        await _getApiWithHeader("api/v1/post/toktok-today", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("오늘의 경제톡톡 조회 응답: $response"); // Debugging
+      return response["results"]; // "results" 필드만 반환하도록 수정
+    } else {
+      print("오늘의 경제톡톡 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
 }
