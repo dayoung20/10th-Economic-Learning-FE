@@ -7,6 +7,7 @@ class Comment {
   int likes;
   bool isLiked;
   bool isAuthor;
+  bool isDeleted;
   List<Comment> replies;
 
   Comment({
@@ -17,6 +18,7 @@ class Comment {
     required this.likes,
     required this.isLiked,
     required this.isAuthor,
+    required this.isDeleted,
     this.replies = const [],
   });
 }

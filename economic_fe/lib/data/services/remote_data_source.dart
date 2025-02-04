@@ -570,7 +570,8 @@ class RemoteDataSource {
     String endpoint = 'api/v1/user/wrong-quizzes?level=$level';
 
     try {
-      final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      // final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      final response = await _getApiWithHeader(endpoint, accessToken);
 
       if (response != null && response['isSuccess'] == true) {
         debugPrint('틀린 문제 데이터 요청 성공');
@@ -593,7 +594,8 @@ class RemoteDataSource {
       String endPoint = 'api/v1/learning/learning/quiz/$quizId';
 
       // GET 요청 수행
-      final response = await _getApiWithHeaderTest(endPoint, accessToken);
+      // final response = await _getApiWithHeaderTest(endPoint, accessToken);
+      final response = await _getApiWithHeader(endPoint, accessToken);
 
       // 응답 데이터 처리
       if (response != null) {
@@ -614,7 +616,8 @@ class RemoteDataSource {
   Future<dynamic> fetchScrapedPosts() async {
     const String endPoint = 'api/v1/user/scrap-posts';
 
-    final response = await _getApiWithHeaderTest(endPoint, accessToken);
+    // final response = await _getApiWithHeaderTest(endPoint, accessToken);
+    final response = await _getApiWithHeader(endPoint, accessToken);
 
     if (response != null && response['isSuccess']) {
       debugPrint("스크랩 게시글 목록 응답: ${response['results']}");
@@ -630,7 +633,8 @@ class RemoteDataSource {
   Future<dynamic> fetchLikedPosts() async {
     const String endPoint = 'api/v1/user/like-posts';
 
-    final response = await _getApiWithHeaderTest(endPoint, accessToken);
+    // final response = await _getApiWithHeaderTest(endPoint, accessToken);
+    final response = await _getApiWithHeader(endPoint, accessToken);
 
     if (response != null && response['isSuccess']) {
       debugPrint("좋아요 게시글 목록 응답: ${response['results']}");
@@ -646,7 +650,8 @@ class RemoteDataSource {
   Future<dynamic> fetchLikedComments() async {
     const String endPoint = 'api/v1/user/like-comments';
 
-    final response = await _getApiWithHeaderTest(endPoint, accessToken);
+    // final response = await _getApiWithHeaderTest(endPoint, accessToken);
+    final response = await _getApiWithHeader(endPoint, accessToken);
 
     if (response != null && response['isSuccess']) {
       debugPrint("좋아요 댓글 목록 응답: ${response['results']}");
@@ -664,7 +669,8 @@ class RemoteDataSource {
 
     try {
       // _getApiWithHeader 호출
-      final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      // final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      final response = await _getApiWithHeader(endpoint, accessToken);
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('스크랩한 학습 데이터 로드 성공');
@@ -686,7 +692,8 @@ class RemoteDataSource {
 
     try {
       // _getApiWithHeader 호출
-      final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      // final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      final response = await _getApiWithHeader(endpoint, accessToken);
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('스크랩한 퀴즈 데이터 로드 성공');
@@ -708,7 +715,8 @@ class RemoteDataSource {
 
     try {
       // _getApiWithHeader 호출
-      final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      // final response = await _getApiWithHeaderTest(endpoint, accessToken);
+      final response = await _getApiWithHeader(endpoint, accessToken);
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('학습 진도율 데이터 로드 성공');

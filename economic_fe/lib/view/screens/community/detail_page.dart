@@ -171,7 +171,8 @@ class _DetailPageState extends State<DetailPage> {
                                 const Icon(Icons.chat_bubble_outline,
                                     size: 18, color: Color(0xff767676)),
                                 const SizedBox(width: 5),
-                                Text("${post["commentCount"] ?? 0}"),
+                                Text(
+                                    "${(post["commentCount"] is int ? post["commentCount"] : int.tryParse(post["commentCount"]?.toString() ?? "0"))?.clamp(0, double.infinity) ?? 0}"),
                                 const SizedBox(width: 8),
                                 // 스크랩
                                 Obx(() => GestureDetector(
@@ -280,6 +281,37 @@ class _DetailPageState extends State<DetailPage> {
                           return const SizedBox(); // 일반 댓글 모드일 때는 아무것도 표시 안함
                         }
                       }),
+                      // 대댓글 수정 UI 추가
+                      Obx(() {
+                        if (controller.isEditingReply.value) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                            margin: const EdgeInsets.only(bottom: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "대댓글 수정 중...",
+                                  style: TextStyle(
+                                      color: Colors.black87, fontSize: 14),
+                                ),
+                                GestureDetector(
+                                  onTap: controller.disableReplyEditMode,
+                                  child: const Icon(Icons.close,
+                                      size: 18, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      }),
                       // 실제 댓글 입력창
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -310,7 +342,9 @@ class _DetailPageState extends State<DetailPage> {
                                 onTap: controller.messageText.value.isNotEmpty
                                     ? (controller.isEditingComment.value
                                         ? controller.editComment
-                                        : controller.sendMessage)
+                                        : controller.isEditingReply.value
+                                            ? controller.editReply
+                                            : controller.sendMessage)
                                     : null,
                                 child: Image.asset(
                                   controller.messageText.value.isNotEmpty
