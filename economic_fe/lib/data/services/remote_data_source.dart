@@ -1287,4 +1287,19 @@ class RemoteDataSource {
 
     return tokPosts;
   }
+
+  /// 경제톡톡 게시물 상세 조회 API
+  /// API: api/v1/post/toktok/{id}
+  static Future<Map<String, dynamic>?> getTokDetail(int postId) async {
+    final response =
+        await _getApiWithHeader("api/v1/post/toktok/$postId", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("경제톡톡 게시글 상세 조회 응답: $response"); // Debugging
+      return response["results"]; // "results" 필드만 반환하도록 수정
+    } else {
+      print("경제톡톡 게시글 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
 }

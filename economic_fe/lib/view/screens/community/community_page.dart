@@ -403,27 +403,24 @@ class _CommunityPageState extends State<CommunityPage> {
                                                           var tokPost =
                                                               tokPosts[index];
 
-                                                          return GestureDetector(
+                                                          return TalkListItem(
                                                             onTap: () {
                                                               controller
                                                                   .toTalkDetailPage(
                                                                       tokPost[
                                                                           "id"]);
                                                             },
-                                                            child: TalkListItem(
-                                                              onTap: () {},
-                                                              participantCount:
-                                                                  tokPost[
-                                                                      'participantCount'],
-                                                              createdDate: tokPost[
-                                                                  'createdDate'],
-                                                              title: tokPost[
-                                                                  'title'],
-                                                              likeCount: tokPost[
-                                                                  'likeCount'],
-                                                              commentCount:
-                                                                  0, // 댓글 수 연결 필요
-                                                            ),
+                                                            participantCount:
+                                                                tokPost[
+                                                                    'participantCount'],
+                                                            createdDate: tokPost[
+                                                                'createdDate'],
+                                                            title: tokPost[
+                                                                'title'],
+                                                            likeCount: tokPost[
+                                                                'likeCount'],
+                                                            commentCount:
+                                                                0, // 댓글 수 연결 필요
                                                           );
                                                         },
                                                         separatorBuilder:

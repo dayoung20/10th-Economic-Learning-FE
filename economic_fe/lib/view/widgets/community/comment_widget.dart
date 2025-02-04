@@ -2,6 +2,7 @@ import 'package:economic_fe/data/models/community/comment.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/community/option_dialog.dart';
 import 'package:economic_fe/view_model/community/detail_controller.dart';
+import 'package:economic_fe/view_model/community/talk_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,12 +10,14 @@ class CommentWidget extends StatefulWidget {
   final Comment comment;
   final bool isReply;
   final bool isAuthor;
+  final bool? isTalk;
 
   const CommentWidget({
     super.key,
     required this.comment,
     required this.isReply,
     required this.isAuthor,
+    this.isTalk = false,
   });
 
   @override
@@ -22,7 +25,21 @@ class CommentWidget extends StatefulWidget {
 }
 
 class _CommentWidgetState extends State<CommentWidget> {
-  final DetailController controller = Get.find<DetailController>();
+  late DetailController controller;
+  late TalkDetailController talkController;
+  late bool isTalkMode;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isTalk!) {
+      Get.lazyPut<TalkDetailController>(() => TalkDetailController());
+      talkController = Get.find<TalkDetailController>();
+    } else {
+      Get.lazyPut<DetailController>(() => DetailController());
+      controller = Get.find<DetailController>();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +143,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                             padding: const EdgeInsets.only(right: 5),
                             child: GestureDetector(
                               onTap: () {
-                                widget.isReply
-                                    ? null
+                                widget.isTalk!
+                                    ? talkController
+                                        .likeCommentToggle(widget.comment.id)
                                     : controller
                                         .likeCommentToggle(widget.comment.id);
                               },
@@ -149,8 +167,13 @@ class _CommentWidgetState extends State<CommentWidget> {
                             const SizedBox(width: 8),
                             GestureDetector(
                               onTap: () {
-                                controller.activateReplyMode(
-                                    widget.comment.id, widget.comment.author);
+                                widget.isTalk!
+                                    ? talkController.activateReplyMode(
+                                        widget.comment.id,
+                                        widget.comment.author)
+                                    : controller.activateReplyMode(
+                                        widget.comment.id,
+                                        widget.comment.author);
                               },
                               child: Row(
                                 children: [
@@ -189,6 +212,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                 comment: reply,
                 isReply: true,
                 isAuthor: reply.isAuthor,
+                isTalk: widget.isTalk,
               );
             }).toList(),
           ),
@@ -203,16 +227,24 @@ class _CommentWidgetState extends State<CommentWidget> {
       isComment: !isReply, // 댓글이면 true, 대댓글이면 false
       onEdit: () {
         if (isReply) {
-          controller.activateReplyEditMode(
-              widget.comment.id, widget.comment.content);
+          widget.isTalk!
+              ? talkController.activateReplyEditMode(
+                  widget.comment.id, widget.comment.content)
+              : controller.activateReplyEditMode(
+                  widget.comment.id, widget.comment.content);
         } else {
-          controller.activateEditMode(
-              widget.comment.id, widget.comment.content);
+          widget.isTalk!
+              ? talkController.activateEditMode(
+                  widget.comment.id, widget.comment.content)
+              : controller.activateEditMode(
+                  widget.comment.id, widget.comment.content);
         }
       },
       onDelete: () {
         Navigator.of(context).pop();
-        controller.deleteComment(widget.comment.id);
+        widget.isTalk!
+            ? talkController.deleteComment(widget.comment.id)
+            : controller.deleteComment(widget.comment.id);
       },
       onReport: () {
         ScaffoldMessenger.of(context)
