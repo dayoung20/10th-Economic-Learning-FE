@@ -15,8 +15,6 @@ class DetailController extends GetxController {
   RxList<int> scrappedPostIds = <int>[].obs; // 내가 스크랩 한 게시물 id
   RxMap<int, bool> likedCommentMap = <int, bool>{}.obs; // 각 댓글별 좋아요 상태
 
-  final int currentUserId = 4; // 임시 유저 ID
-
   final TextEditingController messageController = TextEditingController();
   var messageText = ''.obs;
   RxBool isModalVisible = false.obs;
@@ -108,8 +106,7 @@ class DetailController extends GetxController {
         author: comment['commenterName'] ?? '익명',
         date: comment['createdDate'] ?? '방금 전',
         likes: comment['likeCount'] ?? 0,
-        isAuthor:
-            comment['commenterId'] == currentUserId, // 현재 사용자가 작성한 댓글인지 확인
+        isAuthor: comment['isAuthor'] ?? false, // 현재 사용자가 작성한 댓글인지 확인
         isLiked: likedCommentMap[comment['id']] ?? false, // 개별 댓글 좋아요 상태 반영
         replies: comment['children'] != null
             ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리

@@ -1260,4 +1260,61 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 경제톡톡 목록 조회
+  /// api: api/v1/post/toktok
+  static Future<List<dynamic>> fetchTokLists(String sort) async {
+    List<dynamic> tokPosts = [];
+    int currentPage = 0;
+    // int totalPages = 0; // 초기값 설정
+
+    try {
+      String endPoint = 'api/v1/post/toktok?page=$currentPage&sort=$sort';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        tokPosts.addAll(results["toktokPreviewResponseList"]); // 현재 페이지 데이터 추가
+        // totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+        // currentPage++; // 다음 페이지로 이동
+      } else {
+        debugPrint("게시글 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("게시글 목록 조회 중 오류 발생: $e");
+    }
+
+    return tokPosts;
+  }
+
+  /// 경제톡톡 게시물 상세 조회 API
+  /// API: api/v1/post/toktok/{id}
+  static Future<Map<String, dynamic>?> getTokDetail(int postId) async {
+    final response =
+        await _getApiWithHeader("api/v1/post/toktok/$postId", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("경제톡톡 게시글 상세 조회 응답: $response"); // Debugging
+      return response["results"]; // "results" 필드만 반환하도록 수정
+    } else {
+      print("경제톡톡 게시글 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
+
+  /// 오늘의 경제톡톡 주제 조회
+  /// API: api/v1/post/toktok-today
+  static Future<Map<String, dynamic>?> getTodaysTok() async {
+    final response =
+        await _getApiWithHeader("api/v1/post/toktok-today", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("오늘의 경제톡톡 조회 응답: $response"); // Debugging
+      return response["results"]; // "results" 필드만 반환하도록 수정
+    } else {
+      print("오늘의 경제톡톡 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
 }

@@ -21,4 +21,29 @@ class Comment {
     required this.isDeleted,
     this.replies = const [],
   });
+
+  /// copyWith method to create a modified copy of the Comment object
+  Comment copyWith({
+    int? id,
+    String? content,
+    String? author,
+    String? date,
+    int? likes,
+    bool? isAuthor,
+    bool? isLiked,
+    bool? isDeleted,
+    List<Comment>? replies,
+  }) {
+    return Comment(
+      id: id ?? this.id,
+      content: content ?? this.content,
+      author: author ?? this.author,
+      date: date ?? this.date,
+      likes: likes ?? this.likes,
+      isAuthor: isAuthor ?? this.isAuthor,
+      isLiked: isLiked ?? this.isLiked,
+      isDeleted: isDeleted ?? this.isDeleted,
+      replies: replies ?? this.replies,
+    );
+  }
 }

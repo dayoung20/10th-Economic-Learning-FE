@@ -30,65 +30,83 @@ class _CommunityPageState extends State<CommunityPage> {
               children: [
                 const SizedBox(height: 12),
                 Center(
-                  child: GestureDetector(
-                    onTap: () => controller.toTalkDetailPage(),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 32,
-                      height: 122,
-                      decoration: ShapeDecoration(
-                        image: DecorationImage(
-                          image:
-                              const AssetImage('assets/talk_image_sample.png'),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.35), // 어두운 필터 추가
-                            BlendMode.darken, // 어두운 필터 적용
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1, color: Color(0xFFA2A2A2)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/talk_image_sample.png'),
-                              fit: BoxFit.cover,
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    var todaysTok = controller.todaysTokDetail;
+                    if (todaysTok.isEmpty) {
+                      return const Center(child: Text("오늘의 경제톡톡을 불러올 수 없습니다."));
+                    }
+
+                    return GestureDetector(
+                      onTap: () {
+                        controller.toTalkDetailPage(todaysTok['id']);
+                      }, // 오늘의 경제톡톡 연결 필요
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 32,
+                        height: 122,
+                        decoration: ShapeDecoration(
+                          image: DecorationImage(
+                            image: todaysTok['imageUrl'] != null
+                                ? NetworkImage(todaysTok['imageUrl'])
+                                : const AssetImage(
+                                    'assets/talk_image_sample.png'), // 오늘의 경제톡톡 대표 이미지 연결 필요
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.35), // 어두운 필터 추가
+                              BlendMode.darken, // 어두운 필터 적용
                             ),
                           ),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '저축은 어떻게?\n체계적으로? 아님?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  height: 1.2,
-                                  letterSpacing: -0.55,
-                                ),
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFFA2A2A2)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: todaysTok['imageUrl'] != null
+                                    ? NetworkImage(todaysTok['imageUrl'])
+                                    : const AssetImage(
+                                        'assets/talk_image_sample.png'),
+                                fit: BoxFit.cover,
                               ),
-                              Text(
-                                '현재 뜨거운 톡톡!',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: -0.35,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  todaysTok['title'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.2,
+                                    letterSpacing: -0.55,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                const Text(
+                                  '현재 뜨거운 톡톡!',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: -0.35,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
 
                 const SizedBox(height: 14),
@@ -335,90 +353,116 @@ class _CommunityPageState extends State<CommunityPage> {
                                   }),
                                 ],
                               ),
-
                               // 경제톡톡 화면
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 11),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () =>
-                                              controller.selectOrder(0),
-                                          child: OrderTab(
-                                            text: '인기순',
-                                            isSelected: controller
-                                                    .selectedOrder.value ==
-                                                0,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 6,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () =>
-                                              controller.selectOrder(1),
-                                          child: OrderTab(
-                                            text: '최신순',
-                                            isSelected: controller
-                                                    .selectedOrder.value ==
-                                                1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 11,
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height -
-                                              448,
-                                      child: SingleChildScrollView(
-                                        child: ListView.separated(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: 10, // 예시 데이터 갯수
-                                          itemBuilder: (context, index) {
-                                            // 인기순과 최신순을 구분해서 데이터를 다르게 처리
-                                            if (controller
-                                                    .selectedOrder.value ==
-                                                0) {
-                                              // 인기순
-                                              return TalkListItem(
-                                                onTap: () {
-                                                  controller.toTalkDetailPage();
-                                                },
-                                              );
-                                            } else {
-                                              // 최신순
-                                              return TalkListItem(
-                                                onTap: () {
-                                                  controller.toTalkDetailPage();
-                                                },
-                                              );
-                                            }
-                                          },
-                                          separatorBuilder: (context, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 16),
-                                              child: Container(
-                                                height: 1,
-                                                color: const Color(0xffd9d9d9),
+                              Obx(() {
+                                // 선택된 카테고리에 따라 데이터 필터링
+                                var tokPosts = controller.tokPostList;
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Column(
+                                    children: [
+                                      // 인기순 / 최신순 선택
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Row(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.selectTokOrder(0);
+                                              },
+                                              child: OrderTab(
+                                                text: '인기순',
+                                                isSelected: controller
+                                                        .selectedTokOrder
+                                                        .value ==
+                                                    0,
                                               ),
-                                            ); // 항목 사이에 구분선 추가
-                                          },
+                                            ),
+                                            const SizedBox(width: 6),
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.selectTokOrder(1);
+                                              },
+                                              child: OrderTab(
+                                                text: '최신순',
+                                                isSelected: controller
+                                                        .selectedTokOrder
+                                                        .value ==
+                                                    1,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                      // 리스트
+                                      controller.isLoading.value
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator()) // 로딩 UI
+                                          : SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height -
+                                                  475,
+                                              child: tokPosts.isEmpty
+                                                  ? const Center(
+                                                      child: Text('게시글이 없습니다.'))
+                                                  : SingleChildScrollView(
+                                                      child: ListView.separated(
+                                                        shrinkWrap: true,
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        itemCount:
+                                                            tokPosts.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          var tokPost =
+                                                              tokPosts[index];
+
+                                                          return TalkListItem(
+                                                            onTap: () {
+                                                              controller
+                                                                  .toTalkDetailPage(
+                                                                      tokPost[
+                                                                          "id"]);
+                                                            },
+                                                            participantCount:
+                                                                tokPost[
+                                                                    'participantCount'],
+                                                            createdDate: tokPost[
+                                                                'createdDate'],
+                                                            title: tokPost[
+                                                                'title'],
+                                                            likeCount: tokPost[
+                                                                'likeCount'],
+                                                            commentCount:
+                                                                0, // 댓글 수 연결 필요
+                                                          );
+                                                        },
+                                                        separatorBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical:
+                                                                        16),
+                                                            child: Container(
+                                                              height: 1,
+                                                              color: const Color(
+                                                                  0xffd9d9d9),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                            ),
+                                    ],
+                                  ),
+                                );
+                              }),
                             ],
                           ),
                         ),
@@ -559,9 +603,22 @@ class _CommunityPageState extends State<CommunityPage> {
 
 class TalkListItem extends StatelessWidget {
   final Function() onTap;
+  final String? imageUrl;
+  final int participantCount;
+  final String createdDate;
+  final String title;
+  final int likeCount;
+  final int commentCount;
+
   const TalkListItem({
     super.key,
     required this.onTap,
+    this.imageUrl,
+    required this.participantCount,
+    required this.createdDate,
+    required this.title,
+    required this.likeCount,
+    required this.commentCount,
   });
 
   @override
@@ -572,22 +629,44 @@ class TalkListItem extends StatelessWidget {
         // 경제톡톡 이미지
         Padding(
           padding: const EdgeInsets.only(right: 12),
-          child: GestureDetector(
-            onTap: onTap,
-            child: Container(
-              width: 97,
-              height: 118,
-              decoration: ShapeDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('assets/talk_image_sample.png'),
-                  fit: BoxFit.cover,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
-                ),
-              ),
-            ),
-          ),
+          child: // 이미지가 있는 경우에만 표시
+              imageUrl != null && imageUrl!.isNotEmpty
+                  ? GestureDetector(
+                      onTap: onTap,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: Image.network(
+                          imageUrl!,
+                          width: 97,
+                          height: 118,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            width: 97,
+                            height: 118,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: const Icon(Icons.image_not_supported,
+                                color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: onTap,
+                      child: Container(
+                        width: 97,
+                        height: 118,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/talk_image_sample.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -595,12 +674,12 @@ class TalkListItem extends StatelessWidget {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width - (32 + 97 + 12),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '999+명이 참여했어요',
-                    style: TextStyle(
+                    '$participantCount명이 참여했어요',
+                    style: const TextStyle(
                       color: Color(0xFF767676),
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
@@ -609,9 +688,9 @@ class TalkListItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '4시간 전',
+                    createdDate,
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFFA2A2A2),
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -630,10 +709,10 @@ class TalkListItem extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width - (32 + 97 + 12),
                 height: 60,
-                child: const Flexible(
+                child: Flexible(
                   child: Text(
-                    '현재 경제 상황에서 가장 중요한 투자 전략은 무엇이라고 생각하나요? 현재 경제 상황에서 가장 중요한 투자 전략...',
-                    style: TextStyle(
+                    title,
+                    style: const TextStyle(
                       color: Color(0xFF111111),
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
@@ -647,10 +726,10 @@ class TalkListItem extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(right: 2),
                   child: Icon(
                     Icons.favorite_border,
@@ -659,18 +738,18 @@ class TalkListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '999+',
-                  style: TextStyle(
+                  '$likeCount',
+                  style: const TextStyle(
                     color: Color(0xFF767676),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     height: 1.50,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(right: 2),
                   child: Icon(
                     Icons.chat_bubble_outline,
@@ -679,8 +758,8 @@ class TalkListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '999+',
-                  style: TextStyle(
+                  '$commentCount',
+                  style: const TextStyle(
                     color: Color(0xFF767676),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
