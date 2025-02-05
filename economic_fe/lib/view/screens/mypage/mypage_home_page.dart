@@ -48,7 +48,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {}, // 알림 화면으로
+            onTap: () {
+              Get.toNamed('/notification');
+            }, // 알림 화면으로
             child: const Icon(
               Icons.notifications_none,
               size: 24,

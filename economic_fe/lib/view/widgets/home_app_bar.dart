@@ -1,5 +1,6 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({
@@ -68,7 +69,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         // 알림
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/notification');
+          },
           icon: const Icon(
             Icons.notifications_none,
             size: 24,

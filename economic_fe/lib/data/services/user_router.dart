@@ -23,6 +23,7 @@ import 'package:economic_fe/view/screens/mypage/my_learning_page.dart';
 import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
 import 'package:economic_fe/view/screens/mypage/setting_page.dart';
 import 'package:economic_fe/view/screens/mypage/wrong_quiz_page.dart';
+import 'package:economic_fe/view/screens/notification/notification_page.dart';
 
 import 'package:economic_fe/view/screens/onboarding/onboarding_card_page.dart';
 
@@ -223,6 +224,11 @@ class UserRouter {
             page: () => const WrongQuizPage(),
           ),
         ],
+      ),
+      // 알림 화면
+      GetPage(
+        name: '/notification',
+        page: () => const NotificationPage(),
       ),
     ];
   }
