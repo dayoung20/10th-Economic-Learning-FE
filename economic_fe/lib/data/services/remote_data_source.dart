@@ -1359,4 +1359,67 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 최근 검색어 조회
+  /// API: api/v1/notification
+  Future<dynamic> getRecentSearch() async {
+    String endpoint = 'api/v1/search/recent';
+
+    try {
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('최근 검색어 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('최근 검색어 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getRecentSearch Error: $e');
+      return null;
+    }
+  }
+
+  /// 검색어 삭제
+  /// API: api/v1/search/recent
+  Future<bool> deleteRecentSearch(String keyword) async {
+    String endpoint = 'api/v1/search/recent?keyword=$keyword';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('검색어 삭제 성공');
+        return true;
+      } else {
+        debugPrint('검색어 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('검색어 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 검색어 전체 삭제
+  /// API: api/v1/search/recent/all
+  Future<bool> deleteRecentSearchAll() async {
+    String endpoint = 'api/v1/search/recent/all';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('검색어 전체 삭제 성공');
+        return true;
+      } else {
+        debugPrint('검색어 전체 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('검색어 전체 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
