@@ -1317,4 +1317,46 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  /// 알림 조회
+  /// API: api/v1/notification
+  Future<dynamic> getNotification() async {
+    String endpoint = 'api/v1/notification';
+
+    try {
+      final response = await _getApiWithHeader(endpoint, accessToken);
+
+      if (response != null && response is Map<String, dynamic>) {
+        debugPrint('알림 데이터 로드 성공');
+        return response;
+      } else {
+        debugPrint('알림 데이터 로드 실패');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('getNotification Error: $e');
+      return null;
+    }
+  }
+
+  /// 알림 삭제
+  /// API: api/v1/notification/{notificationId}
+  Future<bool> deleteNotification(int notificationId) async {
+    String endpoint = 'api/v1/notification/$notificationId';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('알림 삭제 성공');
+        return true;
+      } else {
+        debugPrint('알림 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('알림 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
