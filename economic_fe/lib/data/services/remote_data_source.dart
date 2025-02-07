@@ -1422,4 +1422,97 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 용어 검색
+  /// api: api/v1/search/terms
+  Future<List<dynamic>> searchTerms(String keyword) async {
+    List<dynamic> searchResults = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint =
+            'api/v1/search/terms?keyword=$keyword&page=$currentPage';
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          searchResults.addAll(results["termList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("용어 검색 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("용어 검색 중 오류 발생: $e");
+    }
+
+    return searchResults;
+  }
+
+  /// 게시글 검색
+  /// api: api/v1/search/posts
+  Future<List<dynamic>> searchPosts(String keyword) async {
+    List<dynamic> searchResults = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint =
+            'api/v1/search/posts?keyword=$keyword&page=$currentPage';
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          searchResults.addAll(results["postList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("게시글 검색 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("게시글 검색 중 오류 발생: $e");
+    }
+
+    return searchResults;
+  }
+
+  /// 뉴스 검색
+  /// api: api/v1/search/news
+  Future<List<dynamic>> searchNews(String keyword) async {
+    List<dynamic> searchResults = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint =
+            'api/v1/search/news?keyword=$keyword&page=$currentPage';
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          searchResults.addAll(results["newsList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("기사 검색 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("기사 검색 중 오류 발생: $e");
+    }
+
+    return searchResults;
+  }
 }

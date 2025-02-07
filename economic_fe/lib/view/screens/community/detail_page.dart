@@ -23,7 +23,7 @@ class _DetailPageState extends State<DetailPage> {
         forceMaterialTransparency: true,
         backgroundColor: Palette.background,
         leading: GestureDetector(
-          onTap: () => controller.goToCommunity(),
+          onTap: () => Get.back(),
           child:
               const Icon(Icons.arrow_back_ios, size: 24, color: Colors.black),
         ),
