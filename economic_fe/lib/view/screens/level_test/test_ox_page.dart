@@ -20,12 +20,12 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
   late final Map<String, dynamic> args;
   late final List<QuizModel> quizList;
 
-  // 해당하는 index의 문제제
+  // 해당하는 index의 문제
   late final QuizModel quiz;
 
   // 레벨테스트 문제들 중 몇번째 문제인지
   late final index;
-  late final LevelTestAnswerModel answerModel;
+  // late final LevelTestAnswerModel answerModel;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
     quizList = args["quizList"] ?? [];
     index = args['index'];
     quiz = quizList[index];
-    answerModel = args["answeranswer"];
+    // answerModel = args["answer"];
   }
 
   void selectOption(int index) {
@@ -69,14 +69,17 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
               onPress: () {},
               option: 1, // ox 문제
               question: quiz.question,
-              isLast: index <= 8,
+              isLast: !(index <= 8),
               isQuiz: false,
               onOptionSelected: (int selected) {
                 setState(() {
                   controller.choiceId.value = selected;
                   print("selected : ${controller.choiceId.value}");
-                  controller.addAnswer(
-                      quiz.id, quiz.choiceList.first.choiceId + selected);
+                  // controller.addAnswer(
+                  //     quiz.id, quiz.choiceList.first.choiceId + selected);
+                  print("중간");
+                  print("index : $index");
+                  controller.clickedNextBtn(context, index, quizList);
                 });
               },
             ),

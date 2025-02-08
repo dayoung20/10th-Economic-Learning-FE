@@ -7,6 +7,7 @@ import 'package:economic_fe/view/screens/finish_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
+import 'package:economic_fe/view/screens/level_test/level_test_test_page.dart';
 
 import 'package:economic_fe/view/screens/login/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/login/agreement_page.dart';
@@ -67,6 +68,10 @@ class UserRouter {
           GetPage(
             name: '/ox',
             page: () => const TestOxPage(),
+          ),
+          GetPage(
+            name: '/test',
+            page: () => const LevelTestTestPage(),
           ),
         ],
       ),

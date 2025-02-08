@@ -236,6 +236,7 @@ class _QuizCardState extends State<QuizCard> {
                               : () {
                                   // "다음 문제" 버튼 활성화
                                   // 다음 문제로 넘어가는 로직 추가
+                                  print("다음문제");
                                   widget.onOptionSelected != null
                                       ? widget.onOptionSelected!(
                                           controller.selectedOption.value!)

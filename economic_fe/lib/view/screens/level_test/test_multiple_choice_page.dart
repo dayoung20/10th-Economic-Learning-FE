@@ -28,7 +28,7 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
 
   // 레벨테스트 문제들 중 몇번째 문제인지
   late final index;
-  late final LevelTestAnswerModel answerModel;
+  // late final LevelTestAnswerModel answerModel;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
     quizList = args["quizList"] ?? [];
     index = args['index'];
     quiz = quizList[index];
-    answerModel = args["answeranswer"];
+    // answerModel = args["answeranswer"];
   }
 
   final TestMultipleController controller = Get.put(TestMultipleController());
@@ -84,7 +84,7 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
                   option: 0, // 다중 선택
                   question: question,
                   answerOptions: options,
-                  isLast: index <= 8,
+                  isLast: !(index <= 8),
                   isQuiz: false,
                   onOptionSelected: (int selected) {
                     setState(() {
@@ -92,6 +92,7 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
                       print("selected : ${controller.choiceId.value}");
                       controller.addAnswer(
                           quiz.id, quiz.choiceList.first.choiceId + selected);
+                      controller.clickedNextBtn(context, index, quizList);
                     });
                   },
                 ),

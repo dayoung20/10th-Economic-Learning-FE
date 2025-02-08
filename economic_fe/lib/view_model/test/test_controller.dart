@@ -17,6 +17,16 @@ class TestController extends GetxController {
     print("Stats initialized!");
   }
 
+  void test(BuildContext context) async {
+    try {
+      final List<QuizModel> quizList = await getLevelTest();
+      Get.toNamed('test/test', arguments: quizList);
+    } catch (e) {
+      Get.snackbar("에러", "퀴즈를 불러오지 못했습니다");
+      debugPrint("에러 발생: $e");
+    }
+  }
+
   void clickedTestBtn(BuildContext context) async {
     // Get.toNamed('/test');
     try {
@@ -31,19 +41,19 @@ class TestController extends GetxController {
 
       final int choiceCount = quizList.first.choiceList.length;
 
-      //선택지 개수가 3개 이상
-      //객관식 퀴즈 페이지로 이동
+      // 선택지 개수가 3개 이상
+      // 객관식 퀴즈 페이지로 이동
       if (choiceCount == 2) {
         Get.toNamed('test/ox', arguments: {
           "quizList": quizList,
           "index": 0,
-          "answer": levelTestAnswerModel
+          // "answer": levelTestAnswerModel
         });
       } else {
         Get.toNamed('/test/multi', arguments: {
           "quizList": quizList,
           "index": 0,
-          "answer": levelTestAnswerModel
+          // "answer": levelTestAnswerModel
         });
       }
     } catch (e) {

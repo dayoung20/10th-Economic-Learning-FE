@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TestOxController extends GetxController {
-  var levelTestAnswerModel = <LevelTestAnswerModel>[].obs;
+  // var levelTestAnswerModel = <LevelTestAnswerModel>[].obs;
+  //레벨테스트 answer
+  List<LevelTestAnswerModel> levelTestAnswerModel = [];
 
   // 사용자가 선택한 선택지
   var choiceId = 0.obs;
@@ -31,15 +33,21 @@ class TestOxController extends GetxController {
 
   void clickedNextBtn(
       BuildContext context, int index, List<QuizModel> quizlist) {
+    print("이전 index : $index");
     if (index <= 8) {
-      if (quizlist[index].choiceList.length == 2) {
-        Get.toNamed('test/ox', arguments: {
+      print("ㅑㅑㅑㅑ");
+      print(quizlist[index].question);
+      print(quizlist[index + 1].question);
+      if (quizlist[index + 1].choiceList.length == 2) {
+        print("다음 페이지");
+        Get.offNamed('/test/ox', arguments: {
           "quizList": quizlist,
           "index": index + 1,
           "answer": levelTestAnswerModel
         });
       } else {
-        Get.toNamed('test/multi', arguments: {
+        print("다중 선택");
+        Get.offNamed('/test/multi', arguments: {
           "quizList": quizlist,
           "index": index + 1,
           "answer": levelTestAnswerModel
