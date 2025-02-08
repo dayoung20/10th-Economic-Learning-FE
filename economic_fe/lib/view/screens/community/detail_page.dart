@@ -47,7 +47,10 @@ class _DetailPageState extends State<DetailPage> {
                 bool isAuthor = controller.isAuthor.value;
                 _handleOptions(context, isAuthor);
               },
-              child: const Icon(Icons.more_horiz),
+              child: const Icon(
+                Icons.more_horiz,
+                size: 28,
+              ),
             ),
           ),
         ],
