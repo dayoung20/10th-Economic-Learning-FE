@@ -82,7 +82,7 @@ class _TestPageState extends State<TestPage> {
                 child: CustomButton(
                   text: "시작하기",
                   onPress: () {
-                    controller.clickedTestMultiBtn(context);
+                    controller.clickedTestBtn(context);
                   },
                   bgColor: Palette.buttonColorBlue,
                 ),
