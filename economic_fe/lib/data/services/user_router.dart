@@ -14,7 +14,7 @@ import 'package:economic_fe/view/screens/dictionary_page.dart';
 
 import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
-import 'package:economic_fe/view/screens/leveltest_result_page.dart';
+import 'package:economic_fe/view/screens/level_test/leveltest_result_page.dart';
 import 'package:economic_fe/view/screens/login/login_exist_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_articles_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_post_page.dart';
@@ -37,10 +37,10 @@ import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.da
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/screens/search/search_page.dart';
-import 'package:economic_fe/view/screens/test_answer_page.dart';
-import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
-import 'package:economic_fe/view/screens/test_ox_page.dart';
-import 'package:economic_fe/view/screens/test_page.dart';
+import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
+import 'package:economic_fe/view/screens/level_test/test_multiple_choice_page.dart';
+import 'package:economic_fe/view/screens/level_test/test_ox_page.dart';
+import 'package:economic_fe/view/screens/level_test/test_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 

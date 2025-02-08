@@ -198,7 +198,11 @@ class RemoteDataSource {
 
       if (response.statusCode == 200) {
         debugPrint('GET 요청 성공');
-        return jsonDecode(response.body);
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return decodedResponse;
       } else {
         debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
         return response;
@@ -1514,5 +1518,21 @@ class RemoteDataSource {
     }
 
     return searchResults;
+  }
+
+  /// api/v1/level-test/quiz
+  /// 레벨 테스트 퀴즈 목록 조회
+  Future<dynamic> getLevelTestQuizList() async {
+    dynamic response;
+    String endPoint = "api/v1/level-test/quiz";
+
+    response = await _getApi(endPoint);
+
+    if (response != null) {
+      print("응답 데이터 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+    return response;
   }
 }
