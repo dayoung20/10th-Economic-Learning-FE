@@ -26,8 +26,8 @@ class TestMultipleController extends GetxController {
   }
 
   void addAnswer(int quizId, int answer) {
-    levelTestAnswerModel
-        .add(LevelTestAnswerModel(quizId: quizId, answer: answer));
+    // levelTestAnswerModel
+    //     .add(LevelTestAnswerModel(quizId: quizId, answer: answer));
   }
 
   void clickedNextBtn(

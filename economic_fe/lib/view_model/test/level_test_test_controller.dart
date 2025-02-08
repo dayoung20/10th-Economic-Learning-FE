@@ -8,7 +8,8 @@ import 'package:go_router/go_router.dart';
 
 class LevelTestTestController extends GetxController {
   late BuildContext context;
-  static LevelTestTestController get to => Get.find();
+  final remoteDataSource = RemoteDataSource();
+  LevelTestTestController get to => Get.find();
 
   // 레벨테스트 사용자 답
   var levelTestAnswers = <LevelTestAnswerModel>[].obs;
@@ -45,5 +46,22 @@ class LevelTestTestController extends GetxController {
       debugPrint('Error: $e');
       return [];
     }
+  }
+
+  void clickedFinishBtn() async {
+    List<Map<String, dynamic>> answersJson =
+        levelTestAnswers.map((answer) => answer.toJson()).toList();
+
+    try {
+      print("start");
+      dynamic response =
+          await remoteDataSource.postLevelTestResult(answersJson);
+
+      print("response : $response");
+    } catch (e) {
+      debugPrint("error : $e");
+    }
+
+    // print("response : : $response");
   }
 }

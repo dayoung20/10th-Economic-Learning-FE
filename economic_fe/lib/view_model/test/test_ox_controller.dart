@@ -27,15 +27,15 @@ class TestOxController extends GetxController {
   }
 
   void addAnswer(int quizId, int answer) {
-    levelTestAnswerModel
-        .add(LevelTestAnswerModel(quizId: quizId, answer: answer));
+    // levelTestAnswerModel
+    //     .add(LevelTestAnswerModel(quizId: quizId, answer: answer));
   }
 
   void clickedNextBtn(
       BuildContext context, int index, List<QuizModel> quizlist) {
     print("이전 index : $index");
     if (index <= 8) {
-      print("ㅑㅑㅑㅑ");
+      // print("ㅑㅑㅑㅑ");
       print(quizlist[index].question);
       print(quizlist[index + 1].question);
       if (quizlist[index + 1].choiceList.length == 2) {

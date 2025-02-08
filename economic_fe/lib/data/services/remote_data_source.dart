@@ -1535,4 +1535,29 @@ class RemoteDataSource {
     }
     return response;
   }
+
+  /// api/v1/level-test/result
+  /// 레벨 테스트 결과 제출
+  Future<dynamic> postLevelTestResult(
+      List<Map<String, dynamic>> answersJson) async {
+    String endPoint = "api/v1/level-test/result";
+    Map<String, dynamic> requestBody = {"answers": answersJson};
+
+    try {
+      // API 요청 실행
+      dynamic response =
+          await RemoteDataSource.postApiWithJson(endPoint, requestBody);
+
+      if (response != null) {
+        debugPrint("레벨테스트 POST 성공: $response");
+        return response; // 성공하면 응답 반환
+      } else {
+        debugPrint("레벨테스트 POST 실패");
+      }
+    } catch (e) {
+      debugPrint("Error 발생: $e");
+    }
+
+    return null; // 실패 시 null 반환
+  }
 }

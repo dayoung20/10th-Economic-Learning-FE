@@ -87,7 +87,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                                 answer:
                                     quizList[controller.currentQuizIdx.value]
                                         .choiceList[selected]
-                                        .choiceId, // 선택한 옵션의 ID 저장
+                                        .content, // 선택한 옵션의 ID 저장
                               ),
                             );
 
@@ -96,7 +96,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
 
                             print(
                                 "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
-
+                            print("현재 idx : ${controller.currentQuizIdx}");
                             controller.currentQuizIdx++;
                           });
                         },
@@ -113,7 +113,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                         question:
                             quizList[controller.currentQuizIdx.value].question,
                         isQuiz: false,
-                        isLast: controller.currentQuizIdx.value + 1 == 9,
+                        isLast: controller.currentQuizIdx.value == 8,
                         onOptionSelected: (int selected) {
                           setState(() {
                             controller.levelTestAnswers.add(
@@ -124,7 +124,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                                 answer:
                                     quizList[controller.currentQuizIdx.value]
                                         .choiceList[selected]
-                                        .choiceId, // 선택한 옵션의 ID 저장
+                                        .content, // 선택한 옵션의 ID 저장
                               ),
                             );
 
@@ -133,10 +133,16 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
 
                             print(
                                 "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
-
+                            print("현재 idx : ${controller.currentQuizIdx}");
+                            // if (controller.currentQuizIdx == 8) {
+                            //   print("완료 가능");
+                            //   controller.clickedFinishBtn();
+                            // }
+                            // controller.clickedFinishBtn();
                             controller.currentQuizIdx++;
                           });
                         },
+                        onFinishTest: () => controller.clickedFinishBtn(),
                       ));
           }),
         ],
