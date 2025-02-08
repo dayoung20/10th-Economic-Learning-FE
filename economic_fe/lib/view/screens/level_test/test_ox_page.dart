@@ -1,4 +1,4 @@
-import 'package:economic_fe/data/models/level_test_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';

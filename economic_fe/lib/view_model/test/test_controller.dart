@@ -1,4 +1,4 @@
-import 'package:economic_fe/data/models/level_test_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
