@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
@@ -18,9 +19,14 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
   int? selectedOption;
   late final Map<String, dynamic> args;
   late final List<QuizModel> quizList;
-  // final question = 'Q. 다음 중 복리 효과가 경제적 결과로 나타날 수 있는 상황으로 적절한 것은?';
+
+  // 해당하는 index의 문제제
   late final QuizModel quiz;
+
+  // 레벨테스트 문제들 중 몇번째 문제인지
   late final index;
+  late final LevelTestAnswerModel answerModel;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +36,7 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
     quizList = args["quizList"] ?? [];
     index = args['index'];
     quiz = quizList[index];
+    answerModel = args["answeranswer"];
   }
 
   void selectOption(int index) {
@@ -49,7 +56,7 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
         title: '레벨테스트',
         icon: Icons.close,
         onPress: () => controller.showModal(),
-        currentIndex: 1,
+        currentIndex: index + 1,
         totalIndex: 9,
       ),
       body: Stack(
@@ -60,10 +67,18 @@ class _TestMultipleChoicePageState extends State<TestOxPage> {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
               onPress: () {},
-              option: 1,
+              option: 1, // ox 문제
               question: quiz.question,
-              isLast: false,
+              isLast: index <= 8,
               isQuiz: false,
+              onOptionSelected: (int selected) {
+                setState(() {
+                  controller.choiceId.value = selected;
+                  print("selected : ${controller.choiceId.value}");
+                  controller.addAnswer(
+                      quiz.id, quiz.choiceList.first.choiceId + selected);
+                });
+              },
             ),
           ),
 

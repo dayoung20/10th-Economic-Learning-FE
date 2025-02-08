@@ -1,8 +1,8 @@
-class AnswerModel {
+class LevelTestAnswerModel {
   final int quizId;
-  final String answer;
+  final int answer;
 
-  AnswerModel({required this.quizId, required this.answer});
+  LevelTestAnswerModel({required this.quizId, required this.answer});
 
   // JSON으로 변환
   Map<String, dynamic> toJson() {

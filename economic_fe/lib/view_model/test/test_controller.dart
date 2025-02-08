@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +9,10 @@ import 'package:go_router/go_router.dart';
 class TestController extends GetxController {
   late BuildContext context;
   static TestController get to => Get.find();
+
+  //레벨테스트 answer
+  List<LevelTestAnswerModel> levelTestAnswerModel = [];
+
   void getStats() {
     print("Stats initialized!");
   }
@@ -29,10 +34,17 @@ class TestController extends GetxController {
       //선택지 개수가 3개 이상
       //객관식 퀴즈 페이지로 이동
       if (choiceCount == 2) {
-        Get.toNamed('test/ox', arguments: {"quizList": quizList, "index": 0});
+        Get.toNamed('test/ox', arguments: {
+          "quizList": quizList,
+          "index": 0,
+          "answer": levelTestAnswerModel
+        });
       } else {
-        Get.toNamed('/test/multi',
-            arguments: {"quizList": quizList, "index": 0});
+        Get.toNamed('/test/multi', arguments: {
+          "quizList": quizList,
+          "index": 0,
+          "answer": levelTestAnswerModel
+        });
       }
     } catch (e) {
       Get.snackbar("에러", "퀴즈를 불러오지 못했습니다");
