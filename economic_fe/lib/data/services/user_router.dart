@@ -36,6 +36,7 @@ import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
+import 'package:economic_fe/view/screens/search/search_page.dart';
 import 'package:economic_fe/view/screens/test_answer_page.dart';
 import 'package:economic_fe/view/screens/test_multiple_choice_page.dart';
 import 'package:economic_fe/view/screens/test_ox_page.dart';
@@ -229,6 +230,11 @@ class UserRouter {
       GetPage(
         name: '/notification',
         page: () => const NotificationPage(),
+      ),
+      // 검색 화면
+      GetPage(
+        name: '/search',
+        page: () => const SearchPage(),
       ),
     ];
   }

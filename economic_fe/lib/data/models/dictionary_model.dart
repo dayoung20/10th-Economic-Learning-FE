@@ -1,4 +1,4 @@
-// 뉴스 모델
+// 용어 모델
 
 import 'dart:convert';
 
