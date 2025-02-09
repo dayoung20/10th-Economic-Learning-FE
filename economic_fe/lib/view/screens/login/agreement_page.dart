@@ -14,16 +14,10 @@ class AgreementPage extends StatefulWidget {
 
 class _AgreementPageState extends State<AgreementPage> {
   late final AgreementController controller;
-  // bool isCheckedAll = false;
-  // bool isCheckedOne = false;
-  // bool isCheckdeTwo = false;
-  // bool isCheckedThree = false;
   @override
   void initState() {
     super.initState();
-    //controller = Get.put(AgreementController()..getStats());
     controller = Get.put(AgreementController());
-    // isCheckedOne = controller.checkOne.value;
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
@@ -49,8 +51,22 @@ class LevelTestTestController extends GetxController {
   }
 
   void clickedFinishBtn() async {
+    // List<Map<String, dynamic>> answersJson =
+    //     levelTestAnswers.map((answer) => answer.toJson()).toList();
+    // API 요청 시 보낼 JSON 데이터 변환
+
+    // -> jsonEncode(requestBody) 보내는 형식 맞춤
+    // Map<String, dynamic> requestBody = {
+    //   "answers": levelTestAnswers.map((e) => e.toJson()).toList()
+    // };
+
+    // // 변환된 데이터 출력
+    // print("변환된 데이터 : ${jsonEncode(requestBody)}"); // JSON 문자열로 변환하여 확인
+    // print("변환된 데이터2 : $requestBody");
+
+    // 아래 형태로 보내면 됨
     List<Map<String, dynamic>> answersJson =
-        levelTestAnswers.map((answer) => answer.toJson()).toList();
+        levelTestAnswers.map((e) => e.toJson()).toList();
 
     try {
       print("start");
@@ -63,5 +79,12 @@ class LevelTestTestController extends GetxController {
     }
 
     // print("response : : $response");
+  }
+
+  void clickedToKaKao() {
+    // List<Map<String, dynamic>> answersJson =
+    //     levelTestAnswers.map((e) => e.toJson()).toList();
+
+    Get.toNamed('/login_exist', arguments: levelTestAnswers);
   }
 }

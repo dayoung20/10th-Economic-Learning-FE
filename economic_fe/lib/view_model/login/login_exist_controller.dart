@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginExistController extends GetxController {
+  // var levelTestAnswers = <LevelTestAnswerModel>[].obs;
+  List<LevelTestAnswerModel> levelTestAnswers = [];
+
   // 카카오 앱 클라이언트 ID
   // String nativeAppKey = dotenv.env['NATIVE_APP_KEY']!;
   final String clientId = dotenv.env['CLIENT_ID']!;
@@ -60,8 +64,11 @@ class LoginExistController extends GetxController {
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
         print("토큰${token.accessToken}");
 
+        // Get.toNamed('/', arguments: levelTestAnswers);
+
         getlogin(token.accessToken);
-        toArticle();
+
+        // toArticle();
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');
 

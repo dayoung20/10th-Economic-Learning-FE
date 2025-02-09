@@ -1541,7 +1541,11 @@ class RemoteDataSource {
   Future<dynamic> postLevelTestResult(
       List<Map<String, dynamic>> answersJson) async {
     String endPoint = "api/v1/level-test/result";
-    Map<String, dynamic> requestBody = {"answers": answersJson};
+    Map<String, dynamic> requestBody = {
+      "answers": answersJson,
+    };
+
+    print("post 안 : ${jsonEncode(requestBody)}");
 
     try {
       // API 요청 실행

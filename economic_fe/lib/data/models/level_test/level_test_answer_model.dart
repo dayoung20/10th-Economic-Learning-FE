@@ -14,4 +14,11 @@ class LevelTestAnswerModel {
       "answer": answer,
     };
   }
+
+  factory LevelTestAnswerModel.fromJson(Map<String, dynamic> json) {
+    return LevelTestAnswerModel(
+      quizId: json['quizId'] as int,
+      answer: json['answer'] as String,
+    );
+  }
 }
