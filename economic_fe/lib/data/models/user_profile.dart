@@ -7,6 +7,7 @@ class UserProfile {
   String job;
   bool isLearningAlarmAllowed;
   bool isCommunityAlarmAllowed;
+  int? imageId;
 
   UserProfile({
     required this.nickname,
@@ -17,6 +18,7 @@ class UserProfile {
     required this.job,
     this.isLearningAlarmAllowed = true, // 기본값
     this.isCommunityAlarmAllowed = true, // 기본값
+    this.imageId,
   });
 
   // JSON 변환
@@ -30,6 +32,7 @@ class UserProfile {
       job: json['job'] ?? '',
       isLearningAlarmAllowed: json['isLearningAlarmAllowed'] ?? true,
       isCommunityAlarmAllowed: json['isCommunityAlarmAllowed'] ?? true,
+      imageId: json['imageId'],
     );
   }
 
@@ -43,6 +46,7 @@ class UserProfile {
       "job": job,
       "isLearningAlarmAllowed": isLearningAlarmAllowed,
       "isCommunityAlarmAllowed": isCommunityAlarmAllowed,
+      "imageId": imageId,
     };
   }
 }

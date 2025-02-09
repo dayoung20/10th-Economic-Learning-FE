@@ -716,7 +716,8 @@ class RemoteDataSource {
     try {
       // _getApiWithHeader 호출
       // final response = await _getApiWithHeaderTest(endpoint, accessToken);
-      final response = await _getApiWithHeader(endpoint, accessToken);
+      final response =
+          await _getApiWithHeader(endpoint, accessToken); // 카카오 로그인 오류로 인함
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('학습 진도율 데이터 로드 성공');
@@ -737,7 +738,8 @@ class RemoteDataSource {
     String endpoint = 'api/v1/user/profile';
 
     try {
-      final response = await postApiWithJsonTest(endpoint, userProfile);
+      // final response = await postApiWithJsonTest(endpoint, userProfile);
+      final response = await postApiWithJson(endpoint, userProfile);
 
       if (response == 200) {
         debugPrint('사용자 프로필 등록 성공');
@@ -898,7 +900,7 @@ class RemoteDataSource {
     return null; // 실패 시 null 반환
   }
 
-  /// 게시물 이미지 삭제 API
+  /// 이미지 삭제 API
   /// API: `DELETE api/v1/image/{imageId}`
   static Future<bool> deleteImage(int imageId) async {
     String endPoint = 'api/v1/image/$imageId';
@@ -1514,5 +1516,30 @@ class RemoteDataSource {
     }
 
     return searchResults;
+  }
+
+  /// 프로필 이미지 업로드 API
+  /// 서버에 이미지 업로드 후 `imageId` 반환
+  /// API: api/v1/image/profile
+  static Future<int?> uploadProfileImage(File imageFile) async {
+    String apiUrl = '$baseUrl/api/v1/image/profile';
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+        if (jsonResponse['isSuccess']) {
+          return jsonResponse['results']['imageId']; // imageId 반환
+        }
+      }
+      debugPrint('이미지 업로드 실패: ${response.statusCode}');
+    } catch (e) {
+      debugPrint('이미지 업로드 중 예외 발생: $e');
+    }
+    return null; // 실패 시 null 반환
   }
 }
