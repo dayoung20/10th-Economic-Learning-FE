@@ -89,6 +89,46 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
+  /// jsonData 포함O
+  /// 앱에 저장된 accessToken 사용
+  /// statuscode 반환하지 않고 전체 response 반환
+  Future<dynamic> postApiWithJsonReturnResponse(
+    String endPoint,
+    Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return jsonDecode(utf8.decode(response.bodyBytes));
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
   /// jsonData 포함X
   static Future<dynamic> _postApi(
     String endPoint,
@@ -1549,10 +1589,12 @@ class RemoteDataSource {
 
     try {
       // API 요청 실행
-      dynamic response = await postApiWithJsonTest(endPoint, requestBody);
+      dynamic response =
+          await postApiWithJsonReturnResponse(endPoint, requestBody);
 
       if (response != null) {
         debugPrint("레벨테스트 POST 성공: $response");
+        // print("레벨 테스트 reponse ${response.body}");
         return response; // 성공하면 응답 반환
       } else {
         debugPrint("레벨테스트 POST 실패");
