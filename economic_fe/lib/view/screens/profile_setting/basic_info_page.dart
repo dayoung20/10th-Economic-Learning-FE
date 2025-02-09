@@ -84,25 +84,31 @@ class BasicInfoPage extends StatelessWidget {
                             // 어두운 오버레이 및 삭제 버튼 (삭제 모드일 때 표시)
                             Obx(() {
                               return controller.isDeleteMode.value
-                                  ? Container(
-                                      width: ScreenUtils.getWidth(context, 88),
-                                      height:
-                                          ScreenUtils.getHeight(context, 88),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black
-                                            .withOpacity(0.5), // 반투명 어두운 효과
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            controller.deleteProfileImage();
-                                            controller.isDeleteMode.value =
-                                                false; // 삭제 후 초기화
-                                          },
-                                          child: const Icon(
-                                            Icons.delete_outline,
-                                            color: Colors.red,
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        controller.isDeleteMode.value = false;
+                                      },
+                                      child: Container(
+                                        width:
+                                            ScreenUtils.getWidth(context, 88),
+                                        height:
+                                            ScreenUtils.getHeight(context, 88),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black
+                                              .withOpacity(0.5), // 반투명 어두운 효과
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              controller.deleteProfileImage();
+                                              controller.isDeleteMode.value =
+                                                  false; // 삭제 후 초기화
+                                            },
+                                            child: const Icon(
+                                              Icons.delete_outline,
+                                              color: Colors.red,
+                                            ),
                                           ),
                                         ),
                                       ),
