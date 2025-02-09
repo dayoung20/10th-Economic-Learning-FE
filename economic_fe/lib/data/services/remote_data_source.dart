@@ -1549,8 +1549,7 @@ class RemoteDataSource {
 
     try {
       // API 요청 실행
-      dynamic response =
-          await RemoteDataSource.postApiWithJson(endPoint, requestBody);
+      dynamic response = await postApiWithJsonTest(endPoint, requestBody);
 
       if (response != null) {
         debugPrint("레벨테스트 POST 성공: $response");

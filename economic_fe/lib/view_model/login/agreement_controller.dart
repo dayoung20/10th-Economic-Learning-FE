@@ -1,3 +1,5 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
+import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -5,7 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AgreementController extends GetxController {
   late BuildContext context;
-  //var checkOne = false.obs;
+  final remoteDataSource = RemoteDataSource();
 
   // 체크박스 상태 관리
   RxBool isCheckedAll = false.obs; // '모두 동의합니다.' 체크 상태
@@ -29,16 +31,23 @@ class AgreementController extends GetxController {
     Get.toNamed('/login/agreement/detail');
   }
 
-  // 프로필 설정 화면으로 이동
-  void clickedConfirmBtn() {
-    Get.toNamed('/profile_setting');
-  }
+  // 확인 버튼 클릭
+  void clickedConfirmBtn(List<LevelTestAnswerModel> answers) async {
+    // Get.toNamed('/profile_setting');
 
-  // void clickedAllowBtn(BuildContext context) {
-  //   isCheckedOne.value = true;
-  //   _updateAllCheckboxStatus();
-  //   Navigator.pop(context);
-  // }
+    List<Map<String, dynamic>> answersJson =
+        answers.map((e) => e.toJson()).toList();
+
+    try {
+      print("start");
+      dynamic response =
+          await remoteDataSource.postLevelTestResult(answersJson);
+
+      print("response : $response");
+    } catch (e) {
+      debugPrint("error : $e");
+    }
+  }
 
   // '모두 동의합니다.' 체크박스를 눌렀을 때의 동작
   void toggleAllCheckbox() {
