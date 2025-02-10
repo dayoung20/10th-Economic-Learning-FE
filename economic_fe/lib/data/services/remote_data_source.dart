@@ -1719,4 +1719,26 @@ class RemoteDataSource {
 
     return result;
   }
+
+  /// 회원 정보 조회
+  /// api: api/v1/user/info
+  Future<Map<String, dynamic>> fetchUserInfo() async {
+    Map<String, dynamic> userInfo = {};
+
+    try {
+      String endPoint = 'api/v1/user/info';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        userInfo = response["results"];
+      } else {
+        debugPrint("사용자 프로필 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("사용자 프로필 조회 중 오류 발생: $e");
+    }
+
+    return userInfo;
+  }
 }

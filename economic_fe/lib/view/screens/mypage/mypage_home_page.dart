@@ -75,28 +75,41 @@ class _MypageHomePageState extends State<MypageHomePage> {
       bottomNavigationBar: const CustomBottomBar(currentIndex: 4),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                children: [
-                  // 사용자 프로필 사진
-                  SizedBox(
-                    height: 81,
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 81,
-                          height: 81,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFF3F3F3),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(43),
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final user = controller.userInfo.value;
+          if (user == null) {
+            return const Center(
+              child: Text("사용자 정보를 불러오지 못했습니다."),
+            );
+          }
+
+          return ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    // 사용자 프로필 사진
+                    SizedBox(
+                      height: 81,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 81,
+                            height: 81,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFF3F3F3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(43),
+                              ),
                             ),
-                          ),
-                          child: Obx(() {
-                            return controller.selectedProfileImage.value != null
+                            child: controller.selectedProfileImage.value != null
                                 ? ClipOval(
                                     child: Image.file(
                                       File(controller
@@ -106,286 +119,296 @@ class _MypageHomePageState extends State<MypageHomePage> {
                                       height: 81,
                                     ),
                                   )
-                                : const Icon(
-                                    Icons.person,
-                                    size: 35,
-                                  );
-                          }),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          // 카메라 버튼
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.selectProfileImage(context);
-                            },
-                            child: Container(
-                              width: 26,
-                              height: 26,
-                              decoration: ShapeDecoration(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(26),
-                                ),
-                                shadows: const [
-                                  BoxShadow(
-                                    color: Color(0x3F000000),
-                                    blurRadius: 4,
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.edit_outlined,
-                                size: 15,
-                              ),
-                            ),
+                                : user.profileImageURL != null
+                                    ? ClipOval(
+                                        child: Image(
+                                          image: NetworkImage(
+                                              user.profileImageURL!),
+                                          fit: BoxFit.cover,
+                                          width: 81,
+                                          height: 81,
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        size: 35,
+                                      ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 사용자 이름
-                      Text(
-                        '리플',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          height: 1.40,
-                          letterSpacing: -0.50,
-                        ),
-                      ),
-                      // 생년월일
-                      Text(
-                        '1996. 11. 18',
-                        style: TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 1.50,
-                          letterSpacing: -0.30,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      // 한 줄 소개
-                      Text(
-                        '만나서 반가워요.',
-                        style: TextStyle(
-                          color: Color(0xFF404040),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          height: 1.30,
-                          letterSpacing: -0.35,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 17),
-              child: Row(
-                children: [
-                  // 직무
-                  JobContainer(text: '개발자(프론트엔드/백엔드)'),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  // 업종
-                  JobContainer(text: '스타트업/벤처'),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      const Text(
-                        '연속 학습일',
-                        style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 0.80,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 11,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          // 연속 학습일 수
-                          Obx(() => Text(
-                                '${controller.currentStreak.value}',
-                                style: const TextStyle(
-                                  color: Color(0xFF2AD6D6),
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w600,
-                                  height: 0.80,
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            // 카메라 버튼
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.selectProfileImage(context);
+                              },
+                              child: Container(
+                                width: 26,
+                                height: 26,
+                                decoration: ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(26),
+                                  ),
+                                  shadows: const [
+                                    BoxShadow(
+                                      color: Color(0x3F000000),
+                                      blurRadius: 4,
+                                      offset: Offset(0, 0),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
                                 ),
-                              )),
-                          const Text(
-                            '일째',
-                            style: TextStyle(
-                              color: Color(0xFF4A4A4A),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              height: 0.80,
+                                child: const Icon(
+                                  Icons.edit_outlined,
+                                  size: 15,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  Container(
-                    width: 1,
-                    height: 76,
-                    color: const Color(0xffa2a2a2),
-                  ),
-                  const Column(
-                    children: [
-                      Text(
-                        '나의 레벨',
-                        style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 0.80,
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 사용자 이름
+                        Text(
+                          user.nickname,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            height: 1.40,
+                            letterSpacing: -0.50,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 9,
-                      ),
-                      // 나의 레벨
-                      Text(
-                        '중급',
-                        style: TextStyle(
-                          color: Color(0xFF2AD6D6),
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          height: 1.30,
-                          letterSpacing: -0.60,
+                        // 생년월일
+                        Text(
+                          controller.formatBirthDate(user.birthDate),
+                          style: const TextStyle(
+                            color: Color(0xFF767676),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            height: 1.50,
+                            letterSpacing: -0.30,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    width: 1,
-                    height: 76,
-                    color: const Color(0xffa2a2a2),
-                  ),
-                  const Column(
-                    children: [
-                      Text(
-                        '퀴즈 정답률',
-                        style: TextStyle(
-                          color: Color(0xFF4A4A4A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 0.80,
+                        const SizedBox(
+                          height: 6,
                         ),
-                      ),
-                      SizedBox(
-                        height: 9,
-                      ),
-                      // 퀴즈 정답률
-                      Text(
-                        '75%',
-                        style: TextStyle(
-                          color: Color(0xFF2AD6D6),
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          height: 1.30,
-                          letterSpacing: -0.60,
+                        // 한 줄 소개
+                        Text(
+                          controller.truncateIntro(user.profileIntro),
+                          style: const TextStyle(
+                            color: Color(0xFF404040),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            height: 1.30,
+                            letterSpacing: -0.35,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 28,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Obx(() {
-                if (controller.isCheckedList.length < 7) {
-                  return const CircularProgressIndicator(); // 데이터 로딩 중
-                }
-                final days = ['일', '월', '화', '수', '목', '금', '토'];
-                return Row(
+              Padding(
+                padding: const EdgeInsets.only(top: 17),
+                child: Row(
+                  children: [
+                    // 직무
+                    JobContainer(text: user.job),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    // 업종
+                    JobContainer(text: user.businessType),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(7, (index) {
-                    return DailyCheck(
-                      day: days[index],
-                      isChecked: controller.isCheckedList[index],
-                    );
-                  }),
-                );
-              }),
-            ),
-            const SizedBox(
-              height: 28,
-            ),
-            MyContentsContainer(
-              title: '틀린 문제 다시 풀기',
-              subTitle: '퀴즈에서 틀린 문제를 다시 풀 수 있어요',
-              onTap: () {
-                Get.toNamed('/mypage/wrong');
-              },
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            MyContentsContainer(
-              title: '스크랩 한 나의 학습',
-              subTitle: '스크랩 한 퀴즈, 학습, 단어를 확인해요',
-              onTap: () {
-                Get.toNamed('/mypage/learning');
-              },
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            MyContentsContainer(
-              title: '커뮤니티 활동',
-              subTitle: '스크랩 및 좋아요 한 커뮤니티 내용을 확인해요',
-              onTap: () {
-                Get.toNamed('/mypage/community');
-              },
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            MyContentsContainer(
-              title: '스크랩 한 기사',
-              subTitle: '스크랩 한 기사 내용을 확인해요',
-              onTap: () {
-                Get.toNamed('/mypage/article');
-              },
-            ),
-          ],
-        ),
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          '연속 학습일',
+                          style: TextStyle(
+                            color: Color(0xFF4A4A4A),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            height: 0.80,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 11,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            // 연속 학습일 수
+                            Obx(() => Text(
+                                  '${controller.currentStreak.value}',
+                                  style: const TextStyle(
+                                    color: Color(0xFF2AD6D6),
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w600,
+                                    height: 0.80,
+                                  ),
+                                )),
+                            const Text(
+                              '일째',
+                              style: TextStyle(
+                                color: Color(0xFF4A4A4A),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                height: 0.80,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 1,
+                      height: 76,
+                      color: const Color(0xffa2a2a2),
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          '나의 레벨',
+                          style: TextStyle(
+                            color: Color(0xFF4A4A4A),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            height: 0.80,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 9,
+                        ),
+                        // 나의 레벨
+                        Text(
+                          controller.convertLevel(user.level!),
+                          style: const TextStyle(
+                            color: Color(0xFF2AD6D6),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            height: 1.30,
+                            letterSpacing: -0.60,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 1,
+                      height: 76,
+                      color: const Color(0xffa2a2a2),
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          '퀴즈 정답률',
+                          style: TextStyle(
+                            color: Color(0xFF4A4A4A),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            height: 0.80,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 9,
+                        ),
+                        // 퀴즈 정답률
+                        Text(
+                          '${user.quizCorrectRate}%',
+                          style: const TextStyle(
+                            color: Color(0xFF2AD6D6),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            height: 1.30,
+                            letterSpacing: -0.60,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 28,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Obx(() {
+                  if (controller.isCheckedList.length < 7) {
+                    return const CircularProgressIndicator(); // 데이터 로딩 중
+                  }
+                  final days = ['일', '월', '화', '수', '목', '금', '토'];
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(7, (index) {
+                      return DailyCheck(
+                        day: days[index],
+                        isChecked: controller.isCheckedList[index],
+                      );
+                    }),
+                  );
+                }),
+              ),
+              const SizedBox(
+                height: 28,
+              ),
+              MyContentsContainer(
+                title: '틀린 문제 다시 풀기',
+                subTitle: '퀴즈에서 틀린 문제를 다시 풀 수 있어요',
+                onTap: () {
+                  Get.toNamed('/mypage/wrong');
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              MyContentsContainer(
+                title: '스크랩 한 나의 학습',
+                subTitle: '스크랩 한 퀴즈, 학습, 단어를 확인해요',
+                onTap: () {
+                  Get.toNamed('/mypage/learning');
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              MyContentsContainer(
+                title: '커뮤니티 활동',
+                subTitle: '스크랩 및 좋아요 한 커뮤니티 내용을 확인해요',
+                onTap: () {
+                  Get.toNamed('/mypage/community');
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              MyContentsContainer(
+                title: '스크랩 한 기사',
+                subTitle: '스크랩 한 기사 내용을 확인해요',
+                onTap: () {
+                  Get.toNamed('/mypage/article');
+                },
+              ),
+            ],
+          );
+        }),
       ),
     );
   }
