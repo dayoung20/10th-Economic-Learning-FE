@@ -1663,4 +1663,38 @@ class RemoteDataSource {
 
     return news;
   }
+
+  /// 요일별 출석 현황 조회
+  /// API: api/v1/attendance/weekly-attendance
+  Future<Map<String, bool>> fetchWeeklyAttendance() async {
+    Map<String, bool> attendance = {
+      "monday": false,
+      "tuesday": false,
+      "wednesday": false,
+      "thursday": false,
+      "friday": false,
+      "saturday": false,
+      "sunday": false,
+    };
+
+    try {
+      String endPoint = 'api/v1/attendance/weekly-attendance';
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"] as Map<String, dynamic>?;
+
+        if (results != null) {
+          attendance =
+              results.map((key, value) => MapEntry(key, value as bool));
+        }
+      } else {
+        debugPrint("요일별 출석 현황 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("요일별 출석 현황 조회 중 오류 발생: $e");
+    }
+
+    return attendance;
+  }
 }
