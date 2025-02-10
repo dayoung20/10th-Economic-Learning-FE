@@ -1640,4 +1640,27 @@ class RemoteDataSource {
 
     return terms;
   }
+
+  /// 내가 스크랩한 뉴스 조회
+  /// api: api/v1/user/scrap-news
+  Future<List<dynamic>> fetchScrapedNews() async {
+    List<dynamic> news = [];
+
+    try {
+      String endPoint = 'api/v1/user/scrap-news';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        news.addAll(results["newsList"]);
+      } else {
+        debugPrint("스크랩한 뉴스 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 뉴스 조회 중 오류 발생: $e");
+    }
+
+    return news;
+  }
 }

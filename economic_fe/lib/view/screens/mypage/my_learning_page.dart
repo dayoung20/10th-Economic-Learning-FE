@@ -1,7 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/level_container.dart';
-import 'package:economic_fe/view/widgets/scrap_word_list_view.dart';
+import 'package:economic_fe/view/widgets/mypage/scrap_word_list_view.dart';
 import 'package:economic_fe/view_model/mypage/my_learning_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
