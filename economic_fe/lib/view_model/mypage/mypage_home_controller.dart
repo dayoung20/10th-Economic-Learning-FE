@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 class MypageHomeController extends GetxController {
   final RemoteDataSource _remoteDataSource = RemoteDataSource();
   final ImagePickerService _imagePickerService = ImagePickerService();
+
   var selectedProfileImage = Rx<String?>(null);
+  var currentStreak = 0.obs; // 연속 출석 날짜
 
   // 요일 체크 상태 관리 (월~일)
   var isCheckedList =
@@ -15,7 +17,19 @@ class MypageHomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchWeeklyAttendanceStatus(); // 컨트롤러 초기화 시 출석 상태 불러오기
+    fetchCurrentStreak();
+    fetchWeeklyAttendanceStatus();
+  }
+
+  // 연속 출석 날짜 조회
+  Future<void> fetchCurrentStreak() async {
+    try {
+      var response = await _remoteDataSource.fetchCurrentStreak();
+      currentStreak.value = response;
+    } catch (e) {
+      debugPrint("fetchCurrentStreak() 오류 발생: $e");
+      currentStreak.value = 0; // 오류 발생 시 기본값 설정
+    }
   }
 
   // 요일별 출석 현황 조회 후 isCheckedList 업데이트
@@ -23,16 +37,17 @@ class MypageHomeController extends GetxController {
     try {
       var attendanceData = await _remoteDataSource.fetchWeeklyAttendance();
 
-      // API 응답값을 isCheckedList에 적용
-      isCheckedList.value = [
-        attendanceData["monday"] ?? false,
-        attendanceData["tuesday"] ?? false,
-        attendanceData["wednesday"] ?? false,
-        attendanceData["thursday"] ?? false,
-        attendanceData["friday"] ?? false,
-        attendanceData["saturday"] ?? false,
-        attendanceData["sunday"] ?? false,
-      ];
+      if (attendanceData.isNotEmpty) {
+        isCheckedList.value = [
+          attendanceData["sunday"] ?? false,
+          attendanceData["monday"] ?? false,
+          attendanceData["tuesday"] ?? false,
+          attendanceData["wednesday"] ?? false,
+          attendanceData["thursday"] ?? false,
+          attendanceData["friday"] ?? false,
+          attendanceData["saturday"] ?? false,
+        ];
+      }
     } catch (e) {
       debugPrint("fetchWeeklyAttendanceStatus() 오류 발생: $e");
     }

@@ -1665,7 +1665,7 @@ class RemoteDataSource {
   }
 
   /// 요일별 출석 현황 조회
-  /// API: api/v1/attendance/weekly-attendance
+  /// API: api/v1/attencance/weekly-attendance
   Future<Map<String, bool>> fetchWeeklyAttendance() async {
     Map<String, bool> attendance = {
       "monday": false,
@@ -1678,7 +1678,7 @@ class RemoteDataSource {
     };
 
     try {
-      String endPoint = 'api/v1/attendance/weekly-attendance';
+      String endPoint = 'api/v1/attencance/weekly-attendance';
       var response = await _getApiWithHeader(endPoint, accessToken);
 
       if (response != null && response["isSuccess"] == true) {
@@ -1696,5 +1696,27 @@ class RemoteDataSource {
     }
 
     return attendance;
+  }
+
+  /// 연속 출석 날짜 조회
+  /// api: api/v1/attencance/current-streak
+  Future<int> fetchCurrentStreak() async {
+    int result = -1;
+
+    try {
+      String endPoint = 'api/v1/attencance/current-streak';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        result = response["results"];
+      } else {
+        debugPrint("연속 출석 날짜 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("연속 출석 날짜 조회 중 오류 발생: $e");
+    }
+
+    return result;
   }
 }

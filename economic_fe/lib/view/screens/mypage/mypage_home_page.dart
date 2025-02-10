@@ -216,9 +216,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
+                  Column(
                     children: [
-                      Text(
+                      const Text(
                         '연속 학습일',
                         style: TextStyle(
                           color: Color(0xFF4A4A4A),
@@ -227,23 +227,23 @@ class _MypageHomePageState extends State<MypageHomePage> {
                           height: 0.80,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 11,
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           // 연속 학습일 수
-                          Text(
-                            '3',
-                            style: TextStyle(
-                              color: Color(0xFF2AD6D6),
-                              fontSize: 32,
-                              fontWeight: FontWeight.w600,
-                              height: 0.80,
-                            ),
-                          ),
-                          Text(
+                          Obx(() => Text(
+                                '${controller.currentStreak.value}',
+                                style: const TextStyle(
+                                  color: Color(0xFF2AD6D6),
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w600,
+                                  height: 0.80,
+                                ),
+                              )),
+                          const Text(
                             '일째',
                             style: TextStyle(
                               color: Color(0xFF4A4A4A),
@@ -328,16 +328,21 @@ class _MypageHomePageState extends State<MypageHomePage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(7, (index) {
-                  final days = ['일', '월', '화', '수', '목', '금', '토'];
-                  return DailyCheck(
-                    day: days[index],
-                    isChecked: controller.isCheckedList[index], // 첫 번째 항목만 true
-                  );
-                }),
-              ),
+              child: Obx(() {
+                if (controller.isCheckedList.length < 7) {
+                  return const CircularProgressIndicator(); // 데이터 로딩 중
+                }
+                final days = ['일', '월', '화', '수', '목', '금', '토'];
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(7, (index) {
+                    return DailyCheck(
+                      day: days[index],
+                      isChecked: controller.isCheckedList[index],
+                    );
+                  }),
+                );
+              }),
             ),
             const SizedBox(
               height: 28,
