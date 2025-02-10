@@ -1741,4 +1741,25 @@ class RemoteDataSource {
 
     return userInfo;
   }
+
+  /// 푸시 알림 설정
+  /// API: api/v1/user/alarm
+  Future<bool> setAlarm(bool alarm) async {
+    String endpoint = 'api/v1/user/alarm?alarm=$alarm';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('푸시 알림 설정');
+        return true;
+      } else {
+        debugPrint('푸시 알림 설정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('푸시 알림 설정 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
