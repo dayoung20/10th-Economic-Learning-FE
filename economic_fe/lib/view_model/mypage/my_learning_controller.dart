@@ -153,6 +153,20 @@ class MyLearningController extends GetxController
     }
   }
 
+  // 단어 스크랩 삭제
+  Future<void> deleteScrapedTerms(int id) async {
+    debugPrint("deleteScrapedTerms() 실행됨");
+    try {
+      var response = await remoteDataSource.deleteScrap(id);
+      if (response) {
+        debugPrint("용어 스크랩 삭제 완료");
+        scrapTerms.removeWhere((term) => term.termId == id);
+      }
+    } catch (e) {
+      debugPrint("용어 스크랩 삭제 실패: $e");
+    }
+  }
+
   // 특정 용어 상세 보기
   Future<void> getTermDetail(int id) async {
     try {

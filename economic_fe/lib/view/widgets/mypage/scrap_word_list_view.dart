@@ -260,7 +260,9 @@ class _ScrapedWordListViewState extends State<ScrapedWordListView> {
                         ),
                         const SizedBox(width: 16),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            controller.deleteScrapedTerms(term.termId!);
+                          },
                           child: const Icon(
                             Icons.bookmark,
                             color: Palette.buttonColorGreen,
