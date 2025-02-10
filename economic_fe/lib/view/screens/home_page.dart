@@ -443,30 +443,32 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 18,
                 ),
-                const Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TodaysQuestChart(
-                        icon: 'book_ribbon',
-                        text: '개념 학습',
-                        quest: 1,
-                        progress: 0.65,
-                      ),
-                      TodaysQuestChart(
-                        icon: 'news',
-                        text: '경제 기사',
-                        quest: 1,
-                        progress: 0.75,
-                      ),
-                      TodaysQuestChart(
-                        icon: 'quiz',
-                        text: '퀴즈',
-                        quest: 1,
-                        progress: 0.75,
-                      ),
-                    ],
-                  ),
+                Center(
+                  child: Obx(() {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TodaysQuestChart(
+                          icon: 'book_ribbon',
+                          text: '개념 학습',
+                          quest: controller.goalSets[0],
+                          progress: 0.65,
+                        ),
+                        TodaysQuestChart(
+                          icon: 'news',
+                          text: '경제 기사',
+                          quest: controller.goalSets[1],
+                          progress: 0.75,
+                        ),
+                        TodaysQuestChart(
+                          icon: 'quiz',
+                          text: '퀴즈',
+                          quest: controller.goalSets[2],
+                          progress: 0.75,
+                        ),
+                      ],
+                    );
+                  }),
                 ),
                 const SizedBox(
                   height: 36,
@@ -735,179 +737,182 @@ class _HomePageState extends State<HomePage> {
               return const SizedBox.shrink();
             }
             return GestureDetector(
-              onTap: controller.hideGoalDialog,
+              onTap: () {
+                controller.hideGoalDialog();
+                controller.resetGoalSets();
+              },
               child: Container(
                 color: Colors.black.withOpacity(0.5),
                 child: Center(
-                  child: GestureDetector(
-                    onTap: () {}, // 다이얼로그 바깥 클릭 무시
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 32,
-                      height: 360,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 26, vertical: 24),
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 32,
+                    height: 360,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 26, vertical: 24),
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                '오늘의 퀘스트 변경',
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              '오늘의 퀘스트 변경',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                height: 1.20,
+                                letterSpacing: -0.45,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                controller.hideGoalDialog();
+                                controller.resetGoalSets();
+                              },
+                              child: const Icon(Icons.close),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 26, right: 26, bottom: 2),
+                          child: Container(
+                            height: 1,
+                            color: const Color(0xffd9d9d9),
+                          ),
+                        ),
+                        Column(
+                          children: List.generate(3, (index) {
+                            String questTitle = '';
+                            switch (index) {
+                              case 0:
+                                questTitle = '개념학습';
+                                break;
+                              case 1:
+                                questTitle = '경제 기사';
+                                break;
+                              default:
+                                questTitle = '퀴즈';
+                                break;
+                            }
+                            final isMinimum = controller.tempGoalSets[index] ==
+                                controller.minGoalSets;
+                            final isMaximum = controller.tempGoalSets[index] ==
+                                controller.maxGoalSets;
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    questTitle,
+                                    style: const TextStyle(
+                                      color: Color(0xFF111111),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      height: 1.60,
+                                      letterSpacing: -0.45,
+                                    ),
+                                  ),
+                                  Obx(() {
+                                    return Row(
+                                      children: [
+                                        // - 버튼
+                                        GestureDetector(
+                                          onTap: () => controller
+                                              .minusTempGoalSets(index),
+                                          child: Icon(
+                                            Icons.remove_circle_outline,
+                                            color: isMinimum
+                                                ? const Color(0xffd9d9d9)
+                                                : const Color(0xffa2a2a2),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        // 세트 수
+                                        Text(
+                                          '${controller.tempGoalSets[index]}',
+                                          style: const TextStyle(
+                                            color: Color(0xFF111111),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.20,
+                                          ),
+                                        ),
+                                        const Text(
+                                          '세트',
+                                          style: TextStyle(
+                                            color: Color(0xFF111111),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.20,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        // + 버튼
+                                        GestureDetector(
+                                          onTap: () => controller
+                                              .plusTempGoalSets(index),
+                                          child: Icon(
+                                            Icons.add_circle_outline,
+                                            color: isMaximum
+                                                ? const Color(0xffd9d9d9)
+                                                : const Color(0xffa2a2a2),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                ],
+                              ),
+                            );
+                          }),
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        // 저장하기 버튼
+                        GestureDetector(
+                          onTap: () {
+                            controller.setUserGoal();
+                            controller.saveGoalSets();
+                            controller.hideGoalDialog();
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 84,
+                            height: 60,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFF2AD6D6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '저장하기',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 18,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   height: 1.20,
                                   letterSpacing: -0.45,
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: controller.hideGoalDialog,
-                                child: const Icon(Icons.close),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 26, right: 26, bottom: 2),
-                            child: Container(
-                              height: 1,
-                              color: const Color(0xffd9d9d9),
                             ),
                           ),
-                          Column(
-                            children: List.generate(3, (index) {
-                              String questTitle = '';
-                              switch (index) {
-                                case 0:
-                                  questTitle = '개념학습';
-                                  break;
-                                case 1:
-                                  questTitle = '경제 기사';
-                                  break;
-                                default:
-                                  questTitle = '퀴즈';
-                                  break;
-                              }
-                              final isMinimum = controller.goalSets[index] ==
-                                  controller.minGoalSets;
-                              final isMaximum = controller.goalSets[index] ==
-                                  controller.maxGoalSets;
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 18),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      questTitle,
-                                      style: const TextStyle(
-                                        color: Color(0xFF111111),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        height: 1.60,
-                                        letterSpacing: -0.45,
-                                      ),
-                                    ),
-                                    Obx(() {
-                                      return Row(
-                                        children: [
-                                          // - 버튼
-                                          GestureDetector(
-                                            onTap: () =>
-                                                controller.minusGoalSets(index),
-                                            child: Icon(
-                                              Icons.remove_circle_outline,
-                                              color: isMinimum
-                                                  ? const Color(0xffd9d9d9)
-                                                  : const Color(0xffa2a2a2),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                          // 세트 수
-                                          Text(
-                                            '${controller.goalSets[index]}',
-                                            style: const TextStyle(
-                                              color: Color(0xFF111111),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              height: 1.20,
-                                            ),
-                                          ),
-                                          const Text(
-                                            '세트',
-                                            style: TextStyle(
-                                              color: Color(0xFF111111),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.20,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                          // + 버튼
-                                          GestureDetector(
-                                            onTap: () =>
-                                                controller.plusGoalSets(index),
-                                            child: Icon(
-                                              Icons.add_circle_outline,
-                                              color: isMaximum
-                                                  ? const Color(0xffd9d9d9)
-                                                  : const Color(0xffa2a2a2),
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    }),
-                                  ],
-                                ),
-                              );
-                            }),
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          // 저장하기 버튼
-                          GestureDetector(
-                            onTap: () {
-                              controller.hideGoalDialog();
-                              // 저장하는 로직 추가 필요
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width - 84,
-                              height: 60,
-                              decoration: ShapeDecoration(
-                                color: const Color(0xFF2AD6D6),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  '저장하기',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.20,
-                                    letterSpacing: -0.45,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
