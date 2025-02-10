@@ -1578,4 +1578,66 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 내가 스크랩한 용어 조회 (자음 별)
+  /// api: api/v1/user/scrap-terms
+  Future<List<dynamic>> fetchScrapedTerms(String? initial) async {
+    List<dynamic> terms = [];
+
+    try {
+      String endPoint;
+
+      if (initial == null) {
+        // 자음이 없는 경우
+        endPoint = 'api/v1/user/scrap-terms';
+      } else {
+        // 자음이 있는 경우
+        endPoint = 'api/v1/user/scrap-terms?initial=$initial';
+      }
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        terms.addAll(results["termList"]);
+      } else {
+        debugPrint("스크랩한 용어 (자음 별) 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 용어 (자음 별) 조회 중 오류 발생: $e");
+    }
+
+    return terms;
+  }
+
+  /// 내가 스크랩한 용어 검색
+  /// api: api/v1/user/scrap-terms/search
+  Future<List<dynamic>> searchScrapedTerms(String? keyword) async {
+    List<dynamic> terms = [];
+
+    try {
+      String endPoint;
+
+      if (keyword == null) {
+        // 키워드가 없는 경우
+        endPoint = 'api/v1/user/scrap-terms/search';
+      } else {
+        // 키워드가 있는 경우
+        endPoint = 'api/v1/user/scrap-terms/search?keyword=$keyword';
+      }
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        terms.addAll(results["termList"]);
+      } else {
+        debugPrint("스크랩한 용어 검색 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 용어 검색 중 오류 발생: $e");
+    }
+
+    return terms;
+  }
 }

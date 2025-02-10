@@ -1,7 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/level_container.dart';
-import 'package:economic_fe/view/widgets/word_list_view.dart';
+import 'package:economic_fe/view/widgets/scrap_word_list_view.dart';
 import 'package:economic_fe/view_model/mypage/my_learning_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -64,7 +64,7 @@ class _MyLearningPageState extends State<MyLearningPage> {
                   // 스크랩 한 학습 화면
                   _buildScrapLearningTab(controller),
                   // 스크랩 한 단어 화면
-                  WordListView(controller: controller),
+                  const ScrapedWordListView(),
                 ],
               ),
             ),
