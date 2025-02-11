@@ -1518,6 +1518,41 @@ class RemoteDataSource {
     return searchResults;
   }
 
+  /// 사용자 퀘스트 목표 조회
+  /// api: api/v1/user/goal
+  Future<Map<String, dynamic>?> getUserGoal() async {
+    final response = await _getApiWithHeader("api/v1/user/goal", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("사용자 퀘스트 목표 조회 응답: $response"); // Debugging
+      return response["results"];
+    } else {
+      print("사용자 퀘스트 목표 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
+
+  /// 사용자 퀘스트 목표 수정
+  /// API: api/v1/user/goal
+  Future<bool> setUserGoal(Map<String, int> goal) async {
+    String endpoint = 'api/v1/user/goal';
+
+    try {
+      final response = await postApiWithJson(endpoint, goal);
+
+      if (response == 200) {
+        debugPrint('사용자 퀘스트 목표 수정');
+        return true;
+      } else {
+        debugPrint(
+            '사용자 퀘스트 목표 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('사용자 퀘스트 목표 수정 중 예외 발생: $e');
+      return false;
+    }
+
   /// 프로필 이미지 업로드 API
   /// 서버에 이미지 업로드 후 `imageId` 반환
   /// API: api/v1/image/profile
