@@ -1577,4 +1577,125 @@ class RemoteDataSource {
     }
     return null; // 실패 시 null 반환
   }
+
+  /// 사용자 퀘스트 목표 조회
+  /// api: api/v1/user/goal
+  Future<Map<String, dynamic>?> getUserGoal() async {
+    final response = await _getApiWithHeader("api/v1/user/goal", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("사용자 퀘스트 목표 조회 응답: $response"); // Debugging
+      return response["results"];
+    } else {
+      print("사용자 퀘스트 목표 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
+
+  /// 사용자 퀘스트 목표 수정
+  /// API: api/v1/user/goal
+  Future<bool> setUserGoal(Map<String, int> goal) async {
+    String endpoint = 'api/v1/user/goal';
+
+    try {
+      final response = await postApiWithJson(endpoint, goal);
+
+      if (response == 200) {
+        debugPrint('사용자 퀘스트 목표 수정');
+        return true;
+      } else {
+        debugPrint(
+            '사용자 퀘스트 목표 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('사용자 퀘스트 목표 수정 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 내가 스크랩한 용어 조회 (자음 별)
+  /// api: api/v1/user/scrap-terms
+  Future<List<dynamic>> fetchScrapedTerms(String? initial) async {
+    List<dynamic> terms = [];
+
+    try {
+      String endPoint;
+
+      if (initial == null) {
+        // 자음이 없는 경우
+        endPoint = 'api/v1/user/scrap-terms';
+      } else {
+        // 자음이 있는 경우
+        endPoint = 'api/v1/user/scrap-terms?initial=$initial';
+      }
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        terms.addAll(results["termList"]);
+      } else {
+        debugPrint("스크랩한 용어 (자음 별) 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 용어 (자음 별) 조회 중 오류 발생: $e");
+    }
+
+    return terms;
+  }
+
+  /// 내가 스크랩한 용어 검색
+  /// api: api/v1/user/scrap-terms/search
+  Future<List<dynamic>> searchScrapedTerms(String? keyword) async {
+    List<dynamic> terms = [];
+
+    try {
+      String endPoint;
+
+      if (keyword == null) {
+        // 키워드가 없는 경우
+        endPoint = 'api/v1/user/scrap-terms/search';
+      } else {
+        // 키워드가 있는 경우
+        endPoint = 'api/v1/user/scrap-terms/search?keyword=$keyword';
+      }
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        terms.addAll(results["termList"]);
+      } else {
+        debugPrint("스크랩한 용어 검색 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 용어 검색 중 오류 발생: $e");
+    }
+
+    return terms;
+  }
+
+  /// 내가 스크랩한 뉴스 조회
+  /// api: api/v1/user/scrap-news
+  Future<List<dynamic>> fetchScrapedNews() async {
+    List<dynamic> news = [];
+
+    try {
+      String endPoint = 'api/v1/user/scrap-news';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        news.addAll(results["newsList"]);
+      } else {
+        debugPrint("스크랩한 뉴스 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 뉴스 조회 중 오류 발생: $e");
+    }
+
+    return news;
+  }
 }
