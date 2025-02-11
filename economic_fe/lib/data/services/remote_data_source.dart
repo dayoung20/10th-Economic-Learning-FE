@@ -1698,4 +1698,103 @@ class RemoteDataSource {
 
     return news;
   }
+
+  /// 요일별 출석 현황 조회
+  /// API: api/v1/attencance/weekly-attendance
+  Future<Map<String, bool>> fetchWeeklyAttendance() async {
+    Map<String, bool> attendance = {
+      "monday": false,
+      "tuesday": false,
+      "wednesday": false,
+      "thursday": false,
+      "friday": false,
+      "saturday": false,
+      "sunday": false,
+    };
+
+    try {
+      String endPoint = 'api/v1/attencance/weekly-attendance';
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"] as Map<String, dynamic>?;
+
+        if (results != null) {
+          attendance =
+              results.map((key, value) => MapEntry(key, value as bool));
+        }
+      } else {
+        debugPrint("요일별 출석 현황 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("요일별 출석 현황 조회 중 오류 발생: $e");
+    }
+
+    return attendance;
+  }
+
+  /// 연속 출석 날짜 조회
+  /// api: api/v1/attencance/current-streak
+  Future<int> fetchCurrentStreak() async {
+    int result = -1;
+
+    try {
+      String endPoint = 'api/v1/attencance/current-streak';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        result = response["results"];
+      } else {
+        debugPrint("연속 출석 날짜 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("연속 출석 날짜 조회 중 오류 발생: $e");
+    }
+
+    return result;
+  }
+
+  /// 회원 정보 조회
+  /// api: api/v1/user/info
+  Future<Map<String, dynamic>> fetchUserInfo() async {
+    Map<String, dynamic> userInfo = {};
+
+    try {
+      String endPoint = 'api/v1/user/info';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        userInfo = response["results"];
+      } else {
+        debugPrint("사용자 프로필 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("사용자 프로필 조회 중 오류 발생: $e");
+    }
+
+    return userInfo;
+  }
+
+  /// 푸시 알림 설정
+  /// API: api/v1/user/alarm
+  Future<bool> setAlarm(bool alarm) async {
+    String endpoint = 'api/v1/user/alarm?alarm=$alarm';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('푸시 알림 설정');
+        return true;
+      } else {
+        debugPrint('푸시 알림 설정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('푸시 알림 설정 중 예외 발생: $e');
+      return false;
+    }
+  }
 }

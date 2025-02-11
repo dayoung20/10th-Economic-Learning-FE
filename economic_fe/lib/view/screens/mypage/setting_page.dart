@@ -34,9 +34,11 @@ class _SettingPageState extends State<SettingPage> {
             Obx(() {
               return CategoryOptions(
                 text: '전체 알림',
-                onTap: () {
-                  controller.toggle();
-                },
+                onTap: controller.isLoading.value
+                    ? () {} // 로딩 중일 때 빈 함수
+                    : () {
+                        controller.toggle();
+                      },
                 isToggle: true,
                 isToggleOn: controller.isToggled.value,
               );
