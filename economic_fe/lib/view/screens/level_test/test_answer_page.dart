@@ -26,23 +26,10 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
     response = arguments['response'];
     answers = arguments['answer'];
     quizList = arguments['quizList'];
-
-    // print("quizID : ${answers[0].quizId}");
-    // print("response : ${response["results"]}");
-    // print("quizList :::::: ${quizList[0].question}");
   }
 
   @override
   Widget build(BuildContext context) {
-    // final TestAnswerController controller = Get.put(TestAnswerController());
-
-    // 선지 데이터 (예제)
-    final options = [
-      '선지 1 내용',
-      '선지 2 내용',
-      '선지 3 내용',
-      '선지 4 내용',
-    ];
     const selectedOptionIndex = 1; // 선택된 선지 (예제)
 
     return Scaffold(
@@ -193,9 +180,11 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                                 .currentQuestionIndex.value]
                                             .choiceList[index]
                                             .content;
-                                    // selectedOptionIndex == index + 1;
-                                    final isCorrect = controller.answers[
-                                        controller.currentQuestionIndex.value];
+                                    final isCorrect = response["results"]
+                                            ["answerResponses"][
+                                        controller.currentQuestionIndex
+                                            .value]["isCorrect"];
+                                    print("isCorrect : $isCorrect");
                                     return Container(
                                       margin: const EdgeInsets.only(
                                           bottom: 16), // 선지 간 간격
@@ -287,7 +276,6 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                               Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              // '${controller.currentQuestionIndex.value + 1}번 문제 해설 내용',
                               '${response["results"]["answerResponses"][controller.currentQuestionIndex.value]["explanation"]}',
                               style: const TextStyle(
                                 color: Color(0xFF111111),
@@ -447,140 +435,6 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
               ),
             );
           });
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              }, // 모달창 닫기
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                color: Colors.black.withOpacity(0.5), // 어두운 배경
-                child: DraggableScrollableSheet(
-                  initialChildSize: 0.7,
-                  minChildSize: 0.2,
-                  maxChildSize: 0.8,
-                  builder: (context, scrollController) {
-                    return Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 24,
-                              left: 24,
-                              right: 24,
-                              bottom: 20,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  '문제 번호',
-                                  style: TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.20,
-                                    letterSpacing: -0.45,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: controller.hideModal,
-                                  child: const Icon(
-                                    Icons.close,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 9, left: 24, right: 24, bottom: 24),
-                            child: Column(
-                              children: List.generate(
-                                // controller.answers.length,
-                                answers.length,
-                                (index) {
-                                  final isSelected =
-                                      controller.currentQuestionIndex.value ==
-                                          index;
-                                  final isCorrect =
-                                      // controller.answers[index];
-                                      response["results"]["answerResponses"]
-                                          [index]["isCorrect"];
-                                  print(response["results"]["answerResponses"]
-                                      [index]["isCorrect"]);
-                                  return GestureDetector(
-                                    onTap: () {
-                                      controller.selectQuestion(index);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15), // Row 간 간격
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                isCorrect
-                                                    ? Icons.circle_outlined
-                                                    : Icons.close,
-                                                size: 15,
-                                                color: isSelected
-                                                    ? Palette.buttonColorBlue
-                                                    : const Color(0xff767676),
-                                              ),
-                                              const SizedBox(
-                                                width: 8.5,
-                                              ),
-                                              Text(
-                                                '${index + 1}번', // 번호 표시
-                                                style: TextStyle(
-                                                  color: isSelected
-                                                      ? const Color(0xFF2AD6D6)
-                                                      : const Color(0xff767676),
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                  height: 1.40,
-                                                  letterSpacing: -0.40,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          isSelected
-                                              ? const Icon(
-                                                  Icons.check_circle,
-                                                  size: 20,
-                                                  color:
-                                                      Palette.buttonColorBlue,
-                                                )
-                                              : const SizedBox(),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          );
         });
   }
 }

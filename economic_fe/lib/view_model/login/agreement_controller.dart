@@ -28,7 +28,6 @@ class AgreementController extends GetxController {
   }
 
   void clickedDetailBtn(BuildContext context) {
-    // context.go('/login');
     Get.toNamed('/login/agreement/detail');
   }
 
@@ -45,7 +44,6 @@ class AgreementController extends GetxController {
 
       print("response : $response");
 
-      // Get.toNamed('/leveltest_result', arguments: response);
       Get.toNamed(
         '/leveltest_result',
         arguments: {

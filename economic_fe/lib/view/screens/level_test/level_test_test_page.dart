@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+// 레벨테스트 문제 9개 전체
+
 class LevelTestTestPage extends StatefulWidget {
   const LevelTestTestPage({super.key});
 
@@ -21,7 +23,6 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     quizList = Get.arguments ?? [];
   }

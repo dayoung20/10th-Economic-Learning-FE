@@ -57,11 +57,11 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                     height: 29,
                   ),
                   Stack(
-                    alignment: Alignment.center, // Stack 내 위젯을 중앙에 배치
+                    alignment: Alignment.center,
                     children: [
                       CustomPaint(
-                        size: const Size(155, 155), // 원형 차트의 크기
-                        painter: CirclePainter(progress: 3 / 18), // 점수 / 총점(18)
+                        size: const Size(155, 155),
+                        painter: CirclePainter(progress: 3 / 8), // 점수 / 총점(18)
                       ),
                       // 원형 차트의 중앙에 텍스트 추가
                       Column(
