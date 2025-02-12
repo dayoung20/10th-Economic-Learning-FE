@@ -21,6 +21,7 @@ class ProfileSettingController extends GetxController {
     profileIntro: '',
     businessType: '',
     job: '',
+    imageId: null,
   ).obs;
 
   // 입력 완료 여부
@@ -66,6 +67,9 @@ class ProfileSettingController extends GetxController {
             profile.job = value;
             isJobCompleted.value = value.isNotEmpty;
             break;
+          case 'imageId':
+            profile.imageId = value;
+            break;
         }
       }
     });
@@ -78,8 +82,7 @@ class ProfileSettingController extends GetxController {
   void updateProfileCompletionStatus() {
     bool infoCompleted = userProfile.value.nickname.isNotEmpty &&
         userProfile.value.birthDate.isNotEmpty &&
-        userProfile.value.gender.isNotEmpty &&
-        userProfile.value.profileIntro.isNotEmpty;
+        userProfile.value.gender.isNotEmpty;
 
     isInfoCompleted.value = infoCompleted;
   }
@@ -112,10 +115,17 @@ class ProfileSettingController extends GetxController {
       return;
     }
 
-    print("🚀 전송 데이터: ${userProfile.value.toJson()}");
+    // userProfile 데이터를 Map으로 변환
+    Map<String, dynamic> profileData = userProfile.value.toJson();
 
-    bool success =
-        await remoteDataSource.registerUserProfile(userProfile.value.toJson());
+    // imageId가 null이면 Map에서 제거
+    if (profileData['imageId'] == null) {
+      profileData.remove('imageId');
+    }
+
+    print("전송 데이터: $profileData");
+
+    bool success = await remoteDataSource.registerUserProfile(profileData);
 
     if (success) {
       Get.snackbar('성공', '프로필 등록이 완료되었습니다.');

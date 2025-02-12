@@ -15,65 +15,7 @@ class MyLearningController extends GetxController
   var selectedLevel = 'BEGINNER'.obs; // 초기값 설정
   var scrapConcepts = <Map<String, dynamic>>[].obs; // 스크랩한 개념 학습 목록
   var scrapQuizzes = <Map<String, dynamic>>[].obs; // 스크랩한 퀴즈 목록
-
-  //용어 사전 데이터 불러오기
-  Future<List<DictionaryModel>> getDictionaryList(
-      int page, String text, bool type) async {
-    // type = true : 그 외 init, false : 검색
-    try {
-      print("start");
-      dynamic response;
-
-      if (type) {
-        response = await remoteDataSource.getDictionary(page, text);
-        print("response :: $response");
-
-        final data = response as Map<String, dynamic>;
-        final termList = data['results']['termList'] as List;
-        return termList.map((term) => DictionaryModel.fromJson(term)).toList();
-      } else {
-        print("검색");
-        response = await remoteDataSource.getKewordResult(page, text);
-        print("response : $response");
-
-        final data = response as Map<String, dynamic>;
-        final termList = data['results']['termList'] as List;
-        return termList.map((term) => DictionaryModel.fromJson(term)).toList();
-      }
-    } catch (e) {
-      debugPrint('Error: $e');
-      return [];
-    }
-  }
-
-  // 키워드로 검색하기
-  Future<void> getKewordResult(int page, String keyword) async {
-    try {
-      print("start");
-
-      dynamic response;
-
-      response = await remoteDataSource.getKewordResult(page, keyword);
-      print("response : $response");
-      // final data = response as Map<String, dynamic>;
-    } catch (e) {
-      debugPrint("Error : $e");
-    }
-  }
-
-  // 특정 용어 상세 보기
-  Future<void> getTermDetail(int id) async {
-    try {
-      print("start");
-
-      dynamic response;
-
-      response = await remoteDataSource.getDetailTerms(id);
-      print("respose : $response");
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
-  }
+  var scrapTerms = <DictionaryModel>[].obs; // 스크랩한 용어 목록
 
   final List<String> consonants = [
     'ㄱ',
@@ -104,6 +46,7 @@ class MyLearningController extends GetxController
     updateCurrentData(0);
     fetchScrapConcepts();
     fetchScrapQuizzes();
+    fetchScrapedTerms();
 
     // 탭 변경 시 데이터와 버튼 텍스트 업데이트
     tabController.addListener(() {
@@ -167,6 +110,74 @@ class MyLearningController extends GetxController
     } catch (e) {
       debugPrint('fetchScrapQuizzes Error: $e');
       scrapQuizzes.clear();
+    }
+  }
+
+  Future<void> fetchScrapedTerms() async {
+    debugPrint("fetchScrapedTerms() 실행됨");
+    try {
+      var terms = await remoteDataSource.fetchScrapedTerms(null);
+      scrapTerms.assignAll(
+          terms.map((json) => DictionaryModel.fromJson(json)).toList());
+      debugPrint("fetchScrapedTerms() 완료, 데이터 개수: ${scrapTerms.length}");
+    } catch (e) {
+      debugPrint("Error fetching terms: $e");
+    }
+  }
+
+  /// 자음으로 단어 검색하기
+  Future<void> searchScrapedTermsByInitial(String initial) async {
+    debugPrint("searchScrapedTermsByInitial() 실행됨");
+    try {
+      var terms = await remoteDataSource.fetchScrapedTerms(initial);
+      scrapTerms.assignAll(
+          terms.map((json) => DictionaryModel.fromJson(json)).toList());
+      debugPrint(
+          "searchScrapedTermsByInitial() 완료, 데이터 개수: ${scrapTerms.length}");
+    } catch (e) {
+      debugPrint("Error searching terms by initial: $e");
+    }
+  }
+
+  /// 키워드로 단어 검색하기
+  Future<void> searchScrapedTermsByKeyword() async {
+    debugPrint("searchScrapedTermsByKeyword() 실행됨");
+    try {
+      var terms = await remoteDataSource.searchScrapedTerms(keyword.value);
+      scrapTerms.assignAll(
+          terms.map((json) => DictionaryModel.fromJson(json)).toList());
+      debugPrint(
+          "searchScrapedTermsByKeyword() 완료, 데이터 개수: ${scrapTerms.length}");
+    } catch (e) {
+      debugPrint("Error searching terms by keyword: $e");
+    }
+  }
+
+  // 단어 스크랩 삭제
+  Future<void> deleteScrapedTerms(int id) async {
+    debugPrint("deleteScrapedTerms() 실행됨");
+    try {
+      var response = await remoteDataSource.deleteScrap(id);
+      if (response) {
+        debugPrint("용어 스크랩 삭제 완료");
+        scrapTerms.removeWhere((term) => term.termId == id);
+      }
+    } catch (e) {
+      debugPrint("용어 스크랩 삭제 실패: $e");
+    }
+  }
+
+  // 특정 용어 상세 보기
+  Future<void> getTermDetail(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+
+      response = await remoteDataSource.getDetailTerms(id);
+      print("respose : $response");
+    } catch (e) {
+      debugPrint('Error: $e');
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:economic_fe/data/models/chatbot/chatbot_model.dart';
-import 'package:economic_fe/data/models/chatbot/message.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/chatbot_controller.dart';
@@ -66,10 +65,39 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: CustomAppBar(
-        title: '챗봇',
-        icon: Icons.arrow_back_ios_new,
-        onPress: () => controller.goBack(),
+      appBar: AppBar(
+        backgroundColor: Palette.background,
+        forceMaterialTransparency: true,
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () => Get.back(),
+          child: const Icon(Icons.arrow_back_ios_new),
+        ),
+        centerTitle: true,
+        title: const Text(
+          '챗봇',
+          style: TextStyle(
+            color: Color(0xFF111111),
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            height: 1.30,
+            letterSpacing: -0.50,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: GestureDetector(
+              onTap: () {
+                _showDeleteDialog();
+              },
+              child: const Icon(
+                Icons.more_horiz,
+                size: 28,
+              ),
+            ),
+          ),
+        ],
       ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -484,11 +512,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                             print("cr : ${controller.currentPage}");
                           },
                           icon: const Icon(Icons.arrow_downward_outlined)),
-                      TextButton(
-                          onPressed: () {
-                            controller.deleteMessage();
-                          },
-                          child: const Text("초기화"))
+                      // TextButton(
+                      //     onPressed: () {
+                      //       controller.deleteMessage();
+                      //     },
+                      //     child: const Text("초기화"))
                     ],
                   ),
                 ),
@@ -675,5 +703,124 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return parsedDate1.year != parsedDate2.year ||
         parsedDate1.month != parsedDate2.month ||
         parsedDate1.day != parsedDate2.day;
+  }
+
+  Future<void> _showDeleteDialog() async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            backgroundColor: Colors.white,
+            content: Container(
+              width: 324,
+              height: 54,
+              padding: const EdgeInsets.only(
+                top: 10,
+                left: 27,
+                right: 10,
+                bottom: 10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      _showDeleteConfirmDialog();
+                    },
+                    child: const Text(
+                      '채팅 삭제하기',
+                      style: TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        height: 1.30,
+                        letterSpacing: -0.55,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<void> _showDeleteConfirmDialog() async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: Colors.white,
+            content: Container(
+              width: 312,
+              height: 108,
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        '정말 채팅 기록을 삭제하시겠어요?',
+                        style: TextStyle(
+                          color: Color(0xFF111111),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          height: 1.40,
+                          letterSpacing: -0.40,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          '취소',
+                          style: TextStyle(
+                            color: Color(0xFF9B9A99),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            height: 1.40,
+                            letterSpacing: -0.40,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 32,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          controller.deleteMessage();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          '삭제',
+                          style: TextStyle(
+                            color: Color(0xFF2AD6D6),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            height: 1.40,
+                            letterSpacing: -0.40,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

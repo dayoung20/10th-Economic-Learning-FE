@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GoRouter import
@@ -30,20 +32,29 @@ class HomeController extends GetxController {
   }
 
   // 오늘의 퀘스트 목표 세트 수 (임시)
-  var goalSets = [0, 3, 1].obs;
+  var goalSets = <int>[1, 1, 1].obs;
+  var tempGoalSets = <int>[].obs;
   final maxGoalSets = 3;
-  final minGoalSets = 0;
+  final minGoalSets = 1;
 
-  void minusGoalSets(int index) {
-    if (goalSets[index] > minGoalSets) {
-      goalSets[index]--;
+  void minusTempGoalSets(int index) {
+    if (tempGoalSets[index] > minGoalSets) {
+      tempGoalSets[index]--;
     }
   }
 
-  void plusGoalSets(int index) {
-    if (goalSets[index] < maxGoalSets) {
-      goalSets[index]++;
+  void plusTempGoalSets(int index) {
+    if (tempGoalSets[index] < maxGoalSets) {
+      tempGoalSets[index]++;
     }
+  }
+
+  void saveGoalSets() {
+    goalSets.assignAll(tempGoalSets);
+  }
+
+  void resetGoalSets() {
+    tempGoalSets.assignAll(goalSets);
   }
 
   // 진도율 (초기값은 0)
@@ -58,6 +69,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchProgress();
+    fetchUserGoal();
   }
 
   /// 레벨별 학습 진도율 조회
@@ -80,6 +92,46 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       debugPrint('fetchProgress Error: $e');
+    }
+  }
+
+  /// 사용자 퀘스트 목표 조회
+  Future<void> fetchUserGoal() async {
+    try {
+      final response = await remoteDataSource.getUserGoal();
+
+      if (response != null) {
+        goalSets[0] = response['conceptGoal'];
+        goalSets[1] = response['articleGoal'];
+        goalSets[2] = response['quizGoal'];
+
+        tempGoalSets.assignAll(goalSets);
+
+        debugPrint('사용자 퀘스트 목표 데이터 업데이트 완료');
+      } else {
+        debugPrint('fetchUserGoal 실패: 응답이 null');
+      }
+    } catch (e) {
+      debugPrint('fetchUserGoal Error: $e');
+    }
+  }
+
+  /// 사용자 퀘스트 목표 수정
+  Future<void> setUserGoal() async {
+    var goal = {
+      "conceptGoal": goalSets[0],
+      "quizGoal": goalSets[2],
+      "articleGoal": goalSets[1]
+    };
+
+    debugPrint("전송 데이터: $goal");
+
+    bool success = await remoteDataSource.setUserGoal(goal);
+
+    if (success) {
+      Get.snackbar('성공', '퀘스트 목표 수정이 완료되었습니다.');
+    } else {
+      Get.snackbar('오류', '퀘스트 목표 수정에 실패하였습니다.');
     }
   }
 }

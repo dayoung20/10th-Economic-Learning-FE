@@ -760,7 +760,8 @@ class RemoteDataSource {
     try {
       // _getApiWithHeader 호출
       // final response = await _getApiWithHeaderTest(endpoint, accessToken);
-      final response = await _getApiWithHeader(endpoint, accessToken);
+      final response =
+          await _getApiWithHeader(endpoint, accessToken); // 카카오 로그인 오류로 인함
 
       if (response != null && response is Map<String, dynamic>) {
         debugPrint('학습 진도율 데이터 로드 성공');
@@ -781,7 +782,8 @@ class RemoteDataSource {
     String endpoint = 'api/v1/user/profile';
 
     try {
-      final response = await postApiWithJsonTest(endpoint, userProfile);
+      // final response = await postApiWithJsonTest(endpoint, userProfile);
+      final response = await postApiWithJson(endpoint, userProfile);
 
       if (response == 200) {
         debugPrint('사용자 프로필 등록 성공');
@@ -942,7 +944,7 @@ class RemoteDataSource {
     return null; // 실패 시 null 반환
   }
 
-  /// 게시물 이미지 삭제 API
+  /// 이미지 삭제 API
   /// API: `DELETE api/v1/image/{imageId}`
   static Future<bool> deleteImage(int imageId) async {
     String endPoint = 'api/v1/image/$imageId';
@@ -1560,6 +1562,7 @@ class RemoteDataSource {
     return searchResults;
   }
 
+
   /// api/v1/level-test/quiz
   /// 레벨 테스트 퀴즈 목록 조회
   Future<dynamic> getLevelTestQuizList() async {
@@ -1603,5 +1606,250 @@ class RemoteDataSource {
     }
 
     return null; // 실패 시 null 반환
+
+  /// 사용자 퀘스트 목표 조회
+  /// api: api/v1/user/goal
+  Future<Map<String, dynamic>?> getUserGoal() async {
+    final response = await _getApiWithHeader("api/v1/user/goal", accessToken);
+
+    if (response != null && response["isSuccess"] == true) {
+      print("사용자 퀘스트 목표 조회 응답: $response"); // Debugging
+      return response["results"];
+    } else {
+      print("사용자 퀘스트 목표 조회 실패: ${response?["message"]}");
+      return null;
+    }
+  }
+
+  /// 사용자 퀘스트 목표 수정
+  /// API: api/v1/user/goal
+  Future<bool> setUserGoal(Map<String, int> goal) async {
+    String endpoint = 'api/v1/user/goal';
+
+    try {
+      final response = await postApiWithJson(endpoint, goal);
+
+      if (response == 200) {
+        debugPrint('사용자 퀘스트 목표 수정');
+        return true;
+      } else {
+        debugPrint(
+            '사용자 퀘스트 목표 수정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('사용자 퀘스트 목표 수정 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 프로필 이미지 업로드 API
+  /// 서버에 이미지 업로드 후 `imageId` 반환
+  /// API: api/v1/image/profile
+  static Future<int?> uploadProfileImage(File imageFile) async {
+    String apiUrl = '$baseUrl/api/v1/image/profile';
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+      ..headers['Authorization'] = 'Bearer $accessToken'
+      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+        if (jsonResponse['isSuccess']) {
+          return jsonResponse['results']['imageId']; // imageId 반환
+        }
+      }
+      debugPrint('이미지 업로드 실패: ${response.statusCode}');
+    } catch (e) {
+      debugPrint('이미지 업로드 중 예외 발생: $e');
+    }
+    return null; // 실패 시 null 반환
+  }
+
+  /// 내가 스크랩한 용어 조회 (자음 별)
+  /// api: api/v1/user/scrap-terms
+  Future<List<dynamic>> fetchScrapedTerms(String? initial) async {
+    List<dynamic> terms = [];
+
+    try {
+      String endPoint;
+
+      if (initial == null) {
+        // 자음이 없는 경우
+        endPoint = 'api/v1/user/scrap-terms';
+      } else {
+        // 자음이 있는 경우
+        endPoint = 'api/v1/user/scrap-terms?initial=$initial';
+      }
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        terms.addAll(results["termList"]);
+      } else {
+        debugPrint("스크랩한 용어 (자음 별) 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 용어 (자음 별) 조회 중 오류 발생: $e");
+    }
+
+    return terms;
+  }
+
+  /// 내가 스크랩한 용어 검색
+  /// api: api/v1/user/scrap-terms/search
+  Future<List<dynamic>> searchScrapedTerms(String? keyword) async {
+    List<dynamic> terms = [];
+
+    try {
+      String endPoint;
+
+      if (keyword == null) {
+        // 키워드가 없는 경우
+        endPoint = 'api/v1/user/scrap-terms/search';
+      } else {
+        // 키워드가 있는 경우
+        endPoint = 'api/v1/user/scrap-terms/search?keyword=$keyword';
+      }
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        terms.addAll(results["termList"]);
+      } else {
+        debugPrint("스크랩한 용어 검색 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 용어 검색 중 오류 발생: $e");
+    }
+
+    return terms;
+  }
+
+  /// 내가 스크랩한 뉴스 조회
+  /// api: api/v1/user/scrap-news
+  Future<List<dynamic>> fetchScrapedNews() async {
+    List<dynamic> news = [];
+
+    try {
+      String endPoint = 'api/v1/user/scrap-news';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"];
+        news.addAll(results["newsList"]);
+      } else {
+        debugPrint("스크랩한 뉴스 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("스크랩한 뉴스 조회 중 오류 발생: $e");
+    }
+
+    return news;
+  }
+
+  /// 요일별 출석 현황 조회
+  /// API: api/v1/attencance/weekly-attendance
+  Future<Map<String, bool>> fetchWeeklyAttendance() async {
+    Map<String, bool> attendance = {
+      "monday": false,
+      "tuesday": false,
+      "wednesday": false,
+      "thursday": false,
+      "friday": false,
+      "saturday": false,
+      "sunday": false,
+    };
+
+    try {
+      String endPoint = 'api/v1/attencance/weekly-attendance';
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        var results = response["results"] as Map<String, dynamic>?;
+
+        if (results != null) {
+          attendance =
+              results.map((key, value) => MapEntry(key, value as bool));
+        }
+      } else {
+        debugPrint("요일별 출석 현황 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("요일별 출석 현황 조회 중 오류 발생: $e");
+    }
+
+    return attendance;
+  }
+
+  /// 연속 출석 날짜 조회
+  /// api: api/v1/attencance/current-streak
+  Future<int> fetchCurrentStreak() async {
+    int result = -1;
+
+    try {
+      String endPoint = 'api/v1/attencance/current-streak';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        result = response["results"];
+      } else {
+        debugPrint("연속 출석 날짜 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("연속 출석 날짜 조회 중 오류 발생: $e");
+    }
+
+    return result;
+  }
+
+  /// 회원 정보 조회
+  /// api: api/v1/user/info
+  Future<Map<String, dynamic>> fetchUserInfo() async {
+    Map<String, dynamic> userInfo = {};
+
+    try {
+      String endPoint = 'api/v1/user/info';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        userInfo = response["results"];
+      } else {
+        debugPrint("사용자 프로필 조회 실패: ${response["message"]}");
+      }
+    } catch (e) {
+      debugPrint("사용자 프로필 조회 중 오류 발생: $e");
+    }
+
+    return userInfo;
+  }
+
+  /// 푸시 알림 설정
+  /// API: api/v1/user/alarm
+  Future<bool> setAlarm(bool alarm) async {
+    String endpoint = 'api/v1/user/alarm?alarm=$alarm';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('푸시 알림 설정');
+        return true;
+      } else {
+        debugPrint('푸시 알림 설정 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('푸시 알림 설정 중 예외 발생: $e');
+      return false;
+    }
+
   }
 }

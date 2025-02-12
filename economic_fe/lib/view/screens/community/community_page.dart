@@ -439,6 +439,8 @@ class _CommunityPageState extends State<CommunityPage> {
                                                                 'likeCount'],
                                                             commentCount:
                                                                 0, // 댓글 수 연결 필요
+                                                            imageUrl: tokPost[
+                                                                'imageUrl'],
                                                           );
                                                         },
                                                         separatorBuilder:

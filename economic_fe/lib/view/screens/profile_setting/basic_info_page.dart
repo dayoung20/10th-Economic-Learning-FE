@@ -8,6 +8,7 @@ import 'package:economic_fe/view/widgets/profile_setting/basic_gender_button.dar
 import 'package:economic_fe/view/widgets/profile_setting/basic_label.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/profile_setting/basic_controller.dart';
+import 'package:economic_fe/view_model/profile_setting/profile_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,8 @@ class BasicInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // GetX 컨트롤러 가져오기
     final BasicController controller = Get.put(BasicController());
+    final ProfileSettingController profileController =
+        Get.find<ProfileSettingController>();
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -50,19 +53,72 @@ class BasicInfoPage extends StatelessWidget {
                       ),
                     ),
                     child: Obx(() {
-                      return controller.selectedProfileImage.value != null
-                          ? ClipOval(
-                              child: Image.file(
-                                File(controller.selectedProfileImage.value!),
-                                fit: BoxFit.cover,
-                                width: ScreenUtils.getWidth(context, 88),
-                                height: ScreenUtils.getHeight(context, 88),
-                              ),
-                            )
-                          : Icon(
-                              Icons.person,
-                              size: ScreenUtils.getWidth(context, 43),
-                            );
+                      return GestureDetector(
+                        onTap: () {
+                          if (controller.selectedProfileImage.value != null) {
+                            controller.isDeleteMode.value =
+                                true; // 어두운 오버레이 활성화
+                          }
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // 프로필 이미지 또는 기본 아이콘
+                            ClipOval(
+                              child: controller.selectedProfileImage.value !=
+                                      null
+                                  ? Image.file(
+                                      File(controller
+                                          .selectedProfileImage.value!),
+                                      fit: BoxFit.cover,
+                                      width: ScreenUtils.getWidth(context, 88),
+                                      height:
+                                          ScreenUtils.getHeight(context, 88),
+                                    )
+                                  : Icon(
+                                      Icons.person,
+                                      size: ScreenUtils.getWidth(context, 43),
+                                    ),
+                            ),
+
+                            // 어두운 오버레이 및 삭제 버튼 (삭제 모드일 때 표시)
+                            Obx(() {
+                              return controller.isDeleteMode.value
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        controller.isDeleteMode.value = false;
+                                      },
+                                      child: Container(
+                                        width:
+                                            ScreenUtils.getWidth(context, 88),
+                                        height:
+                                            ScreenUtils.getHeight(context, 88),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black
+                                              .withOpacity(0.5), // 반투명 어두운 효과
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              controller.deleteProfileImage();
+                                              controller.isDeleteMode.value =
+                                                  false; // 삭제 후 초기화
+                                            },
+                                            child: const Icon(
+                                              Icons.delete_outline,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox
+                                      .shrink(); // 삭제 모드가 아닐 때는 아무것도 표시 안 함
+                            }),
+                          ],
+                        ),
+                      );
                     }),
                   ),
                   Positioned(

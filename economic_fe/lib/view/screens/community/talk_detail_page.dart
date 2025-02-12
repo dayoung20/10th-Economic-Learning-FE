@@ -60,10 +60,9 @@ class TalkDetailPage extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 152,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(
-                                'assets/talk_image_sample.png'), // 대표 이미지 연결 필요
+                            image: NetworkImage(post['imageList'][0]),
                             fit: BoxFit.cover,
                           ),
                         ),
