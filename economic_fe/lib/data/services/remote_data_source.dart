@@ -1873,4 +1873,26 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 개별 개념 학습 조회
+  /// API: api/v1/learning/concept/{conceptId}
+  Future<Map<String, dynamic>> fetchSingleConcept(int conceptId) async {
+    Map<String, dynamic> concept = {};
+
+    try {
+      String endPoint = 'api/v1/learning/concept/$conceptId';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        concept = Map<String, dynamic>.from(response["results"]);
+      } else {
+        debugPrint("개별 개념 학습 조회 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("개별 개념 학습 조회 중 오류 발생: $e");
+    }
+
+    return concept;
+  }
 }

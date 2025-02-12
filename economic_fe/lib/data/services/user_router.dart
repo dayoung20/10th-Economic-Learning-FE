@@ -22,6 +22,7 @@ import 'package:economic_fe/view/screens/mypage/bookmarked_post_page.dart';
 import 'package:economic_fe/view/screens/mypage/community_activity_page.dart';
 import 'package:economic_fe/view/screens/mypage/my_learning_page.dart';
 import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
+import 'package:economic_fe/view/screens/mypage/scrap_learning_set_page.dart';
 import 'package:economic_fe/view/screens/mypage/setting_page.dart';
 import 'package:economic_fe/view/screens/mypage/wrong_quiz_page.dart';
 import 'package:economic_fe/view/screens/notification/notification_page.dart';
@@ -223,6 +224,12 @@ class UserRouter {
           GetPage(
             name: '/learning',
             page: () => const MyLearningPage(),
+            children: [
+              GetPage(
+                name: '/learning_concept',
+                page: () => const ScrapLearningSetPage(),
+              ),
+            ],
           ),
           // 틀린 문제 다시 풀기
           GetPage(
