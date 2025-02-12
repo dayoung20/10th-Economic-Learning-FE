@@ -16,32 +16,9 @@ class LearningListPage extends StatefulWidget {
 
 class _LearningListPageState extends State<LearningListPage> {
   final LearningListController controller = Get.put(LearningListController());
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   print("init state");
-  //   // controller.getLearningConcept(2, "BEGINNER");
-  //   controller.postLearningSet();
-  //   print("끝");
-  // }
 
   @override
   Widget build(BuildContext context) {
-    // // 학습 세트 제목 리스트 (이 리스트를 통해 반복적으로 항목을 생성)
-    // List<String> setTitles = [
-    //   '인플레이션',
-    //   '경제 성장',
-    //   '실업',
-    //   '국제 무역',
-    //   '소비자 행동',
-    //   '시장 구조',
-    //   '통화 정책',
-    //   '재정 정책',
-    //   '세금',
-    //   '경제 지표'
-    // ];
-
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: CustomAppBar(

@@ -96,7 +96,7 @@ class LearningConceptController extends GetxController {
     }
   }
 
-  /// 🔹 스크랩 여부 확인
+  /// 스크랩 여부 확인
   bool isConceptScrapped(int conceptId) {
     return scrapConceptList.contains(conceptId);
   }
@@ -117,6 +117,16 @@ class LearningConceptController extends GetxController {
         scrapConceptList.add(conceptId);
         print("스크랩 성공: $conceptId");
       }
+    }
+  }
+
+  /// 개념 학습 완료 처리
+  Future<void> completeLearningSet() async {
+    bool success =
+        await _remoteDataSource.completeLearningConcept(learningSetId.value);
+    if (success) {
+      print("개념 학습 완료: ${learningSetId.value}");
+      clickedFinishBtn();
     }
   }
 
@@ -150,10 +160,10 @@ class LearningConceptController extends GetxController {
   /// 학습 완료 시 종료 화면으로 이동
   void clickedFinishBtn() {
     Get.to(() => const FinishPage(), arguments: {
-      'contents': '학습 주제',
+      'contents': conceptName.value,
       'number': 1,
       'category': 0,
-      'level': getApiLevel(),
+      'level': levelOptions[selectedLevelIndex.value],
     });
   }
 

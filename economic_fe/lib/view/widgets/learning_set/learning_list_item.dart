@@ -93,14 +93,20 @@ class _LearningListItemState extends State<LearningListItem> {
                           padding: EdgeInsets.only(
                             top: ScreenUtils.getHeight(context, 3),
                           ),
-                          child: Icon(
-                            learningSet?.isLearningSetCompleted == true
-                                ? Icons.check_circle
-                                : Icons.check_circle_outline,
-                            color: learningSet?.isLearningSetCompleted == true
-                                ? Colors.green
-                                : const Color(0xffA2A2A2),
-                          ),
+                          child: Obx(() {
+                            return Icon(
+                              controller.learningSetList[widget.index]
+                                          .isLearningSetCompleted ==
+                                      true
+                                  ? Icons.check_circle
+                                  : Icons.check_circle_outline,
+                              color: controller.learningSetList[widget.index]
+                                          .isLearningSetCompleted ==
+                                      true
+                                  ? Palette.buttonColorGreen
+                                  : const Color(0xffA2A2A2),
+                            );
+                          }),
                         ),
                       ],
                     ),
@@ -156,14 +162,20 @@ class _LearningListItemState extends State<LearningListItem> {
                         -0.4,
                       ),
                     ),
-                    Icon(
-                      learningSet?.isConceptCompleted == true
-                          ? Icons.check_circle
-                          : Icons.check_circle_outline,
-                      color: learningSet?.isConceptCompleted == true
-                          ? Colors.green
-                          : const Color(0xffa2a2a2),
-                    ),
+                    Obx(() {
+                      return Icon(
+                        controller.learningSetList[widget.index]
+                                    .isConceptCompleted ==
+                                true
+                            ? Icons.check_circle
+                            : Icons.check_circle_outline,
+                        color: controller.learningSetList[widget.index]
+                                    .isConceptCompleted ==
+                                true
+                            ? Palette.buttonColorGreen
+                            : const Color(0xffa2a2a2),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -195,14 +207,20 @@ class _LearningListItemState extends State<LearningListItem> {
                       -0.4,
                     ),
                   ),
-                  Icon(
-                    learningSet?.isQuizCompleted == true
-                        ? Icons.check_circle
-                        : Icons.check_circle_outline,
-                    color: learningSet?.isQuizCompleted == true
-                        ? Colors.green
-                        : const Color(0xffa2a2a2),
-                  ),
+                  Obx(() {
+                    return Icon(
+                      controller.learningSetList[widget.index]
+                                  .isQuizCompleted ==
+                              true
+                          ? Icons.check_circle
+                          : Icons.check_circle_outline,
+                      color: controller.learningSetList[widget.index]
+                                  .isQuizCompleted ==
+                              true
+                          ? Palette.buttonColorGreen
+                          : const Color(0xffa2a2a2),
+                    );
+                  }),
                 ],
               ),
             ),

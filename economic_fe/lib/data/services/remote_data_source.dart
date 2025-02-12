@@ -1852,4 +1852,25 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 개념 학습 완료 처리
+  /// API: api/v1/learning/{learningSetId}/concepts/complete
+  Future<bool> completeLearningConcept(int learningSetId) async {
+    String endpoint = 'api/v1/learning/$learningSetId/concepts/complete';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 완료 처리');
+        return true;
+      } else {
+        debugPrint('개념 학습 완료 처리 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 완료 처리 중 예외 발생: $e');
+      return false;
+    }
+  }
 }

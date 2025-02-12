@@ -360,7 +360,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        controller.nextConcept();
+                        controller.currentStepIdx.value !=
+                                controller.conceptList.length - 1
+                            ? controller.nextConcept()
+                            : controller.completeLearningSet();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: controller.currentStepIdx.value !=

@@ -30,7 +30,7 @@ class FinishLayout extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 54, left: 16),
               child: GestureDetector(
-                onTap: () => controller.goBack(),
+                onTap: () => Get.toNamed('/home'),
                 child: const Icon(Icons.close),
               ),
             ),
@@ -52,7 +52,6 @@ class FinishLayout extends StatelessWidget {
                     height: 17,
                   ),
                   Container(
-                    width: 110,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: ShapeDecoration(
@@ -63,16 +62,14 @@ class FinishLayout extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        '$contents - $level',
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          height: 1.40,
-                          letterSpacing: -0.30,
-                        ),
+                    child: Text(
+                      '$contents - $level',
+                      style: const TextStyle(
+                        color: Color(0xFF767676),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 1.40,
+                        letterSpacing: -0.30,
                       ),
                     ),
                   ),
