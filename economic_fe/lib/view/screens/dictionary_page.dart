@@ -301,33 +301,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                       ),
                                                       const SizedBox(
                                                           height: 16),
-                                                      // 하단 버튼
-                                                      // Row(
-                                                      //   mainAxisAlignment:
-                                                      //       MainAxisAlignment.end,
-                                                      //   children: [
-                                                      //     TextButton(
-                                                      //       onPressed: () {
-                                                      //         Navigator.of(context)
-                                                      //             .pop(); // 팝업 닫기
-                                                      //       },
-                                                      //       child: const Text("닫기"),
-                                                      //     ),
-                                                      //     TextButton(
-                                                      //       onPressed: () {
-                                                      //         // 추가 동작 수행
-                                                      //         print('추가 동작 수행');
-                                                      //         Navigator.of(context)
-                                                      //             .pop(); // 팝업 닫기
-                                                      //       },
-                                                      //       child: const Text("확인"),
-                                                      //     ),
-                                                      //   ],
-                                                      // ),
                                                     ],
                                                   ),
                                                 ),
-                                                // 오른쪽쪽 위 X 버튼
+                                                // 오른쪽 위 X 버튼
                                                 Positioned(
                                                   top: 8,
                                                   right: 8,
