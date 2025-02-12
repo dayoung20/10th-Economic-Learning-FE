@@ -81,10 +81,12 @@ class LevelTestTestController extends GetxController {
     // print("response : : $response");
   }
 
-  void clickedToKaKao() {
+  void clickedToKaKao(List<QuizModel> quizList) {
     // List<Map<String, dynamic>> answersJson =
     //     levelTestAnswers.map((e) => e.toJson()).toList();
-
-    Get.toNamed('/login_exist', arguments: levelTestAnswers);
+    Get.toNamed('/login_exist', arguments: {
+      'levelTestAnswers': levelTestAnswers,
+      'quizList': quizList,
+    });
   }
 }

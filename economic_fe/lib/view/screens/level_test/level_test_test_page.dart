@@ -123,7 +123,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                             controller.currentQuizIdx++;
                           });
                         },
-                        onFinishTest: () => controller.clickedToKaKao(),
+                        onFinishTest: () => controller.clickedToKaKao(quizList),
                       ));
           }),
         ],

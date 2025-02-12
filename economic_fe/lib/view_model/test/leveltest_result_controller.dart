@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:get/get.dart';
 
 class LevelTestResultController extends GetxController {
@@ -14,13 +15,15 @@ class LevelTestResultController extends GetxController {
   }
 
   // 해설 화면으로 이동
-  void toAnswer(
-      Map<String, dynamic> response, List<LevelTestAnswerModel> answers) {
+  void toAnswer(Map<String, dynamic> response,
+      List<LevelTestAnswerModel> answers, List<QuizModel> quizList) {
+    print("널 아님");
     Get.toNamed(
       '/leveltest_result/answer',
       arguments: {
         'response': response,
         'answer': answers,
+        'quizList': quizList,
       },
     );
   }

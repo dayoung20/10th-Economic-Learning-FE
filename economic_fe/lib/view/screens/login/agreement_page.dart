@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/login/agreement_controller.dart';
@@ -15,7 +16,7 @@ class AgreementPage extends StatefulWidget {
 
 class _AgreementPageState extends State<AgreementPage> {
   late final AgreementController controller;
-  final List<LevelTestAnswerModel> answers = Get.arguments;
+  // final List<LevelTestAnswerModel> answers = Get.arguments;
   @override
   void initState() {
     super.initState();
@@ -24,7 +25,10 @@ class _AgreementPageState extends State<AgreementPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<LevelTestAnswerModel> answers = Get.arguments;
+    // final List<LevelTestAnswerModel> answers = Get.arguments;
+    final arguments = Get.arguments as Map<String, dynamic>;
+    final List<LevelTestAnswerModel> answers = arguments['levelTestAnswers'];
+    final List<QuizModel> quizList = arguments['quizList'];
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -319,7 +323,7 @@ class _AgreementPageState extends State<AgreementPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          controller.clickedConfirmBtn(answers);
+                          controller.clickedConfirmBtn(answers, quizList);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,

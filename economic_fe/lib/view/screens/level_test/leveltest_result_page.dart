@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/test/leveltest_result_controller.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,14 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
       Get.put(LevelTestResultController());
   late final Map<String, dynamic> response;
   late final List<LevelTestAnswerModel> answers;
+  late final List<QuizModel> quizList;
   @override
   void initState() {
     super.initState();
     final arguments = Get.arguments as Map<String, dynamic>;
     response = arguments['response'];
     answers = arguments['answer'];
+    quizList = arguments['quizList'];
   }
 
   @override
@@ -217,7 +220,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                       // 문제 및 해설 버튼
                       GestureDetector(
                         onTap: () {
-                          controller.toAnswer(response, answers);
+                          controller.toAnswer(response, answers, quizList);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width - 32,

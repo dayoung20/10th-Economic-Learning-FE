@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,8 @@ class AgreementController extends GetxController {
   }
 
   // 확인 버튼 클릭
-  void clickedConfirmBtn(List<LevelTestAnswerModel> answers) async {
+  void clickedConfirmBtn(
+      List<LevelTestAnswerModel> answers, List<QuizModel> quizList) async {
     List<Map<String, dynamic>> answersJson =
         answers.map((e) => e.toJson()).toList();
 
@@ -49,6 +51,7 @@ class AgreementController extends GetxController {
         arguments: {
           'response': response,
           'answer': answers,
+          'quizList': quizList,
         },
       );
     } catch (e) {
