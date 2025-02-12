@@ -128,7 +128,8 @@ class _LearningListItemState extends State<LearningListItem> {
             ),
             GestureDetector(
               onTap: () {
-                controller.clickedLearningConcept(context);
+                controller.clickedLearningConcept(
+                    learningSet!.id!, learningSet.name!);
               },
               child: Container(
                 width: ScreenUtils.getWidth(context, 332),

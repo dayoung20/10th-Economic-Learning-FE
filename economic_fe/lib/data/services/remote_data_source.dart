@@ -1763,7 +1763,7 @@ class RemoteDataSource {
     }
   }
 
-  /// 학습 세트 미리보기 리스트 조회
+  /// 레벨별 학습 세트 조회
   /// API: api/v1/learning
   Future<List<Map<String, dynamic>>> fetchLearningList() async {
     List<Map<String, dynamic>> learningList = [];
@@ -1784,5 +1784,50 @@ class RemoteDataSource {
     }
 
     return learningList;
+  }
+
+  /// 개념 학습 세트 조회
+  /// API: api/v1/learning/{learningSetId}/concepts
+  Future<List<Map<String, dynamic>>> fetchLearningConcepts(
+      int learningSetId, String level) async {
+    List<Map<String, dynamic>> conceptList = [];
+
+    try {
+      String endPoint = 'api/v1/learning/$learningSetId/concepts?level=$level';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        conceptList =
+            List<Map<String, dynamic>>.from(response["results"]["conceptList"]);
+      } else {
+        debugPrint("레벨별 개념 학습 세트 조회 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("레벨별 개념 학습 세트 조회 중 오류 발생: $e");
+    }
+
+    return conceptList;
+  }
+
+  /// 개념 학습 스크랩
+  /// API: api/v1/learning/concept/{conceptId}/scrap
+  Future<bool> scrapLearningConcept(int conceptId) async {
+    String endpoint = 'api/v1/learning/concept/$conceptId/scrap';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 스크랩');
+        return true;
+      } else {
+        debugPrint('개념 학습 스크랩 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 스크랩 중 예외 발생: $e');
+      return false;
+    }
   }
 }

@@ -3,12 +3,14 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  // Implements PreferredSizeWidget
   final String title;
   final void Function()? onPress;
   final IconData? icon;
   final int? currentIndex;
   final int? totalIndex;
+  final ValueNotifier<int>?
+      currentIndexNotifier; // 추가: 상태 변경 감지를 위한 ValueNotifier
+  final ValueNotifier<int>? totalIndexNotifier; // 추가: 전체 개수 변경 감지
   final TextStyle? titleStyle;
   final bool? rightIcon;
   final void Function()? onTapTitle;
@@ -20,6 +22,8 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.icon,
     this.currentIndex,
     this.totalIndex,
+    this.currentIndexNotifier, // 추가
+    this.totalIndexNotifier, // 추가
     this.titleStyle,
     this.rightIcon = false,
     this.onTapTitle,
@@ -29,8 +33,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<CustomAppBar> createState() => _CustomAppBarState();
 
   @override
-  Size get preferredSize =>
-      const Size.fromHeight(kToolbarHeight); // Set the height of the AppBar
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
@@ -41,14 +44,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: GestureDetector(
         onTap: widget.onTapTitle,
         child: Row(
-          mainAxisSize: MainAxisSize.min, // Row의 크기를 내용물에 맞게 설정
-          mainAxisAlignment: MainAxisAlignment.center, // Row 내부에서의 정렬
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              widget.title,
-            ),
-            if (widget.rightIcon == true) // 아이콘 조건부 표시
-              const Icon(Icons.arrow_drop_down),
+            Text(widget.title),
+            if (widget.rightIcon == true) const Icon(Icons.arrow_drop_down),
           ],
         ),
       ),
@@ -72,48 +72,75 @@ class _CustomAppBarState extends State<CustomAppBar> {
         ),
       ),
       actions: [
-        // 오른쪽 텍스트가 존재하는 경우 텍스트를 표시
-        if (widget.currentIndex != null && widget.totalIndex != null)
+        if ((widget.currentIndexNotifier != null &&
+                widget.totalIndexNotifier != null) ||
+            (widget.currentIndex != null && widget.totalIndex != null))
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${widget.currentIndex}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontFamily: 'Pretendard Variable',
-                      fontWeight: FontWeight.w500,
-                      height: 1.40,
-                    ),
-                  ),
-                  TextSpan(
-                    text: '/${widget.totalIndex}',
-                    style: const TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 14,
-                      fontFamily: 'Pretendard Variable',
-                      fontWeight: FontWeight.w500,
-                      height: 1.40,
-                    ),
-                  ),
-                ],
-              ),
+            child: ValueListenableBuilder<int>(
+              valueListenable: widget.currentIndexNotifier ??
+                  ValueNotifier(widget.currentIndex ?? 0),
+              builder: (context, currentIndex, _) {
+                return ValueListenableBuilder<int>(
+                  valueListenable: widget.totalIndexNotifier ??
+                      ValueNotifier(widget.totalIndex ?? 1),
+                  builder: (context, totalIndex, _) {
+                    return Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '$currentIndex',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontFamily: 'Pretendard Variable',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '/$totalIndex',
+                            style: const TextStyle(
+                              color: Color(0xFF767676),
+                              fontSize: 14,
+                              fontFamily: 'Pretendard Variable',
+                              fontWeight: FontWeight.w500,
+                              height: 1.40,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
       ],
-      bottom: widget.currentIndex != null && widget.totalIndex != null
+      bottom: (widget.currentIndexNotifier != null &&
+                  widget.totalIndexNotifier != null) ||
+              (widget.currentIndex != null && widget.totalIndex != null)
           ? PreferredSize(
-              preferredSize: const Size.fromHeight(3.0), // 하단 프로그레스 바 높이 설정
-              child: LinearProgressIndicator(
-                value: widget.currentIndex! / widget.totalIndex!, //
-                backgroundColor: const Color(0xffe0e0e0),
-                color: Palette.buttonColorBlue, // 진행 바 색상
+              preferredSize: const Size.fromHeight(3.0),
+              child: ValueListenableBuilder<int>(
+                valueListenable: widget.currentIndexNotifier ??
+                    ValueNotifier(widget.currentIndex ?? 0),
+                builder: (context, currentIndex, _) {
+                  return ValueListenableBuilder<int>(
+                    valueListenable: widget.totalIndexNotifier ??
+                        ValueNotifier(widget.totalIndex ?? 1),
+                    builder: (context, totalIndex, _) {
+                      return LinearProgressIndicator(
+                        value: totalIndex > 0 ? currentIndex / totalIndex : 0,
+                        backgroundColor: const Color(0xffe0e0e0),
+                        color: Palette.buttonColorBlue,
+                      );
+                    },
+                  );
+                },
               ),
             )
-          : null, // 오른쪽 텍스트가 없으면 프로그레스 바를 표시하지 않음
+          : null,
     );
   }
 }

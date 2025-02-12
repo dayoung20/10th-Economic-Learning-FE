@@ -4,6 +4,7 @@ import 'package:economic_fe/view/screens/chatbot_page.dart';
 import 'package:economic_fe/view/screens/community/community_page.dart';
 import 'package:economic_fe/view/screens/community/new_post_page.dart';
 import 'package:economic_fe/view/screens/finish_page.dart';
+import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
@@ -134,9 +135,13 @@ class UserRouter {
               ),
             ],
           ),
+          // GetPage(
+          //   name: '/learning_concept',
+          //   page: () => const LearningConceptTotalPage(),
+          // ),
           GetPage(
             name: '/learning_concept',
-            page: () => const LearningConceptTotalPage(),
+            page: () => const LearningConceptPage(),
           ),
         ],
       ),

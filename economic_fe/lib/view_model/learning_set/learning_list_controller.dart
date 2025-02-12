@@ -76,8 +76,14 @@ class LearningListController extends GetxController {
     Get.offNamed('/home');
   }
 
-  void clickedLearningConcept(BuildContext context) {
-    Get.offNamed('/learning_list/learning_concept');
+  void clickedLearningConcept(int learningSetId, String name) {
+    Get.toNamed(
+      '/learning_list/learning_concept',
+      arguments: {
+        "learningSetId": learningSetId,
+        "name": name,
+      },
+    );
   }
 
   // 챗봇 화면으로 전환
