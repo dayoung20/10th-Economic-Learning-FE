@@ -58,26 +58,12 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                         screenWidth: screenWidth,
                         onPress: () {},
                         option: 1, // ox 문제
-                        // option: quizList[controller.currentQuizIdx.value]
-                        //             .choiceList
-                        //             .length ==
-                        //         2
-                        //     ? 1
-                        //     : 0,
                         question:
                             quizList[controller.currentQuizIdx.value].question,
                         isLast: !(controller.currentQuizIdx.value < 8),
                         isQuiz: false,
                         onOptionSelected: (int selected) {
                           setState(() {
-                            // controller.choiceId.value = selected;
-                            // print("selected : ${controller.choiceId.value}");
-                            // controller.addAnswer(
-                            //     quiz.id, quiz.choiceList.first.choiceId + selected);
-                            // print("중간");
-                            // print("index : $index");
-                            // controller.clickedNextBtn(context, index, quizList);
-
                             // 선택한 답안 저장
                             controller.levelTestAnswers.add(
                               LevelTestAnswerModel(
@@ -124,7 +110,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                                 answer:
                                     quizList[controller.currentQuizIdx.value]
                                         .choiceList[selected]
-                                        .content, // 선택한 옵션의 ID 저장
+                                        .content,
                               ),
                             );
 
@@ -134,15 +120,9 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                             print(
                                 "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
                             print("현재 idx : ${controller.currentQuizIdx}");
-                            // if (controller.currentQuizIdx == 8) {
-                            //   print("완료 가능");
-                            //   controller.clickedFinishBtn();
-                            // }
-                            // controller.clickedFinishBtn();
                             controller.currentQuizIdx++;
                           });
                         },
-                        // onFinishTest: () => controller.clickedFinishBtn(),
                         onFinishTest: () => controller.clickedToKaKao(),
                       ));
           }),

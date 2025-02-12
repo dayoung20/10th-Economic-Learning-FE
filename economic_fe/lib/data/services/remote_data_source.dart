@@ -1594,7 +1594,6 @@ class RemoteDataSource {
 
       if (response != null) {
         debugPrint("레벨테스트 POST 성공: $response");
-        // print("레벨 테스트 reponse ${response.body}");
         return response; // 성공하면 응답 반환
       } else {
         debugPrint("레벨테스트 POST 실패");

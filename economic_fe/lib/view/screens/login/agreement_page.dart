@@ -15,6 +15,7 @@ class AgreementPage extends StatefulWidget {
 
 class _AgreementPageState extends State<AgreementPage> {
   late final AgreementController controller;
+  final List<LevelTestAnswerModel> answers = Get.arguments;
   @override
   void initState() {
     super.initState();

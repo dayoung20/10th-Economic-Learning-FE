@@ -1,14 +1,32 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/test/test_answer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TestAnswerPage extends StatelessWidget {
+class TestAnswerPage extends StatefulWidget {
   const TestAnswerPage({super.key});
 
   @override
+  State<TestAnswerPage> createState() => _TestAnswerPageState();
+}
+
+class _TestAnswerPageState extends State<TestAnswerPage> {
+  final TestAnswerController controller = Get.put(TestAnswerController());
+  late final Map<String, dynamic> response;
+  late final List<LevelTestAnswerModel> answers;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final arguments = Get.arguments as Map<String, dynamic>;
+    response = arguments['response'];
+    answers = arguments['answer'];
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TestAnswerController controller = Get.put(TestAnswerController());
+    // final TestAnswerController controller = Get.put(TestAnswerController());
 
     // 선지 데이터 (예제)
     final options = [

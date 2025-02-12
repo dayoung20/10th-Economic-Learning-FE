@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:get/get.dart';
 
 class LevelTestResultController extends GetxController {
@@ -13,8 +14,15 @@ class LevelTestResultController extends GetxController {
   }
 
   // 해설 화면으로 이동
-  void toAnswer() {
-    Get.toNamed('/leveltest_result/answer');
+  void toAnswer(
+      Map<String, dynamic> response, List<LevelTestAnswerModel> answers) {
+    Get.toNamed(
+      '/leveltest_result/answer',
+      arguments: {
+        'response': response,
+        'answer': answers,
+      },
+    );
   }
 
   // 모달창의 상태를 관리하는 변수

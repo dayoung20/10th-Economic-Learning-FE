@@ -33,8 +33,6 @@ class AgreementController extends GetxController {
 
   // 확인 버튼 클릭
   void clickedConfirmBtn(List<LevelTestAnswerModel> answers) async {
-    // Get.toNamed('/profile_setting');
-
     List<Map<String, dynamic>> answersJson =
         answers.map((e) => e.toJson()).toList();
 
@@ -44,6 +42,15 @@ class AgreementController extends GetxController {
           await remoteDataSource.postLevelTestResult(answersJson);
 
       print("response : $response");
+
+      // Get.toNamed('/leveltest_result', arguments: response);
+      Get.toNamed(
+        '/leveltest_result',
+        arguments: {
+          'response': response,
+          'answer': answers,
+        },
+      );
     } catch (e) {
       debugPrint("error : $e");
     }
