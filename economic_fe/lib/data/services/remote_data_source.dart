@@ -1762,4 +1762,27 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 학습 세트 미리보기 리스트 조회
+  /// API: api/v1/learning
+  Future<List<Map<String, dynamic>>> fetchLearningList() async {
+    List<Map<String, dynamic>> learningList = [];
+
+    try {
+      String endPoint = 'api/v1/learning';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        learningList = List<Map<String, dynamic>>.from(
+            response["results"]["learningSetPreviewList"]);
+      } else {
+        debugPrint("학습 세트 미리보기 조회 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("학습 세트 미리보기 조회 중 오류 발생: $e");
+    }
+
+    return learningList;
+  }
 }
