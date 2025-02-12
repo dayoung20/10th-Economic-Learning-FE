@@ -1562,7 +1562,6 @@ class RemoteDataSource {
     return searchResults;
   }
 
-
   /// api/v1/level-test/quiz
   /// 레벨 테스트 퀴즈 목록 조회
   Future<dynamic> getLevelTestQuizList() async {
@@ -1606,6 +1605,7 @@ class RemoteDataSource {
     }
 
     return null; // 실패 시 null 반환
+  }
 
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
@@ -1850,7 +1850,6 @@ class RemoteDataSource {
       debugPrint('푸시 알림 설정 중 예외 발생: $e');
       return false;
     }
-
   }
 
   /// 레벨별 학습 세트 조회
