@@ -47,10 +47,10 @@ class QuizController extends GetxController {
   }
 
   // 선택된 옵션을 관리하는 상태
-  var selectedOption = Rx<int?>(null); // 선택된 옵션 (null은 선택 안 됨)
+  var selectedOption = Rx<int>(-1); // 선택된 옵션 (null은 선택 안 됨)
 
   // "다음 문제" 버튼 활성화 여부
-  bool get isNextButtonEnabled => selectedOption.value != null;
+  bool get isNextButtonEnabled => selectedOption.value != -1;
 
   // (퀴즈의 경우) 확인 버튼 클릭 여부
   Rx<bool> clickCheckBtn = false.obs;
@@ -72,6 +72,6 @@ class QuizController extends GetxController {
 
   // 선택된 옵션을 리셋하는 메서드 (필요 시)
   void resetOption() {
-    selectedOption.value = null;
+    selectedOption.value = -1;
   }
 }

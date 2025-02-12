@@ -1,3 +1,5 @@
+import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
+import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
@@ -18,8 +20,27 @@ class TestMultipleChoicePage extends StatefulWidget {
 
 class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
   int? selectedOption;
+  late final Map<String, dynamic> args;
+  late final List<QuizModel> quizList;
 
-  // final QuizController quizController = Get.find<QuizController>();
+  // 해당하는 index의 문제제
+  late final QuizModel quiz;
+
+  // 레벨테스트 문제들 중 몇번째 문제인지
+  late final index;
+  // late final LevelTestAnswerModel answerModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    args = Get.arguments ?? {};
+    quizList = args["quizList"] ?? [];
+    index = args['index'];
+    quiz = quizList[index];
+    // answerModel = args["answeranswer"];
+  }
+
   final TestMultipleController controller = Get.put(TestMultipleController());
 
   final question = 'Q. 다음 중 복리 효과가 경제적 결과로 나타날 수 있는 상황으로 적절한 것은?';
@@ -50,59 +71,6 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
         currentIndex: 9,
         totalIndex: 9,
       ),
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(80),
-      //   child:
-      //   AppBar(
-      //     automaticallyImplyLeading: false, // 기본 뒤로가기 버튼 제거
-      //     elevation: 0,
-      //     backgroundColor: Colors.white, // AppBar 배경색
-      //     flexibleSpace: SafeArea(
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.stretch,
-      //         children: [
-      //           // 상단 앱바
-      //           Padding(
-      //             padding: const EdgeInsets.symmetric(horizontal: 16),
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 IconButton(
-      //                   icon: const Icon(Icons.close, color: Colors.black),
-      //                   onPressed: () {
-      //                     Navigator.pop(context);
-      //                   },
-      //                 ),
-      //                 const Text(
-      //                   "레벨테스트",
-      //                   style: TextStyle(
-      //                     fontSize: 18,
-      //                     fontWeight: FontWeight.bold,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //                 const Text(
-      //                   "1/9",
-      //                   style: TextStyle(
-      //                     fontSize: 16,
-      //                     fontWeight: FontWeight.w500,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //           // 진행 바
-      //           const LinearProgressIndicator(
-      //             value: 0.1, // 진행 퍼센트 (0.0 ~ 1.0)
-      //             backgroundColor: Color(0xffe0e0e0),
-      //             color: Color(0xff1eb692), // 진행 바 색상
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       body: Stack(
         children: [
           Column(
@@ -113,28 +81,22 @@ class _TestMultipleChoicePageState extends State<TestMultipleChoicePage> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   onPress: () {},
-                  option: 0,
+                  option: 0, // 다중 선택
                   question: question,
                   answerOptions: options,
-                  isLast: true,
+                  isLast: !(index <= 8),
                   isQuiz: false,
+                  onOptionSelected: (int selected) {
+                    setState(() {
+                      controller.choiceId.value = selected;
+                      print("selected : ${controller.choiceId.value}");
+                      controller.addAnswer(
+                          quiz.id, quiz.choiceList.first.choiceId + selected);
+                      controller.clickedNextBtn(context, index, quizList);
+                    });
+                  },
                 ),
               ),
-              // CustomButton(
-              //   text: "다음 문제",
-              //   onPress: () {},
-              //   bgColor: const Color.fromARGB(255, 186, 209, 255),
-              // ),
-              // ElevatedButton(
-              //   onPressed: () {},
-              //   child: const Text("다음 문제"),
-              // ),
-              // Center(
-              //   child: Obx(() => Text(
-              //         'Selected Option: ${quizController.selectedOption.value}',
-              //         style: const TextStyle(fontSize: 24),
-              //       )),
-              // )
             ],
           ),
           // 모달창

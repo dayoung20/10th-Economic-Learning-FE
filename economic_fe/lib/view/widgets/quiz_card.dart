@@ -17,6 +17,10 @@ class QuizCard extends StatefulWidget {
   final bool isQuiz;
   final bool isLast;
   final int? answer;
+  final Function()? onFinishTest;
+
+  //선택한 옵션 부모로 전달
+  final Function(int)? onOptionSelected;
 
   const QuizCard({
     super.key,
@@ -29,6 +33,8 @@ class QuizCard extends StatefulWidget {
     required this.isQuiz,
     required this.isLast,
     this.answer,
+    this.onOptionSelected,
+    this.onFinishTest,
   });
 
   @override
@@ -227,11 +233,17 @@ class _QuizCardState extends State<QuizCard> {
                             }
                           : widget.isLast
                               ? () {
-                                  controller.finishLeveltest();
+                                  // controller.finishLeveltest();
+                                  widget.onFinishTest!();
                                 }
                               : () {
                                   // "다음 문제" 버튼 활성화
                                   // 다음 문제로 넘어가는 로직 추가
+                                  print("다음문제");
+                                  widget.onOptionSelected != null
+                                      ? widget.onOptionSelected!(
+                                          controller.selectedOption.value)
+                                      : null;
                                 }
                       : null,
                   bgColor: controller.isNextButtonEnabled

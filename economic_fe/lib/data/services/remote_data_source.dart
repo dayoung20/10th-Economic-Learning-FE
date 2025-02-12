@@ -89,6 +89,46 @@ class RemoteDataSource {
   /// API POST
   ///
   /// 데이터 생성시 사용
+  /// jsonData 포함O
+  /// 앱에 저장된 accessToken 사용
+  /// statuscode 반환하지 않고 전체 response 반환
+  Future<dynamic> postApiWithJsonReturnResponse(
+    String endPoint,
+    Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return jsonDecode(utf8.decode(response.bodyBytes));
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
   /// jsonData 포함X
   static Future<dynamic> _postApi(
     String endPoint,
@@ -198,7 +238,11 @@ class RemoteDataSource {
 
       if (response.statusCode == 200) {
         debugPrint('GET 요청 성공');
-        return jsonDecode(response.body);
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return decodedResponse;
       } else {
         debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
         return response;
@@ -1518,6 +1562,51 @@ class RemoteDataSource {
     return searchResults;
   }
 
+
+  /// api/v1/level-test/quiz
+  /// 레벨 테스트 퀴즈 목록 조회
+  Future<dynamic> getLevelTestQuizList() async {
+    dynamic response;
+    String endPoint = "api/v1/level-test/quiz";
+
+    response = await _getApi(endPoint);
+
+    if (response != null) {
+      print("응답 데이터 : $response");
+    } else {
+      print("get 데이터 실패");
+    }
+    return response;
+  }
+
+  /// api/v1/level-test/result
+  /// 레벨 테스트 결과 제출
+  Future<dynamic> postLevelTestResult(
+      List<Map<String, dynamic>> answersJson) async {
+    String endPoint = "api/v1/level-test/result";
+    Map<String, dynamic> requestBody = {
+      "answers": answersJson,
+    };
+
+    print("post 안 : ${jsonEncode(requestBody)}");
+
+    try {
+      // API 요청 실행
+      dynamic response =
+          await postApiWithJsonReturnResponse(endPoint, requestBody);
+
+      if (response != null) {
+        debugPrint("레벨테스트 POST 성공: $response");
+        return response; // 성공하면 응답 반환
+      } else {
+        debugPrint("레벨테스트 POST 실패");
+      }
+    } catch (e) {
+      debugPrint("Error 발생: $e");
+    }
+
+    return null; // 실패 시 null 반환
+
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
   Future<Map<String, dynamic>?> getUserGoal() async {
@@ -1761,5 +1850,6 @@ class RemoteDataSource {
       debugPrint('푸시 알림 설정 중 예외 발생: $e');
       return false;
     }
+
   }
 }
