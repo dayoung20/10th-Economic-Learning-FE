@@ -255,13 +255,24 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                   const SizedBox(
                                     width: 11,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Image.asset(
-                                      'assets/bookmark.png',
-                                      width: 13,
-                                    ),
-                                  ),
+                                  Obx(() {
+                                    final conceptId = controller.conceptList[
+                                            controller.currentStepIdx.value]
+                                        ["conceptId"];
+                                    final isScrapped =
+                                        controller.isConceptScrapped(conceptId);
+
+                                    return GestureDetector(
+                                      onTap: () => controller
+                                          .toggleScrapConcept(conceptId),
+                                      child: Image.asset(
+                                        isScrapped
+                                            ? "assets/bookmark_selected.png"
+                                            : "assets/bookmark.png",
+                                        width: 13,
+                                      ),
+                                    );
+                                  }),
                                 ],
                               ),
                               const SizedBox(

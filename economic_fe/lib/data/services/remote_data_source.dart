@@ -1830,4 +1830,26 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 개념 학습 스크랩 취소
+  /// API: api/v1/learning/concept/{conceptId}/scrap
+  Future<bool> deleteConceptScrap(int conceptId) async {
+    String endpoint = 'api/v1/learning/concept/$conceptId/scrap';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 스크랩 취소 성공');
+        return true;
+      } else {
+        debugPrint(
+            '개념 학습 스크랩 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 스크랩 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
 }

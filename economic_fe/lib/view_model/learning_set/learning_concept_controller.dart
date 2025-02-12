@@ -10,6 +10,7 @@ class LearningConceptController extends GetxController {
   var currentStepIdx = 0.obs; // 현재 개념 학습 인덱스
   var selectedLevelIndex = 0.obs; // 선택된 레벨 인덱스 (초급: 0, 중급: 1, 고급: 2)
   var conceptList = <Map<String, dynamic>>[].obs; // 개념 학습 리스트
+  var scrapConceptList = <int>[].obs; // 스크랩한 개념 학습 ID 목록
   var isLoading = true.obs; // 로딩 상태
   var learningSetId = 0.obs; // 학습 세트 ID
   List<String> levelOptions = ["초급", "중급", "고급"]; // UI에 표시할 레벨 목록
@@ -37,8 +38,9 @@ class LearningConceptController extends GetxController {
     // 기본 레벨은 "초급"으로 설정
     selectedLevelIndex.value = 0;
 
-    // 사용자의 현재 선택된 레벨에 맞는 개념 학습 데이터 불러오기
+    // 개념 학습 데이터 불러오기 + 스크랩된 목록 불러오기
     fetchLearningConcepts();
+    fetchScrapConcepts();
   }
 
   /// 현재 선택된 레벨을 API에서 요구하는 값으로 변환
@@ -69,6 +71,52 @@ class LearningConceptController extends GetxController {
       debugPrint("fetchLearningConcepts() 오류 발생: $e");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  /// 현재 사용자가 스크랩한 개념 학습 목록 가져오기
+  Future<void> fetchScrapConcepts() async {
+    try {
+      String selectedApiLevel = getApiLevel();
+      var response = await _remoteDataSource.getScrapConcepts(selectedApiLevel);
+
+      print("스크랩 데이터 응답: $response"); // 응답 데이터 확인
+
+      if (response != null && response["results"] != null) {
+        List<dynamic> scrapedConcepts = response["results"]["scrapConceptList"];
+
+        // 각 개념의 conceptId만 추출하여 List<int>로 변환
+        scrapConceptList
+            .assignAll(scrapedConcepts.map((e) => e["id"] as int).toList());
+
+        print("스크랩된 개념 학습 ID 목록: $scrapConceptList");
+      }
+    } catch (e) {
+      debugPrint("fetchScrapConcepts() 오류 발생: $e");
+    }
+  }
+
+  /// 🔹 스크랩 여부 확인
+  bool isConceptScrapped(int conceptId) {
+    return scrapConceptList.contains(conceptId);
+  }
+
+  /// 개념 학습 세트 스크랩 & 스크랩 취소 (토글 기능)
+  Future<void> toggleScrapConcept(int conceptId) async {
+    if (isConceptScrapped(conceptId)) {
+      // 스크랩 취소
+      bool success = await _remoteDataSource.deleteConceptScrap(conceptId);
+      if (success) {
+        scrapConceptList.remove(conceptId);
+        print("스크랩 취소 성공: $conceptId");
+      }
+    } else {
+      // 스크랩 추가
+      bool success = await _remoteDataSource.scrapLearningConcept(conceptId);
+      if (success) {
+        scrapConceptList.add(conceptId);
+        print("스크랩 성공: $conceptId");
+      }
     }
   }
 
