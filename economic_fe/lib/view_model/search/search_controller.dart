@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/data/models/community/post_model.dart';
+import 'package:economic_fe/data/models/community/tok_model.dart';
 import 'package:economic_fe/data/models/dictionary_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class SearchPageController extends GetxController {
   var searchTerms = <DictionaryModel>[].obs;
   var searchPosts = <PostModel>[].obs;
   var searchNews = <ArticleModel>[].obs;
+  var searchToks = <TokModel>[].obs;
 
   final List<String> categories = ["통합", "용어사전", "경제 기사", "일반 게시판", "경제 톡톡"];
 
@@ -49,6 +51,7 @@ class SearchPageController extends GetxController {
         fetchSearchTermsResults(keyword),
         fetchSearchPostsResults(keyword),
         fetchSearchNewsResults(keyword),
+        fetchSearchToksResults(keyword),
       ]);
     } catch (e) {
       debugPrint('검색 중 오류 발생: $e');
@@ -115,6 +118,20 @@ class SearchPageController extends GetxController {
           response.map((json) => ArticleModel.fromJson(json)).toList());
     } catch (e) {
       debugPrint('Error fetching articles: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  /// 톡톡 게시글 검색
+  Future<void> fetchSearchToksResults(String keyword) async {
+    isLoading(true);
+    try {
+      final response = await remoteDataSource.searchTokToks(keyword);
+      searchToks
+          .assignAll(response.map((json) => TokModel.fromJson(json)).toList());
+    } catch (e) {
+      debugPrint('Error fetching toks: $e');
     } finally {
       isLoading(false);
     }

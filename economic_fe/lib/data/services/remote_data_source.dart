@@ -1518,6 +1518,38 @@ class RemoteDataSource {
     return searchResults;
   }
 
+  /// 톡톡 게시글 검색
+  /// api: api/v1/search/toktoks
+  Future<List<dynamic>> searchTokToks(String keyword) async {
+    List<dynamic> searchResults = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint =
+            'api/v1/search/toktoks?keyword=$keyword&page=$currentPage';
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          searchResults
+              .addAll(results["toktokPreviewResponseList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("게시글 검색 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("게시글 검색 중 오류 발생: $e");
+    }
+
+    return searchResults;
+  }
+
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
   Future<Map<String, dynamic>?> getUserGoal() async {
