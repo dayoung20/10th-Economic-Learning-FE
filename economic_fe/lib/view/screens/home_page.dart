@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                                             SizedBox(
                                               width: 44,
                                               child: Text(
-                                                '${(controller.beginnerProgress.value * 100).toInt()}%',
+                                                '${(controller.beginnerProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Color(0xFF111111),
@@ -146,7 +146,8 @@ class _HomePageState extends State<HomePage> {
                                               width: 36,
                                               height: controller.maxHeight *
                                                   controller
-                                                      .beginnerProgress.value,
+                                                      .beginnerProgress.value *
+                                                  0.01,
                                               decoration: const ShapeDecoration(
                                                 color: Color(0xFFB1F2F2),
                                                 shape: RoundedRectangleBorder(
