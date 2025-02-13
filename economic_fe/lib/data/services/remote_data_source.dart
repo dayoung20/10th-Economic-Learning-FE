@@ -1883,4 +1883,24 @@ class RemoteDataSource {
       return false;
     }
   }
+
+  /// 오늘의 퀘스트 완료 여부 조회
+  /// API: api/v1/attendance/today-quest
+  Future<Map<String, dynamic>> fetchTodayQuestProgress() async {
+    String endPoint = 'api/v1/attendance/today-quest';
+
+    try {
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response['isSuccess'] == true) {
+        return Map<String, dynamic>.from(response['results']);
+      } else {
+        debugPrint("오늘의 퀘스트 완료 여부 조회 실패: ${response?['message']}");
+        return {};
+      }
+    } catch (e) {
+      debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
+      return {};
+    }
+  }
 }
