@@ -467,6 +467,30 @@ class RemoteDataSource {
     return response;
   }
 
+  /// 뉴스 목록 조회 (카카오 로그인 X)
+  /// api/news
+  Future<dynamic> getNewsList2(int page, String sort, String? category) async {
+    dynamic response;
+    if (category != null) {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort&category=$category',
+        accessToken,
+      );
+    } else {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort',
+        accessToken,
+      );
+    }
+
+    if (response != null) {
+      print('응답 데이터 : $response');
+    } else {
+      print('데이터 get 실패');
+    }
+    return response;
+  }
+
   /// api/news/{id}/scrap
   /// 뉴스 스크랩
   Future<dynamic> postNewsScrap(int id) async {

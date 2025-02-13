@@ -1,17 +1,17 @@
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({
     super.key,
-    required this.dayCounts,
   });
-
-  final int dayCounts;
 
   @override
   Widget build(BuildContext context) {
+    final HomeController controller = Get.find<HomeController>();
+
     return AppBar(
       automaticallyImplyLeading: false,
       forceMaterialTransparency: true,
@@ -43,25 +43,29 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             const SizedBox(
               width: 4,
             ),
-            Text(
-              '$dayCounts일 연속 학습 중',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF111111),
-                fontSize: 12,
-                fontFamily: 'Pretendard Variable',
-                fontWeight: FontWeight.w500,
-                height: 1.40,
-                letterSpacing: -0.30,
+            Obx(
+              () => Text(
+                '${controller.currentStreak.value}일 연속 학습 중',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Color(0xFF111111),
+                  fontSize: 12,
+                  fontFamily: 'Pretendard Variable',
+                  fontWeight: FontWeight.w500,
+                  height: 1.40,
+                  letterSpacing: -0.30,
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
       actions: [
         // 검색
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/search');
+          },
           icon: const Icon(
             Icons.search,
             size: 24,

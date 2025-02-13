@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
@@ -19,9 +20,6 @@ class _HomePageState extends State<HomePage> {
     // GetX 컨트롤러 가져오기
     final HomeController controller = Get.put(HomeController());
 
-    // 연속 학습일
-    const int dayCounts = 3;
-
     // 경제 톡톡 참여자 프로필 사진 리스트
     const List<String> profileImages = [
       'assets/profile_example.png',
@@ -33,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: const HomeAppBar(dayCounts: dayCounts),
+      appBar: const HomeAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -479,44 +477,55 @@ class _HomePageState extends State<HomePage> {
                   title: '경제 기사',
                   onTap: () {
                     // 경제 기사 화면으로 이동
+                    Get.toNamed('/article');
                   },
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                // 경제 기사 예시 (3개)
-                const ExampleArticle(
-                  category: '경기 분석',
-                  headline: '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffd9d9d9),
+                // 경제 기사 리스트 불러오기
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.articles.isEmpty) {
+                    return const Center(child: Text("불러올 경제 기사가 없습니다."));
+                  }
+
+                  return Column(
+                    children: List.generate(
+                      5,
+                      (index) {
+                        if (index.isOdd) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Divider(
+                              color: Colors.grey.shade300,
+                              thickness: 1,
+                              height: 16,
+                            ),
+                          );
+                        }
+
+                        final article = controller.articles[index ~/ 2];
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed(
+                              '/article/detail',
+                              arguments: article,
+                            );
+                          },
+                          child: ExampleArticle(
+                            category: article.translatedCategory,
+                            headline: article.title ?? "제목 없음",
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                ),
-                const ExampleArticle(
-                  category: '금융',
-                  headline: '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffd9d9d9),
-                    ),
-                  ),
-                ),
-                const ExampleArticle(
-                  category: '경기 분석',
-                  headline: '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                ),
+                  );
+                }),
+
                 const SizedBox(
                   height: 36,
                 ),

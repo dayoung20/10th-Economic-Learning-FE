@@ -1,11 +1,12 @@
-import 'dart:convert';
-
+import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GoRouter import
 
 class HomeController extends GetxController {
   final remoteDataSource = RemoteDataSource();
+
+  var currentStreak = 0.obs; // 연속 출석 날짜
 
   // 진도율 가시성 관리 (레벨테스트 진행 여부에 따른 로직으로 수정 필요)
   var isProgressContainerVisible = true.obs;
@@ -36,6 +37,10 @@ class HomeController extends GetxController {
   var tempGoalSets = <int>[].obs;
   final maxGoalSets = 3;
   final minGoalSets = 1;
+
+  // 경제 기사
+  var articles = <ArticleModel>[].obs;
+  var isLoading = true.obs;
 
   void minusTempGoalSets(int index) {
     if (tempGoalSets[index] > minGoalSets) {
@@ -70,6 +75,19 @@ class HomeController extends GetxController {
     super.onInit();
     fetchProgress();
     fetchUserGoal();
+    fetchCurrentStreak();
+    getNewsList(0, "RECENT", null);
+  }
+
+  // 연속 출석 날짜 조회
+  Future<void> fetchCurrentStreak() async {
+    try {
+      var response = await remoteDataSource.fetchCurrentStreak();
+      currentStreak.value = response;
+    } catch (e) {
+      debugPrint("fetchCurrentStreak() 오류 발생: $e");
+      currentStreak.value = 0; // 오류 발생 시 기본값 설정
+    }
   }
 
   /// 레벨별 학습 진도율 조회
@@ -132,6 +150,33 @@ class HomeController extends GetxController {
       Get.snackbar('성공', '퀘스트 목표 수정이 완료되었습니다.');
     } else {
       Get.snackbar('오류', '퀘스트 목표 수정에 실패하였습니다.');
+    }
+  }
+
+  // 경제 기사 목록 불러오기
+  Future<void> getNewsList(int page, String sort, String? category) async {
+    try {
+      isLoading.value = true; // 로딩 시작
+      dynamic response;
+
+      if (category != null) {
+        response = await remoteDataSource.getNewsList2(page, sort, category);
+      } else {
+        response = await remoteDataSource.getNewsList2(page, sort, null);
+      }
+
+      final data = response as Map<String, dynamic>;
+      final articleList = data['results']['newsList'] as List;
+
+      articles.assignAll(
+        articleList.map((news) => ArticleModel.fromJson(news)).toList(),
+      );
+
+      debugPrint("기사 데이터 로드 완료, 총 개수: ${articles.length}");
+    } catch (e) {
+      debugPrint('뉴스 리스트 불러오기 오류: $e');
+    } finally {
+      isLoading.value = false; // 로딩 종료
     }
   }
 }
