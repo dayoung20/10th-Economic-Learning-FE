@@ -42,6 +42,9 @@ class HomeController extends GetxController {
   var articles = <ArticleModel>[].obs;
   var isLoading = true.obs;
 
+  // 오늘의 경제톡톡 주제
+  RxMap<String, dynamic> todaysTokDetail = <String, dynamic>{}.obs;
+
   void minusTempGoalSets(int index) {
     if (tempGoalSets[index] > minGoalSets) {
       tempGoalSets[index]--;
@@ -77,6 +80,7 @@ class HomeController extends GetxController {
     fetchUserGoal();
     fetchCurrentStreak();
     getNewsList(0, "RECENT", null);
+    fetchTodaysTok();
   }
 
   // 연속 출석 날짜 조회
@@ -178,5 +182,25 @@ class HomeController extends GetxController {
     } finally {
       isLoading.value = false; // 로딩 종료
     }
+  }
+
+  /// 오늘의 경제톡톡 주제 조회
+  Future<void> fetchTodaysTok() async {
+    try {
+      isLoading(true);
+      final todaysTok = await RemoteDataSource.getTodaysTok();
+
+      if (todaysTok != null) {
+        todaysTokDetail.value = todaysTok;
+      }
+    } catch (e) {
+      print('오늘의 경제톡톡 주제 조회 중 오류 발생: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void toTalkDetailPage(int tokPostId) {
+    Get.toNamed('/community/talk_detail', arguments: tokPostId);
   }
 }

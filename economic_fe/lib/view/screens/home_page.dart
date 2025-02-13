@@ -533,7 +533,7 @@ class _HomePageState extends State<HomePage> {
                 TitleWithMoreBtn(
                   title: '경제 톡톡',
                   onTap: () {
-                    // 경제 톡톡 화면으로 이동
+                    Get.toNamed('/community');
                   },
                 ),
                 const SizedBox(
@@ -542,122 +542,140 @@ class _HomePageState extends State<HomePage> {
                 // 경제 톡톡 주제 컨테이너
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(width: 1, color: const Color(0xFFA2A2A2)),
-                      image: DecorationImage(
-                        image: const AssetImage(
-                            'assets/image_example.png'), // 배경 이미지
-                        fit: BoxFit.cover, // 이미지 크기 조정
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.1), // 어두운 색을 덧씌우고 불투명도를 조정
-                          BlendMode.darken, // BlendMode.darken을 사용해 이미지를 어둡게 함
-                        ),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            '저축은 어떻게?\n체계적으로? 아님?',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -0.55,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const Text(
-                            '현재 뜨거운 톡톡!',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: 'Pretendard Variable',
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: -0.35,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 49,
-                          ),
-                          // 톡톡에 참여한 사람들
-                          Row(
-                            children: [
-                              // 프로필 (최대 4명)
-                              SizedBox(
-                                width: 60,
-                                height: 18,
-                                child: Stack(
-                                  children: List.generate(
-                                    profileImages.length,
-                                    (index) {
-                                      // 최대 4명까지 프로필을 띄울 수 있도록 설정
-                                      if (index >= 4) return Container();
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-                                      return Positioned(
-                                        left: 14.0 *
-                                            index, // 위치를 조금씩 왼쪽으로 이동시켜서 겹치게 함
-                                        child: Container(
-                                          width: 18,
-                                          height: 18,
-                                          decoration: ShapeDecoration(
-                                            color: const Color(0xFFF3F3F3),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(43),
-                                            ),
-                                            shadows: const [
-                                              BoxShadow(
-                                                color: Color(0x3F000000),
-                                                blurRadius: 1,
-                                                offset: Offset(0.20, 0.20),
-                                                spreadRadius: 0,
-                                              )
-                                            ],
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(43),
-                                            child: Image.asset(
-                                              profileImages[
-                                                  index], // 이미지 리스트에서 해당 이미지를 가져와서 표시
-                                              fit: BoxFit
-                                                  .cover, // 이미지를 컨테이너에 맞게 조정
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                    var todaysTok = controller.todaysTokDetail;
+                    if (todaysTok.isEmpty) {
+                      return const Center(child: Text("오늘의 경제톡톡을 불러올 수 없습니다."));
+                    }
+
+                    return GestureDetector(
+                      onTap: () {
+                        controller.toTalkDetailPage(todaysTok['id']);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              width: 1, color: const Color(0xFFA2A2A2)),
+                          image: DecorationImage(
+                            image: todaysTok['imageUrl'] != null
+                                ? NetworkImage(todaysTok['imageUrl'])
+                                : const AssetImage(
+                                    'assets/talk_image_sample.png'), // 오늘의 경제톡톡 대표 이미지 연결 필요
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.35), // 어두운 필터 추가
+                              BlendMode.darken, // 어두운 필터 적용
+                            ),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                todaysTok['title'],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.55,
                                 ),
                               ),
                               const SizedBox(
-                                width: 5,
+                                height: 5,
                               ),
                               const Text(
-                                '$peopleCounts명이 참여했어요',
+                                '현재 뜨거운 톡톡!',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 12,
+                                  fontSize: 14,
+                                  fontFamily: 'Pretendard Variable',
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.30,
+                                  letterSpacing: -0.35,
                                 ),
+                              ),
+                              const SizedBox(
+                                height: 49,
+                              ),
+                              // 톡톡에 참여한 사람들
+                              Row(
+                                children: [
+                                  // 프로필 (최대 4명)
+                                  SizedBox(
+                                    width: 60,
+                                    height: 18,
+                                    child: Stack(
+                                      children: List.generate(
+                                        profileImages.length,
+                                        (index) {
+                                          // 최대 4명까지 프로필을 띄울 수 있도록 설정
+                                          if (index >= 4) return Container();
+
+                                          return Positioned(
+                                            left: 14.0 *
+                                                index, // 위치를 조금씩 왼쪽으로 이동시켜서 겹치게 함
+                                            child: Container(
+                                              width: 18,
+                                              height: 18,
+                                              decoration: ShapeDecoration(
+                                                color: const Color(0xFFF3F3F3),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(43),
+                                                ),
+                                                shadows: const [
+                                                  BoxShadow(
+                                                    color: Color(0x3F000000),
+                                                    blurRadius: 1,
+                                                    offset: Offset(0.20, 0.20),
+                                                    spreadRadius: 0,
+                                                  )
+                                                ],
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(43),
+                                                child: Image.asset(
+                                                  profileImages[
+                                                      index], // 이미지 리스트에서 해당 이미지를 가져와서 표시
+                                                  fit: BoxFit
+                                                      .cover, // 이미지를 컨테이너에 맞게 조정
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    '${todaysTok['participantCount']}명이 참여했어요',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.50,
+                                      letterSpacing: -0.30,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
                 const SizedBox(
                   height: 36,
