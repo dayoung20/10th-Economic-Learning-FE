@@ -122,8 +122,8 @@ class LearningConceptController extends GetxController {
 
   /// 개념 학습 완료 처리
   Future<void> completeLearningSet() async {
-    bool success =
-        await _remoteDataSource.completeLearningConcept(learningSetId.value);
+    bool success = await _remoteDataSource.completeLearningConcept(
+        learningSetId.value, getApiLevel());
     if (success) {
       print("개념 학습 완료: ${learningSetId.value}");
       clickedFinishBtn();

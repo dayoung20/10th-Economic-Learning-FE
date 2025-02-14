@@ -2011,8 +2011,9 @@ class RemoteDataSource {
 
   /// 개념 학습 완료 처리
   /// API: api/v1/learning/{learningSetId}/concepts/complete
-  Future<bool> completeLearningConcept(int learningSetId) async {
-    String endpoint = 'api/v1/learning/$learningSetId/concepts/complete';
+  Future<bool> completeLearningConcept(int learningSetId, String level) async {
+    String endpoint =
+        'api/v1/learning/$learningSetId/concepts/complete?level=$level';
 
     try {
       final response = await _postApi(endpoint);
@@ -2076,5 +2077,25 @@ class RemoteDataSource {
   /// api: api/v1/post/popular
   Future<Map<String, dynamic>?> getPopularPosts() async {
     return await _getApiWithHeader('api/v1/post/popular', accessToken);
+  }
+
+  /// 유저가 완료한 학습과 퀴즈 갯수 반환
+  /// API: api/v1/user/completed
+  Future<Map<String, dynamic>> fetchUserCompleted() async {
+    String endPoint = 'api/v1/user/completed';
+
+    try {
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response['isSuccess'] == true) {
+        return Map<String, int>.from(response['results']);
+      } else {
+        debugPrint("유저가 완료한 학습과 퀴즈 갯수 조회 실패: ${response?['message']}");
+        return {};
+      }
+    } catch (e) {
+      debugPrint("fetchUserCompleted() 오류 발생: $e");
+      return {};
+    }
   }
 }

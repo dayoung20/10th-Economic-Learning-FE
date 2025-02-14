@@ -335,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                                           child: GestureDetector(
                                             onTap: () => controller
                                                 .isProgressContainerVisible
-                                                .value = false,
+                                                .value = true,
                                             child: const Icon(
                                               Icons.close,
                                               color: Colors.white,
