@@ -183,9 +183,9 @@ class TalkDetailPage extends StatelessWidget {
                                     color: Color(0xff767676),
                                   ),
                                 ),
-                                const Text(
-                                  '999+', // 댓글 수 연결 필요
-                                  style: TextStyle(
+                                Text(
+                                  '${post['participantCount']}',
+                                  style: const TextStyle(
                                     color: Color(0xFF767676),
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,

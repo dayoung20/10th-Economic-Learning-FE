@@ -1,5 +1,5 @@
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';
-import 'package:economic_fe/view_model/finish_controller.dart';
+import 'package:economic_fe/view_model/finish/finish_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
