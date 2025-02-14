@@ -47,6 +47,8 @@ class HomeController extends GetxController {
 
   // 오늘의 경제톡톡 주제
   RxMap<String, dynamic> todaysTokDetail = <String, dynamic>{}.obs;
+  // 오늘의 경제톡톡 참여자 프로필 리스트
+  RxList<String> participantProfileImages = <String>[].obs;
 
   // 인기 게시물 목록
   RxList<PostModel> popularPosts = <PostModel>[].obs;
@@ -223,6 +225,17 @@ class HomeController extends GetxController {
 
       if (todaysTok != null) {
         todaysTokDetail.value = todaysTok;
+
+        // 프로필 이미지 리스트 저장
+        var userProfiles = todaysTokDetail["userRandomProfileListResponse"]
+            ?["userRandomProfileResponseList"] as List<dynamic>?;
+
+        if (userProfiles != null) {
+          participantProfileImages.value = userProfiles
+              .map((user) => user["profileImageUrl"] as String? ?? "")
+              .where((url) => url.isNotEmpty) // 빈 URL 제거
+              .toList();
+        }
       }
     } catch (e) {
       print('오늘의 경제톡톡 주제 조회 중 오류 발생: $e');

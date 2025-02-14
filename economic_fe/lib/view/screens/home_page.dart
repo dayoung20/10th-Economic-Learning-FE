@@ -605,70 +605,99 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(
                                 height: 49,
                               ),
-                              // 톡톡에 참여한 사람들
+                              // API에서 받아온 랜덤 프로필 리스트 활용
                               Row(
                                 children: [
-                                  // 프로필 (최대 4명)
-                                  SizedBox(
-                                    width: 60,
-                                    height: 18,
-                                    child: Stack(
-                                      children: List.generate(
-                                        profileImages.length,
-                                        (index) {
-                                          // 최대 4명까지 프로필을 띄울 수 있도록 설정
-                                          if (index >= 4) return Container();
+                                  Obx(() {
+                                    int profileCount = controller
+                                        .participantProfileImages.length
+                                        .clamp(0, 4); // 최대 4개
+                                    double spacing = profileCount > 0
+                                        ? 14.0 * (profileCount - 1) + 20
+                                        : 0;
 
-                                          return Positioned(
-                                            left: 14.0 *
-                                                index, // 위치를 조금씩 왼쪽으로 이동시켜서 겹치게 함
-                                            child: Container(
-                                              width: 18,
-                                              height: 18,
-                                              decoration: ShapeDecoration(
-                                                color: const Color(0xFFF3F3F3),
-                                                shape: RoundedRectangleBorder(
+                                    return SizedBox(
+                                      width: spacing, // 프로필 개수에 따른 크기 조절
+                                      height: 18,
+                                      child: Stack(
+                                        children: List.generate(
+                                          profileCount,
+                                          (index) {
+                                            return Positioned(
+                                              left: 14.0 * index, // 위치를 겹치게 조정
+                                              child: Container(
+                                                width: 18,
+                                                height: 18,
+                                                decoration: ShapeDecoration(
+                                                  color:
+                                                      const Color(0xFFF3F3F3),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            43),
+                                                  ),
+                                                  shadows: const [
+                                                    BoxShadow(
+                                                      color: Color(0x3F000000),
+                                                      blurRadius: 1,
+                                                      offset:
+                                                          Offset(0.20, 0.20),
+                                                      spreadRadius: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                                child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(43),
+                                                  child: controller
+                                                          .participantProfileImages[
+                                                              index]
+                                                          .isNotEmpty
+                                                      ? Image.network(
+                                                          controller
+                                                                  .participantProfileImages[
+                                                              index],
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              Image.asset(
+                                                                  'assets/default_profile.png'),
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/default_profile.png'), // 기본 이미지
                                                 ),
-                                                shadows: const [
-                                                  BoxShadow(
-                                                    color: Color(0x3F000000),
-                                                    blurRadius: 1,
-                                                    offset: Offset(0.20, 0.20),
-                                                    spreadRadius: 0,
-                                                  )
-                                                ],
                                               ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(43),
-                                                child: Image.asset(
-                                                  profileImages[
-                                                      index], // 이미지 리스트에서 해당 이미지를 가져와서 표시
-                                                  fit: BoxFit
-                                                      .cover, // 이미지를 컨테이너에 맞게 조정
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                            );
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '${todaysTok['participantCount']}명이 참여했어요',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.50,
-                                      letterSpacing: -0.30,
-                                    ),
-                                  ),
+                                    );
+                                  }),
+
+                                  // 🔹 프로필 개수에 따라 동적으로 간격 조정
+                                  Obx(() {
+                                    int profileCount = controller
+                                        .participantProfileImages.length
+                                        .clamp(0, 4);
+                                    double textPadding =
+                                        profileCount > 0 ? 5.0 : 0;
+
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          left: textPadding), // 동적 간격 조절
+                                      child: Text(
+                                        '${controller.todaysTokDetail["participantCount"] ?? 0}명이 참여했어요',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.50,
+                                          letterSpacing: -0.30,
+                                        ),
+                                      ),
+                                    );
+                                  }),
                                 ],
                               ),
                             ],
@@ -741,7 +770,7 @@ class _HomePageState extends State<HomePage> {
                                         : BorderSide.none),
                               ),
                               child: PopularPosts(
-                                category: post.type!,
+                                category: post.translatedType,
                                 title: post.title!,
                                 likesCount: post.likeCount!,
                                 commentsCount: post.commentCount!,
@@ -750,60 +779,6 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         ),
-                        // Container(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: 24, vertical: 20),
-                        //   decoration: const BoxDecoration(
-                        //     color: Colors.white,
-                        //     borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(16),
-                        //       topRight: Radius.circular(16),
-                        //     ),
-                        //     border: Border(
-                        //       left: BorderSide(
-                        //           width: 1, color: Color(0xFFA2A2A2)),
-                        //       top: BorderSide(
-                        //           width: 1, color: Color(0xFFA2A2A2)),
-                        //       right: BorderSide(
-                        //           width: 1, color: Color(0xFFA2A2A2)),
-                        //     ),
-                        //   ),
-                        //   constraints: const BoxConstraints(
-                        //     minWidth: 328, // 최소 너비 제한
-                        //   ),
-                        //   child: const PopularPosts(
-                        //     category: '자유',
-                        //     title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
-                        //     likesCount: 1,
-                        //     commentsCount: 1,
-                        //     time: 4,
-                        //   ),
-                        // ),
-                        // Container(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: 24, vertical: 20),
-                        //   decoration: const ShapeDecoration(
-                        //     color: Colors.white,
-                        //     shape: RoundedRectangleBorder(
-                        //       side: BorderSide(
-                        //           width: 1, color: Color(0xFFA2A2A2)),
-                        //       borderRadius: BorderRadius.only(
-                        //         bottomLeft: Radius.circular(16),
-                        //         bottomRight: Radius.circular(16),
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   constraints: const BoxConstraints(
-                        //     minWidth: 328, // 최소 너비 제한
-                        //   ),
-                        //   child: const PopularPosts(
-                        //     category: '인기',
-                        //     title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
-                        //     likesCount: 1,
-                        //     commentsCount: 1,
-                        //     time: 4,
-                        //   ),
-                        // ),
                       );
                     }),
                   ),

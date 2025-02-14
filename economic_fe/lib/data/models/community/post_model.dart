@@ -36,4 +36,22 @@ class PostModel with ChangeNotifier {
       createdDate: json['createdDate'],
     );
   }
+
+  // 한국어 변환된 카테고리를 반환하는 getter
+  String get translatedType {
+    switch (type) {
+      case 'ECONOMY_TALK':
+        return '경제 톡톡';
+      case 'FREE':
+        return '자유';
+      case 'QUESTION':
+        return '질문';
+      case 'INFORMATION':
+        return '정보 공유';
+      case 'BOOK_RECOMMENDATION':
+        return '책추천';
+      default:
+        return '기타'; // 기본값
+    }
+  }
 }
