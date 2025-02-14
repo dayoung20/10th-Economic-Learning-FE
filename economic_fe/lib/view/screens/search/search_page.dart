@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/data/models/community/post_model.dart';
+import 'package:economic_fe/data/models/community/tok_model.dart';
 import 'package:economic_fe/data/models/dictionary_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
@@ -148,6 +149,7 @@ class _SearchPageState extends State<SearchPage>
             controller.searchTerms,
             controller.searchNews,
             controller.searchPosts,
+            controller.searchToks,
           );
         }
 
@@ -159,8 +161,11 @@ class _SearchPageState extends State<SearchPage>
           case 2: // 경제 기사
             results = controller.searchNews;
             break;
-          default: // 일반 게시판
+          case 3: // 일반 게시판
             results = controller.searchPosts;
+            break;
+          default: // 경제 톡톡
+            results = controller.searchToks;
         }
 
         return results.isEmpty
@@ -175,7 +180,8 @@ class _SearchPageState extends State<SearchPage>
                 itemBuilder: (_, i) {
                   switch (controller.selectedTabIndex.value) {
                     case 0: // 통합
-                      return _buildAll(results[i], results[i], results[i]);
+                      return _buildAll(
+                          results[i], results[i], results[i], results[i]);
 
                     case 1: // 용어사전 (Dictionary)
                       return _buildDictionaryCard(results[i]);
@@ -186,8 +192,8 @@ class _SearchPageState extends State<SearchPage>
                     case 3: // 일반 게시글
                       return _buildPostCard(results[i]);
 
-                    default: // 일반 게시글 (Posts)
-                      return _buildPostCard(results[i]);
+                    default: // 경제 톡톡
+                      return _buildTokCard(results[i]);
                   }
                 },
               );
@@ -197,7 +203,7 @@ class _SearchPageState extends State<SearchPage>
 
   /// 통합 검색 결과 (카테고리별 표시)
   Widget _buildAll(List<DictionaryModel> terms, List<ArticleModel> news,
-      List<PostModel> posts) {
+      List<PostModel> posts, List<TokModel> toks) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,6 +214,8 @@ class _SearchPageState extends State<SearchPage>
             _buildCategorySection("경제 기사", news, _buildNewsCard, 2),
           if (posts.isNotEmpty)
             _buildCategorySection("일반 게시판", posts, _buildPostCard, 3),
+          if (toks.isNotEmpty)
+            _buildCategorySection("경제 톡톡", toks, _buildTokCard, 4),
         ],
       ),
     );
@@ -624,6 +632,161 @@ class _SearchPageState extends State<SearchPage>
                     ),
                   )
                 : const SizedBox()
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 경제 톡톡 UI
+  Widget _buildTokCard(TokModel tok) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: GestureDetector(
+        onTap: () {
+          Get.toNamed(
+            '/community/talk_detail',
+            arguments: tok.id,
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // 경제톡톡 이미지
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: // 이미지가 있는 경우에만 표시
+                  tok.imageUrl != null && tok.imageUrl!.isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(7),
+                          child: Image.network(
+                            tok.imageUrl!,
+                            width: 97,
+                            height: 118,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                              width: 97,
+                              height: 118,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: const Icon(Icons.image_not_supported,
+                                  color: Colors.grey),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: 97,
+                          height: 118,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/talk_image_sample.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - (32 + 97 + 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${tok.participantCount}명이 참여했어요',
+                        style: const TextStyle(
+                          color: Color(0xFF767676),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          height: 1.50,
+                          letterSpacing: -0.33,
+                        ),
+                      ),
+                      Text(
+                        tok.createdDate!,
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(
+                          color: Color(0xFFA2A2A2),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          height: 1.50,
+                          letterSpacing: -0.30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - (32 + 97 + 12),
+                  height: 60,
+                  child: Flexible(
+                    child: Text(
+                      tok.title!,
+                      style: const TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        height: 1.30,
+                        letterSpacing: -0.38,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 2),
+                      child: Icon(
+                        Icons.favorite_border,
+                        size: 18,
+                        color: Color(0xff767676),
+                      ),
+                    ),
+                    Text(
+                      '${tok.likeCount}',
+                      style: const TextStyle(
+                        color: Color(0xFF767676),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 1.50,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 2),
+                      child: Icon(
+                        Icons.chat_bubble_outline,
+                        size: 18,
+                        color: Color(0xff767676),
+                      ),
+                    ),
+                    Text(
+                      '${tok.participantCount}',
+                      style: const TextStyle(
+                        color: Color(0xFF767676),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        height: 1.50,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ),

@@ -1562,7 +1562,6 @@ class RemoteDataSource {
     return searchResults;
   }
 
-
   /// api/v1/level-test/quiz
   /// 레벨 테스트 퀴즈 목록 조회
   Future<dynamic> getLevelTestQuizList() async {
@@ -1606,6 +1605,39 @@ class RemoteDataSource {
     }
 
     return null; // 실패 시 null 반환
+  }
+
+  /// 톡톡 게시글 검색
+  /// api: api/v1/search/toktoks
+  Future<List<dynamic>> searchTokToks(String keyword) async {
+    List<dynamic> searchResults = [];
+    int currentPage = 0;
+    int totalPages = 0; // 초기값 설정
+
+    try {
+      while (currentPage <= totalPages) {
+        String endPoint =
+            'api/v1/search/toktoks?keyword=$keyword&page=$currentPage';
+
+        var response = await _getApiWithHeader(endPoint, accessToken);
+
+        if (response != null && response["isSuccess"] == true) {
+          var results = response["results"];
+          searchResults
+              .addAll(results["toktokPreviewResponseList"]); // 현재 페이지 데이터 추가
+          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
+          currentPage++; // 다음 페이지로 이동
+        } else {
+          debugPrint("게시글 검색 실패: ${response["message"]}");
+          break;
+        }
+      }
+    } catch (e) {
+      debugPrint("게시글 검색 중 오류 발생: $e");
+    }
+
+    return searchResults;
+  }
 
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
@@ -1850,6 +1882,25 @@ class RemoteDataSource {
       debugPrint('푸시 알림 설정 중 예외 발생: $e');
       return false;
     }
+  }
 
+  /// 오늘의 퀘스트 완료 여부 조회
+  /// API: api/v1/attendance/today-quest
+  Future<Map<String, dynamic>> fetchTodayQuestProgress() async {
+    String endPoint = 'api/v1/attendance/today-quest';
+
+    try {
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response['isSuccess'] == true) {
+        return Map<String, dynamic>.from(response['results']);
+      } else {
+        debugPrint("오늘의 퀘스트 완료 여부 조회 실패: ${response?['message']}");
+        return {};
+      }
+    } catch (e) {
+      debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
+      return {};
+    }
   }
 }
