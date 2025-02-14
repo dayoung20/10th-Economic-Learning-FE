@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MypageHomeController extends GetxController {
+  static MypageHomeController get to => Get.find(); // 전역 접근 가능하도록 설정
+
   final RemoteDataSource _remoteDataSource = RemoteDataSource();
   final ImagePickerService _imagePickerService = ImagePickerService();
 

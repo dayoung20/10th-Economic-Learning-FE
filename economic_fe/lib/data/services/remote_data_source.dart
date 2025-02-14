@@ -1639,6 +1639,7 @@ class RemoteDataSource {
     return searchResults;
   }
 
+
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
   Future<Map<String, dynamic>?> getUserGoal() async {
@@ -1884,6 +1885,140 @@ class RemoteDataSource {
     }
   }
 
+
+  /// 레벨별 학습 세트 조회
+  /// API: api/v1/learning
+  Future<List<Map<String, dynamic>>> fetchLearningList() async {
+    List<Map<String, dynamic>> learningList = [];
+
+    try {
+      String endPoint = 'api/v1/learning';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        learningList = List<Map<String, dynamic>>.from(
+            response["results"]["learningSetPreviewList"]);
+      } else {
+        debugPrint("학습 세트 미리보기 조회 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("학습 세트 미리보기 조회 중 오류 발생: $e");
+    }
+
+    return learningList;
+  }
+
+  /// 개념 학습 세트 조회
+  /// API: api/v1/learning/{learningSetId}/concepts
+  Future<List<Map<String, dynamic>>> fetchLearningConcepts(
+      int learningSetId, String level) async {
+    List<Map<String, dynamic>> conceptList = [];
+
+    try {
+      String endPoint = 'api/v1/learning/$learningSetId/concepts?level=$level';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        conceptList =
+            List<Map<String, dynamic>>.from(response["results"]["conceptList"]);
+      } else {
+        debugPrint("레벨별 개념 학습 세트 조회 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("레벨별 개념 학습 세트 조회 중 오류 발생: $e");
+    }
+
+    return conceptList;
+  }
+
+  /// 개념 학습 스크랩
+  /// API: api/v1/learning/concept/{conceptId}/scrap
+  Future<bool> scrapLearningConcept(int conceptId) async {
+    String endpoint = 'api/v1/learning/concept/$conceptId/scrap';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 스크랩');
+        return true;
+      } else {
+        debugPrint('개념 학습 스크랩 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 스크랩 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 개념 학습 스크랩 취소
+  /// API: api/v1/learning/concept/{conceptId}/scrap
+  Future<bool> deleteConceptScrap(int conceptId) async {
+    String endpoint = 'api/v1/learning/concept/$conceptId/scrap';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 스크랩 취소 성공');
+        return true;
+      } else {
+        debugPrint(
+            '개념 학습 스크랩 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 스크랩 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 개념 학습 완료 처리
+  /// API: api/v1/learning/{learningSetId}/concepts/complete
+  Future<bool> completeLearningConcept(int learningSetId) async {
+    String endpoint = 'api/v1/learning/$learningSetId/concepts/complete';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 완료 처리');
+        return true;
+      } else {
+        debugPrint('개념 학습 완료 처리 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 완료 처리 중 예외 발생: $e');
+      return false;
+    }
+  }
+
+  /// 개별 개념 학습 조회
+  /// API: api/v1/learning/concept/{conceptId}
+  Future<Map<String, dynamic>> fetchSingleConcept(int conceptId) async {
+    Map<String, dynamic> concept = {};
+
+    try {
+      String endPoint = 'api/v1/learning/concept/$conceptId';
+
+      var response = await _getApiWithHeader(endPoint, accessToken);
+
+      if (response != null && response["isSuccess"] == true) {
+        concept = Map<String, dynamic>.from(response["results"]);
+      } else {
+        debugPrint("개별 개념 학습 조회 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("개별 개념 학습 조회 중 오류 발생: $e");
+    }
+
+    return concept;
+
+
   /// 오늘의 퀘스트 완료 여부 조회
   /// API: api/v1/attendance/today-quest
   Future<Map<String, dynamic>> fetchTodayQuestProgress() async {
@@ -1902,5 +2037,6 @@ class RemoteDataSource {
       debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
       return {};
     }
+
   }
 }

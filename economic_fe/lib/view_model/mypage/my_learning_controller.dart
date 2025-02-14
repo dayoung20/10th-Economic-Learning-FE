@@ -93,6 +93,24 @@ class MyLearningController extends GetxController
     }
   }
 
+  // 학습 스크랩 삭제
+  Future<void> deleteScrapedConcept(int conceptId) async {
+    debugPrint("deleteScrapedConcept() 실행됨");
+    try {
+      bool response = await remoteDataSource.deleteConceptScrap(conceptId);
+      if (response) {
+        debugPrint("개념 학습 스크랩 삭제 완료");
+
+        // UI에서 즉시 제거
+        scrapConcepts.removeWhere((concept) => concept["id"] == conceptId);
+      } else {
+        debugPrint("개념 학습 스크랩 삭제 실패");
+      }
+    } catch (e) {
+      debugPrint("deleteScrapedConcept() 오류 발생: $e");
+    }
+  }
+
   Future<void> fetchScrapQuizzes() async {
     try {
       final response =
