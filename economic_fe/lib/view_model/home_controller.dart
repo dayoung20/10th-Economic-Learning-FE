@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/data/models/community/post_model.dart';
+import 'package:economic_fe/data/models/user_profile.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GoRouter import
@@ -8,9 +9,10 @@ class HomeController extends GetxController {
   final remoteDataSource = RemoteDataSource();
 
   var currentStreak = 0.obs; // 연속 출석 날짜
+  var isLevelTestCompleted = false.obs; // 레벨테스트 완료 여부
 
   // 진도율 가시성 관리 (레벨테스트 진행 여부에 따른 로직으로 수정 필요)
-  var isProgressContainerVisible = true.obs;
+  var isProgressContainerVisible = false.obs;
 
   // 레벨테스트 시작 화면으로
   void toLevelTest() {
@@ -86,6 +88,30 @@ class HomeController extends GetxController {
     getNewsList(0, "RECENT", null);
     fetchTodaysTok();
     getPopularPosts();
+    fetchUserProfile();
+  }
+
+  /// 사용자 정보 조회 (레벨테스트 진행 여부 확인)
+  Future<void> fetchUserProfile() async {
+    try {
+      var response = await remoteDataSource.fetchUserInfo();
+
+      if (response.isNotEmpty) {
+        // `UserProfile` 모델을 통해 안전하게 변환
+        UserProfile userProfile = UserProfile.fromJson(response);
+
+        // 레벨테스트 완료 여부 업데이트
+        isLevelTestCompleted.value = userProfile.isLevelTestCompleted ?? false;
+        debugPrint("레벨테스트 진행 여부: ${isLevelTestCompleted.value}");
+
+        // UI 업데이트
+        isProgressContainerVisible.value = isLevelTestCompleted.value;
+      } else {
+        debugPrint("사용자 정보 조회 실패: 응답이 비어 있음");
+      }
+    } catch (e) {
+      debugPrint("fetchUserProfile() 오류 발생: $e");
+    }
   }
 
   // 연속 출석 날짜 조회

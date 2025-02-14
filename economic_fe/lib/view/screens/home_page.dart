@@ -314,7 +314,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Obx(() {
-                          return controller.isProgressContainerVisible.value
+                          return controller.isProgressContainerVisible.value ==
+                                  false
                               ? Container(
                                   width: 337,
                                   height: 292,

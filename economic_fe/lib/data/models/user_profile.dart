@@ -13,6 +13,7 @@ class UserProfile {
   bool? isLearningAlarmAllowed;
   bool? isCommunityAlarmAllowed;
   int? imageId;
+  bool? isLevelTestCompleted;
 
   UserProfile({
     this.userId,
@@ -29,6 +30,7 @@ class UserProfile {
     this.isLearningAlarmAllowed = true, // 기본값
     this.isCommunityAlarmAllowed = true, // 기본값
     this.imageId,
+    this.isLevelTestCompleted,
   });
 
   // JSON 변환
@@ -43,6 +45,7 @@ class UserProfile {
       isLearningAlarmAllowed: json['isLearningAlarmAllowed'] ?? true,
       isCommunityAlarmAllowed: json['isCommunityAlarmAllowed'] ?? true,
       imageId: json['imageId'],
+      isLevelTestCompleted: json['isLevelTestCompleted'],
     );
   }
 
@@ -57,6 +60,7 @@ class UserProfile {
       "isLearningAlarmAllowed": isLearningAlarmAllowed,
       "isCommunityAlarmAllowed": isCommunityAlarmAllowed,
       "imageId": imageId,
+      "isLevelTestCompleted": isLevelTestCompleted,
     };
   }
 

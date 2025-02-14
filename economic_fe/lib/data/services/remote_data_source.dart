@@ -1868,23 +1868,34 @@ class RemoteDataSource {
   /// 회원 정보 조회
   /// api: api/v1/user/info
   Future<Map<String, dynamic>> fetchUserInfo() async {
-    Map<String, dynamic> userInfo = {};
-
     try {
       String endPoint = 'api/v1/user/info';
-
       var response = await _getApiWithHeader(endPoint, accessToken);
 
-      if (response != null && response["isSuccess"] == true) {
-        userInfo = response["results"];
+      // 응답이 null인지 체크
+      if (response == null) {
+        debugPrint("API 응답이 null입니다.");
+        return {}; // 빈 Map 반환
+      }
+
+      // 응답이 성공적인지 체크
+      if (response["isSuccess"] == true) {
+        // results가 존재하는지 체크하여 기본값 설정
+        final results = response["results"];
+        if (results != null && results is Map<String, dynamic>) {
+          return results;
+        } else {
+          debugPrint("사용자 프로필 조회 실패: results가 null이거나 올바른 형식이 아님");
+          return {}; // 빈 Map 반환
+        }
       } else {
         debugPrint("사용자 프로필 조회 실패: ${response["message"]}");
+        return {}; // 빈 Map 반환
       }
     } catch (e) {
       debugPrint("사용자 프로필 조회 중 오류 발생: $e");
+      return {}; // 예외 발생 시 빈 Map 반환
     }
-
-    return userInfo;
   }
 
   /// 푸시 알림 설정
