@@ -1663,7 +1663,6 @@ class RemoteDataSource {
     return searchResults;
   }
 
-
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
   Future<Map<String, dynamic>?> getUserGoal() async {
@@ -1909,7 +1908,6 @@ class RemoteDataSource {
     }
   }
 
-
   /// 레벨별 학습 세트 조회
   /// API: api/v1/learning
   Future<List<Map<String, dynamic>>> fetchLearningList() async {
@@ -2041,7 +2039,7 @@ class RemoteDataSource {
     }
 
     return concept;
-
+  }
 
   /// 오늘의 퀘스트 완료 여부 조회
   /// API: api/v1/attendance/today-quest
@@ -2061,7 +2059,6 @@ class RemoteDataSource {
       debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
       return {};
     }
-
   }
 
   /// 인기 게시글 목록 조회
