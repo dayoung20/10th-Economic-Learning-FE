@@ -22,7 +22,7 @@ class _CommunityPageState extends State<CommunityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: HomeAppBar(dayCounts: dayCounts),
+      appBar: const HomeAppBar(),
       body: Obx(() {
         return Stack(
           children: [

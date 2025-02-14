@@ -467,6 +467,30 @@ class RemoteDataSource {
     return response;
   }
 
+  /// 뉴스 목록 조회 (카카오 로그인 X)
+  /// api/news
+  Future<dynamic> getNewsList2(int page, String sort, String? category) async {
+    dynamic response;
+    if (category != null) {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort&category=$category',
+        accessToken,
+      );
+    } else {
+      response = await _getApiWithHeader(
+        'api/news?page=$page&sort=$sort',
+        accessToken,
+      );
+    }
+
+    if (response != null) {
+      print('응답 데이터 : $response');
+    } else {
+      print('데이터 get 실패');
+    }
+    return response;
+  }
+
   /// api/news/{id}/scrap
   /// 뉴스 스크랩
   Future<dynamic> postNewsScrap(int id) async {
@@ -1639,7 +1663,6 @@ class RemoteDataSource {
     return searchResults;
   }
 
-
   /// 사용자 퀘스트 목표 조회
   /// api: api/v1/user/goal
   Future<Map<String, dynamic>?> getUserGoal() async {
@@ -1845,23 +1868,34 @@ class RemoteDataSource {
   /// 회원 정보 조회
   /// api: api/v1/user/info
   Future<Map<String, dynamic>> fetchUserInfo() async {
-    Map<String, dynamic> userInfo = {};
-
     try {
       String endPoint = 'api/v1/user/info';
-
       var response = await _getApiWithHeader(endPoint, accessToken);
 
-      if (response != null && response["isSuccess"] == true) {
-        userInfo = response["results"];
+      // 응답이 null인지 체크
+      if (response == null) {
+        debugPrint("API 응답이 null입니다.");
+        return {}; // 빈 Map 반환
+      }
+
+      // 응답이 성공적인지 체크
+      if (response["isSuccess"] == true) {
+        // results가 존재하는지 체크하여 기본값 설정
+        final results = response["results"];
+        if (results != null && results is Map<String, dynamic>) {
+          return results;
+        } else {
+          debugPrint("사용자 프로필 조회 실패: results가 null이거나 올바른 형식이 아님");
+          return {}; // 빈 Map 반환
+        }
       } else {
         debugPrint("사용자 프로필 조회 실패: ${response["message"]}");
+        return {}; // 빈 Map 반환
       }
     } catch (e) {
       debugPrint("사용자 프로필 조회 중 오류 발생: $e");
+      return {}; // 예외 발생 시 빈 Map 반환
     }
-
-    return userInfo;
   }
 
   /// 푸시 알림 설정
@@ -1884,7 +1918,6 @@ class RemoteDataSource {
       return false;
     }
   }
-
 
   /// 레벨별 학습 세트 조회
   /// API: api/v1/learning
@@ -2017,7 +2050,7 @@ class RemoteDataSource {
     }
 
     return concept;
-
+  }
 
   /// 오늘의 퀘스트 완료 여부 조회
   /// API: api/v1/attendance/today-quest
@@ -2037,6 +2070,11 @@ class RemoteDataSource {
       debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
       return {};
     }
+  }
 
+  /// 인기 게시글 목록 조회
+  /// api: api/v1/post/popular
+  Future<Map<String, dynamic>?> getPopularPosts() async {
+    return await _getApiWithHeader('api/v1/post/popular', accessToken);
   }
 }

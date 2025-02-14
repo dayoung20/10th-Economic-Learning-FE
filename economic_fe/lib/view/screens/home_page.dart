@@ -1,3 +1,4 @@
+import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
@@ -19,9 +20,6 @@ class _HomePageState extends State<HomePage> {
     // GetX 컨트롤러 가져오기
     final HomeController controller = Get.put(HomeController());
 
-    // 연속 학습일
-    const int dayCounts = 3;
-
     // 경제 톡톡 참여자 프로필 사진 리스트
     const List<String> profileImages = [
       'assets/profile_example.png',
@@ -33,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: const HomeAppBar(dayCounts: dayCounts),
+      appBar: const HomeAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -316,7 +314,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Obx(() {
-                          return controller.isProgressContainerVisible.value
+                          return controller.isProgressContainerVisible.value ==
+                                  false
                               ? Container(
                                   width: 337,
                                   height: 292,
@@ -479,44 +478,55 @@ class _HomePageState extends State<HomePage> {
                   title: '경제 기사',
                   onTap: () {
                     // 경제 기사 화면으로 이동
+                    Get.toNamed('/article');
                   },
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                // 경제 기사 예시 (3개)
-                const ExampleArticle(
-                  category: '경기 분석',
-                  headline: '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffd9d9d9),
+                // 경제 기사 리스트 불러오기
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.articles.isEmpty) {
+                    return const Center(child: Text("불러올 경제 기사가 없습니다."));
+                  }
+
+                  return Column(
+                    children: List.generate(
+                      5,
+                      (index) {
+                        if (index.isOdd) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Divider(
+                              color: Colors.grey.shade300,
+                              thickness: 1,
+                              height: 16,
+                            ),
+                          );
+                        }
+
+                        final article = controller.articles[index ~/ 2];
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed(
+                              '/article/detail',
+                              arguments: article,
+                            );
+                          },
+                          child: ExampleArticle(
+                            category: article.translatedCategory,
+                            headline: article.title ?? "제목 없음",
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                ),
-                const ExampleArticle(
-                  category: '금융',
-                  headline: '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffd9d9d9),
-                    ),
-                  ),
-                ),
-                const ExampleArticle(
-                  category: '경기 분석',
-                  headline: '[속보] 정부 “러시아 전면전 감행시 수출 통제 등 제제 동참할 수 밖에"',
-                ),
+                  );
+                }),
+
                 const SizedBox(
                   height: 36,
                 ),
@@ -524,7 +534,7 @@ class _HomePageState extends State<HomePage> {
                 TitleWithMoreBtn(
                   title: '경제 톡톡',
                   onTap: () {
-                    // 경제 톡톡 화면으로 이동
+                    Get.toNamed('/community');
                   },
                 ),
                 const SizedBox(
@@ -533,122 +543,169 @@ class _HomePageState extends State<HomePage> {
                 // 경제 톡톡 주제 컨테이너
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(width: 1, color: const Color(0xFFA2A2A2)),
-                      image: DecorationImage(
-                        image: const AssetImage(
-                            'assets/image_example.png'), // 배경 이미지
-                        fit: BoxFit.cover, // 이미지 크기 조정
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.1), // 어두운 색을 덧씌우고 불투명도를 조정
-                          BlendMode.darken, // BlendMode.darken을 사용해 이미지를 어둡게 함
-                        ),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            '저축은 어떻게?\n체계적으로? 아님?',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -0.55,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const Text(
-                            '현재 뜨거운 톡톡!',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: 'Pretendard Variable',
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: -0.35,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 49,
-                          ),
-                          // 톡톡에 참여한 사람들
-                          Row(
-                            children: [
-                              // 프로필 (최대 4명)
-                              SizedBox(
-                                width: 60,
-                                height: 18,
-                                child: Stack(
-                                  children: List.generate(
-                                    profileImages.length,
-                                    (index) {
-                                      // 최대 4명까지 프로필을 띄울 수 있도록 설정
-                                      if (index >= 4) return Container();
+                  child: Obx(() {
+                    if (controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-                                      return Positioned(
-                                        left: 14.0 *
-                                            index, // 위치를 조금씩 왼쪽으로 이동시켜서 겹치게 함
-                                        child: Container(
-                                          width: 18,
-                                          height: 18,
-                                          decoration: ShapeDecoration(
-                                            color: const Color(0xFFF3F3F3),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(43),
-                                            ),
-                                            shadows: const [
-                                              BoxShadow(
-                                                color: Color(0x3F000000),
-                                                blurRadius: 1,
-                                                offset: Offset(0.20, 0.20),
-                                                spreadRadius: 0,
-                                              )
-                                            ],
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(43),
-                                            child: Image.asset(
-                                              profileImages[
-                                                  index], // 이미지 리스트에서 해당 이미지를 가져와서 표시
-                                              fit: BoxFit
-                                                  .cover, // 이미지를 컨테이너에 맞게 조정
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                    var todaysTok = controller.todaysTokDetail;
+                    if (todaysTok.isEmpty) {
+                      return const Center(child: Text("오늘의 경제톡톡을 불러올 수 없습니다."));
+                    }
+
+                    return GestureDetector(
+                      onTap: () {
+                        controller.toTalkDetailPage(todaysTok['id']);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              width: 1, color: const Color(0xFFA2A2A2)),
+                          image: DecorationImage(
+                            image: todaysTok['imageUrl'] != null
+                                ? NetworkImage(todaysTok['imageUrl'])
+                                : const AssetImage(
+                                    'assets/talk_image_sample.png'), // 오늘의 경제톡톡 대표 이미지 연결 필요
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.35), // 어두운 필터 추가
+                              BlendMode.darken, // 어두운 필터 적용
+                            ),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                todaysTok['title'],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.55,
                                 ),
                               ),
                               const SizedBox(
-                                width: 5,
+                                height: 5,
                               ),
                               const Text(
-                                '$peopleCounts명이 참여했어요',
+                                '현재 뜨거운 톡톡!',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 12,
+                                  fontSize: 14,
+                                  fontFamily: 'Pretendard Variable',
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.30,
+                                  letterSpacing: -0.35,
                                 ),
+                              ),
+                              const SizedBox(
+                                height: 49,
+                              ),
+                              // API에서 받아온 랜덤 프로필 리스트 활용
+                              Row(
+                                children: [
+                                  Obx(() {
+                                    int profileCount = controller
+                                        .participantProfileImages.length
+                                        .clamp(0, 4); // 최대 4개
+                                    double spacing = profileCount > 0
+                                        ? 14.0 * (profileCount - 1) + 20
+                                        : 0;
+
+                                    return SizedBox(
+                                      width: spacing, // 프로필 개수에 따른 크기 조절
+                                      height: 18,
+                                      child: Stack(
+                                        children: List.generate(
+                                          profileCount,
+                                          (index) {
+                                            return Positioned(
+                                              left: 14.0 * index, // 위치를 겹치게 조정
+                                              child: Container(
+                                                width: 18,
+                                                height: 18,
+                                                decoration: ShapeDecoration(
+                                                  color:
+                                                      const Color(0xFFF3F3F3),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            43),
+                                                  ),
+                                                  shadows: const [
+                                                    BoxShadow(
+                                                      color: Color(0x3F000000),
+                                                      blurRadius: 1,
+                                                      offset:
+                                                          Offset(0.20, 0.20),
+                                                      spreadRadius: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(43),
+                                                  child: controller
+                                                          .participantProfileImages[
+                                                              index]
+                                                          .isNotEmpty
+                                                      ? Image.network(
+                                                          controller
+                                                                  .participantProfileImages[
+                                                              index],
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              Image.asset(
+                                                                  'assets/default_profile.png'),
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/default_profile.png'), // 기본 이미지
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  }),
+
+                                  // 🔹 프로필 개수에 따라 동적으로 간격 조정
+                                  Obx(() {
+                                    int profileCount = controller
+                                        .participantProfileImages.length
+                                        .clamp(0, 4);
+                                    double textPadding =
+                                        profileCount > 0 ? 5.0 : 0;
+
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          left: textPadding), // 동적 간격 조절
+                                      child: Text(
+                                        '${controller.todaysTokDetail["participantCount"] ?? 0}명이 참여했어요',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.50,
+                                          letterSpacing: -0.30,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
                 const SizedBox(
                   height: 36,
@@ -658,6 +715,7 @@ class _HomePageState extends State<HomePage> {
                   title: '인기게시물',
                   onTap: () {
                     // 커뮤니티 화면으로 이동
+                    Get.toNamed('/community');
                   },
                 ),
                 const SizedBox(
@@ -667,64 +725,62 @@ class _HomePageState extends State<HomePage> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                            ),
-                            border: Border(
-                              left: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                              top: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                              right: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                            ),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 328, // 최소 너비 제한
-                          ),
-                          child: const PopularPosts(
-                            category: '자유',
-                            title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
-                            likesCount: 1,
-                            commentsCount: 1,
-                            time: 4,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
-                          decoration: const ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Center(
+                            child: CircularProgressIndicator()); // 로딩 중
+                      }
+
+                      if (controller.popularPosts.isEmpty) {
+                        return const Center(
+                            child: Text("불러올 인기 게시글이 없습니다.")); // 게시글 없음
+                      }
+
+                      return Column(
+                        children: List.generate(
+                          controller.popularPosts.length.clamp(0, 2), // 최대 2개
+                          (index) {
+                            final post = controller.popularPosts[index];
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(index == 0 ? 16 : 0),
+                                  topRight:
+                                      Radius.circular(index == 0 ? 16 : 0),
+                                  bottomLeft:
+                                      Radius.circular(index == 1 ? 16 : 0),
+                                  bottomRight:
+                                      Radius.circular(index == 1 ? 16 : 0),
+                                ),
+                                border: Border(
+                                    left: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    right: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    top: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    bottom: index == 1
+                                        ? const BorderSide(
+                                            // width: index == 1 ? 1 : 0,
+                                            width: 1,
+                                            color: Color(0xFFA2A2A2))
+                                        : BorderSide.none),
                               ),
-                            ),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 328, // 최소 너비 제한
-                          ),
-                          child: const PopularPosts(
-                            category: '인기',
-                            title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
-                            likesCount: 1,
-                            commentsCount: 1,
-                            time: 4,
-                          ),
+                              child: PopularPosts(
+                                category: post.translatedType,
+                                title: post.title!,
+                                likesCount: post.likeCount!,
+                                commentsCount: post.commentCount!,
+                                time: post.createdDate!,
+                              ),
+                            );
+                          },
                         ),
-                      ],
-                    ),
+                      );
+                    }),
                   ),
                 ),
                 const SizedBox(
@@ -935,7 +991,7 @@ class PopularPosts extends StatelessWidget {
   final String title;
   final int likesCount;
   final int commentsCount;
-  final int time;
+  final String time;
 
   const PopularPosts({
     super.key,
@@ -1035,7 +1091,7 @@ class PopularPosts extends StatelessWidget {
             ),
             // 게시글 업로드 시간
             Text(
-              '$time시간 전',
+              time,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Color(0xFF767676),
