@@ -320,7 +320,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
           if (controller.scrapConcepts.isEmpty) {
             return const Center(
               child: Text(
-                '데이터가 없습니다.',
+                '스크랩한 학습이 없습니다.',
                 style: TextStyle(
                   fontSize: 16,
                   color: Color(0xFF767676),
@@ -335,49 +335,62 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: const Color(0xFFD9D9D9),
-                      width: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed(
+                      '/mypage/learning/learning_concept',
+                      arguments: {
+                        "conceptId": concept['id'],
+                        "learningSetName": concept['LearningSetName'],
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: const Color(0xFFD9D9D9),
+                        width: 1,
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            concept['LearningSetName'] ?? '',
-                            style: const TextStyle(
-                              color: Color(0xFF767676),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              concept['LearningSetName'] ?? '',
+                              style: const TextStyle(
+                                color: Color(0xFF767676),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            concept['name'] ?? '',
-                            style: const TextStyle(
-                              color: Color(0xFF404040),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
+                            const SizedBox(height: 2),
+                            Text(
+                              concept['name'] ?? '',
+                              style: const TextStyle(
+                                color: Color(0xFF404040),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.bookmark,
-                          color: Palette.buttonColorGreen,
+                          ],
                         ),
-                      ),
-                    ],
+                        GestureDetector(
+                          onTap: () {
+                            controller.deleteScrapedConcept(concept['id']);
+                          },
+                          child: const Icon(
+                            Icons.bookmark,
+                            color: Palette.buttonColorGreen,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -7,13 +7,13 @@ import 'package:get/get.dart';
 class LearningListItem extends StatefulWidget {
   final int setNum;
   final String setTitle;
-  final int index; // 각 아이템의 인덱스를 받기 위해 추가
+  final int index;
 
   const LearningListItem({
     super.key,
     required this.setNum,
     required this.setTitle,
-    required this.index, // 인덱스를 받기 위해 추가
+    required this.index,
   });
 
   @override
@@ -23,12 +23,17 @@ class LearningListItem extends StatefulWidget {
 class _LearningListItemState extends State<LearningListItem> {
   @override
   Widget build(BuildContext context) {
-    // LearningListController 가져오기
     final controller = Get.find<LearningListController>();
 
     return Obx(() {
-      // 선택된 아이템의 인덱스가 현재 아이템의 인덱스와 동일하면 decoration을 변경
+      // 현재 아이템이 선택되었는지 여부
       bool isSelected = controller.selectedItemIndex.value == widget.index;
+
+      // 현재 학습 세트 데이터 가져오기
+      final learningSet = controller.learningSetList.isNotEmpty &&
+              widget.index < controller.learningSetList.length
+          ? controller.learningSetList[widget.index]
+          : null;
 
       return Column(
         children: [
@@ -46,7 +51,7 @@ class _LearningListItemState extends State<LearningListItem> {
                   width: isSelected ? 3 : 1,
                   color: isSelected
                       ? const Color(0xFF1DB691)
-                      : const Color(0xFFD9D9D9), // 선택된 경우와 선택되지 않은 경우 색상 변경
+                      : const Color(0xFFD9D9D9),
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -88,10 +93,20 @@ class _LearningListItemState extends State<LearningListItem> {
                           padding: EdgeInsets.only(
                             top: ScreenUtils.getHeight(context, 3),
                           ),
-                          child: const Icon(
-                            Icons.check_circle_outline,
-                            color: Color(0xffA2A2A2),
-                          ),
+                          child: Obx(() {
+                            return Icon(
+                              controller.learningSetList[widget.index]
+                                          .isLearningSetCompleted ==
+                                      true
+                                  ? Icons.check_circle
+                                  : Icons.check_circle_outline,
+                              color: controller.learningSetList[widget.index]
+                                          .isLearningSetCompleted ==
+                                      true
+                                  ? Palette.buttonColorGreen
+                                  : const Color(0xffA2A2A2),
+                            );
+                          }),
                         ),
                       ],
                     ),
@@ -104,8 +119,7 @@ class _LearningListItemState extends State<LearningListItem> {
                         : Icons.keyboard_arrow_down,
                   ),
                   onPressed: () {
-                    controller
-                        .toggleItemSelection(widget.index); // 아이템 선택 상태 변경
+                    controller.toggleItemSelection(widget.index);
                   },
                 ),
               ],
@@ -114,14 +128,14 @@ class _LearningListItemState extends State<LearningListItem> {
           SizedBox(
             height: ScreenUtils.getHeight(context, 8),
           ),
-          // 상세 내용 표시
           if (isSelected) ...[
             SizedBox(
               height: ScreenUtils.getHeight(context, 8),
             ),
             GestureDetector(
               onTap: () {
-                controller.clickedLearningConcept(context);
+                controller.clickedLearningConcept(
+                    learningSet!.id!, learningSet.name!);
               },
               child: Container(
                 width: ScreenUtils.getWidth(context, 332),
@@ -148,12 +162,20 @@ class _LearningListItemState extends State<LearningListItem> {
                         -0.4,
                       ),
                     ),
-                    Icon(
-                      controller.learningState[widget.index]![0]
-                          ? Icons.check_circle_outline
-                          : Icons.abc,
-                      color: const Color(0xffa2a2a2),
-                    ),
+                    Obx(() {
+                      return Icon(
+                        controller.learningSetList[widget.index]
+                                    .isConceptCompleted ==
+                                true
+                            ? Icons.check_circle
+                            : Icons.check_circle_outline,
+                        color: controller.learningSetList[widget.index]
+                                    .isConceptCompleted ==
+                                true
+                            ? Palette.buttonColorGreen
+                            : const Color(0xffa2a2a2),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -185,10 +207,20 @@ class _LearningListItemState extends State<LearningListItem> {
                       -0.4,
                     ),
                   ),
-                  const Icon(
-                    Icons.check_circle_outline,
-                    color: Color(0xffa2a2a2),
-                  ),
+                  Obx(() {
+                    return Icon(
+                      controller.learningSetList[widget.index]
+                                  .isQuizCompleted ==
+                              true
+                          ? Icons.check_circle
+                          : Icons.check_circle_outline,
+                      color: controller.learningSetList[widget.index]
+                                  .isQuizCompleted ==
+                              true
+                          ? Palette.buttonColorGreen
+                          : const Color(0xffa2a2a2),
+                    );
+                  }),
                 ],
               ),
             ),
