@@ -1927,4 +1927,10 @@ class RemoteDataSource {
       return {};
     }
   }
+
+  /// 인기 게시글 목록 조회
+  /// api: api/v1/post/popular
+  Future<Map<String, dynamic>?> getPopularPosts() async {
+    return await _getApiWithHeader('api/v1/post/popular', accessToken);
+  }
 }

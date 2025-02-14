@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/article_model.dart';
+import 'package:economic_fe/data/models/community/post_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GoRouter import
@@ -45,6 +46,9 @@ class HomeController extends GetxController {
   // 오늘의 경제톡톡 주제
   RxMap<String, dynamic> todaysTokDetail = <String, dynamic>{}.obs;
 
+  // 인기 게시물 목록
+  RxList<PostModel> popularPosts = <PostModel>[].obs;
+
   void minusTempGoalSets(int index) {
     if (tempGoalSets[index] > minGoalSets) {
       tempGoalSets[index]--;
@@ -81,6 +85,7 @@ class HomeController extends GetxController {
     fetchCurrentStreak();
     getNewsList(0, "RECENT", null);
     fetchTodaysTok();
+    getPopularPosts();
   }
 
   // 연속 출석 날짜 조회
@@ -202,5 +207,27 @@ class HomeController extends GetxController {
 
   void toTalkDetailPage(int tokPostId) {
     Get.toNamed('/community/talk_detail', arguments: tokPostId);
+  }
+
+  // 인기 게시글 가져오기
+  Future<void> getPopularPosts() async {
+    try {
+      isLoading.value = true; // 로딩 시작
+      final response = await remoteDataSource.getPopularPosts();
+
+      if (response != null && response["isSuccess"] == true) {
+        final List<dynamic> postList =
+            response["results"]["popularPostPreviewList"];
+
+        popularPosts.value =
+            postList.map((e) => PostModel.fromJson(e)).toList();
+      } else {
+        debugPrint("인기 게시글 불러오기 실패: ${response?["message"]}");
+      }
+    } catch (e) {
+      debugPrint("Error fetching popular posts: $e");
+    } finally {
+      isLoading.value = false; // 로딩 종료
+    }
   }
 }

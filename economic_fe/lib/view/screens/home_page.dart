@@ -685,6 +685,7 @@ class _HomePageState extends State<HomePage> {
                   title: '인기게시물',
                   onTap: () {
                     // 커뮤니티 화면으로 이동
+                    Get.toNamed('/community');
                   },
                 ),
                 const SizedBox(
@@ -694,64 +695,116 @@ class _HomePageState extends State<HomePage> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                            ),
-                            border: Border(
-                              left: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                              top: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                              right: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                            ),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 328, // 최소 너비 제한
-                          ),
-                          child: const PopularPosts(
-                            category: '자유',
-                            title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
-                            likesCount: 1,
-                            commentsCount: 1,
-                            time: 4,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
-                          decoration: const ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1, color: Color(0xFFA2A2A2)),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Center(
+                            child: CircularProgressIndicator()); // 로딩 중
+                      }
+
+                      if (controller.popularPosts.isEmpty) {
+                        return const Center(
+                            child: Text("불러올 인기 게시글이 없습니다.")); // 게시글 없음
+                      }
+
+                      return Column(
+                        children: List.generate(
+                          controller.popularPosts.length.clamp(0, 2), // 최대 2개
+                          (index) {
+                            final post = controller.popularPosts[index];
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(index == 0 ? 16 : 0),
+                                  topRight:
+                                      Radius.circular(index == 0 ? 16 : 0),
+                                  bottomLeft:
+                                      Radius.circular(index == 1 ? 16 : 0),
+                                  bottomRight:
+                                      Radius.circular(index == 1 ? 16 : 0),
+                                ),
+                                border: Border(
+                                    left: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    right: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    top: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    bottom: index == 1
+                                        ? const BorderSide(
+                                            // width: index == 1 ? 1 : 0,
+                                            width: 1,
+                                            color: Color(0xFFA2A2A2))
+                                        : BorderSide.none),
                               ),
-                            ),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 328, // 최소 너비 제한
-                          ),
-                          child: const PopularPosts(
-                            category: '인기',
-                            title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
-                            likesCount: 1,
-                            commentsCount: 1,
-                            time: 4,
-                          ),
+                              child: PopularPosts(
+                                category: post.type!,
+                                title: post.title!,
+                                likesCount: post.likeCount!,
+                                commentsCount: post.commentCount!,
+                                time: post.createdDate!,
+                              ),
+                            );
+                          },
                         ),
-                      ],
-                    ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 24, vertical: 20),
+                        //   decoration: const BoxDecoration(
+                        //     color: Colors.white,
+                        //     borderRadius: BorderRadius.only(
+                        //       topLeft: Radius.circular(16),
+                        //       topRight: Radius.circular(16),
+                        //     ),
+                        //     border: Border(
+                        //       left: BorderSide(
+                        //           width: 1, color: Color(0xFFA2A2A2)),
+                        //       top: BorderSide(
+                        //           width: 1, color: Color(0xFFA2A2A2)),
+                        //       right: BorderSide(
+                        //           width: 1, color: Color(0xFFA2A2A2)),
+                        //     ),
+                        //   ),
+                        //   constraints: const BoxConstraints(
+                        //     minWidth: 328, // 최소 너비 제한
+                        //   ),
+                        //   child: const PopularPosts(
+                        //     category: '자유',
+                        //     title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
+                        //     likesCount: 1,
+                        //     commentsCount: 1,
+                        //     time: 4,
+                        //   ),
+                        // ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 24, vertical: 20),
+                        //   decoration: const ShapeDecoration(
+                        //     color: Colors.white,
+                        //     shape: RoundedRectangleBorder(
+                        //       side: BorderSide(
+                        //           width: 1, color: Color(0xFFA2A2A2)),
+                        //       borderRadius: BorderRadius.only(
+                        //         bottomLeft: Radius.circular(16),
+                        //         bottomRight: Radius.circular(16),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   constraints: const BoxConstraints(
+                        //     minWidth: 328, // 최소 너비 제한
+                        //   ),
+                        //   child: const PopularPosts(
+                        //     category: '인기',
+                        //     title: '스레드제목이들어갈공간스레드제목이들어갈공간스',
+                        //     likesCount: 1,
+                        //     commentsCount: 1,
+                        //     time: 4,
+                        //   ),
+                        // ),
+                      );
+                    }),
                   ),
                 ),
                 const SizedBox(
@@ -962,7 +1015,7 @@ class PopularPosts extends StatelessWidget {
   final String title;
   final int likesCount;
   final int commentsCount;
-  final int time;
+  final String time;
 
   const PopularPosts({
     super.key,
@@ -1062,7 +1115,7 @@ class PopularPosts extends StatelessWidget {
             ),
             // 게시글 업로드 시간
             Text(
-              '$time시간 전',
+              time,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Color(0xFF767676),
