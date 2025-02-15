@@ -41,6 +41,11 @@ class HomeController extends GetxController {
   final maxGoalSets = 3;
   final minGoalSets = 1;
 
+  // 오늘의 퀘스트 진행률
+  var conceptProgress = 0.0.obs; // 개념 학습
+  var quizProgress = 0.0.obs; // 퀴즈
+  var articleProgress = 0.0.obs; // 경제 기사
+
   // 경제 기사
   var articles = <ArticleModel>[].obs;
   var isLoading = true.obs;
@@ -91,6 +96,7 @@ class HomeController extends GetxController {
     fetchTodaysTok();
     getPopularPosts();
     fetchUserProfile();
+    fetchTodayQuestProgress();
   }
 
   /// 사용자 정보 조회 (레벨테스트 진행 여부 확인)
@@ -187,6 +193,28 @@ class HomeController extends GetxController {
       Get.snackbar('성공', '퀘스트 목표 수정이 완료되었습니다.');
     } else {
       Get.snackbar('오류', '퀘스트 목표 수정에 실패하였습니다.');
+    }
+  }
+
+  /// 오늘의 퀘스트 진행률 조회
+  Future<void> fetchTodayQuestProgress() async {
+    try {
+      final response = await remoteDataSource.fetchTodayQuestProgress();
+
+      if (response.isNotEmpty) {
+        conceptProgress.value =
+            (response['conceptProgress'] / 100).clamp(0.0, 1.0);
+        quizProgress.value = (response['quizProgress'] / 100).clamp(0.0, 1.0);
+        articleProgress.value =
+            (response['articleProgress'] / 100).clamp(0.0, 1.0);
+
+        debugPrint(
+            "오늘의 퀘스트 진행률 업데이트 완료: 개념 ${conceptProgress.value}, 기사 ${articleProgress.value}, 퀴즈 ${quizProgress.value}");
+      } else {
+        debugPrint("fetchTodayQuestProgress 실패: 응답이 비어 있음");
+      }
+    } catch (e) {
+      debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
     }
   }
 

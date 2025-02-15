@@ -452,19 +452,19 @@ class _HomePageState extends State<HomePage> {
                           icon: 'book_ribbon',
                           text: '개념 학습',
                           quest: controller.goalSets[0],
-                          progress: 0.65,
+                          progress: controller.conceptProgress.value,
                         ),
                         TodaysQuestChart(
                           icon: 'news',
                           text: '경제 기사',
                           quest: controller.goalSets[1],
-                          progress: 0.75,
+                          progress: controller.articleProgress.value,
                         ),
                         TodaysQuestChart(
                           icon: 'quiz',
                           text: '퀴즈',
                           quest: controller.goalSets[2],
-                          progress: 0.75,
+                          progress: controller.quizProgress.value,
                         ),
                       ],
                     );
@@ -494,36 +494,39 @@ class _HomePageState extends State<HomePage> {
                     return const Center(child: Text("불러올 경제 기사가 없습니다."));
                   }
 
-                  return Column(
-                    children: List.generate(
-                      5,
-                      (index) {
-                        if (index.isOdd) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Divider(
-                              color: Colors.grey.shade300,
-                              thickness: 1,
-                              height: 16,
-                            ),
-                          );
-                        }
+                  // 상위 3개의 기사만 가져오기
+                  final articlesToShow = controller.articles.take(3).toList();
 
-                        final article = controller.articles[index ~/ 2];
-                        return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(
-                              '/article/detail',
-                              arguments: article,
-                            );
-                          },
-                          child: ExampleArticle(
-                            category: article.translatedCategory,
-                            headline: article.title ?? "제목 없음",
-                          ),
-                        );
-                      },
-                    ),
+                  return ListView.separated(
+                    shrinkWrap: true, // 부모 위젯 크기에 맞게 리스트 크기 조절
+                    physics:
+                        const NeverScrollableScrollPhysics(), // 스크롤 방지 (부모가 스크롤 가능할 경우)
+                    itemCount: articlesToShow.length,
+                    itemBuilder: (context, index) {
+                      final article = articlesToShow[index];
+
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            '/article/detail',
+                            arguments: article,
+                          );
+                        },
+                        child: ExampleArticle(
+                          category: article.translatedCategory,
+                          headline: article.title ?? "제목 없음",
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Divider(
+                          color: Colors.grey.shade300,
+                          thickness: 1,
+                        ),
+                      );
+                    },
                   );
                 }),
 
@@ -675,7 +678,7 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   }),
 
-                                  // 🔹 프로필 개수에 따라 동적으로 간격 조정
+                                  // 프로필 개수에 따라 동적으로 간격 조정
                                   Obx(() {
                                     int profileCount = controller
                                         .participantProfileImages.length
