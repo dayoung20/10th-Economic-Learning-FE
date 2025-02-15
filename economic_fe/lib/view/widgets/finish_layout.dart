@@ -76,16 +76,25 @@ class FinishLayout extends StatelessWidget {
                   const SizedBox(
                     height: 17,
                   ),
-                  Text(
-                    category == 0 ? '$number번째 학습 완료' : '$number번째 퀴즈 완료',
-                    style: const TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      height: 1.40,
-                      letterSpacing: -0.45,
-                    ),
-                  ),
+                  // 서버에서 가져온 학습/퀴즈 완료 갯수 적용
+                  Obx(() {
+                    int completedCount = category == 0
+                        ? controller.totalConceptCompletedCount.value
+                        : controller.quizCount.value;
+
+                    return Text(
+                      category == 0
+                          ? '$completedCount번째 학습 완료'
+                          : '$completedCount번째 퀴즈 완료',
+                      style: const TextStyle(
+                        color: Color(0xFF111111),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        height: 1.40,
+                        letterSpacing: -0.45,
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
