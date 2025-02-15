@@ -1,4 +1,3 @@
-import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
@@ -19,15 +18,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // GetX 컨트롤러 가져오기
     final HomeController controller = Get.put(HomeController());
-
-    // 경제 톡톡 참여자 프로필 사진 리스트
-    const List<String> profileImages = [
-      'assets/profile_example.png',
-      'assets/profile_example.png',
-      'assets/profile_example.png',
-      'assets/profile_example.png',
-    ];
-    const int peopleCounts = 134; // 경제톡톡 참여자 수
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -182,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                             SizedBox(
                                               width: 44,
                                               child: Text(
-                                                '${(controller.intermediateProgress.value * 100).toInt()}%',
+                                                '${(controller.intermediateProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Color(0xFF111111),
@@ -198,7 +188,8 @@ class _HomePageState extends State<HomePage> {
                                               height: controller.maxHeight *
                                                   controller
                                                       .intermediateProgress
-                                                      .value,
+                                                      .value *
+                                                  0.01,
                                               decoration: const ShapeDecoration(
                                                 color: Color(0xFFB1F2F2),
                                                 shape: RoundedRectangleBorder(
@@ -235,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                                             SizedBox(
                                               width: 44,
                                               child: Text(
-                                                '${(controller.advancedProgress.value * 100).toInt()}%',
+                                                '${(controller.advancedProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Color(0xFF111111),
@@ -250,7 +241,8 @@ class _HomePageState extends State<HomePage> {
                                               width: 36,
                                               height: controller.maxHeight *
                                                   controller
-                                                      .advancedProgress.value,
+                                                      .advancedProgress.value *
+                                                  0.01,
                                               decoration: const ShapeDecoration(
                                                 color: Color(0xFFB1F2F2),
                                                 shape: RoundedRectangleBorder(
@@ -452,19 +444,19 @@ class _HomePageState extends State<HomePage> {
                           icon: 'book_ribbon',
                           text: '개념 학습',
                           quest: controller.goalSets[0],
-                          progress: 0.65,
+                          progress: controller.conceptProgress.value,
                         ),
                         TodaysQuestChart(
                           icon: 'news',
                           text: '경제 기사',
                           quest: controller.goalSets[1],
-                          progress: 0.75,
+                          progress: controller.articleProgress.value,
                         ),
                         TodaysQuestChart(
                           icon: 'quiz',
                           text: '퀴즈',
                           quest: controller.goalSets[2],
-                          progress: 0.75,
+                          progress: controller.quizProgress.value,
                         ),
                       ],
                     );
@@ -494,36 +486,39 @@ class _HomePageState extends State<HomePage> {
                     return const Center(child: Text("불러올 경제 기사가 없습니다."));
                   }
 
-                  return Column(
-                    children: List.generate(
-                      5,
-                      (index) {
-                        if (index.isOdd) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Divider(
-                              color: Colors.grey.shade300,
-                              thickness: 1,
-                              height: 16,
-                            ),
-                          );
-                        }
+                  // 상위 3개의 기사만 가져오기
+                  final articlesToShow = controller.articles.take(3).toList();
 
-                        final article = controller.articles[index ~/ 2];
-                        return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(
-                              '/article/detail',
-                              arguments: article,
-                            );
-                          },
-                          child: ExampleArticle(
-                            category: article.translatedCategory,
-                            headline: article.title ?? "제목 없음",
-                          ),
-                        );
-                      },
-                    ),
+                  return ListView.separated(
+                    shrinkWrap: true, // 부모 위젯 크기에 맞게 리스트 크기 조절
+                    physics:
+                        const NeverScrollableScrollPhysics(), // 스크롤 방지 (부모가 스크롤 가능할 경우)
+                    itemCount: articlesToShow.length,
+                    itemBuilder: (context, index) {
+                      final article = articlesToShow[index];
+
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            '/article/detail',
+                            arguments: article,
+                          );
+                        },
+                        child: ExampleArticle(
+                          category: article.translatedCategory,
+                          headline: article.title ?? "제목 없음",
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Divider(
+                          color: Colors.grey.shade300,
+                          thickness: 1,
+                        ),
+                      );
+                    },
                   );
                 }),
 
@@ -675,7 +670,7 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   }),
 
-                                  // 🔹 프로필 개수에 따라 동적으로 간격 조정
+                                  // 프로필 개수에 따라 동적으로 간격 조정
                                   Obx(() {
                                     int profileCount = controller
                                         .participantProfileImages.length
