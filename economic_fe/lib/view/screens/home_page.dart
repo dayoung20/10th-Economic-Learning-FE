@@ -1,4 +1,3 @@
-import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
@@ -19,15 +18,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // GetX 컨트롤러 가져오기
     final HomeController controller = Get.put(HomeController());
-
-    // 경제 톡톡 참여자 프로필 사진 리스트
-    const List<String> profileImages = [
-      'assets/profile_example.png',
-      'assets/profile_example.png',
-      'assets/profile_example.png',
-      'assets/profile_example.png',
-    ];
-    const int peopleCounts = 134; // 경제톡톡 참여자 수
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -182,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                             SizedBox(
                                               width: 44,
                                               child: Text(
-                                                '${(controller.intermediateProgress.value * 100).toInt()}%',
+                                                '${(controller.intermediateProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Color(0xFF111111),
@@ -198,7 +188,8 @@ class _HomePageState extends State<HomePage> {
                                               height: controller.maxHeight *
                                                   controller
                                                       .intermediateProgress
-                                                      .value,
+                                                      .value *
+                                                  0.01,
                                               decoration: const ShapeDecoration(
                                                 color: Color(0xFFB1F2F2),
                                                 shape: RoundedRectangleBorder(
@@ -235,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                                             SizedBox(
                                               width: 44,
                                               child: Text(
-                                                '${(controller.advancedProgress.value * 100).toInt()}%',
+                                                '${(controller.advancedProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                   color: Color(0xFF111111),
@@ -250,7 +241,8 @@ class _HomePageState extends State<HomePage> {
                                               width: 36,
                                               height: controller.maxHeight *
                                                   controller
-                                                      .advancedProgress.value,
+                                                      .advancedProgress.value *
+                                                  0.01,
                                               decoration: const ShapeDecoration(
                                                 color: Color(0xFFB1F2F2),
                                                 shape: RoundedRectangleBorder(
@@ -335,7 +327,7 @@ class _HomePageState extends State<HomePage> {
                                           child: GestureDetector(
                                             onTap: () => controller
                                                 .isProgressContainerVisible
-                                                .value = false,
+                                                .value = true,
                                             child: const Icon(
                                               Icons.close,
                                               color: Colors.white,
