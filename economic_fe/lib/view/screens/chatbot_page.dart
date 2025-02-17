@@ -1,6 +1,5 @@
 import 'package:economic_fe/data/models/chatbot/chatbot_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
-import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/chatbot_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -143,6 +142,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
                                 return Expanded(
                                   child: ListView.builder(
+                                    reverse: true,
                                     controller: _scrollController,
                                     shrinkWrap: true,
                                     physics:
@@ -256,29 +256,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                           ],
                                         );
                                       } else {
-                                        bool showChatbotIcon = false;
+                                        bool showChatbotIcon = true;
                                         bool showTime = false;
 
                                         // 첫 번째 챗봇 메시지에만 챗봇 아이콘 표시
-                                        if (index == 0 ||
-                                            chatResponses[index - 1]
-                                                    .createdAt !=
-                                                message.createdAt ||
-                                            chatResponses[index - 1].sender ==
-                                                "USER") {
+                                        if (message.sender != "USER") {
                                           showChatbotIcon =
                                               !(message.sender == "USER");
                                         }
-
-                                        // 마지막 메시지에만 전송 시각 표시
-                                        // if (index == chatResponses.length - 1 ||
-                                        //     chatResponses[index + 1].createdAt !=
-                                        //         message.createdAt ||
-                                        //     (chatResponses[index + 1].sender ==
-                                        //             "USER") !=
-                                        //         (message.sender == "USER")) {
-                                        //   showTime = true;
-                                        // }
 
                                         if (index == chatResponses.length - 1) {
                                           showTime = true; // 마지막 메시지
@@ -423,12 +408,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                 // 전송 시각 표시
                                                 showTime
                                                     ? Text(
-                                                        // message.createdAt!,
-                                                        // DateFormat(
-                                                        //         'a HH:mm', 'ko')
-                                                        //     .format(DateTime
-                                                        //         .parse(message
-                                                        //             .createdAt!)),
                                                         DateFormat('HH:mm')
                                                             .format(DateTime
                                                                 .parse(message
@@ -445,54 +424,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                       )
                                                     : const SizedBox(),
                                                 const SizedBox(height: 10),
-                                                // 챗봇 이용 꿀팁
-                                                controller.chatbotTip.value
-                                                    ? Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 16,
-                                                                vertical: 10),
-                                                        decoration:
-                                                            ShapeDecoration(
-                                                          color:
-                                                              // message.isSystemMessage
-                                                              // message.message != null
-                                                              const Color(
-                                                                  0xFFF2F3F5),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side: const BorderSide(
-                                                                width: 0.50,
-                                                                color: Color(
-                                                                    0xFFA2A2A2)),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12),
-                                                          ),
-                                                        ),
-                                                        child: Container(
-                                                          constraints:
-                                                              const BoxConstraints(
-                                                                  maxWidth:
-                                                                      250),
-                                                          child: const Text(
-                                                            "d",
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF404040),
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              height: 1.40,
-                                                              letterSpacing:
-                                                                  -0.40,
-                                                            ),
-                                                          ),
-                                                        ))
-                                                    : const SizedBox()
                                               ],
                                             ),
                                           ],
@@ -509,14 +440,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                       IconButton(
                           onPressed: () {
                             controller.currentPage++;
-                            print("cr : ${controller.currentPage}");
                           },
                           icon: const Icon(Icons.arrow_downward_outlined)),
-                      // TextButton(
-                      //     onPressed: () {
-                      //       controller.deleteMessage();
-                      //     },
-                      //     child: const Text("초기화"))
                     ],
                   ),
                 ),
@@ -536,6 +461,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                 onTap: () {
                                   controller.isExpanded.value =
                                       !controller.isExpanded.value;
+                                  debugPrint("tap");
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
@@ -560,10 +486,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               GestureDetector(
                                 onTap: () {
                                   // controller.sendTipMessages();
-                                  print("tap");
+                                  // print("tapdd");
+                                  controller.getChatbotTips();
                                   controller.chatbotTip.value =
                                       !controller.chatbotTip.value;
-                                  print(controller.chatbotTip.value);
+                                  Get.off(() => const ChatbotPage());
+                                  setState(() {});
+                                  // print(controller.chatbotTip.value);
+                                  // controller.postChatbotMessage();
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
