@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="economic_fe"
+        android:label="Ripple"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

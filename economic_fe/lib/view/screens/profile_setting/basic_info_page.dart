@@ -212,15 +212,6 @@ class BasicInfoPage extends StatelessWidget {
                                 Icons.error_outline,
                                 color: Colors.red,
                               ),
-                    labelStyle: Palette.pretendard(
-                      context,
-                      const Color(0xFFA2A2A2),
-                      16,
-                      FontWeight.w400,
-                      1.5,
-                      -0.4,
-                    ),
-                    labelText: '닉네임',
                   ),
                 );
               }),

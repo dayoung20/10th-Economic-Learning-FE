@@ -57,6 +57,14 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_screenutil: ^5.9.3
+  flutter_launcher_icons: ^0.14.3
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/play_store_512.png" # 아이콘 이미지 경로
+  adaptive_icon_background: "#ffffff" # (Android 8.0 이상) 배경 색상
+  # adaptive_icon_foreground: "assets/app_icon_foreground.png"  # (Android 8.0 이상) 전경 이미지
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
