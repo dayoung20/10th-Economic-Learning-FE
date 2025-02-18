@@ -86,6 +86,16 @@ class LearningListController extends GetxController {
     );
   }
 
+  void clickedQuiz(int learningSetId, String name) {
+    Get.toNamed(
+      '/learning_list/quiz_level',
+      arguments: {
+        "learningSetId": learningSetId,
+        "name": name,
+      },
+    );
+  }
+
   // 챗봇 화면으로 전환
   void toChatbot() {
     Get.toNamed('/chatbot');

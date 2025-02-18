@@ -193,35 +193,38 @@ class _LearningListItemState extends State<LearningListItem> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '퀴즈풀기',
-                    style: Palette.pretendard(
-                      context,
-                      const Color(0xFF404040),
-                      16,
-                      FontWeight.w600,
-                      1.4,
-                      -0.4,
+              child: GestureDetector(
+                onTap: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '퀴즈풀기',
+                      style: Palette.pretendard(
+                        context,
+                        const Color(0xFF404040),
+                        16,
+                        FontWeight.w600,
+                        1.4,
+                        -0.4,
+                      ),
                     ),
-                  ),
-                  Obx(() {
-                    return Icon(
-                      controller.learningSetList[widget.index]
-                                  .isQuizCompleted ==
-                              true
-                          ? Icons.check_circle
-                          : Icons.check_circle_outline,
-                      color: controller.learningSetList[widget.index]
-                                  .isQuizCompleted ==
-                              true
-                          ? Palette.buttonColorGreen
-                          : const Color(0xffa2a2a2),
-                    );
-                  }),
-                ],
+                    Obx(() {
+                      return Icon(
+                        controller.learningSetList[widget.index]
+                                    .isQuizCompleted ==
+                                true
+                            ? Icons.check_circle
+                            : Icons.check_circle_outline,
+                        color: controller.learningSetList[widget.index]
+                                    .isQuizCompleted ==
+                                true
+                            ? Palette.buttonColorGreen
+                            : const Color(0xffa2a2a2),
+                      );
+                    }),
+                  ],
+                ),
               ),
             ),
           ],

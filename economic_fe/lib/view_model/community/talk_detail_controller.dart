@@ -33,7 +33,7 @@ class TalkDetailController extends GetxController {
   Future<void> fetchPostDetail(int postId) async {
     try {
       isLoading(true);
-      final postData = await RemoteDataSource.getTokDetail(postId);
+      final postData = await remoteDataSource.getTokDetail(postId);
 
       if (postData != null) {
         postDetail.value = postData;
@@ -105,10 +105,10 @@ class TalkDetailController extends GetxController {
 
     if (replyingToCommentId.value == -1) {
       // 일반 댓글 작성
-      success = await RemoteDataSource.addComment(postId, message);
+      success = await remoteDataSource.addComment(postId, message);
     } else {
       // 답글 작성
-      success = await RemoteDataSource.addReply(
+      success = await remoteDataSource.addReply(
           postId, replyingToCommentId.value, message);
     }
 
@@ -134,7 +134,7 @@ class TalkDetailController extends GetxController {
   /// 게시글 좋아요 api 연동
   Future<void> likePost() async {
     int postId = postDetail["id"]; // 현재 게시글 ID
-    bool success = await RemoteDataSource.likePost(postId);
+    bool success = await remoteDataSource.likePost(postId);
 
     if (success) {
       isLikedPost.value = true;
@@ -147,7 +147,7 @@ class TalkDetailController extends GetxController {
   /// 게시글 좋아요 취소 api 연동
   Future<void> deleteLikedPost() async {
     int postId = postDetail["id"]; // 현재 게시글 ID
-    bool success = await RemoteDataSource.deleteLikedPost(postId);
+    bool success = await remoteDataSource.deleteLikedPost(postId);
 
     if (success) {
       isLikedPost.value = false;
@@ -169,7 +169,7 @@ class TalkDetailController extends GetxController {
   /// 게시글 스크랩 api 연동
   Future<void> scrapPost() async {
     int postId = postDetail["id"]; // 현재 게시글 ID
-    bool success = await RemoteDataSource.scrapPost(postId);
+    bool success = await remoteDataSource.scrapPost(postId);
 
     if (success) {
       isScrappedPost.value = true;
@@ -182,7 +182,7 @@ class TalkDetailController extends GetxController {
   /// 게시글 스크랩 취소 api 연동
   Future<void> deleteScrappedPost() async {
     int postId = postDetail["id"]; // 현재 게시글 ID
-    bool success = await RemoteDataSource.deletePostScrap(postId);
+    bool success = await remoteDataSource.deletePostScrap(postId);
 
     if (success) {
       isScrappedPost.value = false;
@@ -208,7 +208,7 @@ class TalkDetailController extends GetxController {
   /// 댓글 좋아요 api 연동
   Future<void> likeComment(int commentId) async {
     int postId = postDetail["id"];
-    bool success = await RemoteDataSource.likeComment(postId, commentId);
+    bool success = await remoteDataSource.likeComment(postId, commentId);
 
     if (success) {
       _updateCommentLikeState(commentId, true);
@@ -220,7 +220,7 @@ class TalkDetailController extends GetxController {
   /// 댓글 좋아요 취소 api 연동
   Future<void> deleteLikedComment(int commentId) async {
     int postId = postDetail["id"];
-    bool success = await RemoteDataSource.deleteLikedComment(postId, commentId);
+    bool success = await remoteDataSource.deleteLikedComment(postId, commentId);
 
     if (success) {
       _updateCommentLikeState(commentId, false);
@@ -323,7 +323,7 @@ class TalkDetailController extends GetxController {
     String updatedContent = messageController.text;
 
     bool success =
-        await RemoteDataSource.editComment(postId, commentId, updatedContent);
+        await remoteDataSource.editComment(postId, commentId, updatedContent);
 
     if (success) {
       // UI에 즉시 반영
@@ -357,7 +357,7 @@ class TalkDetailController extends GetxController {
     String updatedContent = messageController.text;
 
     bool success =
-        await RemoteDataSource.editComment(postId, replyId, updatedContent);
+        await remoteDataSource.editComment(postId, replyId, updatedContent);
 
     if (success) {
       // UI에 즉시 반영
@@ -390,7 +390,7 @@ class TalkDetailController extends GetxController {
     int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
     debugPrint("삭제 요청: postId = $postId, commentId = $commentId");
 
-    bool success = await RemoteDataSource.deleteComment(postId, commentId);
+    bool success = await remoteDataSource.deleteComment(postId, commentId);
 
     if (success) {
       debugPrint("댓글 삭제 성공: $commentId");

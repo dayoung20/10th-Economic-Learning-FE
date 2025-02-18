@@ -141,10 +141,6 @@ class UserRouter {
               ),
             ],
           ),
-          // GetPage(
-          //   name: '/learning_concept',
-          //   page: () => const LearningConceptTotalPage(),
-          // ),
           GetPage(
             name: '/learning_concept',
             page: () => const LearningConceptPage(),
