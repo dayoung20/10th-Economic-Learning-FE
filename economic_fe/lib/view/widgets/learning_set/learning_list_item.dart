@@ -194,7 +194,9 @@ class _LearningListItemState extends State<LearningListItem> {
                 ),
               ),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  controller.clickedQuiz(learningSet!.id!, learningSet.name!);
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

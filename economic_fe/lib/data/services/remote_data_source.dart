@@ -859,26 +859,26 @@ class RemoteDataSource {
     }
   }
 
-  /// api/v1/chatbot/tips
-  /// 이용 꿀팁 조회
-  Future<dynamic> getChatbotTips() async {
-    String endPoint = 'api/v1/chatbot/tips';
-    try {
-      print("start");
-      final response = await _getApiWithHeaderTest(endPoint, accessToken);
-      if (response != null) {
-        debugPrint('꿀팁 조회');
-        print("response : $response");
-        return response;
-      } else {
-        debugPrint('꿀팁 조회 실패');
-        return;
-      }
-    } catch (e) {
-      debugPrint('Error : $e');
-      return;
-    }
-  }
+  // /// api/v1/chatbot/tips
+  // /// 이용 꿀팁 조회
+  // Future<dynamic> getChatbotTips() async {
+  //   String endPoint = 'api/v1/chatbot/tips';
+  //   try {
+  //     print("start");
+  //     final response = await _getApiWithHeaderTest(endPoint, accessToken);
+  //     if (response != null) {
+  //       debugPrint('꿀팁 조회');
+  //       print("response : $response");
+  //       return response;
+  //     } else {
+  //       debugPrint('꿀팁 조회 실패');
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error : $e');
+  //     return;
+  //   }
+  // }
 
   /// api/v1/chatbot
   /// 챗봇에게 메세지 보내기

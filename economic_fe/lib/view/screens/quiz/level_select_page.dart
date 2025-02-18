@@ -49,7 +49,10 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     print("Beginner 클릭");
                     _selectedLevel = 'Beginner';
                     controller.selectedLevel = _selectedLevel;
-                    controller.clickedQuizBtn(context);
+                    controller.clickedQuizBtn(
+                        context,
+                        controller.learningSetId.value,
+                        controller.conceptName.value);
                     // print(controller.selectedLevel);
                   });
                 },
@@ -64,7 +67,10 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     print("Intermediate 클릭");
                     _selectedLevel = 'Intermediate';
                     controller.selectedLevel = _selectedLevel;
-                    controller.clickedQuizBtn(context);
+                    controller.clickedQuizBtn(
+                        context,
+                        controller.learningSetId.value,
+                        controller.conceptName.value);
                   });
                 },
                 isCompleted: false,
@@ -78,7 +84,10 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     print("advanced 클릭");
                     _selectedLevel = 'Advanced';
                     controller.selectedLevel = _selectedLevel;
-                    controller.clickedQuizBtn(context);
+                    controller.clickedQuizBtn(
+                        context,
+                        controller.learningSetId.value,
+                        controller.conceptName.value);
                   });
                 },
                 isCompleted: false,
