@@ -258,7 +258,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                       // 학습 시작하기 버튼
                       GestureDetector(
                         onTap: () {
-                          controller.toHome();
+                          controller.toProfileSetting();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width - 32,

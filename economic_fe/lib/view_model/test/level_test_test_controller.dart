@@ -69,7 +69,7 @@ class LevelTestTestController extends GetxController {
   }
 
   void clickedToKaKao(List<QuizModel> quizList) {
-    Get.toNamed('/login_exist', arguments: {
+    Get.toNamed('/login', arguments: {
       'levelTestAnswers': levelTestAnswers,
       'quizList': quizList,
     });
