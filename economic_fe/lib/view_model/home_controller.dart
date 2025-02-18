@@ -249,7 +249,7 @@ class HomeController extends GetxController {
   Future<void> fetchTodaysTok() async {
     try {
       isLoading(true);
-      final todaysTok = await RemoteDataSource.getTodaysTok();
+      final todaysTok = await remoteDataSource.getTodaysTok();
 
       if (todaysTok != null) {
         todaysTokDetail.value = todaysTok;

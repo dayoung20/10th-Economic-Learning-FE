@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewPostController extends GetxController {
+  final RemoteDataSource remoteDataSource = RemoteDataSource();
+
   RxBool isUploadBtnEnabled = false.obs;
   RxInt selectedCategoryIndex = 0.obs;
   final List<String> postCategories = [
@@ -141,7 +143,7 @@ class NewPostController extends GetxController {
     if (image != null) {
       File file = File(image.path);
 
-      int? imageId = await RemoteDataSource.uploadImage(file);
+      int? imageId = await remoteDataSource.uploadImage(file);
       if (imageId != null) {
         attachedImages.add({'file': file, 'imageId': imageId});
       } else {
@@ -161,7 +163,7 @@ class NewPostController extends GetxController {
 
         int imageId = attachedImages[index]['imageId'];
 
-        bool success = await RemoteDataSource.deleteImage(imageId);
+        bool success = await remoteDataSource.deleteImage(imageId);
         if (success) {
           attachedImages.removeAt(index);
           Get.snackbar('삭제 완료', '사진이 삭제되었습니다.');
@@ -197,10 +199,10 @@ class NewPostController extends GetxController {
     bool success;
     if (isEditing.value) {
       // 게시물 수정
-      success = await RemoteDataSource.editPost(postId.value, postData);
+      success = await remoteDataSource.editPost(postId.value, postData);
     } else {
       // 게시물 등록
-      success = await RemoteDataSource.createPost(
+      success = await remoteDataSource.createPost(
         title: postData["title"],
         content: postData["content"],
         type: postData["type"],
