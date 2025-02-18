@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:economic_fe/view_model/login/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_client_sse/constants/sse_request_type_enum.dart';
+import 'package:flutter_client_sse/flutter_client_sse.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -929,8 +932,15 @@ class RemoteDataSource {
       final response = await _getApi(endPoint);
 
       if (response != null) {
-        debugPrint("성공");
-        return response;
+        if (response.statusCode == 401) {
+          // 토큰 만료 → 자동 로그아웃
+          print("토큰 만료됨. 자동 로그아웃 실행.");
+          LoginController().logout();
+          return null;
+        } else {
+          debugPrint("성공");
+          return response;
+        }
       } else {
         debugPrint("실패");
         return null;
@@ -2154,28 +2164,54 @@ class RemoteDataSource {
     }
   }
 
-  /// 알림 구독
-  /// api: api/v1/notification/{notificationId}/check
-  Future<void> subscribeToNotifications() async {
+  /// 알림 구독 (SSE)
+  /// api: api/v1/notification/subscribe
+  Future<bool> subscribeToNotifications(
+      {Function(String)? onNotificationReceived}) async {
     String url = '$baseUrl/api/v1/notification/subscribe';
     String? access = await getToken("accessToken");
 
-    try {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
-          'accept': 'text/event-stream',
-          'Authorization': 'Bearer $access',
-        },
-      );
+    if (access == null) {
+      print("SSE 연결 실패: 액세스 토큰 없음");
+      return false;
+    }
 
-      if (response.statusCode == 200) {
-        debugPrint('알림 구독 성공');
-      } else {
-        debugPrint('알림 구독 실패: ${response.statusCode} ${response.body}');
-      }
+    try {
+      SSEClient.subscribeToSSE(
+        url: url,
+        header: {
+          "Authorization": "Bearer $access",
+          "Accept": "text/event-stream",
+        },
+        method: SSERequestType.GET,
+      ).listen((SSEModel event) {
+        if (event.data != null && onNotificationReceived != null) {
+          print("Received SSE event: ${event.data}");
+          onNotificationReceived(event.data!);
+        }
+      }, onError: (error) {
+        print("SSE 연결 오류: $error");
+      });
+
+      print("SSE 연결 성공");
+      return true;
     } catch (e) {
-      debugPrint('알림 구독 오류: $e');
+      print("SSE 구독 실패: $e");
+      return false;
+    }
+  }
+
+  /// JSON 데이터 파싱 (잘못된 데이터 방지)
+  Map<String, dynamic> parseNotificationData(String data) {
+    try {
+      if (!data.startsWith("{")) {
+        print("⚠️ JSON 형식이 아님, 무시: $data");
+        return {};
+      }
+      return jsonDecode(data);
+    } catch (e) {
+      print("JSON 파싱 오류: $e");
+      return {};
     }
   }
 }

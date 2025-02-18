@@ -121,10 +121,10 @@ class ProfileSettingController extends GetxController {
     }
 
     try {
-      // **알림 권한 요청 (완료될 때까지 대기)**
+      // **1. 알림 권한 요청 (완료될 때까지 대기)**
       bool isNotificationAllowed = await requestNotificationPermission();
 
-      // **사용자의 선택값을 반영**
+      // **2. 사용자의 선택값을 반영하여 userProfile 업데이트**
       userProfile.update((profile) {
         if (profile != null) {
           profile.isLearningAlarmAllowed = isNotificationAllowed;
@@ -132,14 +132,19 @@ class ProfileSettingController extends GetxController {
         }
       });
 
-      // **알림을 허용한 경우, 알림 구독 API 호출**
+      // **3. 알림을 허용한 경우, SSE 구독 API 호출 (성공 여부 확인)**
       if (isNotificationAllowed) {
         debugPrint("알림 허용됨 - 알림 구독 API 호출 시작");
-        await remoteDataSource.subscribeToNotifications();
-        debugPrint("알림 구독 API 호출 완료");
+        bool sseSuccess = await remoteDataSource.subscribeToNotifications();
+        if (!sseSuccess) {
+          debugPrint("SSE 구독 실패");
+          Get.snackbar('오류', '푸쉬 알림 구독에 실패했습니다. 네트워크를 확인해주세요.');
+        } else {
+          debugPrint("알림 구독 API 호출 완료");
+        }
       }
 
-      // **프로필 데이터 준비**
+      // **4. 프로필 데이터 준비**
       Map<String, dynamic> profileData = userProfile.value.toJson();
       if (profileData['imageId'] == null) {
         profileData.remove('imageId');
@@ -147,10 +152,10 @@ class ProfileSettingController extends GetxController {
 
       print("전송 데이터: $profileData");
 
-      // **서버에 프로필 등록 요청**
+      // **5. 서버에 프로필 등록 요청**
       final response = await remoteDataSource.registerUserProfile(profileData);
 
-      // **응답 확인 후 처리**
+      // **6. 응답 확인 후 처리**
       if (response['isSuccess'] == true) {
         Get.snackbar('성공', '프로필 등록이 완료되었습니다.');
         Get.offAllNamed('/home'); // 홈 화면으로 이동

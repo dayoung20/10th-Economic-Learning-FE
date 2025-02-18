@@ -5,7 +5,6 @@ import 'package:economic_fe/view/screens/community/community_page.dart';
 import 'package:economic_fe/view/screens/community/new_post_page.dart';
 import 'package:economic_fe/view/screens/finish_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart';
-import 'package:economic_fe/view/screens/learning_set/learning_concept_total_page.dart';
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
 import 'package:economic_fe/view/screens/level_test/level_test_test_page.dart';
