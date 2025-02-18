@@ -38,12 +38,14 @@ class LevelSelectController extends GetxController {
     Get.toNamed('/test');
   }
 
-  void clickedQuizBtn(BuildContext context, int learningSetId, String name) {
+  void clickedQuizBtn(
+      BuildContext context, int learningSetId, String name, String level) {
     Get.toNamed(
       '/learning_list/quiz_level/quiz',
       arguments: {
         "learningSetId": learningSetId,
         "name": name,
+        "level": level,
       },
     );
   }

@@ -52,7 +52,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     controller.clickedQuizBtn(
                         context,
                         controller.learningSetId.value,
-                        controller.conceptName.value);
+                        controller.conceptName.value,
+                        _selectedLevel);
                     // print(controller.selectedLevel);
                   });
                 },
@@ -70,7 +71,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     controller.clickedQuizBtn(
                         context,
                         controller.learningSetId.value,
-                        controller.conceptName.value);
+                        controller.conceptName.value,
+                        _selectedLevel);
                   });
                 },
                 isCompleted: false,
@@ -87,7 +89,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     controller.clickedQuizBtn(
                         context,
                         controller.learningSetId.value,
-                        controller.conceptName.value);
+                        controller.conceptName.value,
+                        _selectedLevel);
                   });
                 },
                 isCompleted: false,
