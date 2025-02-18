@@ -77,11 +77,12 @@ class _LoginExistPageState extends State<LoginExistPage> {
                 IconButton(
                   onPressed: () {
                     controller.login();
-                    // print("로그인 페이지 : $answers");
-                    Get.toNamed("login/agreement", arguments: {
-                      'levelTestAnswers': answers,
-                      'quizList': quizList,
-                    });
+                    // login/agreement 페이지로 이동이 맞는 경로로
+                    // Get.toNamed("login/agreement", arguments: {
+                    //   'levelTestAnswers': answers,
+                    //   'quizList': quizList,
+                    // });
+                    Get.toNamed("/chatbot");
                   },
                   icon: Image.asset(
                     'assets/kakao_login_exist_btn.png',
