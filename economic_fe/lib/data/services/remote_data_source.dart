@@ -1441,6 +1441,27 @@ class RemoteDataSource {
     }
   }
 
+  /// 알림 확인
+  /// API: api/v1/notification/{notificationId}/check
+  Future<bool> checkNotification(int notificationId) async {
+    String endpoint = 'api/v1/notification/$notificationId/check';
+
+    try {
+      final response = await _postApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('알림 확인 성공');
+        return true;
+      } else {
+        debugPrint('알림 확인 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('알림 확인 중 예외 발생: $e');
+      return false;
+    }
+  }
+
   /// 알림 삭제
   /// API: api/v1/notification/{notificationId}
   Future<bool> deleteNotification(int notificationId) async {
@@ -2130,6 +2151,31 @@ class RemoteDataSource {
     } catch (e) {
       debugPrint("fetchUserCompleted() 오류 발생: $e");
       return {};
+    }
+  }
+
+  /// 알림 구독
+  /// api: api/v1/notification/{notificationId}/check
+  Future<void> subscribeToNotifications() async {
+    String url = '$baseUrl/api/v1/notification/subscribe';
+    String? access = await getToken("accessToken");
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'accept': 'text/event-stream',
+          'Authorization': 'Bearer $access',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('알림 구독 성공');
+      } else {
+        debugPrint('알림 구독 실패: ${response.statusCode} ${response.body}');
+      }
+    } catch (e) {
+      debugPrint('알림 구독 오류: $e');
     }
   }
 }
