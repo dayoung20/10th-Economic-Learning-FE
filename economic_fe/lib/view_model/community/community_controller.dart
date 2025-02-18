@@ -2,6 +2,8 @@ import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:get/get.dart';
 
 class CommunityController extends GetxController {
+  final RemoteDataSource remoteDataSource = RemoteDataSource();
+
   RxBool isModalVisible = false.obs;
   Rx<int> selectedCategoryIndex = 0.obs;
   Rx<int> selectedOrder = 0.obs;
@@ -65,7 +67,7 @@ class CommunityController extends GetxController {
 
     try {
       var posts =
-          await RemoteDataSource.fetchCategoryPosts(sort, selectedCategoryType);
+          await remoteDataSource.fetchCategoryPosts(sort, selectedCategoryType);
       postList.assignAll(posts);
     } catch (e) {
       print("Error fetching posts: $e");
@@ -80,7 +82,7 @@ class CommunityController extends GetxController {
     String sort = selectedOrder.value == 0 ? "POPULAR" : "RECENT";
 
     try {
-      var tokPosts = await RemoteDataSource.fetchTokLists(sort);
+      var tokPosts = await remoteDataSource.fetchTokLists(sort);
       tokPostList.assignAll(tokPosts);
     } catch (e) {
       print("Error fetching tokPosts: $e");
@@ -93,7 +95,7 @@ class CommunityController extends GetxController {
   Future<void> fetchTodaysTok() async {
     try {
       isLoading(true);
-      final todaysTok = await RemoteDataSource.getTodaysTok();
+      final todaysTok = await remoteDataSource.getTodaysTok();
 
       if (todaysTok != null) {
         todaysTokDetail.value = todaysTok;

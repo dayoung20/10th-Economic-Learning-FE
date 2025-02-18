@@ -115,23 +115,34 @@ class ProfileSettingController extends GetxController {
       return;
     }
 
-    // userProfile 데이터를 Map으로 변환
     Map<String, dynamic> profileData = userProfile.value.toJson();
-
-    // imageId가 null이면 Map에서 제거
     if (profileData['imageId'] == null) {
       profileData.remove('imageId');
     }
 
     print("전송 데이터: $profileData");
 
-    bool success = await remoteDataSource.registerUserProfile(profileData);
+    try {
+      final response = await remoteDataSource.registerUserProfile(profileData);
 
-    if (success) {
-      Get.snackbar('성공', '프로필 등록이 완료되었습니다.');
-      Get.offAllNamed('/home'); // 홈 화면으로 이동
-    } else {
-      Get.snackbar('오류', '프로필 등록에 실패했습니다.');
+      if (response['isSuccess'] == true) {
+        Get.snackbar('성공', '프로필 등록이 완료되었습니다.');
+        Get.offAllNamed('/home');
+      } else {
+        switch (response['code']) {
+          case 'DUPLICATED_NICKNAME':
+            Get.snackbar('오류', '닉네임이 중복되었습니다. 다른 닉네임을 사용해주세요.');
+            break;
+          case 'INTERNAL_SERVER_ERROR':
+            Get.snackbar('오류', '서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            break;
+          default:
+            Get.snackbar('오류', response['message'] ?? '프로필 등록에 실패했습니다.');
+        }
+      }
+    } catch (e) {
+      Get.snackbar('오류', '네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+      print('프로필 저장 오류: $e');
     }
   }
 }

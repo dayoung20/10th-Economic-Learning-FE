@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BasicController extends GetxController {
+  final RemoteDataSource remoteDataSource = RemoteDataSource();
+
   // ImagePickerService 인스턴스
   final ImagePickerService _imagePickerService = ImagePickerService();
   var selectedProfileImage = Rx<String?>(null);
@@ -57,7 +59,7 @@ class BasicController extends GetxController {
 
       // 이미지 업로드 후 imageId 받아오기
       int? uploadedImageId =
-          await RemoteDataSource.uploadProfileImage(File(image.path));
+          await remoteDataSource.uploadProfileImage(File(image.path));
 
       if (uploadedImageId != null) {
         imageId.value = uploadedImageId; // Rxn<int>로 변경
@@ -79,7 +81,7 @@ class BasicController extends GetxController {
         Get.find<ProfileSettingController>();
 
     if (imageId.value != null) {
-      bool isDeleted = await RemoteDataSource.deleteImage(imageId.value!);
+      bool isDeleted = await remoteDataSource.deleteImage(imageId.value!);
 
       if (isDeleted) {
         // 프로필 이미지 초기화
