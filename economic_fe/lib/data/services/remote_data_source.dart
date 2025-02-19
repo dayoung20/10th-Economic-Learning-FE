@@ -2281,6 +2281,7 @@ class RemoteDataSource {
       debugPrint("퀴즈 POST 실패");
     }
     return response;
+  }
 
   /// 알림 구독 (SSE)
   /// api: api/v1/notification/subscribe
@@ -2331,6 +2332,5 @@ class RemoteDataSource {
       print("JSON 파싱 오류: $e");
       return {};
     }
-
   }
 }

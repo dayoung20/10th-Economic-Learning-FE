@@ -17,13 +17,16 @@ class QuizTestController extends GetxController {
   var learningSetId = 0.obs; // 학습 세트 ID
   var conceptName = "개념 학습".obs;
   var level = "BEGINNER".obs;
+  // late final List<QuizTestModel> quizList;
+  var quizList = <QuizTestModel>[].obs;
+  var currentQuizIdx = 0.obs;
 
   void getStats() {
     print("Stats initialized!");
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     if (Get.arguments != null) {
       learningSetId.value = Get.arguments?["learningSetId"] ?? 0;
@@ -34,7 +37,13 @@ class QuizTestController extends GetxController {
       conceptName.value = "개념 학습";
       level.value = "BEGINNER";
     }
-    getQuizTest(learningSetId.value, level.value);
+    // quizList = await getQuizTest(learningSetId.value, level.value);
+    fetchQuizList();
+    // print("quiz list : $quizList");
+  }
+
+  void fetchQuizList() async {
+    quizList.value = await getQuizTest(learningSetId.value, level.value);
   }
 
   Future<List<QuizTestModel>> getQuizTest(
