@@ -2,6 +2,7 @@ import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart'
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
+import 'package:economic_fe/view_model/quiz/quiz_test_controller.dart';
 import 'package:economic_fe/view_model/test/level_test_test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +18,8 @@ class QuizTestPage extends StatefulWidget {
 }
 
 class _QuizTestPageState extends State<QuizTestPage> {
-  final LevelTestTestController controller = Get.put(LevelTestTestController());
-  late final Map<String, dynamic> args;
+  final QuizTestController controller = Get.put(QuizTestController());
+  // late final Map<String, dynamic> args;
   // late final List<QuizModel> quizList;
 
   // @override
@@ -34,20 +35,21 @@ class _QuizTestPageState extends State<QuizTestPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight), // 기본 높이 설정
-        child: Obx(() {
-          return CustomAppBar(
+          preferredSize: const Size.fromHeight(kToolbarHeight), // 기본 높이 설정
+          child: CustomAppBar(
             title: '레벨테스트',
             icon: Icons.close,
-            onPress: () => controller.showModal(),
-            currentIndex: controller.currentQuizIdx.value + 1,
+            onPress: () {
+              Navigator.pop(context);
+            },
+            // currentIndex: controller.currentQuizIdx.value + 1,
             totalIndex: 9,
-          );
-        }),
-      ),
+          )),
       body: const Stack(
         children: [
-          Text("dd"),
+          // Text(controller.learningSetId.value.toString()),
+          // Text(controller.conceptName.value),
+          // Text(controller.learningSetId.value.toString()),
           // Obx(() {
           //   return Align(
           //       alignment: Alignment.topCenter,

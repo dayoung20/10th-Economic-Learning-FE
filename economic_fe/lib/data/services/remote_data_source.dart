@@ -133,6 +133,46 @@ class RemoteDataSource {
   ///
   /// 데이터 생성시 사용
   /// jsonData 포함X
+  /// 앱에 저장된 accessToken 사용
+  /// statuscode 반환하지 않고 전체 response 반환
+  Future<dynamic> postApiWithoutJsonReturnResponse(
+    String endPoint,
+    // Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return jsonDecode(utf8.decode(response.bodyBytes));
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
   Future<dynamic> _postApi(
     String endPoint,
     // Map<String, dynamic> jsonData,
@@ -162,6 +202,46 @@ class RemoteDataSource {
       }
 
       return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
+  /// response 전부 return
+  Future<dynamic> _postApiReturnResponse(
+    String endPoint,
+    // Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response;
     } catch (e) {
       debugPrint('POST 요청 중 예외 발생: $e');
       return null;
@@ -2152,5 +2232,23 @@ class RemoteDataSource {
       debugPrint("fetchUserCompleted() 오류 발생: $e");
       return {};
     }
+  }
+
+  /// api/v1/learning/{learningSetId}/quizzes
+  /// 퀴즈 시작
+  Future<dynamic> getQuizList(int learningSetId, String level) async {
+    dynamic response;
+    String endPoint = "api/v1/learning/$learningSetId/quizzes?level=$level";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+    // print("response : $")
+
+    if (response != null) {
+      debugPrint("퀴즈 POST 성공: $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 POST 실패");
+    }
+    return response;
   }
 }
