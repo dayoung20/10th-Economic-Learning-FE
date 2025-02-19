@@ -1,12 +1,16 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
@@ -56,7 +60,9 @@ class LoginPage extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    controller.clickedLoginBtn();
+                    // controller.clickedLoginBtn();
+                    controller.login();
+                    // print("로그인 페이지 : $answers");
                   },
                   icon: Image.asset(
                     'assets/kakao_login_btn.png',

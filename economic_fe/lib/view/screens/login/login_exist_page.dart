@@ -19,14 +19,14 @@ class _LoginExistPageState extends State<LoginExistPage> {
   Widget build(BuildContext context) {
     final LoginExistController controller = Get.put(LoginExistController());
 
-    final arguments = Get.arguments as Map<String, dynamic>;
-    final List<LevelTestAnswerModel> answers = arguments['levelTestAnswers'];
-    final List<QuizModel> quizList = arguments['quizList'];
-    // print("quizListsss : $quizList");
-    @override
-    void initState() {
-      super.initState();
-    }
+    // final arguments = Get.arguments as Map<String, dynamic>;
+    // final List<LevelTestAnswerModel> answers = arguments['levelTestAnswers'];
+    // final List<QuizModel> quizList = arguments['quizList'];
+    // // print("quizListsss : $quizList");
+    // @override
+    // void initState() {
+    //   super.initState();
+    // }
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -59,7 +59,7 @@ class _LoginExistPageState extends State<LoginExistPage> {
                   height: 10,
                 ),
                 const Text(
-                  "처음 시작하는 경제 학습",
+                  '처음 시작하는 경제 학습',
                   style: TextStyle(
                     color: Color(0xFF404040),
                     fontSize: 16,
@@ -77,15 +77,14 @@ class _LoginExistPageState extends State<LoginExistPage> {
                 IconButton(
                   onPressed: () {
                     controller.login();
-                    // login/agreement 페이지로 이동이 맞는 경로로
+                    // print("로그인 페이지 : $answers");
                     // Get.toNamed("login/agreement", arguments: {
                     //   'levelTestAnswers': answers,
                     //   'quizList': quizList,
                     // });
-                    Get.toNamed("/chatbot");
                   },
                   icon: Image.asset(
-                    'assets/kakao_login_exist_btn.png',
+                    'assets/kakao_login_btn.png',
                     width: 300,
                     height: 45,
                   ),

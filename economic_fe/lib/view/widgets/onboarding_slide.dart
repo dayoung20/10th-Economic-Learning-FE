@@ -5,19 +5,25 @@ class OnboardingSlide extends StatelessWidget {
   final String title;
   final String subtitle;
   final int currentIdx;
+  final String image;
 
   const OnboardingSlide(
       {super.key,
       required this.title,
       required this.subtitle,
-      required this.currentIdx});
+      required this.currentIdx,
+      required this.image});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Placeholder(fallbackHeight: 200, fallbackWidth: 200), // 이미지 자리
+        Image.asset(
+          image,
+          width: 315,
+          height: 313,
+        ),
         const SizedBox(height: 35),
         Text(
           title,

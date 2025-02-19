@@ -1,39 +1,12 @@
-import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
-import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginExistController extends GetxController {
-  // late BuildContext context;
-  // static LoginController get to => Get.find();
-
-  // void getStats() {
-  //   // 통계 데이터 로드 또는 초기화 작업
-  //   print("Stats initialized!");
-  // }
-
-  // void clickedLoginBtn() {
-  //   //context.go('/test');
-  //   Get.toNamed('/login/agreement');
-  // }
-
-  // var levelTestAnswers = <LevelTestAnswerModel>[].obs;
-  List<LevelTestAnswerModel> levelTestAnswers = [];
-  final arguments = Get.arguments as Map<String, dynamic>;
-  List<LevelTestAnswerModel> answers = [];
-  List<QuizModel> quizList = [];
-
-  @override
-  void onInit() {
-    super.onInit();
-
-    answers = arguments['levelTestAnswers'];
-    quizList = arguments['quizList'];
-  }
+  // // var levelTestAnswers = <LevelTestAnswerModel>[].obs;
+  // List<LevelTestAnswerModel> levelTestAnswers = [];
 
   // final String clientId = dotenv.env['CLIENT_ID']!;
   // final String redirectUri = dotenv.env['REDIRECT_URI']!;
@@ -69,10 +42,7 @@ class LoginExistController extends GetxController {
         String serverToken = response['results'];
         await saveToken("accessToken", serverToken);
         print("백엔드 인증 성공, 저장된 accessToken: $serverToken");
-        Get.toNamed("login/agreement", arguments: {
-          'levelTestAnswers': answers,
-          'quizList': quizList,
-        });
+        Get.toNamed('/home');
       } else {
         print("백엔드 인증 실패: 응답 데이터 없음");
       }

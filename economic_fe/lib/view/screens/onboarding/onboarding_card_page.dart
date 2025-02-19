@@ -36,13 +36,13 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
       backgroundColor: Palette.background,
       body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(
             height: 50,
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 393),
+            height: ScreenUtils.getHeight(context, 520),
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
@@ -55,16 +55,19 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
                   title: "학습과 퀴즈로 누구나 쉽게",
                   subtitle: "개념 학습과 퀴즈로\n누구나 쉽게 경제를 학습해요!",
                   currentIdx: 0,
+                  image: 'assets/onboarding_card_1.png',
                 ),
                 OnboardingSlide(
                   title: "경제 뉴스와 AI챗봇",
                   subtitle: "최신 경제 기사를 확인하고\nAI에게 모르는 내용을 질문해요!",
                   currentIdx: 1,
+                  image: 'assets/onboarding_card_2.png',
                 ),
                 OnboardingSlide(
                   title: "커뮤니티 소통",
                   subtitle: "커뮤니티에서 내 의견을 공유하고\n다른 사람들과 토론해요!",
                   currentIdx: 2,
+                  image: 'assets/onboarding_card_3.png',
                 ),
               ],
             ),
