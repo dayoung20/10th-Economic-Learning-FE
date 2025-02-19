@@ -39,7 +39,7 @@ class LevelTestTestController extends GetxController {
       print("start");
       dynamic response = await RemoteDataSource.getLevelTest();
 
-      print("response ::: $response");
+      // print("response ::: $response");
 
       final data = response as Map<String, dynamic>;
       final quizList = data['results']['quizList'] as List;

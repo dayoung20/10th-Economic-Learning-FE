@@ -136,6 +136,46 @@ class RemoteDataSource {
   ///
   /// 데이터 생성시 사용
   /// jsonData 포함X
+  /// 앱에 저장된 accessToken 사용
+  /// statuscode 반환하지 않고 전체 response 반환
+  Future<dynamic> postApiWithoutJsonReturnResponse(
+    String endPoint,
+    // Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return jsonDecode(utf8.decode(response.bodyBytes));
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
   Future<dynamic> _postApi(
     String endPoint,
     // Map<String, dynamic> jsonData,
@@ -165,6 +205,46 @@ class RemoteDataSource {
       }
 
       return response.statusCode;
+    } catch (e) {
+      debugPrint('POST 요청 중 예외 발생: $e');
+      return null;
+    }
+  }
+
+  /// API POST
+  ///
+  /// 데이터 생성시 사용
+  /// jsonData 포함X
+  /// response 전부 return
+  Future<dynamic> _postApiReturnResponse(
+    String endPoint,
+    // Map<String, dynamic> jsonData,
+  ) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+
+    String? access = await getToken("accessToken");
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $access',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        // body: jsonEncode(jsonData),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('POST 요청 성공');
+        return response;
+      } else {
+        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+      }
+
+      return response;
     } catch (e) {
       debugPrint('POST 요청 중 예외 발생: $e');
       return null;
@@ -861,6 +941,27 @@ class RemoteDataSource {
       return null;
     }
   }
+
+  // /// api/v1/chatbot/tips
+  // /// 이용 꿀팁 조회
+  // Future<dynamic> getChatbotTips() async {
+  //   String endPoint = 'api/v1/chatbot/tips';
+  //   try {
+  //     print("start");
+  //     final response = await _getApiWithHeaderTest(endPoint, accessToken);
+  //     if (response != null) {
+  //       debugPrint('꿀팁 조회');
+  //       print("response : $response");
+  //       return response;
+  //     } else {
+  //       debugPrint('꿀팁 조회 실패');
+  //       return;
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error : $e');
+  //     return;
+  //   }
+  // }
 
   /// api/v1/chatbot
   /// 챗봇에게 메세지 보내기
@@ -2170,12 +2271,29 @@ class RemoteDataSource {
     }
   }
 
-  // /// 알림 구독 (SSE)
-  // /// api: api/v1/notification/subscribe
-  // Future<bool> subscribeToNotifications(
-  //     {Function(String)? onNotificationReceived}) async {
-  //   String url = '$baseUrl/api/v1/notification/subscribe';
-  //   String? access = await getToken("accessToken");
+  /// api/v1/learning/{learningSetId}/quizzes
+  /// 퀴즈 시작
+  Future<dynamic> getQuizList(int learningSetId, String level) async {
+    dynamic response;
+    String endPoint = "api/v1/learning/$learningSetId/quizzes?level=$level";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+    // print("response : $")
+
+    if (response != null) {
+      debugPrint("퀴즈 POST 성공: $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 POST 실패");
+    }
+    return response;
+
+  /// 알림 구독 (SSE)
+  /// api: api/v1/notification/subscribe
+  Future<bool> subscribeToNotifications(
+      {Function(String)? onNotificationReceived}) async {
+    String url = '$baseUrl/api/v1/notification/subscribe';
+    String? access = await getToken("accessToken");
 
   //   if (access == null) {
   //     print("SSE 연결 실패: 액세스 토큰 없음");
@@ -2219,5 +2337,6 @@ class RemoteDataSource {
       print("JSON 파싱 오류: $e");
       return {};
     }
+
   }
 }

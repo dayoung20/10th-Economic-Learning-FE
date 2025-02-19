@@ -43,13 +43,17 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
               ),
               _buildLevelButton(
                 label: '초급',
-                isSelected: _selectedLevel == 'Beginner',
+                isSelected: _selectedLevel == 'BEGINNER',
                 onTap: () {
                   setState(() {
                     print("Beginner 클릭");
-                    _selectedLevel = 'Beginner';
+                    _selectedLevel = 'BEGINNER';
                     controller.selectedLevel = _selectedLevel;
-                    controller.clickedQuizBtn(context);
+                    controller.clickedQuizBtn(
+                        context,
+                        controller.learningSetId.value,
+                        controller.conceptName.value,
+                        _selectedLevel);
                     // print(controller.selectedLevel);
                   });
                 },
@@ -58,13 +62,17 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
               const SizedBox(height: 16),
               _buildLevelButton(
                 label: '중급',
-                isSelected: _selectedLevel == 'Intermediate',
+                isSelected: _selectedLevel == 'INTERMEDIATE',
                 onTap: () {
                   setState(() {
                     print("Intermediate 클릭");
-                    _selectedLevel = 'Intermediate';
+                    _selectedLevel = 'INTERMEDIATE';
                     controller.selectedLevel = _selectedLevel;
-                    controller.clickedQuizBtn(context);
+                    controller.clickedQuizBtn(
+                        context,
+                        controller.learningSetId.value,
+                        controller.conceptName.value,
+                        _selectedLevel);
                   });
                 },
                 isCompleted: false,
@@ -72,13 +80,17 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
               const SizedBox(height: 16),
               _buildLevelButton(
                 label: '고급',
-                isSelected: _selectedLevel == 'Advanced',
+                isSelected: _selectedLevel == 'ADVANCED',
                 onTap: () {
                   setState(() {
                     print("advanced 클릭");
-                    _selectedLevel = 'Advanced';
+                    _selectedLevel = 'ADVANCED';
                     controller.selectedLevel = _selectedLevel;
-                    controller.clickedQuizBtn(context);
+                    controller.clickedQuizBtn(
+                        context,
+                        controller.learningSetId.value,
+                        controller.conceptName.value,
+                        _selectedLevel);
                   });
                 },
                 isCompleted: false,
