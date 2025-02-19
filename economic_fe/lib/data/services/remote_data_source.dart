@@ -444,6 +444,42 @@ class RemoteDataSource {
     }
   }
 
+  /// API GET (token X)
+  ///
+  /// 데이터 받아올 때 사용
+  Future<dynamic> _getApiWithoutToken(String endPoint) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('GET 요청: $endPoint');
+
+    String? access = await getToken("accessToken");
+
+    try {
+      final headers = {
+        'Authorization': 'Bearer $access',
+        'accept': '*/*',
+      };
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('GET 요청 성공');
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return decodedResponse;
+      } else {
+        debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+        return response;
+      }
+    } catch (e) {
+      debugPrint('GET 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
   /// API DELETE
   ///
   /// 데이터 삭제시 사용
@@ -1057,19 +1093,19 @@ class RemoteDataSource {
   static Future<dynamic> getlogin(String accessToken) async {
     String endPoint = "api/v2/auth/login/kakao?accessToken=$accessToken";
     try {
-      final response = await _getApiReturnStatus(endPoint);
+      final response = await _getApi(endPoint);
       print("response : $response");
 
       if (response != null) {
-        if (response.statusCode == 401) {
-          // 토큰 만료 → 자동 로그아웃
-          print("토큰 만료됨. 자동 로그아웃 실행.");
-          LoginController().logout();
-          return null;
-        } else {
-          debugPrint("성공");
-          return response;
-        }
+        // if (response.statusCode == 401) {
+        //   // 토큰 만료 → 자동 로그아웃
+        //   print("토큰 만료됨. 자동 로그아웃 실행.");
+        //   LoginController().logout();
+        //   return null;
+        // } else {
+        debugPrint("성공");
+        return response;
+        // }
       } else {
         debugPrint("실패");
         return null;
