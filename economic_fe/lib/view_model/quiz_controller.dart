@@ -80,6 +80,7 @@ class QuizController extends GetxController {
     selectedOption.value = -1;
   }
 
+  // 퀴즈 한 문제 풀고 바로 제출
   Future<void> postSubmitQuiz(int quizId, int answerIndex) async {
     try {
       print("start quizIddd : $quizId, $answerIndex");
@@ -89,6 +90,16 @@ class QuizController extends GetxController {
       isCorrect.value = data['results']['isCorrect'];
       explanation.value = data['results']['explanation'];
       print("result : ${isCorrect.value}, $explanation");
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
+  Future<void> postScrapQuiz(int quizId) async {
+    try {
+      print("start");
+      dynamic response = await remoteDataSource.postScrapQuiz(quizId);
+      print("response isSuccess : ${response['isSuccess']}");
     } catch (e) {
       debugPrint('Error: $e');
     }

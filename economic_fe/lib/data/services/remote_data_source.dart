@@ -2322,12 +2322,26 @@ class RemoteDataSource {
     response = await postApiWithoutJsonReturnResponse(endPoint);
 
     if (response != null) {
-      debugPrint("퀴즈 제출 POST 성공: $response");
+      debugPrint("퀴즈 제출 POST 성공 : $response");
       return response; // 성공하면 응답 반환
     } else {
       debugPrint("퀴즈 제출 POST 실패");
     }
     return response;
+  }
+
+  /// api/v1/learning/quiz/{quizId}/scrap
+  /// 퀴즈 스크랩
+  Future<dynamic> postScrapQuiz(int quizId) async {
+    dynamic response;
+    String endPoint = "api/v1/learning/quiz/$quizId/scrap";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+    if (response != null) {
+      debugPrint("퀴즈 스크랩 POST성공 : $response");
+    } else {
+      debugPrint("퀴즈 스크랩 POST 실패");
+    }
   }
 
   /// 알림 구독 (SSE)

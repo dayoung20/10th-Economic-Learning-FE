@@ -32,8 +32,8 @@ class RippleApp extends StatelessWidget {
 
     return GetMaterialApp(
       title: 'Ripple',
-      initialRoute: accessToken != null ? '/home' : '/',
-      // initialRoute: '/test',
+      // initialRoute: accessToken != null ? '/home' : '/',
+      initialRoute: '/test',
       getPages: UserRouter.getPages(),
     );
   }

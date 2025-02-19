@@ -158,8 +158,7 @@ class _QuizCardState extends State<QuizCard> {
                                           )
                                         : GestureDetector(
                                             onTap: () {
-                                              controller.selectOption(
-                                                  index); // 선택된 옵션 저장
+                                              controller.selectOption(index);
                                             },
                                             child: Padding(
                                               padding:
@@ -236,11 +235,6 @@ class _QuizCardState extends State<QuizCard> {
                                   // controller.selectedOption.value == 0 ? 1 : 2;
                                   controller.isCorrect.value ? 1 : 2;
 
-                              // currentIndex 증가를 위함함
-                              // widget.onOptionSelected != null
-                              //     ? widget.onOptionSelected!(
-                              //         controller.selectedOption.value)
-                              //     : null;
                               // 답안 제출
                               controller.postSubmitQuiz(widget.quizId!,
                                   controller.selectedOption.value);
@@ -363,6 +357,9 @@ class _QuizCardState extends State<QuizCard> {
                                                 controller.isBookmarked.value
                                                     ? '퀴즈를 스크랩했어요'
                                                     : '스크랩을 취소했어요');
+
+                                        controller
+                                            .postScrapQuiz(widget.quizId!);
                                       },
                                       child: Obx(() {
                                         return Image.asset(
@@ -463,12 +460,12 @@ class _QuizCardState extends State<QuizCard> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const SingleChildScrollView(
+                        SingleChildScrollView(
                           child: SizedBox(
                             height: 384,
                             child: Text(
-                              '들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다. 들어갈 내용은 해설입니다.',
-                              style: TextStyle(
+                              controller.explanation.value,
+                              style: const TextStyle(
                                 color: Color(0xFF111111),
                                 fontSize: 16,
                                 fontFamily: 'Pretendard Variable',
