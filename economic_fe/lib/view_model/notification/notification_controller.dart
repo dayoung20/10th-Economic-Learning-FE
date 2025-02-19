@@ -59,4 +59,62 @@ class NotificationController extends GetxController {
       return notification;
     }).toList();
   }
+
+  /// 알림 클릭 시 postId가 어디에 속하는지 확인 후 해당 페이지로 이동
+  Future<void> onNotificationClick(int notificationId, int postId) async {
+    String? targetRoute = await checkPostLocation(postId);
+
+    if (targetRoute != null) {
+      // 알림 확인 API 호출 및 UI에서 즉각 제거
+      await markNotificationAsChecked(notificationId);
+
+      Get.toNamed(targetRoute, arguments: postId);
+    } else {
+      Get.snackbar("오류", "해당 게시글을 찾을 수 없습니다.",
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  /// postId가 게시글 목록(`api/v1/post`)인지 경제톡톡(`api/v1/post/toktok`)인지 판별
+  Future<String?> checkPostLocation(int postId) async {
+    try {
+      // 두 개의 API 요청을 병렬 실행하여 속도 향상
+      final results = await Future.wait([
+        remoteDataSource.fetchCategoryPosts("RECENT", "ALL"), // 전체 게시글 조회
+        remoteDataSource.fetchTokLists("RECENT"), // 경제톡톡 조회
+      ]);
+
+      List<dynamic> categoryPosts = results[0];
+      List<dynamic> tokPosts = results[1];
+
+      // postId가 게시글 목록에 존재하면 `/community/detail` 페이지로 이동
+      if (categoryPosts.any((post) => post["id"] == postId)) {
+        return "/community/detail";
+      }
+
+      // postId가 경제톡톡 목록에 존재하면 `/community/talk_detail` 페이지로 이동
+      if (tokPosts.any((post) => post["id"] == postId)) {
+        return "/community/talk_detail";
+      }
+
+      return null; // 해당 postId가 어떤 목록에도 없을 경우
+    } catch (e) {
+      debugPrint("게시글 확인 중 오류 발생: $e");
+      return null;
+    }
+  }
+
+  /// 알림 확인 API 호출 후 목록에서 즉시 제거
+  Future<void> markNotificationAsChecked(int notificationId) async {
+    bool success = await remoteDataSource.checkNotification(notificationId);
+
+    if (success) {
+      // UI에서 해당 알림 즉시 제거
+      notifications
+          .removeWhere((notification) => notification.id == notificationId);
+      debugPrint("알림 확인 완료: $notificationId");
+    } else {
+      debugPrint("알림 확인 실패: $notificationId");
+    }
+  }
 }
