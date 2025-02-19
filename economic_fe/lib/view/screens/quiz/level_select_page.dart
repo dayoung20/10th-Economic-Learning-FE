@@ -29,9 +29,12 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         title: "레벨선택",
         icon: Icons.arrow_back_ios_new,
+        onPress: () {
+          Navigator.pop(context);
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),

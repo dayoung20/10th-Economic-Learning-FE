@@ -66,7 +66,8 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         question:
                             quizList[controller.currentQuizIdx.value].question,
                         isLast: !(controller.currentQuizIdx.value < 8),
-                        isQuiz: false,
+                        isQuiz: true,
+                        isCorrectQuiz: controller.isCorrect.value,
                         onOptionSelected: (int selected) {
                           setState(() {
                             // // 선택한 답안 저장
@@ -88,6 +89,10 @@ class _QuizTestPageState extends State<QuizTestPage> {
                             // print(
                             //     "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
                             // print("현재 idx : ${controller.currentQuizIdx}");
+                            controller.postSubmitQuiz(
+                                quizList[controller.currentQuizIdx.value]
+                                    .quizId,
+                                selected);
                             controller.currentQuizIdx++;
                             print("select : $selected");
                           });
@@ -104,7 +109,7 @@ class _QuizTestPageState extends State<QuizTestPage> {
                             .toList(),
                         question:
                             quizList[controller.currentQuizIdx.value].question,
-                        isQuiz: false,
+                        isQuiz: true,
                         isLast: controller.currentQuizIdx.value == 8,
                         onOptionSelected: (int selected) {
                           // setState(() {
@@ -128,6 +133,9 @@ class _QuizTestPageState extends State<QuizTestPage> {
                           //   print("현재 idx : ${controller.currentQuizIdx}");
                           //   controller.currentQuizIdx++;
                           // });
+                          controller.postSubmitQuiz(
+                              quizList[controller.currentQuizIdx.value].quizId,
+                              selected);
                           print("select : $selected");
                           controller.currentQuizIdx++;
                         },

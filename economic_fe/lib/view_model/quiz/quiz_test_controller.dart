@@ -20,10 +20,12 @@ class QuizTestController extends GetxController {
   // late final List<QuizTestModel> quizList;
   var quizList = <QuizTestModel>[].obs;
   var currentQuizIdx = 0.obs;
+  var isCorrect = true.obs;
+  var explanation = "".obs;
 
-  void getStats() {
-    print("Stats initialized!");
-  }
+  // void getStats() {
+  //   print("Stats initialized!");
+  // }
 
   @override
   void onInit() async {
@@ -42,6 +44,7 @@ class QuizTestController extends GetxController {
     // print("quiz list : $quizList");
   }
 
+  // 퀴즈 시작 api
   void fetchQuizList() async {
     quizList.value = await getQuizTest(learningSetId.value, level.value);
   }
@@ -60,6 +63,20 @@ class QuizTestController extends GetxController {
     } catch (e) {
       debugPrint('Error: $e');
       return [];
+    }
+  }
+
+  Future<void> postSubmitQuiz(int quizId, int answerIndex) async {
+    try {
+      print("start quizId : $quizId");
+      dynamic response =
+          await remoteDataSource.postSubmitQuiz(quizId, answerIndex);
+      final data = response as Map<String, dynamic>;
+      isCorrect.value = data['results']['isCorrect'];
+      explanation.value = data['results']['explanation'];
+      print("result : ${isCorrect.value}, $explanation");
+    } catch (e) {
+      debugPrint('Error: $e');
     }
   }
 }

@@ -18,6 +18,7 @@ class QuizCard extends StatefulWidget {
   final bool isLast;
   final int? answer;
   final Function()? onFinishTest;
+  final bool? isCorrectQuiz;
 
   //선택한 옵션 부모로 전달
   final Function(int)? onOptionSelected;
@@ -35,6 +36,7 @@ class QuizCard extends StatefulWidget {
     this.answer,
     this.onOptionSelected,
     this.onFinishTest,
+    this.isCorrectQuiz,
   });
 
   @override
@@ -186,12 +188,9 @@ class _QuizCardState extends State<QuizCard> {
                                                     .selectedOption.value ==
                                                 index,
                                             isQuiz: true,
-                                            isCorrect: controller
-                                                        .isCorrectAnswer
-                                                        .value ==
-                                                    1
-                                                ? true
-                                                : false,
+                                            isCorrect: widget.isQuiz
+                                                ? widget.isCorrectQuiz!
+                                                : true,
                                           )
                                         : GestureDetector(
                                             onTap: () {
@@ -230,6 +229,10 @@ class _QuizCardState extends State<QuizCard> {
                               controller.clickCheckBtn.value = true;
                               controller.isCorrectAnswer.value =
                                   controller.selectedOption.value == 0 ? 1 : 2;
+                              widget.onOptionSelected != null
+                                  ? widget.onOptionSelected!(
+                                      controller.selectedOption.value)
+                                  : null;
                             }
                           : widget.isLast
                               ? () {

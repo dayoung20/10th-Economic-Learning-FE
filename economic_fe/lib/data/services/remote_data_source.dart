@@ -344,6 +344,33 @@ class RemoteDataSource {
     }
   }
 
+  /// API GET (token 없이 사용)
+  ///
+  /// 데이터 받아올 때 사용
+  static Future<dynamic> _getApiReturnStatus(String endPoint) async {
+    String apiUrl = '$baseUrl/$endPoint';
+    debugPrint('GET 요청: $endPoint');
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        debugPrint('GET 요청 성공');
+
+        // return jsonDecode(response.body);
+        // 한글 깨지지 않도록 설정
+        final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        return response;
+      } else {
+        debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+        return response;
+      }
+    } catch (e) {
+      debugPrint('GET 요청 중 예외 발생: $e');
+      return;
+    }
+  }
+
   /// API GET (token 사용)
   ///
   /// 데이터 받아올 때 사용
@@ -1030,7 +1057,8 @@ class RemoteDataSource {
   static Future<dynamic> getlogin(String accessToken) async {
     String endPoint = "api/v2/auth/login/kakao?accessToken=$accessToken";
     try {
-      final response = await _getApi(endPoint);
+      final response = await _getApiReturnStatus(endPoint);
+      print("response : $response");
 
       if (response != null) {
         if (response.statusCode == 401) {
@@ -2283,6 +2311,24 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/learning/{learningSetId}/quizzes/{quizId}
+  /// 퀴즈 제출
+  Future<dynamic> postSubmitQuiz(int quizId, int answerIndex) async {
+    dynamic response;
+    String endPoint =
+        "api/v1/learning/{learningSetId}/quizzes/$quizId?answerIndex=$answerIndex";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+
+    if (response != null) {
+      debugPrint("퀴즈 제출 POST 성공: $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 제출 POST 실패");
+    }
+    return response;
+  }
+
   /// 알림 구독 (SSE)
   /// api: api/v1/notification/subscribe
   Future<bool> subscribeToNotifications(
@@ -2324,7 +2370,7 @@ class RemoteDataSource {
   Map<String, dynamic> parseNotificationData(String data) {
     try {
       if (!data.startsWith("{")) {
-        print("⚠️ JSON 형식이 아님, 무시: $data");
+        print("JSON 형식이 아님, 무시: $data");
         return {};
       }
       return jsonDecode(data);
