@@ -926,27 +926,33 @@ class RemoteDataSource {
 
   /// api/v2/auth/login/kakao
   /// 카카오 로그인 (v2)
-  static Future<dynamic> getlogin(String accessToken) async {
-    String endPoint = "api/v2/auth/login/kakao?accessToken=$accessToken";
-    try {
-      final response = await _getApi(endPoint);
+  static Future<http.Response?> getlogin(String accessToken) async {
+    String url = "$baseUrl/api/v2/auth/login/kakao?accessToken=$accessToken";
 
-      if (response != null) {
-        if (response.statusCode == 401) {
-          // 토큰 만료 → 자동 로그아웃
-          print("토큰 만료됨. 자동 로그아웃 실행.");
-          LoginController().logout();
-          return null;
-        } else {
-          debugPrint("성공");
-          return response;
-        }
-      } else {
-        debugPrint("실패");
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "accept": "*/*",
+        },
+      );
+
+      if (response.statusCode == 401) {
+        // 토큰 만료 → 자동 로그아웃
+        print("토큰 만료됨. 자동 로그아웃 실행.");
+        LoginController().logout();
+        return null;
+      } else if (response.statusCode == 500) {
+        // 서버 내부 오류
+        print("서버 오류 (500): ${response.body}");
         return null;
       }
+
+      debugPrint("GET 요청 성공");
+      return response;
     } catch (e) {
-      debugPrint('Error : $e');
+      debugPrint('Error 발생: $e');
+      return null;
     }
   }
 
@@ -2164,42 +2170,42 @@ class RemoteDataSource {
     }
   }
 
-  /// 알림 구독 (SSE)
-  /// api: api/v1/notification/subscribe
-  Future<bool> subscribeToNotifications(
-      {Function(String)? onNotificationReceived}) async {
-    String url = '$baseUrl/api/v1/notification/subscribe';
-    String? access = await getToken("accessToken");
+  // /// 알림 구독 (SSE)
+  // /// api: api/v1/notification/subscribe
+  // Future<bool> subscribeToNotifications(
+  //     {Function(String)? onNotificationReceived}) async {
+  //   String url = '$baseUrl/api/v1/notification/subscribe';
+  //   String? access = await getToken("accessToken");
 
-    if (access == null) {
-      print("SSE 연결 실패: 액세스 토큰 없음");
-      return false;
-    }
+  //   if (access == null) {
+  //     print("SSE 연결 실패: 액세스 토큰 없음");
+  //     return false;
+  //   }
 
-    try {
-      SSEClient.subscribeToSSE(
-        url: url,
-        header: {
-          "Authorization": "Bearer $access",
-          "Accept": "text/event-stream",
-        },
-        method: SSERequestType.GET,
-      ).listen((SSEModel event) {
-        if (event.data != null && onNotificationReceived != null) {
-          print("Received SSE event: ${event.data}");
-          onNotificationReceived(event.data!);
-        }
-      }, onError: (error) {
-        print("SSE 연결 오류: $error");
-      });
+  //   try {
+  //     SSEClient.subscribeToSSE(
+  //       url: url,
+  //       header: {
+  //         "Authorization": "Bearer $access",
+  //         "Accept": "text/event-stream",
+  //       },
+  //       method: SSERequestType.GET,
+  //     ).listen((SSEModel event) {
+  //       if (event.data != null && onNotificationReceived != null) {
+  //         print("Received SSE event: ${event.data}");
+  //         onNotificationReceived(event.data!);
+  //       }
+  //     }, onError: (error) {
+  //       print("SSE 연결 오류: $error");
+  //     });
 
-      print("SSE 연결 성공");
-      return true;
-    } catch (e) {
-      print("SSE 구독 실패: $e");
-      return false;
-    }
-  }
+  //     print("SSE 연결 성공");
+  //     return true;
+  //   } catch (e) {
+  //     print("SSE 구독 실패: $e");
+  //     return false;
+  //   }
+  // }
 
   /// JSON 데이터 파싱 (잘못된 데이터 방지)
   Map<String, dynamic> parseNotificationData(String data) {
