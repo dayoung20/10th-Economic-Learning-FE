@@ -38,6 +38,7 @@ import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
+import 'package:economic_fe/view/screens/quiz/quiz_test_page.dart';
 import 'package:economic_fe/view/screens/search/search_page.dart';
 import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
 import 'package:economic_fe/view/screens/level_test/test_multiple_choice_page.dart';
@@ -136,7 +137,7 @@ class UserRouter {
             children: [
               GetPage(
                 name: '/quiz',
-                page: () => const QuizPage(),
+                page: () => const QuizTestPage(),
               ),
             ],
           ),
