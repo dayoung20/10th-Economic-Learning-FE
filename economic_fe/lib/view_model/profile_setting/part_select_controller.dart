@@ -11,6 +11,17 @@ class PartSelectController extends GetxController {
   // 저장하기 버튼 클릭 여부
   var saveButtonClicked = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    final profileController = Get.find<ProfileSettingController>();
+
+    if (profileController.isEditMode) {
+      selectedPart.value = profileController.userProfile.value.job;
+    }
+  }
+
   /// 프로필 설정 페이지로 이동
   void navigateToProfileSetting() {
     Get.toNamed('/profile_setting');

@@ -140,7 +140,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                             // 카메라 버튼
                             child: GestureDetector(
                               onTap: () {
-                                controller.selectProfileImage(context);
+                                Get.toNamed('/profile_setting',
+                                    arguments: controller.userInfo.value);
                               },
                               child: Container(
                                 width: 26,

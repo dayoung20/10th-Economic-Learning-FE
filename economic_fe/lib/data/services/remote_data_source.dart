@@ -920,6 +920,27 @@ class RemoteDataSource {
     }
   }
 
+  /// 사용자 프로필 수정 API
+  /// API: api/v1/user/profile
+  Future<dynamic> updateUserProfile(Map<String, dynamic> userProfile) async {
+    String endpoint = 'api/v1/user/profile';
+
+    try {
+      final response = await _patchApi(endpoint, jsonEncode(userProfile));
+
+      if (response == 200) {
+        debugPrint('사용자 프로필 수정 성공');
+        return true;
+      } else {
+        debugPrint('사용자 프로필 수정 실패: $response');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('updateUserProfile Error: $e');
+      return false;
+    }
+  }
+
   /// api/v1/chatbot/list
   /// 대화 내역 조회
   Future<dynamic> getMessageList(int page) async {
