@@ -1221,6 +1221,48 @@ class RemoteDataSource {
     }
   }
 
+  /// 내가 작성한 게시글 조회 (상세)
+  /// API: api/v1/user/posts
+  Future<List<Map<String, dynamic>>> fetchMyPostDetail() async {
+    String endPoint = 'api/v1/user/posts';
+    var response = await _getApiWithHeader(endPoint);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<Map<String, dynamic>> myPosts =
+          posts.map((post) => Map<String, dynamic>.from(post)).toList();
+
+      debugPrint("내가 작성한 게시글 목록 로드 완료, 개수: ${myPosts.length}개");
+
+      return myPosts; // 게시글 전체 데이터 리스트 반환
+    } else {
+      debugPrint("내 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
+  /// 내가 댓글 단 게시글 조회
+  /// API: api/v1/user/comment-posts
+  Future<List<Map<String, dynamic>>> fetchCommentPosts() async {
+    String endPoint = 'api/v1/user/comment-posts';
+    var response = await _getApiWithHeader(endPoint);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<Map<String, dynamic>> myPosts =
+          posts.map((post) => Map<String, dynamic>.from(post)).toList();
+
+      debugPrint("내가 댓글 단 게시글 목록 로드 완료, 개수: ${myPosts.length}개");
+
+      return myPosts; // 게시글 전체 데이터 리스트 반환
+    } else {
+      debugPrint("내가 댓글 단 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
   /// 게시물 댓글 추가 API
   /// API: api/v1/post/{id}/comments
   Future<bool> addComment(int postId, String content) async {
