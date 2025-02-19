@@ -19,9 +19,13 @@ class QuizCard extends StatefulWidget {
   final int? answer;
   final Function()? onFinishTest;
   final bool? isCorrectQuiz;
+  final int? quizId;
 
-  //선택한 옵션 부모로 전달
+  // 선택한 옵션 부모로 전달
   final Function(int)? onOptionSelected;
+
+  // 퀴즈에서 다음 문제로 넘어갈 때 실행되는 함수
+  final Function()? onNextQuizBtn;
 
   const QuizCard({
     super.key,
@@ -37,6 +41,8 @@ class QuizCard extends StatefulWidget {
     this.onOptionSelected,
     this.onFinishTest,
     this.isCorrectQuiz,
+    this.onNextQuizBtn,
+    this.quizId,
   });
 
   @override
@@ -188,9 +194,8 @@ class _QuizCardState extends State<QuizCard> {
                                                     .selectedOption.value ==
                                                 index,
                                             isQuiz: true,
-                                            isCorrect: widget.isQuiz
-                                                ? widget.isCorrectQuiz!
-                                                : true,
+                                            isCorrect:
+                                                controller.isCorrect.value,
                                           )
                                         : GestureDetector(
                                             onTap: () {
@@ -228,11 +233,18 @@ class _QuizCardState extends State<QuizCard> {
                           ? () {
                               controller.clickCheckBtn.value = true;
                               controller.isCorrectAnswer.value =
-                                  controller.selectedOption.value == 0 ? 1 : 2;
-                              widget.onOptionSelected != null
-                                  ? widget.onOptionSelected!(
-                                      controller.selectedOption.value)
-                                  : null;
+                                  // controller.selectedOption.value == 0 ? 1 : 2;
+                                  controller.isCorrect.value ? 1 : 2;
+
+                              // currentIndex 증가를 위함함
+                              // widget.onOptionSelected != null
+                              //     ? widget.onOptionSelected!(
+                              //         controller.selectedOption.value)
+                              //     : null;
+                              // 답안 제출
+                              controller.postSubmitQuiz(widget.quizId!,
+                                  controller.selectedOption.value);
+                              // print("se : ${controller.selectedOption.value}");
                             }
                           : widget.isLast
                               ? () {
@@ -268,7 +280,7 @@ class _QuizCardState extends State<QuizCard> {
                 ? Container(
                     width: MediaQuery.of(context).size.width,
                     height: 183,
-                    decoration: controller.isCorrectAnswer.value == 1
+                    decoration: controller.isCorrect.value
                         ? const BoxDecoration(color: Color(0xFFE1F6FF))
                         : const BoxDecoration(color: Color(0xFFFFF2F1)),
                     child: Column(
@@ -283,7 +295,7 @@ class _QuizCardState extends State<QuizCard> {
                               Row(
                                 children: [
                                   Image.asset(
-                                    controller.isCorrectAnswer.value == 1
+                                    controller.isCorrect.value
                                         ? 'assets/check_circle.png'
                                         : 'assets/subtract.png',
                                     width: 32,
@@ -292,7 +304,7 @@ class _QuizCardState extends State<QuizCard> {
                                     width: 8,
                                   ),
                                   Text(
-                                    controller.isCorrectAnswer.value == 1
+                                    controller.isCorrect.value
                                         ? '맞았어요!'
                                         : '아쉬워요',
                                     style: const TextStyle(
@@ -370,8 +382,20 @@ class _QuizCardState extends State<QuizCard> {
                         ),
                         CustomButton(
                           text: widget.isLast ? '종료하기' : '다음 문제',
-                          onPress: () {},
-                          bgColor: controller.isCorrectAnswer.value == 1
+                          onPress: () {
+                            if (widget.isLast) {
+                              //마지막 문제가 아닐때
+                              // widget.onOptionSelected != null
+                              //     ? widget.onOptionSelected!(
+                              //         controller.selectedOption.value)
+                              //     : null;
+                            } else {
+                              print("next ::");
+                              widget.onNextQuizBtn!();
+                              controller.clickCheckBtn.value = false;
+                            }
+                          },
+                          bgColor: controller.isCorrect.value
                               ? const Color(0xff067BD5)
                               : const Color(0xffFF5468),
                         ),

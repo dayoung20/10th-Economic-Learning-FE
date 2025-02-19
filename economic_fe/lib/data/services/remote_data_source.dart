@@ -2315,8 +2315,9 @@ class RemoteDataSource {
   /// 퀴즈 제출
   Future<dynamic> postSubmitQuiz(int quizId, int answerIndex) async {
     dynamic response;
+    print("postSubmitQuiz 안 : $quizId, $answerIndex");
     String endPoint =
-        "api/v1/learning/{learningSetId}/quizzes/$quizId?answerIndex=$answerIndex";
+        "api/v1/learning/quizzes/$quizId?answerIndex=$answerIndex";
 
     response = await postApiWithoutJsonReturnResponse(endPoint);
 
