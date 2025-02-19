@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BasicController extends GetxController {
-  final RemoteDataSource remoteDataSource = RemoteDataSource();
+  final remoteDataSource = RemoteDataSource();
 
   // ImagePickerService 인스턴스
   final ImagePickerService _imagePickerService = ImagePickerService();
@@ -61,6 +61,9 @@ class BasicController extends GetxController {
 
       profileImageURL.value = user.profileImageURL; // 서버에서 받은 프로필 이미지 사용
       imageId.value = user.imageId; // 기존 업로드된 이미지 ID
+
+      // 닉네임이 유효한 상태로 설정
+      isValid.value = user.nickname.length >= 2 && user.nickname.length <= 10;
 
       _updateSaveButtonState();
     }
@@ -122,7 +125,15 @@ class BasicController extends GetxController {
 
   /// 닉네임 유효성 검사
   void validateNickname(String value) {
-    // if (value == nickname.value) return; // 변경 없음
+    final profileController = Get.find<ProfileSettingController>();
+
+    // 닉네임이 기존과 동일한 경우, 유효하다고 간주하여 체크 표시 유지
+    if (profileController.isEditMode &&
+        value == profileController.userProfile.value.nickname) {
+      isValid.value = true;
+      return;
+    }
+
     nickname.value = value;
 
     if (value.length < 2) {
@@ -137,8 +148,6 @@ class BasicController extends GetxController {
     }
 
     _updateProfileField('nickname', value);
-
-    // 저장 버튼 상태 업데이트
     _updateSaveButtonState();
   }
 
