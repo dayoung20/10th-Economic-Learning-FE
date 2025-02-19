@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
@@ -392,12 +393,200 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               );
                   }),
                   // 경제 톡톡 화면
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  Obx(() {
+                    if (controller.economyTalkPosts.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          '내가 참여한 경제 톡톡이 없습니다.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF767676),
+                          ),
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: controller.economyTalkPosts.length,
+                      itemBuilder: (context, index) {
+                        final post = controller.economyTalkPosts[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed('/community/talk_detail',
+                                arguments: post.id!);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: const Border(
+                                bottom: BorderSide(
+                                  color: Color(0xFFD9D9D9),
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // 경제톡톡 이미지
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 12),
+                                  child: // 이미지가 있는 경우에만 표시
+                                      post.imageUrl != null &&
+                                              post.imageUrl!.isNotEmpty
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                              child: Image.network(
+                                                post.imageUrl!,
+                                                width: 97,
+                                                height: 118,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Container(
+                                                  width: 97,
+                                                  height: 118,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                  ),
+                                                  child: const Icon(
+                                                      Icons.image_not_supported,
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                            )
+                                          : Container(
+                                              width: 97,
+                                              height: 118,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                image: const DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/talk_image_sample.png'),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          (32 + 97 + 12),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${post.commentCount}명이 참여했어요',
+                                            style: const TextStyle(
+                                              color: Color(0xFF767676),
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.50,
+                                              letterSpacing: -0.33,
+                                            ),
+                                          ),
+                                          Text(
+                                            post.createdDate!,
+                                            textAlign: TextAlign.right,
+                                            style: const TextStyle(
+                                              color: Color(0xFFA2A2A2),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.50,
+                                              letterSpacing: -0.30,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          (32 + 97 + 12),
+                                      height: 60,
+                                      child: Flexible(
+                                        child: Text(
+                                          post.title!,
+                                          style: const TextStyle(
+                                            color: Color(0xFF111111),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            height: 1.30,
+                                            letterSpacing: -0.38,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 2),
+                                          child: Icon(
+                                            Icons.favorite_border,
+                                            size: 18,
+                                            color: Color(0xff767676),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${post.likeCount}',
+                                          style: const TextStyle(
+                                            color: Color(0xFF767676),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.50,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 2),
+                                          child: Icon(
+                                            Icons.chat_bubble_outline,
+                                            size: 18,
+                                            color: Color(0xff767676),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${post.commentCount}',
+                                          style: const TextStyle(
+                                            color: Color(0xFF767676),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.50,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
                   // 댓글 단 글 화면
                   Obx(() {
-                    if (controller.commentPosts.isEmpty) {
+                    if (controller.otherCommentPosts.isEmpty) {
                       return const Center(
                         child: Text(
                           '내가 댓글 단 게시글이 없습니다.',
@@ -410,9 +599,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     }
 
                     return ListView.builder(
-                      itemCount: controller.commentPosts.length,
+                      itemCount: controller.otherCommentPosts.length,
                       itemBuilder: (context, index) {
-                        final post = controller.commentPosts[index];
+                        final post = controller.otherCommentPosts[index];
                         return GestureDetector(
                           onTap: () {
                             Get.toNamed('/community/detail',

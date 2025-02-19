@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/models/community/post_model.dart';
+import 'package:economic_fe/data/models/community/tok_model.dart';
 import 'package:economic_fe/data/models/user_profile.dart';
 import 'package:economic_fe/data/services/image_picker_service.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
@@ -16,7 +17,8 @@ class MyProfileController extends GetxController
   var userInfo = Rx<UserProfile?>(null); // 사용자 프로필
   var selectedProfileImage = Rx<String?>(null);
   var myPosts = <PostModel>[].obs;
-  var commentPosts = <PostModel>[].obs;
+  var economyTalkPosts = <TokModel>[].obs; // 경제 톡톡 게시글
+  var otherCommentPosts = <PostModel>[].obs; // 그 외 댓글 단 게시글
 
   // 게시글 세부 화면으로 이동
   void toDetailPage(int id) {
@@ -95,13 +97,36 @@ class MyProfileController extends GetxController
   }
 
   // 내가 댓글 단 게시글 목록 불러오기
+  // Future<void> fetchCommentPosts() async {
+  //   debugPrint("fetchCommentPosts() 실행됨");
+  //   try {
+  //     var posts = await _remoteDataSource.fetchCommentPosts();
+  //     commentPosts
+  //         .assignAll(posts.map((json) => PostModel.fromJson(json)).toList());
+  //     debugPrint("fetchCommentPosts() 완료, 데이터 개수: ${commentPosts.length}");
+  //   } catch (e) {
+  //     debugPrint("Error fetching comment posts: $e");
+  //   }
+  // }
   Future<void> fetchCommentPosts() async {
     debugPrint("fetchCommentPosts() 실행됨");
     try {
       var posts = await _remoteDataSource.fetchCommentPosts();
-      commentPosts
-          .assignAll(posts.map((json) => PostModel.fromJson(json)).toList());
-      debugPrint("fetchCommentPosts() 완료, 데이터 개수: ${commentPosts.length}");
+
+      // 게시글 타입별로 분류 (TokModel & PostModel)
+      var allPosts = posts
+          .map((json) => json['type'] == "ECONOMY_TALK"
+              ? TokModel.fromJson(json) // 경제 톡톡 게시글 -> TokModel
+              : PostModel.fromJson(json)) // 일반 게시글 -> PostModel
+          .toList();
+
+      economyTalkPosts.assignAll(
+          allPosts.whereType<TokModel>().toList()); // TokModel 리스트로 저장
+      otherCommentPosts.assignAll(
+          allPosts.whereType<PostModel>().toList()); // PostModel 리스트로 저장
+
+      debugPrint(
+          "fetchCommentPosts() 완료, 경제 톡톡: ${economyTalkPosts.length}, 기타 댓글 단 글: ${otherCommentPosts.length}");
     } catch (e) {
       debugPrint("Error fetching comment posts: $e");
     }
