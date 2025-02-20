@@ -8,6 +8,7 @@ import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
 import 'package:economic_fe/view/screens/level_test/level_test_test_page.dart';
+import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
 
 import 'package:economic_fe/view/screens/login/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/login/agreement_page.dart';
@@ -76,11 +77,11 @@ class UserRouter {
       GetPage(
           name: '/leveltest_result',
           page: () => const LeveltestResultPage(),
-          children: const [
-            // GetPage(
-            //   name: '/answer',
-            //   page: () => const TestAnswerPage(),
-            // ),
+          children: [
+            GetPage(
+              name: '/answer',
+              page: () => const TestAnswerPage(),
+            ),
           ]),
       // 카카오로 시작하기
       GetPage(

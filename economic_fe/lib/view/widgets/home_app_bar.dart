@@ -1,6 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,7 +20,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       // oo일 연속 학습 중
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
@@ -37,23 +38,23 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Image.asset(
               'assets/icon.png',
-              width: 14,
-              height: 16,
+              width: 14.w,
+              height: 16.h,
             ),
-            const SizedBox(
-              width: 4,
+            SizedBox(
+              width: 4.w,
             ),
             Obx(
               () => Text(
                 '${controller.currentStreak.value}일 연속 학습 중',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Color(0xFF111111),
+                style: TextStyle(
+                  color: const Color(0xFF111111),
                   fontSize: 12,
                   fontFamily: 'Pretendard Variable',
                   fontWeight: FontWeight.w500,
-                  height: 1.40,
-                  letterSpacing: -0.30,
+                  height: 1.40.h,
+                  letterSpacing: -0.30.w,
                 ),
               ),
             ),

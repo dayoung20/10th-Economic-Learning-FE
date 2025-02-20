@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrderTab extends StatelessWidget {
   final bool isSelected;
@@ -15,7 +16,7 @@ class OrderTab extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.all(5),
+          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
           child: Icon(
             Icons.check,
             size: 15,
@@ -30,8 +31,8 @@ class OrderTab extends StatelessWidget {
                 isSelected ? const Color(0xff404040) : const Color(0xFFA2A2A2),
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            height: 1.50,
-            letterSpacing: -0.30,
+            height: 1.50.h,
+            letterSpacing: -0.30.w,
           ),
         ),
       ],

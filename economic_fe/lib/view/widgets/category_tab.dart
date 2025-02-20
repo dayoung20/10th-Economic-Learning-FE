@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryTab extends StatelessWidget {
   final bool isSelected;
@@ -13,9 +14,9 @@ class CategoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 6.h),
         decoration: ShapeDecoration(
           color: isSelected ? const Color(0xff2BD6D6) : Colors.white,
           shape: RoundedRectangleBorder(
@@ -32,7 +33,7 @@ class CategoryTab extends StatelessWidget {
             color: isSelected ? Colors.white : const Color(0xffa2a2a2),
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            letterSpacing: -0.35,
+            letterSpacing: -0.35.w,
           ),
         ),
       ),

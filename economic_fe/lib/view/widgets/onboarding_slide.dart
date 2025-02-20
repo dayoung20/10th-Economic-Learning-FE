@@ -1,5 +1,6 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnboardingSlide extends StatelessWidget {
   final String title;
@@ -21,29 +22,29 @@ class OnboardingSlide extends StatelessWidget {
       children: [
         Image.asset(
           image,
-          width: 315,
-          height: 313,
+          width: 315.w,
+          height: 313.h,
         ),
-        const SizedBox(height: 35),
+        SizedBox(height: 35.h),
         Text(
           title,
           style: Palette.cardTitle,
         ),
-        const SizedBox(height: 22),
+        SizedBox(height: 22.h),
         Text(
           subtitle,
           textAlign: TextAlign.center,
           style: Palette.cardSub,
         ),
-        const SizedBox(
-          height: 60,
+        SizedBox(
+          height: 60.h,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-                width: currentIdx == 0 ? 32 : 8,
-                height: 8,
+                width: currentIdx == 0 ? 32.w : 8.w,
+                height: 8.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: currentIdx == 0
@@ -53,19 +54,19 @@ class OnboardingSlide extends StatelessWidget {
               width: 8,
             ),
             Container(
-                width: currentIdx == 1 ? 32 : 8,
+                width: currentIdx == 1 ? 32.w : 8.w,
                 height: 8,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: currentIdx == 1
                         ? const Color(0xff2ad6d6)
                         : const Color(0xff767676))),
-            const SizedBox(
-              width: 8,
+            SizedBox(
+              width: 8.w,
             ),
             Container(
-                width: currentIdx == 2 ? 32 : 8,
-                height: 8,
+                width: currentIdx == 2 ? 32.w : 8.w,
+                height: 8.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     color: currentIdx == 2
@@ -74,14 +75,6 @@ class OnboardingSlide extends StatelessWidget {
             const SizedBox(
               width: 8,
             ),
-            // Container(
-            //     width: currentIdx == 3 ? 32 : 8,
-            //     height: 8,
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(100),
-            //         color: currentIdx == 3
-            //             ? const Color(0xff767676)
-            //             : const Color(0xff2ad6d6))),
           ],
         ),
       ],

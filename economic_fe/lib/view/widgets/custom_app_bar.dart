@@ -1,6 +1,7 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -76,7 +77,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 widget.totalIndexNotifier != null) ||
             (widget.currentIndex != null && widget.totalIndex != null))
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16.w),
             child: ValueListenableBuilder<int>(
               valueListenable: widget.currentIndexNotifier ??
                   ValueNotifier(widget.currentIndex ?? 0),
@@ -90,22 +91,22 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         children: [
                           TextSpan(
                             text: '$currentIndex',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                               fontFamily: 'Pretendard Variable',
                               fontWeight: FontWeight.w500,
-                              height: 1.40,
+                              height: 1.40.h,
                             ),
                           ),
                           TextSpan(
                             text: '/$totalIndex',
-                            style: const TextStyle(
-                              color: Color(0xFF767676),
+                            style: TextStyle(
+                              color: const Color(0xFF767676),
                               fontSize: 14,
                               fontFamily: 'Pretendard Variable',
                               fontWeight: FontWeight.w500,
-                              height: 1.40,
+                              height: 1.40.h,
                             ),
                           ),
                         ],

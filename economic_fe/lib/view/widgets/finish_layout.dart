@@ -1,6 +1,7 @@
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 import 'package:economic_fe/view_model/finish/finish_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class FinishLayout extends StatelessWidget {
@@ -28,7 +29,7 @@ class FinishLayout extends StatelessWidget {
           Positioned(
             top: 0,
             child: Padding(
-              padding: const EdgeInsets.only(top: 54, left: 16),
+              padding: EdgeInsets.only(top: 54.h, left: 16.w),
               child: GestureDetector(
                 onTap: () => Get.toNamed('/home'),
                 child: const Icon(Icons.close),
@@ -36,7 +37,7 @@ class FinishLayout extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 300,
+            top: 300.h,
             left: 0,
             right: 0,
             child: Center(
@@ -45,36 +46,36 @@ class FinishLayout extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/icon.png',
-                    width: 65.34,
-                    height: 77.87,
+                    width: 65.34.w,
+                    height: 77.87.h,
                   ),
-                  const SizedBox(
-                    height: 17,
+                  SizedBox(
+                    height: 17.h,
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                     decoration: ShapeDecoration(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                            width: 1, color: Color(0xFFA2A2A2)),
+                        side: BorderSide(
+                            width: 1.w, color: const Color(0xFFA2A2A2)),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: Text(
                       '$contents - $level',
-                      style: const TextStyle(
-                        color: Color(0xFF767676),
+                      style: TextStyle(
+                        color: const Color(0xFF767676),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        height: 1.40,
-                        letterSpacing: -0.30,
+                        height: 1.40.h,
+                        letterSpacing: -0.30.w,
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 17,
+                  SizedBox(
+                    height: 17.h,
                   ),
                   // 서버에서 가져온 학습/퀴즈 완료 갯수 적용
                   Obx(() {
@@ -86,12 +87,12 @@ class FinishLayout extends StatelessWidget {
                       category == 0
                           ? '$completedCount번째 학습 완료'
                           : '$completedCount번째 퀴즈 완료',
-                      style: const TextStyle(
-                        color: Color(0xFF111111),
+                      style: TextStyle(
+                        color: const Color(0xFF111111),
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
-                        height: 1.40,
-                        letterSpacing: -0.45,
+                        height: 1.40.h,
+                        letterSpacing: -0.45.w,
                       ),
                     );
                   }),

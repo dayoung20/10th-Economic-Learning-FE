@@ -31,14 +31,14 @@ class RippleApp extends StatelessWidget {
     //   Get.put(PushNotificationController(), permanent: true);
     // }
     return ScreenUtilInit(
-      designSize: const Size(393, 852),
+      designSize: const Size(360, 740),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Ripple',
           // initialRoute: isLoggedIn ? '/home' : '/',
-          initialRoute: '/',
+          initialRoute: '/home',
           getPages: UserRouter.getPages(),
           builder: (context, widget) {
             return MediaQuery(

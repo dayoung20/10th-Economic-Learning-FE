@@ -3,6 +3,7 @@ import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_snack_bar.dart';
 import 'package:economic_fe/view_model/quiz_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../utils/text_utils.dart';
@@ -70,17 +71,17 @@ class _QuizCardState extends State<QuizCard> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 22,
+                      SizedBox(
+                        height: 22.h,
                       ),
                       // 질문 부분
                       Container(
                         width: MediaQuery.of(context).size.width - 32,
-                        padding: const EdgeInsets.only(
-                          top: 28,
-                          left: 40,
-                          right: 40,
-                          bottom: 24,
+                        padding: EdgeInsets.only(
+                          top: 28.h,
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 24.h,
                         ),
                         decoration: const ShapeDecoration(
                           color: Color(0xFFF2F3F5),
@@ -98,21 +99,21 @@ class _QuizCardState extends State<QuizCard> {
                           child: Text(
                             addZeroWidthJoiner(
                                 widget.question), // 유틸리티 함수 호출 (한글 단어 단위 줄바꿈)
-                            style: const TextStyle(
-                              color: Color(0xFF111111),
+                            style: TextStyle(
+                              color: const Color(0xFF111111),
                               fontSize: 18,
                               fontFamily: 'Pretendard Variable',
                               fontWeight: FontWeight.w500,
-                              height: 1.70,
-                              letterSpacing: -0.50,
+                              height: 1.70.h,
+                              letterSpacing: -0.50.w,
                             ),
                           ),
                         ),
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width - 32,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 24),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 24.h),
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(10),
@@ -137,9 +138,9 @@ class _QuizCardState extends State<QuizCard> {
                                   return Obx(() {
                                     return controller.clickCheckBtn.value
                                         ? Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 8,
-                                              horizontal: 16,
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 8.h,
+                                              horizontal: 16.w,
                                             ),
                                             child: MultipleOptionContainer(
                                                 widget: widget,
@@ -156,10 +157,9 @@ class _QuizCardState extends State<QuizCard> {
                                               controller.selectOption(index);
                                             },
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 8,
-                                                horizontal: 16,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 8.h,
+                                                horizontal: 16.w,
                                               ),
                                               child: MultipleOptionContainer(
                                                 widget: widget,
@@ -212,8 +212,8 @@ class _QuizCardState extends State<QuizCard> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: 15.h,
               ),
               Obx(() {
                 return CustomButton(
@@ -271,7 +271,7 @@ class _QuizCardState extends State<QuizCard> {
             child: controller.clickCheckBtn.value
                 ? Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 183,
+                    height: 183.h,
                     decoration: controller.isCorrect.value
                         ? const BoxDecoration(color: Color(0xFFE1F6FF))
                         : const BoxDecoration(color: Color(0xFFFFF2F1)),
@@ -279,8 +279,8 @@ class _QuizCardState extends State<QuizCard> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 20),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30.w, vertical: 20.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -290,21 +290,21 @@ class _QuizCardState extends State<QuizCard> {
                                     controller.isCorrect.value
                                         ? 'assets/check_circle.png'
                                         : 'assets/subtract.png',
-                                    width: 32,
+                                    width: 32.w,
                                   ),
-                                  const SizedBox(
-                                    width: 8,
+                                  SizedBox(
+                                    width: 8.w,
                                   ),
                                   Text(
                                     controller.isCorrect.value
                                         ? '맞았어요!'
                                         : '아쉬워요',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 24,
                                       fontFamily: 'Pretendard Variable',
                                       fontWeight: FontWeight.w500,
-                                      height: 1.40,
+                                      height: 1.40.h,
                                     ),
                                   ),
                                 ],
@@ -316,35 +316,35 @@ class _QuizCardState extends State<QuizCard> {
                                       controller.viewDescription.value = true;
                                     },
                                     child: Container(
-                                      width: 88,
-                                      height: 40,
+                                      width: 88.w,
+                                      height: 40.h,
                                       decoration: ShapeDecoration(
                                         color: Colors.white,
                                         shape: RoundedRectangleBorder(
-                                          side: const BorderSide(
-                                              width: 1,
-                                              color: Color(0xFFA2A2A2)),
+                                          side: BorderSide(
+                                              width: 1.w,
+                                              color: const Color(0xFFA2A2A2)),
                                           borderRadius:
                                               BorderRadius.circular(7),
                                         ),
                                       ),
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           '해설보기',
                                           style: TextStyle(
-                                            color: Color(0xFF111111),
+                                            color: const Color(0xFF111111),
                                             fontSize: 14,
                                             fontFamily: 'Pretendard Variable',
                                             fontWeight: FontWeight.w400,
-                                            height: 1.14,
+                                            height: 1.14.h,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 4.h),
                                     child: GestureDetector(
                                       onTap: () {
                                         controller.isBookmarked.value =
@@ -369,8 +369,8 @@ class _QuizCardState extends State<QuizCard> {
                                           controller.isBookmarked.value
                                               ? 'assets/bookmark_selected.png'
                                               : 'assets/bookmark.png',
-                                          width: 15,
-                                          height: 21,
+                                          width: 15.w,
+                                          height: 21.h,
                                         );
                                       }),
                                     ),
@@ -422,13 +422,15 @@ class _QuizCardState extends State<QuizCard> {
             child: controller.viewDescription.value
                 ? Container(
                     width: widget.screenWidth,
-                    height: 552,
-                    padding: const EdgeInsets.all(24),
-                    decoration: const ShapeDecoration(
+                    height: 552.h,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+                    decoration: ShapeDecoration(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1, color: Color(0xFFA2A2A2)),
-                        borderRadius: BorderRadius.only(
+                        side: BorderSide(
+                            width: 1.w, color: const Color(0xFFA2A2A2)),
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10),
                         ),
@@ -439,15 +441,15 @@ class _QuizCardState extends State<QuizCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               '해설',
                               style: TextStyle(
-                                color: Color(0xFF111111),
+                                color: const Color(0xFF111111),
                                 fontSize: 18,
                                 fontFamily: 'Pretendard Variable',
                                 fontWeight: FontWeight.w600,
-                                height: 1.20,
-                                letterSpacing: -0.45,
+                                height: 1.20.h,
+                                letterSpacing: -0.45.w,
                               ),
                             ),
                             IconButton(
@@ -458,21 +460,21 @@ class _QuizCardState extends State<QuizCard> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20,
+                        SizedBox(
+                          height: 20.h,
                         ),
                         SingleChildScrollView(
                           child: SizedBox(
                             height: 384,
                             child: Text(
                               controller.explanation.value,
-                              style: const TextStyle(
-                                color: Color(0xFF111111),
+                              style: TextStyle(
+                                color: const Color(0xFF111111),
                                 fontSize: 16,
                                 fontFamily: 'Pretendard Variable',
                                 fontWeight: FontWeight.w400,
-                                height: 1.50,
-                                letterSpacing: -0.40,
+                                height: 1.50.h,
+                                letterSpacing: -0.40.w,
                               ),
                             ),
                           ),
@@ -516,7 +518,7 @@ class OXOptionContainer extends StatelessWidget {
                       : const Color(0xFFFFF2F1),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
-                        width: 3,
+                        width: 3.w,
                         color: isCorrect!
                             ? const Color(0xFF067BD5)
                             : const Color(0xFFFF5468)),
@@ -526,26 +528,27 @@ class OXOptionContainer extends StatelessWidget {
               : ShapeDecoration(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    side: const BorderSide(width: 3, color: Color(0xFF1DB691)),
+                    side:
+                        BorderSide(width: 3.w, color: const Color(0xFF1DB691)),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 )
           : ShapeDecoration(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                side: const BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                side: BorderSide(width: 1.w, color: const Color(0xFFD9D9D9)),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
       child: Center(
         child: Text(
           option,
-          style: const TextStyle(
-            color: Color(0xFF111111),
+          style: TextStyle(
+            color: const Color(0xFF111111),
             fontSize: 90,
             fontFamily: 'Pretendard Variable',
             fontWeight: FontWeight.w500,
-            height: 0.18,
+            height: 0.18.h,
           ),
         ),
       ),
@@ -575,7 +578,7 @@ class MultipleOptionContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - (64 + 32),
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: isSelected
           ? isQuiz
               ? ShapeDecoration(
@@ -584,7 +587,7 @@ class MultipleOptionContainer extends StatelessWidget {
                       : const Color(0xFFFFF2F1),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
-                        width: 3,
+                        width: 3.w,
                         color: isCorrect!
                             ? const Color(0xFF067BD5)
                             : const Color(0xFFFF5468)),
@@ -593,10 +596,10 @@ class MultipleOptionContainer extends StatelessWidget {
                 )
               : ShapeDecoration(
                   shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                      width: 3,
+                    side: BorderSide(
+                      width: 3.w,
                       strokeAlign: BorderSide.strokeAlignCenter,
-                      color: Color(0xFF1DB691),
+                      color: const Color(0xFF1DB691),
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -604,15 +607,15 @@ class MultipleOptionContainer extends StatelessWidget {
           : ShapeDecoration(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                side: const BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                side: BorderSide(width: 1.w, color: const Color(0xFFD9D9D9)),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
       child: Row(
         children: [
           Container(
-            width: 24,
-            height: 24,
+            width: 24.w,
+            height: 24.h,
             decoration: ShapeDecoration(
               color: isSelected
                   ? isQuiz
@@ -636,23 +639,23 @@ class MultipleOptionContainer extends StatelessWidget {
                   fontSize: 14,
                   fontFamily: 'Pretendard Variable',
                   fontWeight: FontWeight.w500,
-                  height: 1.40,
+                  height: 1.40.h,
                 ),
               ),
             ),
           ),
-          const SizedBox(
-            width: 12,
+          SizedBox(
+            width: 12.w,
           ),
           Expanded(
             child: Text(
               addZeroWidthJoiner(widget.answerOptions![optionNum - 1]),
-              style: const TextStyle(
-                color: Color(0xFF111111),
+              style: TextStyle(
+                color: const Color(0xFF111111),
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                height: 1.40,
-                letterSpacing: -0.45,
+                height: 1.40.h,
+                letterSpacing: -0.45.w,
               ),
             ),
           ),

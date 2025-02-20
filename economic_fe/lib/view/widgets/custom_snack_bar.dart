@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSnackBar {
   static final List<OverlayEntry> _activeSnackBars = []; // 현재 활성 스낵바들
@@ -99,8 +100,8 @@ class _PositionedSnackBarState extends State<_PositionedSnackBar>
         alignment: Alignment.topCenter,
         child: IntrinsicWidth(
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            margin: const EdgeInsets.only(top: 70),
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+            margin: EdgeInsets.only(top: 70.h),
             decoration: BoxDecoration(
               color: Colors.black,
               borderRadius: BorderRadius.circular(10),
