@@ -87,4 +87,17 @@ class ArticleListController extends GetxController {
       debugPrint("Error : $e");
     }
   }
+
+  // 뉴스 상세 조회
+  Future<void> getNewsDetail(int id) async {
+    try {
+      print("start");
+
+      dynamic response;
+      response = await remoteDataSource.getNewsDetail(id);
+      print("getNewsDetail response : $response");
+    } catch (e) {
+      debugPrint("Error : $e");
+    }
+  }
 }

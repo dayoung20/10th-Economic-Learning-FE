@@ -617,6 +617,16 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/news/{id}
+  /// 뉴스 상세 조회
+  Future<dynamic> getNewsDetail(int id) async {
+    dynamic response;
+
+    response = await _getApiWithHeaderTest('api/news/$id');
+
+    return response;
+  }
+
   /// 뉴스 목록 조회 (카카오 로그인 X)
   /// api/news
   Future<dynamic> getNewsList2(int page, String sort, String? category) async {

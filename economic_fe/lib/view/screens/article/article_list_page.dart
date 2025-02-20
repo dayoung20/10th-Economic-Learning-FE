@@ -269,6 +269,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
+                                                    controller.getNewsDetail(
+                                                        news.id!);
                                                     controller
                                                         .toDetailPage(news);
                                                   },
