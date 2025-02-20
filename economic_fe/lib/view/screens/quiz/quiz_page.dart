@@ -25,63 +25,10 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    int? selectedOption;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(80),
-      //   child: AppBar(
-      //     automaticallyImplyLeading: false, // 기본 뒤로가기 버튼 제거
-      //     elevation: 0,
-      //     backgroundColor: Colors.white, // AppBar 배경색
-      //     flexibleSpace: SafeArea(
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.stretch,
-      //         children: [
-      //           // 상단 앱바
-      //           Padding(
-      //             padding: const EdgeInsets.symmetric(horizontal: 16),
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 IconButton(
-      //                   icon: const Icon(Icons.close, color: Colors.black),
-      //                   onPressed: () {
-      //                     Navigator.pop(context);
-      //                   },
-      //                 ),
-      //                 const Text(
-      //                   "고급퀴즈",
-      //                   style: TextStyle(
-      //                     fontSize: 18,
-      //                     fontWeight: FontWeight.bold,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //                 const Text(
-      //                   "1/3",
-      //                   style: TextStyle(
-      //                     fontSize: 16,
-      //                     fontWeight: FontWeight.w500,
-      //                     color: Colors.black,
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //           // 진행 바
-      //           const LinearProgressIndicator(
-      //             value: 0.1, // 진행 퍼센트 (0.0 ~ 1.0)
-      //             backgroundColor: Color(0xffe0e0e0),
-      //             color: Color(0xff1eb692), // 진행 바 색상
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       appBar: quizId == null
           ? CustomAppBar(
               title: '고급퀴즈', // 레벨에 따른 이름 변경 필요

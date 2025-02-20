@@ -6,6 +6,7 @@ import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view/widgets/order_tab.dart';
 import 'package:economic_fe/view_model/article/article_list_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ArticleListPage extends StatefulWidget {
@@ -31,23 +32,23 @@ class _ArticleListPageState extends State<ArticleListPage> {
         forceMaterialTransparency: true,
         backgroundColor: Palette.background,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           '경제 기사',
           style: TextStyle(
-            color: Color(0xFF111111),
+            color: const Color(0xFF111111),
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            height: 1.30,
-            letterSpacing: -0.50,
+            height: 1.30.h,
+            letterSpacing: -0.50.w,
           ),
         ),
       ),
       body: Column(
         children: [
           SizedBox(
-            height: 53,
+            height: 53.h,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Obx(() {
                 return ListView(
                   scrollDirection: Axis.horizontal,
@@ -155,8 +156,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
               }),
             ),
           ),
-          const SizedBox(
-            height: 11,
+          SizedBox(
+            height: 11.h,
           ),
           Obx(() {
             switch (controller.selectedCategoryIndex.value) {
@@ -165,7 +166,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Row(
                           children: [
                             // 인기순/최신순 선택
@@ -180,8 +181,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                 isSelected: controller.selectedOrder.value == 0,
                               ),
                             ),
-                            const SizedBox(
-                              width: 6,
+                            SizedBox(
+                              width: 6.w,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -231,17 +232,19 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                   itemBuilder: (context, index) {
                                     final news = newsList[index];
                                     return Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.w, vertical: 8.h),
                                       child: Container(
-                                        padding: const EdgeInsets.all(16.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16.w, vertical: 16.h),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(12.0),
-                                          border: const Border(
+                                          border: Border(
                                             bottom: BorderSide(
-                                              color: Color(0xFFD9D9D9),
-                                              width: 1,
+                                              color: const Color(0xFFD9D9D9),
+                                              width: 1.w,
                                             ),
                                           ),
                                         ),
@@ -255,30 +258,15 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                               children: [
                                                 Text(
                                                   "${news.category}",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF2BD6D6),
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xFF2BD6D6),
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w600,
-                                                    letterSpacing: -0.3,
-                                                    height: 1.3,
+                                                    letterSpacing: -0.3.w,
+                                                    height: 1.3.h,
                                                   ),
                                                 ),
-                                                // GestureDetector(
-                                                //   onTap: () {
-                                                //     controller
-                                                //         .toDetailPage(news);
-                                                //   },
-                                                //   child: Text(
-                                                //     news.title ?? "제목 없음",
-                                                //     style: const TextStyle(
-                                                //       fontSize: 16,
-                                                //       fontWeight:
-                                                //           FontWeight.w500,
-                                                //       height: 1.3,
-                                                //       letterSpacing: -0.4,
-                                                //     ),
-                                                //   ),
-                                                // ),
                                                 GestureDetector(
                                                   onTap: () {
                                                     controller
@@ -288,27 +276,27 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                     (news.title != null &&
                                                             news.title!.length >
                                                                 30)
-                                                        ? '${news.title!.substring(0, 20)}...' // 20자까지만 표시하고 "..." 추가
+                                                        ? '${news.title!.substring(0, 20)}...'
                                                         : news.title ?? "제목 없음",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      height: 1.3,
-                                                      letterSpacing: -0.4,
+                                                      height: 1.3.h,
+                                                      letterSpacing: -0.4.w,
                                                     ),
                                                   ),
                                                 ),
-
-                                                const SizedBox(height: 6),
+                                                SizedBox(height: 6.h),
                                                 Text(
                                                   news.publisher ?? "알 수 없음",
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF767676),
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xFF767676),
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w400,
-                                                    height: 1.5,
-                                                    letterSpacing: -0.3,
+                                                    height: 1.5.h,
+                                                    letterSpacing: -0.3.w,
                                                   ),
                                                 ),
                                               ],
@@ -330,8 +318,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                     news.isScraped ?? false
                                                         ? 'assets/bookmark_selected.png'
                                                         : 'assets/bookmark.png',
-                                                    width: 13,
-                                                    height: 18.3,
+                                                    width: 13.w,
+                                                    height: 18.3.h,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -339,12 +327,13 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                 ),
                                                 Text(
                                                   news.createdDate!,
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF767676),
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xFF767676),
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w400,
-                                                    height: 1.5,
-                                                    letterSpacing: -0.3,
+                                                    height: 1.5.h,
+                                                    letterSpacing: -0.3.w,
                                                   ),
                                                 ),
                                               ],

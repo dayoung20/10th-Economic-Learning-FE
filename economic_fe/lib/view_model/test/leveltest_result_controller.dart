@@ -8,11 +8,6 @@ class LevelTestResultController extends GetxController {
     Get.toNamed('/login');
   }
 
-  // // 홈 화면으로 이동
-  // void toHome() {
-  //   Get.toNamed('/home');
-  // }
-
   // 프로필 설정 화면으로 이동
   void toProfileSetting() {
     Get.toNamed('/profile_setting');

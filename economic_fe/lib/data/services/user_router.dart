@@ -8,6 +8,7 @@ import 'package:economic_fe/view/screens/learning_set/learning_concept_page.dart
 import 'package:economic_fe/view/screens/community/detail_page.dart';
 import 'package:economic_fe/view/screens/community/talk_detail_page.dart';
 import 'package:economic_fe/view/screens/level_test/level_test_test_page.dart';
+import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
 
 import 'package:economic_fe/view/screens/login/agreement_detail_page.dart';
 import 'package:economic_fe/view/screens/login/agreement_page.dart';
@@ -40,9 +41,6 @@ import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.da
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_test_page.dart';
 import 'package:economic_fe/view/screens/search/search_page.dart';
-import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
-import 'package:economic_fe/view/screens/level_test/test_multiple_choice_page.dart';
-import 'package:economic_fe/view/screens/level_test/test_ox_page.dart';
 import 'package:economic_fe/view/screens/level_test/test_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';

@@ -1,6 +1,5 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

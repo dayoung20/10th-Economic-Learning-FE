@@ -1,6 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CustomBottomBar extends StatelessWidget {
@@ -14,13 +15,13 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 5),
-      decoration: const BoxDecoration(
+      padding: EdgeInsets.only(top: 5.h),
+      decoration: BoxDecoration(
         color: Palette.background,
         border: Border(
           top: BorderSide(
-            color: Color(0xffa2a2a2), // 테두리 색상
-            width: 1, // 테두리 두께
+            color: const Color(0xffa2a2a2), // 테두리 색상
+            width: 1.w, // 테두리 두께
           ),
         ),
       ),
@@ -29,73 +30,73 @@ class CustomBottomBar extends StatelessWidget {
         backgroundColor: Palette.background,
         selectedItemColor: const Color(0xff2BD6D6),
         unselectedItemColor: Colors.black,
-        selectedLabelStyle: const TextStyle(
-          color: Color(0xFF2AD6D6),
+        selectedLabelStyle: TextStyle(
+          color: const Color(0xFF2AD6D6),
           fontSize: 12,
           fontWeight: FontWeight.w700,
-          height: 1.20,
-          letterSpacing: -0.30,
+          height: 1.20.h,
+          letterSpacing: -0.30.w,
         ),
-        unselectedLabelStyle: const TextStyle(
-          color: Color(0xFF111111),
+        unselectedLabelStyle: TextStyle(
+          color: const Color(0xFF111111),
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          height: 1.20,
-          letterSpacing: -0.30,
+          height: 1.20.h,
+          letterSpacing: -0.30.w,
         ),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/family_home.png',
-              width: 32,
+              width: 32.w,
             ),
             activeIcon: Image.asset(
               'assets/family_home_active.png',
-              width: 32,
+              width: 32.w,
             ),
             label: '홈',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/book_ribbon_bottom.png',
-              width: 32,
+              width: 32.w,
             ),
             activeIcon: Image.asset(
               'assets/book_ribbon_bottom_active.png',
-              width: 32,
+              width: 32.w,
             ),
             label: '용어사전',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/news_bottom.png',
-              width: 32,
+              width: 32.w,
             ),
             activeIcon: Image.asset(
               'assets/news_bottom_active.png',
-              width: 32,
+              width: 32.w,
             ),
             label: '기사',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/forum.png',
-              width: 32,
+              width: 32.w,
             ),
             activeIcon: Image.asset(
               'assets/forum_active.png',
-              width: 32,
+              width: 32.w,
             ),
             label: '커뮤니티',
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
               'assets/person.png',
-              width: 32,
+              width: 32.w,
             ),
             activeIcon: Image.asset(
               'assets/person_active.png',
-              width: 32,
+              width: 32.w,
             ),
             label: '마이페이지',
           ),

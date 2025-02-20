@@ -1,7 +1,7 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/learning_set/learning_list_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LearningListItem extends StatefulWidget {
@@ -38,11 +38,11 @@ class _LearningListItemState extends State<LearningListItem> {
       return Column(
         children: [
           Container(
-            width: ScreenUtils.getWidth(context, 332),
-            height: ScreenUtils.getHeight(context, 91),
+            width: 332.w,
+            height: 91.h,
             padding: EdgeInsets.symmetric(
-              horizontal: ScreenUtils.getWidth(context, 21),
-              vertical: ScreenUtils.getHeight(context, 18),
+              horizontal: 21.w,
+              vertical: 18.h,
             ),
             decoration: ShapeDecoration(
               color: Colors.white,
@@ -87,11 +87,11 @@ class _LearningListItemState extends State<LearningListItem> {
                           ),
                         ),
                         SizedBox(
-                          width: ScreenUtils.getWidth(context, 6),
+                          width: 6.w,
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                            top: ScreenUtils.getHeight(context, 3),
+                            top: 3.h,
                           ),
                           child: Obx(() {
                             return Icon(
@@ -126,11 +126,11 @@ class _LearningListItemState extends State<LearningListItem> {
             ),
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 8),
+            height: 8.h,
           ),
           if (isSelected) ...[
             SizedBox(
-              height: ScreenUtils.getHeight(context, 8),
+              height: 8.h,
             ),
             GestureDetector(
               onTap: () {
@@ -138,10 +138,9 @@ class _LearningListItemState extends State<LearningListItem> {
                     learningSet!.id!, learningSet.name!);
               },
               child: Container(
-                width: ScreenUtils.getWidth(context, 332),
-                height: ScreenUtils.getHeight(context, 58),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 21, vertical: 18),
+                width: 332.w,
+                height: 58.h,
+                padding: EdgeInsets.symmetric(horizontal: 21.w, vertical: 18.h),
                 decoration: ShapeDecoration(
                   color: const Color(0xFFF2F3F5),
                   shape: RoundedRectangleBorder(
@@ -181,12 +180,12 @@ class _LearningListItemState extends State<LearningListItem> {
               ),
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 8),
+              height: 8.h,
             ),
             Container(
-              width: ScreenUtils.getWidth(context, 332),
-              height: ScreenUtils.getHeight(context, 58),
-              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 18),
+              width: 332.w,
+              height: 58.h,
+              padding: EdgeInsets.symmetric(horizontal: 21.w, vertical: 18.h),
               decoration: ShapeDecoration(
                 color: const Color(0xFFF2F3F5),
                 shape: RoundedRectangleBorder(

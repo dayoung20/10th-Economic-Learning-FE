@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExplanationText extends StatelessWidget {
   final String explanation;
@@ -35,11 +36,11 @@ class ExplanationText extends StatelessWidget {
         spans.add(
           TextSpan(
             text: text.substring(lastMatchEnd, match.start),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
-              height: 1.4,
-              letterSpacing: -0.35,
+              height: 1.4.h,
+              letterSpacing: -0.35.w,
             ),
           ),
         );
@@ -48,11 +49,11 @@ class ExplanationText extends StatelessWidget {
       // 볼드 텍스트 추가
       spans.add(TextSpan(
         text: match.group(1), // `**` 사이의 텍스트만 가져옴
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
-          height: 1.4,
-          letterSpacing: -0.35,
+          height: 1.4.h,
+          letterSpacing: -0.35.w,
         ),
       ));
 
@@ -64,11 +65,11 @@ class ExplanationText extends StatelessWidget {
       spans.add(
         TextSpan(
           text: text.substring(lastMatchEnd),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            height: 1.4,
-            letterSpacing: -0.35,
+            height: 1.4.h,
+            letterSpacing: -0.35.w,
           ),
         ),
       );
