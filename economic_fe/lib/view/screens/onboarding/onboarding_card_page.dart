@@ -1,9 +1,9 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/onboarding_slide.dart';
 import 'package:economic_fe/view_model/onboarding_card_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class OnboardingCardPage extends StatefulWidget {
@@ -38,11 +38,11 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 50,
+          SizedBox(
+            height: 50.h,
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 520),
+            height: 520.h,
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
@@ -77,28 +77,28 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
               CustomButton(
                 text: "시작하기",
                 onPress: () {
-                  // final controller = Get.find<OnboardingCardController>();
                   controller.clickedTestBtn(context);
                 },
                 bgColor: Palette.buttonColorBlue,
               ),
-              const SizedBox(
-                height: 14,
+              SizedBox(
+                height: 14.h,
               ),
               GestureDetector(
                 onTap: () {
                   controller.clickedExistBtn();
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  child: Text(
                     '계정이 이미 있어요',
                     style: TextStyle(
-                      color: Color(0xFF404040),
+                      color: const Color(0xFF404040),
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       decoration: TextDecoration.underline,
-                      letterSpacing: -0.35,
+                      letterSpacing: -0.35.w,
                     ),
                   ),
                 ),
