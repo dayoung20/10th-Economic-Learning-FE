@@ -112,11 +112,12 @@ class QuizController extends GetxController {
   }
 
   // 퀴즈 완료 (한 세트 다 풀고 끝)
-  Future<void> postQuizFinish(int learningSetId) async {
+  Future<void> postQuizFinish(int learningSetId, String level) async {
     try {
       print("start");
 
-      dynamic response = await remoteDataSource.postQuizFinish(learningSetId);
+      dynamic response =
+          await remoteDataSource.postQuizFinish(learningSetId, level);
 
       print("response quizFinish isSuccess : ${response['isSuccess']}");
       Get.toNamed('/learning_list/quiz_level');
