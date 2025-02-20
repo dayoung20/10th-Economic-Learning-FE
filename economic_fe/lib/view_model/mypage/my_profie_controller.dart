@@ -18,7 +18,7 @@ class MyProfileController extends GetxController
   var selectedProfileImage = Rx<String?>(null);
   var myPosts = <PostModel>[].obs;
   var economyTalkPosts = <TokModel>[].obs; // 경제 톡톡 게시글
-  var otherCommentPosts = <PostModel>[].obs; // 그 외 댓글 단 게시글
+  var otherCommentPosts = <Map<String, dynamic>>[].obs; // 그 외 댓글 단 게시글
 
   // 게시글 세부 화면으로 이동
   void toDetailPage(int id) {
@@ -113,22 +113,44 @@ class MyProfileController extends GetxController
     try {
       var posts = await _remoteDataSource.fetchCommentPosts();
 
-      // 게시글 타입별로 분류 (TokModel & PostModel)
-      var allPosts = posts
-          .map((json) => json['type'] == "ECONOMY_TALK"
-              ? TokModel.fromJson(json) // 경제 톡톡 게시글 -> TokModel
-              : PostModel.fromJson(json)) // 일반 게시글 -> PostModel
-          .toList();
+      // 게시글 타입별로 분류 (TokModel & 일반 Map)
+      var economyTalkList = <TokModel>[]; // TokModel 저장 리스트
+      var otherCommentList = <Map<String, dynamic>>[]; // 일반 게시글은 Map 형태로 저장
 
-      economyTalkPosts.assignAll(
-          allPosts.whereType<TokModel>().toList()); // TokModel 리스트로 저장
-      otherCommentPosts.assignAll(
-          allPosts.whereType<PostModel>().toList()); // PostModel 리스트로 저장
+      for (var json in posts) {
+        if (json['type'] == "ECONOMY_TALK") {
+          economyTalkList.add(TokModel.fromJson(json));
+        } else {
+          otherCommentList.add(json); // 변환 없이 원본 데이터 유지
+        }
+      }
+
+      // 리스트에 저장
+      economyTalkPosts.assignAll(economyTalkList);
+      otherCommentPosts.assignAll(otherCommentList);
 
       debugPrint(
           "fetchCommentPosts() 완료, 경제 톡톡: ${economyTalkPosts.length}, 기타 댓글 단 글: ${otherCommentPosts.length}");
     } catch (e) {
       debugPrint("Error fetching comment posts: $e");
+    }
+  }
+
+  // 한국어 변환된 카테고리를 반환하는 함수
+  String translatedType(String type) {
+    switch (type) {
+      case 'ECONOMY_TALK':
+        return '경제 톡톡';
+      case 'FREE':
+        return '자유';
+      case 'QUESTION':
+        return '질문';
+      case 'INFORMATION':
+        return '정보 공유';
+      case 'BOOK_RECOMMENDATION':
+        return '책추천';
+      default:
+        return '기타'; // 기본값
     }
   }
 }

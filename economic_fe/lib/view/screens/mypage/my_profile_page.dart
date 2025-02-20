@@ -602,82 +602,76 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       itemCount: controller.otherCommentPosts.length,
                       itemBuilder: (context, index) {
                         final post = controller.otherCommentPosts[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Get.toNamed('/community/detail',
-                                arguments: post.id!);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: const Border(
-                                bottom: BorderSide(
-                                  color: Color(0xFFD9D9D9),
-                                  width: 1,
-                                ),
+                        return Container(
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: const Border(
+                              bottom: BorderSide(
+                                color: Color(0xFFD9D9D9),
+                                width: 1,
                               ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // 게시글 유형 및 작성일
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      post.translatedType,
-                                      style: const TextStyle(
-                                        color: Color(0xFF767676),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.30,
-                                        letterSpacing: -0.30,
-                                      ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // 게시글 유형 및 작성일
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    controller.translatedType(post['type']),
+                                    style: const TextStyle(
+                                      color: Color(0xFF767676),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.30,
+                                      letterSpacing: -0.30,
                                     ),
-                                    Text(
-                                      post.createdDate!,
-                                      style: const TextStyle(
-                                        color: Color(0xFF767676),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.50,
-                                        letterSpacing: -0.30,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                // 게시글 제목
-                                const Text(
-                                  '댓글 내용이 들어갈 자리입니다.',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.3,
-                                    letterSpacing: -0.4,
                                   ),
-                                ),
-                                // 원문글 제목 표시
-                                Column(
-                                  children: [
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      post.title!,
-                                      style: const TextStyle(
-                                        color: Color(0xFFA2A2A2),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.30,
-                                        letterSpacing: -0.30,
-                                      ),
+                                  Text(
+                                    post['createdDate'],
+                                    style: const TextStyle(
+                                      color: Color(0xFF767676),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.50,
+                                      letterSpacing: -0.30,
                                     ),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              // 게시글 제목
+                              Text(
+                                post['comment'],
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.3,
+                                  letterSpacing: -0.4,
                                 ),
-                              ],
-                            ),
+                              ),
+                              // 원문글 제목 표시
+                              Column(
+                                children: [
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    post['postTitle'],
+                                    style: const TextStyle(
+                                      color: Color(0xFFA2A2A2),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.30,
+                                      letterSpacing: -0.30,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
