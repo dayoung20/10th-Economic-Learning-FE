@@ -227,24 +227,9 @@ class _QuizCardState extends State<QuizCard> {
                   onPress: controller.isNextButtonEnabled
                       ? widget.isQuiz
                           ? () {
-                              // if (widget.isLast) {
-                              //   widget.onFinishTest!();
-                              // } else {
-                              //   // 퀴즈에서 확인 버튼 클릭 시 함수
-                              //   controller.clickCheckBtn.value = true;
-                              //   controller.isCorrectAnswer.value =
-                              //       // controller.selectedOption.value == 0 ? 1 : 2;
-                              //       controller.isCorrect.value ? 1 : 2;
-
-                              //   // 답안 제출
-                              //   controller.postSubmitQuiz(widget.quizId!,
-                              //       controller.selectedOption.value);
-                              //   // print("se : ${controller.selectedOption.value}");
-                              // }
                               // 퀴즈에서 다음 문제 버튼 클릭 시 함수
                               controller.clickCheckBtn.value = true;
                               controller.isCorrectAnswer.value =
-                                  // controller.selectedOption.value == 0 ? 1 : 2;
                                   controller.isCorrect.value ? 1 : 2;
 
                               // 답안 제출
@@ -254,7 +239,6 @@ class _QuizCardState extends State<QuizCard> {
                             }
                           : widget.isLast
                               ? () {
-                                  // controller.finishLeveltest();
                                   widget.onFinishTest!();
                                 }
                               : () {
@@ -400,11 +384,6 @@ class _QuizCardState extends State<QuizCard> {
                           text: widget.isLast ? '종료하기' : '다음 문제',
                           onPress: () {
                             if (widget.isLast) {
-                              //마지막 문제dlf
-                              // widget.onOptionSelected != null
-                              //     ? widget.onOptionSelected!(
-                              //         controller.selectedOption.value)
-                              //     : null;
                               widget.onFinishTest!();
                             } else {
                               print("next ::");

@@ -1,10 +1,4 @@
-// 레벨 테스트 모델
-
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/foundation.dart';
+// 퀴즈 테스트 모델
 
 class QuizTestModel {
   int quizId;

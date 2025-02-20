@@ -1,10 +1,7 @@
-import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
-import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/models/quiz_test_model.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
 import 'package:economic_fe/view_model/quiz/quiz_test_controller.dart';
-import 'package:economic_fe/view_model/test/level_test_test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -45,8 +42,7 @@ class _QuizTestPageState extends State<QuizTestPage> {
                   controller.currentQuizIdx.value = 0;
                 },
                 currentIndex: controller.currentQuizIdx.value + 1,
-                totalIndex:
-                    controller.quizList.length, // ✅ quizList도 Obx 안에서 접근해야 함
+                totalIndex: controller.quizList.length,
               ))),
       body: Stack(
         children: [
@@ -103,10 +99,6 @@ class _QuizTestPageState extends State<QuizTestPage> {
                             quizList[controller.currentQuizIdx.value].quizId,
                         onOptionSelected: (int selected) {
                           setState(() {
-                            // controller.postSubmitQuiz(
-                            //     quizList[controller.currentQuizIdx.value]
-                            //         .quizId,
-                            //     selected);
                             controller.currentQuizIdx++;
                             print("select : $selected");
                           });
@@ -115,7 +107,6 @@ class _QuizTestPageState extends State<QuizTestPage> {
                           controller.currentQuizIdx++;
                         },
                         onFinishTest: () {
-                          // controller.clickedToKaKao(quizList);
                           controller
                               .postQuizFinish(controller.learningSetId.value);
                         },
