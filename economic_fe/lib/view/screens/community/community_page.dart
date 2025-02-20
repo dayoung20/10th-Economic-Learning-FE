@@ -280,55 +280,60 @@ class _CommunityPageState extends State<CommunityPage> {
                                               : posts.isEmpty
                                                   ? const Center(
                                                       child: Text('게시글이 없습니다.'))
-                                                  : ListView.separated(
-                                                      shrinkWrap: true,
-                                                      itemCount: posts.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        var post = posts[index];
+                                                  : SizedBox(
+                                                      height: 270.h,
+                                                      child: ListView.separated(
+                                                        shrinkWrap: true,
+                                                        itemCount: posts.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          var post =
+                                                              posts[index];
 
-                                                        return GestureDetector(
-                                                          onTap: () {
-                                                            controller
-                                                                .toDetailPage(
-                                                                    post["id"]);
-                                                          },
-                                                          child: ListItem(
-                                                            title:
-                                                                post["title"],
-                                                            description:
-                                                                post["content"],
-                                                            date: post[
-                                                                "createdDate"],
-                                                            likes: post[
-                                                                "likeCount"],
-                                                            comments: post[
-                                                                "commentCount"],
-                                                            imageUrl: post[
-                                                                "imageUrl"],
+                                                          return GestureDetector(
                                                             onTap: () {
                                                               controller
                                                                   .toDetailPage(
                                                                       post[
                                                                           "id"]);
                                                             },
-                                                          ),
-                                                        );
-                                                      },
-                                                      separatorBuilder:
-                                                          (context, index) {
-                                                        return Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical:
-                                                                      16.h),
-                                                          child: Container(
-                                                            height: 1,
-                                                            color: const Color(
-                                                                0xffd9d9d9),
-                                                          ),
-                                                        );
-                                                      },
+                                                            child: ListItem(
+                                                              title:
+                                                                  post["title"],
+                                                              description: post[
+                                                                  "content"],
+                                                              date: post[
+                                                                  "createdDate"],
+                                                              likes: post[
+                                                                  "likeCount"],
+                                                              comments: post[
+                                                                  "commentCount"],
+                                                              imageUrl: post[
+                                                                  "imageUrl"],
+                                                              onTap: () {
+                                                                controller
+                                                                    .toDetailPage(
+                                                                        post[
+                                                                            "id"]);
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                        separatorBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        16.h),
+                                                            child: Container(
+                                                              height: 1,
+                                                              color: const Color(
+                                                                  0xffd9d9d9),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                         ],
                                       ),
@@ -387,46 +392,50 @@ class _CommunityPageState extends State<CommunityPage> {
                                           : tokPosts.isEmpty
                                               ? const Center(
                                                   child: Text('게시글이 없습니다.'))
-                                              : ListView.separated(
-                                                  shrinkWrap: true,
-                                                  itemCount: tokPosts.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    var tokPost =
-                                                        tokPosts[index];
+                                              : SizedBox(
+                                                  height: 270.h,
+                                                  child: ListView.separated(
+                                                    shrinkWrap: true,
+                                                    itemCount: tokPosts.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      var tokPost =
+                                                          tokPosts[index];
 
-                                                    return TalkListItem(
-                                                      onTap: () {
-                                                        controller
-                                                            .toTalkDetailPage(
-                                                                tokPost["id"]);
-                                                      },
-                                                      participantCount: tokPost[
-                                                          'participantCount'],
-                                                      createdDate: tokPost[
-                                                          'createdDate'],
-                                                      title: tokPost['title'],
-                                                      likeCount:
-                                                          tokPost['likeCount'],
-                                                      commentCount:
-                                                          0, // 댓글 수 연결 필요
-                                                      imageUrl:
-                                                          tokPost['imageUrl'],
-                                                    );
-                                                  },
-                                                  separatorBuilder:
-                                                      (context, index) {
-                                                    return Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 16.h),
-                                                      child: Container(
-                                                        height: 1,
-                                                        color: const Color(
-                                                            0xffd9d9d9),
-                                                      ),
-                                                    );
-                                                  },
+                                                      return TalkListItem(
+                                                        onTap: () {
+                                                          controller
+                                                              .toTalkDetailPage(
+                                                                  tokPost[
+                                                                      "id"]);
+                                                        },
+                                                        participantCount: tokPost[
+                                                            'participantCount'],
+                                                        createdDate: tokPost[
+                                                            'createdDate'],
+                                                        title: tokPost['title'],
+                                                        likeCount: tokPost[
+                                                            'likeCount'],
+                                                        commentCount: tokPost[
+                                                            'participantCount'], // 댓글 수 연결 필요
+                                                        imageUrl:
+                                                            tokPost['imageUrl'],
+                                                      );
+                                                    },
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 16.h),
+                                                        child: Container(
+                                                          height: 1,
+                                                          color: const Color(
+                                                              0xffd9d9d9),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
                                                 ),
                                     ],
                                   ),
@@ -871,29 +880,34 @@ class ListItem extends StatelessWidget {
             ],
           ),
           // 이미지가 있는 경우에만 표시
-          if (imageUrl != null && imageUrl!.isNotEmpty)
-            GestureDetector(
-              onTap: onTap,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(7),
-                child: Image.network(
-                  imageUrl!,
+          imageUrl != null && imageUrl!.isNotEmpty
+              ? GestureDetector(
+                  onTap: onTap,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: Image.network(
+                      imageUrl!,
+                      width: 66.w,
+                      height: 66.h,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: 66.w,
+                        height: 66.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: const Icon(Icons.image_not_supported,
+                            color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                )
+              : Image.asset(
+                  'assets/empty_post_image.png',
                   width: 66.w,
                   height: 66.h,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 66.w,
-                    height: 66.h,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                    child: const Icon(Icons.image_not_supported,
-                        color: Colors.grey),
-                  ),
                 ),
-              ),
-            ),
         ],
       ),
     );
