@@ -12,6 +12,7 @@ class MyProfileController extends GetxController
   final ImagePickerService _imagePickerService = ImagePickerService();
 
   late TabController tabController;
+  int? userId;
 
   var isLoading = true.obs; // 로딩 상태
   var userInfo = Rx<UserProfile?>(null); // 사용자 프로필
@@ -28,17 +29,18 @@ class MyProfileController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    userId = Get.arguments as int?; // Get.arguments에서 userId 받아오기
     tabController = TabController(length: 3, vsync: this);
 
-    fetchUserInfo();
-    fetchMyPosts();
-    fetchCommentPosts();
+    fetchUserInfo(userId);
+    fetchMyPosts(userId);
+    fetchCommentPosts(userId);
   }
 
   // 사용자 정보 조회
-  Future<void> fetchUserInfo() async {
+  Future<void> fetchUserInfo(int? userId) async {
     try {
-      var response = await _remoteDataSource.fetchUserInfo();
+      var response = await _remoteDataSource.fetchUserInfo(userId);
       if (response.isNotEmpty) {
         userInfo.value = UserProfile.fromJsonMypage(response);
       }
@@ -85,10 +87,10 @@ class MyProfileController extends GetxController
   }
 
   // 내가 작성한 게시글 목록 불러오기
-  Future<void> fetchMyPosts() async {
+  Future<void> fetchMyPosts(int? userId) async {
     debugPrint("fetchMyPosts() 실행됨");
     try {
-      var posts = await _remoteDataSource.fetchMyPostDetail();
+      var posts = await _remoteDataSource.fetchMyPostDetail(userId);
       myPosts.assignAll(posts.map((json) => PostModel.fromJson(json)).toList());
       debugPrint("fetchMyPosts() 완료, 데이터 개수: ${myPosts.length}");
     } catch (e) {
@@ -108,10 +110,10 @@ class MyProfileController extends GetxController
   //     debugPrint("Error fetching comment posts: $e");
   //   }
   // }
-  Future<void> fetchCommentPosts() async {
+  Future<void> fetchCommentPosts(int? userId) async {
     debugPrint("fetchCommentPosts() 실행됨");
     try {
-      var posts = await _remoteDataSource.fetchCommentPosts();
+      var posts = await _remoteDataSource.fetchCommentPosts(userId);
 
       // 게시글 타입별로 분류 (TokModel & 일반 Map)
       var economyTalkList = <TokModel>[]; // TokModel 저장 리스트

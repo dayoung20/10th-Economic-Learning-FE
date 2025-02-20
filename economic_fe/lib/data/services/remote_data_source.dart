@@ -1244,8 +1244,13 @@ class RemoteDataSource {
 
   /// 내가 작성한 게시글 조회 (상세)
   /// API: api/v1/user/posts
-  Future<List<Map<String, dynamic>>> fetchMyPostDetail() async {
-    String endPoint = 'api/v1/user/posts';
+  Future<List<Map<String, dynamic>>> fetchMyPostDetail(int? userId) async {
+    late String endPoint;
+    if (userId != null) {
+      endPoint = 'api/v1/user/posts?userId=$userId';
+    } else {
+      endPoint = 'api/v1/user/posts';
+    }
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
@@ -1265,8 +1270,13 @@ class RemoteDataSource {
 
   /// 내가 댓글 단 게시글 조회
   /// API: api/v1/user/comment-posts
-  Future<List<Map<String, dynamic>>> fetchCommentPosts() async {
-    String endPoint = 'api/v1/user/comment-posts';
+  Future<List<Map<String, dynamic>>> fetchCommentPosts(int? userId) async {
+    late String endPoint;
+    if (userId != null) {
+      endPoint = 'api/v1/user/comment-posts?userId=$userId';
+    } else {
+      endPoint = 'api/v1/user/comment-posts';
+    }
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
@@ -2102,9 +2112,14 @@ class RemoteDataSource {
 
   /// 회원 정보 조회
   /// api: api/v1/user/info
-  Future<Map<String, dynamic>> fetchUserInfo() async {
+  Future<Map<String, dynamic>> fetchUserInfo(int? userId) async {
     try {
-      String endPoint = 'api/v1/user/info';
+      late String endPoint;
+      if (userId != null) {
+        endPoint = 'api/v1/user/info?userId=$userId';
+      } else {
+        endPoint = 'api/v1/user/info';
+      }
       var response = await _getApiWithHeader(endPoint);
 
       // 응답이 null인지 체크

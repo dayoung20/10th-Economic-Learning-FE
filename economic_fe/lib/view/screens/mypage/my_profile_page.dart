@@ -22,7 +22,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
-        title: '내 프로필',
+        // title: controller.userId != null
+        //     ? '${controller.userInfo.value!.nickname} 프로필'
+        //     : '내 프로필',
+        title: '프로필',
         icon: Icons.arrow_back_ios_new,
         onPress: () => Get.back(),
       ),
@@ -85,41 +88,42 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                       size: 35,
                                     ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          // 편집 버튼
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.toNamed(
-                                '/profile_setting',
-                                arguments: controller.userInfo.value,
-                              );
-                            },
-                            child: Container(
-                              width: 26,
-                              height: 26,
-                              decoration: ShapeDecoration(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(26),
+                        if (controller.userId == null)
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            // 편집 버튼
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed(
+                                  '/profile_setting',
+                                  arguments: controller.userInfo.value,
+                                );
+                              },
+                              child: Container(
+                                width: 26,
+                                height: 26,
+                                decoration: ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(26),
+                                  ),
+                                  shadows: const [
+                                    BoxShadow(
+                                      color: Color(0x3F000000),
+                                      blurRadius: 4,
+                                      offset: Offset(0, 0),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
                                 ),
-                                shadows: const [
-                                  BoxShadow(
-                                    color: Color(0x3F000000),
-                                    blurRadius: 4,
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.edit_outlined,
-                                size: 15,
+                                child: const Icon(
+                                  Icons.edit_outlined,
+                                  size: 15,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
