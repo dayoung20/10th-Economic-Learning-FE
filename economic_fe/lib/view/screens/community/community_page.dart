@@ -68,41 +68,30 @@ class _CommunityPageState extends State<CommunityPage> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(20),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: todaysTok['imageUrl'] != null
-                                    ? NetworkImage(todaysTok['imageUrl'])
-                                    : const AssetImage(
-                                        'assets/talk_image_sample.png'),
-                                fit: BoxFit.cover,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                todaysTok['title'],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.2,
+                                  letterSpacing: -0.55,
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  todaysTok['title'],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22.sp,
-                                    fontWeight: FontWeight.w700,
-                                    height: 1.2,
-                                    letterSpacing: -0.55,
-                                  ),
+                              Text(
+                                '현재 뜨거운 톡톡!',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: -0.35,
                                 ),
-                                Text(
-                                  '현재 뜨거운 톡톡!',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: -0.35,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

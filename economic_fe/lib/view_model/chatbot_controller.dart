@@ -30,20 +30,31 @@ class ChatbotController extends GetxController {
   // 슬라이드 창 확장 상태 관리
   var isExpanded = false.obs;
 
-  // 현재 날짜를 '2024년 11월 17일 금요일' 형식으로 반환하는 함수
-  String getFormattedDate(String createdAt) {
-    String date = DateFormat('yyyy년 MM월 dd일 EEEE', 'ko')
-        .format(DateTime.parse(createdAt));
-    // String date = DateFormat('yyyy년 MM월 dd일 EEEE').format(DateTime.now());
-    date = date
-        .replaceFirst('Monday', '월요일')
-        .replaceFirst('Tuesday', '화요일')
-        .replaceFirst('Wednesday', '수요일')
-        .replaceFirst('Thursday', '목요일')
-        .replaceFirst('Friday', '금요일')
-        .replaceFirst('Saturday', '토요일')
-        .replaceFirst('Sunday', '일요일');
-    return date;
+  // // 현재 날짜를 '2024년 11월 17일 금요일' 형식으로 반환하는 함수
+  // String getFormattedDate(String createdAt) {
+  //   String date = DateFormat('yyyy년 MM월 dd일 EEEE', 'ko')
+  //       .format(DateTime.parse(createdAt));
+  //   // String date = DateFormat('yyyy년 MM월 dd일 EEEE').format(DateTime.now());
+  //   date = date
+  //       .replaceFirst('Monday', '월요일')
+  //       .replaceFirst('Tuesday', '화요일')
+  //       .replaceFirst('Wednesday', '수요일')
+  //       .replaceFirst('Thursday', '목요일')
+  //       .replaceFirst('Friday', '금요일')
+  //       .replaceFirst('Saturday', '토요일')
+  //       .replaceFirst('Sunday', '일요일');
+  //   return date;
+  // }
+
+  // 서버에서 받아오는 날짜 형식 변환
+  String formatCreatedAt(String createdAt) {
+    try {
+      DateTime parsedDate = DateTime.parse(createdAt);
+      return DateFormat('yyyy년 MM월 dd일', 'ko').format(parsedDate);
+    } catch (e) {
+      print('날짜 변환 오류: $e');
+      return createdAt; // 변환 실패 시 원래 문자열 반환
+    }
   }
 
   // 현재 시간을 오전/오후 형식으로 포맷하는 함수
