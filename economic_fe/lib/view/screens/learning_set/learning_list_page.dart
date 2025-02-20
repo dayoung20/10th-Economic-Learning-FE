@@ -5,6 +5,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/learning_set/learning_list_item.dart';
 import 'package:economic_fe/view_model/learning_set/learning_list_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LearningListPage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _LearningListPageState extends State<LearningListPage> {
             return Column(
               children: [
                 SizedBox(
-                  height: ScreenUtils.getHeight(context, 12),
+                  height: 12.h,
                 ),
                 LearningListItem(
                   setNum: index + 1, // setNum은 1부터 시작하도록 설정
