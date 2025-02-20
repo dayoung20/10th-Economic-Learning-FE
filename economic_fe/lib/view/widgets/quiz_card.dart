@@ -358,8 +358,13 @@ class _QuizCardState extends State<QuizCard> {
                                                     ? '퀴즈를 스크랩했어요'
                                                     : '스크랩을 취소했어요');
 
-                                        // controller
-                                        //     .postScrapQuiz(widget.quizId!);
+                                        if (controller.isBookmarked.value) {
+                                          controller
+                                              .postScrapQuiz(widget.quizId!);
+                                        } else {
+                                          controller.postScrapDeleteQuiz(
+                                              widget.quizId!);
+                                        }
                                       },
                                       child: Obx(() {
                                         return Image.asset(

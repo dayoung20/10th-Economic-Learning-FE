@@ -95,13 +95,25 @@ class QuizController extends GetxController {
     }
   }
 
+  // 퀴즈 스크랩
   Future<void> postScrapQuiz(int quizId) async {
     try {
       print("start");
       dynamic response = await remoteDataSource.postScrapQuiz(quizId);
-      print("response isSuccess : ${response['isSuccess']}");
+      print("response scrap isSuccess : ${response['isSuccess']}");
     } catch (e) {
-      debugPrint('Error: $e');
+      debugPrint('post Scrap Error: $e');
+    }
+  }
+
+  // 퀴즈 스크랩 취소
+  Future<void> postScrapDeleteQuiz(int quizId) async {
+    try {
+      print("start");
+      dynamic response = await remoteDataSource.postScrapDeleteQuiz(quizId);
+      print("response delete isSuccess : ${response['isSuccess']}");
+    } catch (e) {
+      debugPrint('post Scrap Delete Error: $e');
     }
   }
 }
