@@ -1,4 +1,3 @@
-import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/screens/quiz/scrap_quiz_page.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
@@ -35,12 +34,7 @@ class _MyLearningPageState extends State<MyLearningPage> {
 
   // 퀴즈를 순차적으로 진행하는 함수
   void navigateToQuiz(int index, List<Map<String, dynamic>> quizzes) {
-    if (index >= quizzes.length) {
-      Get.back(); // 모든 퀴즈 완료 후 원래 화면으로 돌아가기
-      return;
-    }
-
-    Get.to(
+    Get.off(
       const ScrapQuizPage(),
       arguments: {
         'quizId': quizzes[index]['quizId'],

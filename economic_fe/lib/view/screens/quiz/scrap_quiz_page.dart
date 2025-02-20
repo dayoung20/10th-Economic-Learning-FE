@@ -42,7 +42,7 @@ class _ScrapQuizPageState extends State<ScrapQuizPage> {
     if (isMultiQuizMode && quizzes != null && currentIndex < totalIndex - 1) {
       print("다음 퀴즈로 이동: ${currentIndex + 1} / 총 $totalIndex 개");
 
-      Get.to(
+      Get.off(
         () => const ScrapQuizPage(),
         arguments: {
           'quizId': quizzes![currentIndex + 1]['quizId'],
@@ -58,7 +58,7 @@ class _ScrapQuizPageState extends State<ScrapQuizPage> {
       );
     } else {
       print("퀴즈 종료: 총 $totalIndex 개 완료");
-      Get.offNamed('/mypage/learning'); // 퀴즈 종료 후 WrongQuizPage로 이동
+      Get.offNamed('/mypage/learning'); // 퀴즈 종료 후 MyLearningPage로 이동
     }
   }
 
@@ -115,9 +115,7 @@ class _ScrapQuizPageState extends State<ScrapQuizPage> {
                 goToNextQuiz(); // 정답 여부와 상관없이 다음 문제로 이동
               },
               onNextQuizBtn: isMultiQuizMode ? goToNextQuiz : null,
-              onFinishTest: isMultiQuizMode
-                  ? goToNextQuiz
-                  : () => Get.offNamed('/mypage/learning'),
+              onFinishTest: controller.finishQuiz,
             ),
             Obx(() {
               return controller.isModalVisible.value

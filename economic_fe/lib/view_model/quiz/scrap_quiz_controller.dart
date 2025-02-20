@@ -43,6 +43,7 @@ class ScrapQuizController extends GetxController {
       final response = await remoteDataSource.fetchQuizById(quizId);
       if (response != null && response['isSuccess'] == true) {
         quizData.value = response['results'];
+        // quizData.refresh();
       } else {
         print('퀴즈 데이터 로드 실패: ${response?['message']}');
       }
@@ -67,6 +68,7 @@ class ScrapQuizController extends GetxController {
   }
 
   void finishQuiz() {
-    Get.back(); // 이전 화면으로 돌아가기
+    resetQuizState();
+    Get.offNamed('/mypage/learning'); // 이전 화면으로 돌아가기
   }
 }

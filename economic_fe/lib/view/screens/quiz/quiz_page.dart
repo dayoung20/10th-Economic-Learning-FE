@@ -34,6 +34,7 @@ class _QuizPageState extends State<QuizPage> {
     quizzes = Get.arguments['quizzes'];
 
     // 단일 퀴즈 및 연속 퀴즈 모두 정상 작동하도록 fetchQuizById() 실행
+    controller.resetQuizState();
     controller.fetchQuizById(quizId);
   }
 
@@ -41,7 +42,7 @@ class _QuizPageState extends State<QuizPage> {
     if (isMultiQuizMode && quizzes != null && currentIndex < totalIndex - 1) {
       print("다음 퀴즈로 이동: ${currentIndex + 1} / 총 $totalIndex 개");
 
-      Get.to(
+      Get.off(
         () => const QuizPage(),
         arguments: {
           'quizId': quizzes![currentIndex + 1]['id'],
@@ -114,9 +115,7 @@ class _QuizPageState extends State<QuizPage> {
                 goToNextQuiz(); // 정답 여부와 상관없이 다음 문제로 이동
               },
               onNextQuizBtn: isMultiQuizMode ? goToNextQuiz : null,
-              onFinishTest: isMultiQuizMode
-                  ? goToNextQuiz
-                  : () => Get.offNamed('/mypage/wrong'),
+              onFinishTest: controller.finishQuiz,
             ),
             Obx(() {
               return controller.isModalVisible.value
