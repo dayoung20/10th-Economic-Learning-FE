@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/mypage/category_options.dart';
 import 'package:economic_fe/view/widgets/mypage/category_text.dart';
 import 'package:economic_fe/view_model/mypage/setting_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class SettingPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _SettingPageState extends State<SettingPage> {
         onPress: () => Get.back(),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13.5),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.5.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,8 +44,8 @@ class _SettingPageState extends State<SettingPage> {
                 isToggleOn: controller.isToggled.value,
               );
             }),
-            const SizedBox(
-              height: 36,
+            SizedBox(
+              height: 36.h,
             ),
             const CategoryText(text: '약관 및 정보'),
             CategoryOptions(
@@ -58,18 +59,18 @@ class _SettingPageState extends State<SettingPage> {
               isText: true,
               onTap: () {},
             ),
-            const SizedBox(
-              height: 28,
+            SizedBox(
+              height: 28.h,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
               child: GestureDetector(
                 onTap: () {},
-                child: const Text(
+                child: Text(
                   '회원탈퇴',
                   style: TextStyle(
-                    color: Color(0xFF767676),
-                    fontSize: 16,
+                    color: const Color(0xFF767676),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     decoration: TextDecoration.underline,
                     height: 1.40,

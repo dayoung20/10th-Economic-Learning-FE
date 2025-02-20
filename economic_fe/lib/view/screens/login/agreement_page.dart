@@ -4,8 +4,8 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/login/agreement_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class AgreementPage extends StatefulWidget {
   const AgreementPage({super.key});
@@ -16,7 +16,6 @@ class AgreementPage extends StatefulWidget {
 
 class _AgreementPageState extends State<AgreementPage> {
   late final AgreementController controller;
-  // final List<LevelTestAnswerModel> answers = Get.arguments;
   @override
   void initState() {
     super.initState();
@@ -25,7 +24,6 @@ class _AgreementPageState extends State<AgreementPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<LevelTestAnswerModel> answers = Get.arguments;
     final arguments = Get.arguments as Map<String, dynamic>;
     final List<LevelTestAnswerModel> answers = arguments['levelTestAnswers'];
     final List<QuizModel> quizList = arguments['quizList'];
@@ -45,28 +43,27 @@ class _AgreementPageState extends State<AgreementPage> {
           Column(
             children: [
               Container(
-                padding: const EdgeInsets.only(left: 24, top: 30, bottom: 11),
+                padding: EdgeInsets.only(left: 24.w, top: 30.h, bottom: 11.h),
                 child: Row(
                   children: [
                     Image.asset(
                       'assets/icon.png',
-                      width: 25.63,
-                      height: 31.74,
+                      width: 25.63.w,
+                      height: 31.74.h,
                     ),
-                    const SizedBox(
-                      width: 3.78,
+                    SizedBox(
+                      width: 3.78.w,
                     ),
-                    const Text(
+                    Text(
                       "Ripple",
                       style: TextStyle(
-                        color: Color(0xFF111111),
-                        fontFamily: 'Palanquin Dark',
-                        fontSize: 22.4,
+                        color: const Color(0xFF111111),
+                        fontSize: 22.4.sp,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         height: 1.0,
                         letterSpacing: -0.448,
-                        fontFeatures: [
+                        fontFeatures: const [
                           FontFeature.liningFigures(),
                           FontFeature.proportionalFigures(),
                           FontFeature.enable('dlig'),
@@ -77,10 +74,10 @@ class _AgreementPageState extends State<AgreementPage> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(
-                  left: 24,
+                padding: EdgeInsets.only(
+                  left: 24.w,
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -88,14 +85,13 @@ class _AgreementPageState extends State<AgreementPage> {
                         Text(
                           "리플 약관 동의",
                           style: TextStyle(
-                            color: Color(0xFF111111),
-                            fontFamily: 'Palanquin Dark',
-                            fontSize: 22.4,
+                            color: const Color(0xFF111111),
+                            fontSize: 22.4.sp,
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
                             height: 1.0,
                             letterSpacing: -0.448,
-                            fontFeatures: [
+                            fontFeatures: const [
                               FontFeature.liningFigures(),
                               FontFeature.proportionalFigures(),
                               FontFeature.enable('dlig'),
@@ -105,14 +101,14 @@ class _AgreementPageState extends State<AgreementPage> {
                       ],
                     ),
                     SizedBox(
-                      height: 14,
+                      height: 14.h,
                     ),
                     Text(
                       "서비스 시작 및 가입을 위해 가입 및 정보 제공에",
                       style: TextStyle(
-                        color: Color(0xFF767676),
+                        color: const Color(0xFF767676),
                         fontFamily: 'Pretendard Variable',
-                        fontSize: 14.0,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         height: 1.3,
@@ -122,9 +118,8 @@ class _AgreementPageState extends State<AgreementPage> {
                     Text(
                       "동의해주세요.",
                       style: TextStyle(
-                        color: Color(0xFF767676),
-                        fontFamily: 'Pretendard Variable',
-                        fontSize: 14.0,
+                        color: const Color(0xFF767676),
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         height: 1.3,
@@ -134,24 +129,24 @@ class _AgreementPageState extends State<AgreementPage> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 28,
+              SizedBox(
+                height: 28.h,
               ),
               Container(
-                width: 312,
+                width: 312.w,
                 height: 1,
                 color: Colors.grey,
               ),
-              const SizedBox(
-                height: 16,
+              SizedBox(
+                height: 16.h,
               ),
               Obx(() {
                 return Column(
                   children: [
                     Row(
                       children: [
-                        const SizedBox(
-                          width: 31,
+                        SizedBox(
+                          width: 31.w,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -161,19 +156,18 @@ class _AgreementPageState extends State<AgreementPage> {
                             controller.isCheckedAll.value
                                 ? 'assets/check_fill.png'
                                 : 'assets/check.png',
-                            width: 25.63,
-                            height: 31.74,
+                            width: 25.63.w,
+                            height: 31.74.h,
                           ),
                         ),
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: 16.w,
                         ),
-                        const Text(
+                        Text(
                           "모두 동의합니다.",
                           style: TextStyle(
-                            color: Color(0xFF111111),
-                            fontFamily: 'Pretendard Variable',
-                            fontSize: 16.0,
+                            color: const Color(0xFF111111),
+                            fontSize: 16.sp,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w600,
                             height: 1.5,
@@ -182,69 +176,71 @@ class _AgreementPageState extends State<AgreementPage> {
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 16,
+                    SizedBox(
+                      height: 16.h,
                     ),
                     Container(
-                      width: 312,
-                      height: 1,
+                      width: 312.w,
+                      height: 1.h,
                       color: Colors.grey,
                     ),
-                    const SizedBox(
-                      height: 16,
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 3.w),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 31.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.toggleOneCheckbox();
+                            },
+                            child: Image.asset(
+                              controller.isCheckedOne.value
+                                  ? 'assets/check_fill.png'
+                                  : 'assets/check.png',
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          Text(
+                            "(필수) 리플 서비스 이용 약관",
+                            style: TextStyle(
+                              color: const Color(0xFF767676),
+                              fontSize: 14.sp,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
+                              height: 1.5,
+                              letterSpacing: -0.35,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 60.w,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              controller.clickedDetailBtn(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: const Color(0xFF767676),
+                              size: 20.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 17.h,
                     ),
                     Row(
                       children: [
-                        const SizedBox(
-                          width: 31,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            controller.toggleOneCheckbox();
-                          },
-                          child: Image.asset(
-                            controller.isCheckedOne.value
-                                ? 'assets/check_fill.png'
-                                : 'assets/check.png',
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        const Text(
-                          "(필수) 리플 서비스 이용 약관",
-                          style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontFamily: 'Pretendard Variable',
-                            fontSize: 14.0,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            height: 1.5,
-                            letterSpacing: -0.35,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 60,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            controller.clickedDetailBtn(context);
-                          },
-                          icon: const Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Color(0xFF767676),
-                            size: 20.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 17,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 31,
+                        SizedBox(
+                          width: 31.w,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -254,19 +250,18 @@ class _AgreementPageState extends State<AgreementPage> {
                             controller.isCheckedTwo.value
                                 ? 'assets/check_fill.png'
                                 : 'assets/check.png',
-                            width: 25.63,
-                            height: 31.74,
+                            width: 25.63.w,
+                            height: 31.74.h,
                           ),
                         ),
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: 16.w,
                         ),
-                        const Text(
+                        Text(
                           "(필수) 개인정보 수집・이용 동의",
                           style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontFamily: 'Pretendard Variable',
-                            fontSize: 14.0,
+                            color: const Color(0xFF767676),
+                            fontSize: 14.sp,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400,
                             height: 1.5,
@@ -275,13 +270,13 @@ class _AgreementPageState extends State<AgreementPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 17,
+                    SizedBox(
+                      height: 17.h,
                     ),
                     Row(
                       children: [
-                        const SizedBox(
-                          width: 31,
+                        SizedBox(
+                          width: 31.w,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -291,19 +286,18 @@ class _AgreementPageState extends State<AgreementPage> {
                             controller.isCheckedThree.value
                                 ? 'assets/check_fill.png'
                                 : 'assets/check.png',
-                            width: 25.63,
-                            height: 31.74,
+                            width: 25.63.w,
+                            height: 31.74.h,
                           ),
                         ),
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: 16.w,
                         ),
-                        const Text(
+                        Text(
                           "(필수) 만 14세 이상입니다.",
                           style: TextStyle(
-                            color: Color(0xFF767676),
-                            fontFamily: 'Pretendard Variable',
-                            fontSize: 14.0,
+                            color: const Color(0xFF767676),
+                            fontSize: 14.sp,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400,
                             height: 1.5,
@@ -327,15 +321,15 @@ class _AgreementPageState extends State<AgreementPage> {
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
-                          height: 58,
+                          height: 58.w,
                           decoration:
                               const BoxDecoration(color: Color(0xFF2AD6D6)),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               '확인',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                                 height: 1.50,
                                 letterSpacing: -0.40,
@@ -344,8 +338,8 @@ class _AgreementPageState extends State<AgreementPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 34,
+                      SizedBox(
+                        height: 34.h,
                       ),
                     ],
                   )

@@ -5,6 +5,7 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/mypage/my_profie_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -42,9 +43,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
-        // title: controller.userId != null
-        //     ? '${controller.userInfo.value!.nickname} 프로필'
-        //     : '내 프로필',
         title: '프로필',
         icon: Icons.arrow_back_ios_new,
         onPress: () => Get.back(),
@@ -66,17 +64,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 16),
+              padding: EdgeInsets.only(top: 10.h, left: 16.w),
               child: Row(
                 children: [
                   // 사용자 프로필 사진
                   SizedBox(
-                    height: 81,
+                    height: 81.h,
                     child: Stack(
                       children: [
                         Container(
-                          width: 81,
-                          height: 81,
+                          width: 81.w,
+                          height: 81.h,
                           decoration: ShapeDecoration(
                             color: const Color(0xFFF3F3F3),
                             shape: RoundedRectangleBorder(
@@ -89,8 +87,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     File(
                                         controller.selectedProfileImage.value!),
                                     fit: BoxFit.cover,
-                                    width: 81,
-                                    height: 81,
+                                    width: 81.w,
+                                    height: 81.h,
                                   ),
                                 )
                               : user.profileImageURL != null
@@ -99,13 +97,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                         image:
                                             NetworkImage(user.profileImageURL!),
                                         fit: BoxFit.cover,
-                                        width: 81,
-                                        height: 81,
+                                        width: 81.w,
+                                        height: 81.h,
                                       ),
                                     )
-                                  : const Icon(
+                                  : Icon(
                                       Icons.person,
-                                      size: 35,
+                                      size: 35.w,
                                     ),
                         ),
                         if (controller.userId == null)
@@ -121,8 +119,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 );
                               },
                               child: Container(
-                                width: 26,
-                                height: 26,
+                                width: 26.w,
+                                height: 26.h,
                                 decoration: ShapeDecoration(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
@@ -137,9 +135,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     )
                                   ],
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.edit_outlined,
-                                  size: 15,
+                                  size: 15.w,
                                 ),
                               ),
                             ),
@@ -147,8 +145,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 16,
+                  SizedBox(
+                    width: 16.w,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,20 +156,20 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         children: [
                           Text(
                             user.nickname,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
                               height: 1.40,
                               letterSpacing: -0.50,
                             ),
                           ),
-                          const SizedBox(
-                            width: 8,
+                          SizedBox(
+                            width: 8.w,
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 1),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4.w, vertical: 1.h),
                             decoration: ShapeDecoration(
                               color: const Color(0xFF2AD6D6),
                               shape: RoundedRectangleBorder(
@@ -180,9 +178,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             child: Text(
                               controller.convertLevel(user.level!),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 height: 1.67,
                                 letterSpacing: 0.25,
@@ -194,23 +192,23 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       // 생년월일
                       Text(
                         controller.formatBirthDate(user.birthDate),
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
+                        style: TextStyle(
+                          color: const Color(0xFF767676),
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.30,
                         ),
                       ),
-                      const SizedBox(
-                        height: 6,
+                      SizedBox(
+                        height: 6.h,
                       ),
                       // 한 줄 소개
                       Text(
                         controller.truncateIntro(user.profileIntro),
-                        style: const TextStyle(
-                          color: Color(0xFF404040),
-                          fontSize: 14,
+                        style: TextStyle(
+                          color: const Color(0xFF404040),
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.30,
                           letterSpacing: -0.35,
@@ -222,21 +220,21 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 17, left: 16),
+              padding: EdgeInsets.only(top: 17.h, left: 16.w),
               child: Row(
                 children: [
                   // 직무
                   JobContainer(text: user.job),
-                  const SizedBox(
-                    width: 8,
+                  SizedBox(
+                    width: 8.w,
                   ),
                   // 업종
                   JobContainer(text: user.businessType),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: 30.h,
             ),
             const Divider(
               color: Colors.black,
@@ -248,8 +246,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
               child: TabBar(
                 controller: controller.tabController,
                 labelColor: Colors.black,
-                labelStyle: const TextStyle(
-                  fontSize: 14,
+                labelStyle: TextStyle(
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                 ),
                 unselectedLabelColor: const Color(0xff767676),
@@ -307,16 +305,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width -
-                                                (32 + 66 + 15),
+                                                113.w,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   post.title!,
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF111111),
-                                                    fontSize: 16,
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xFF111111),
+                                                    fontSize: 16.sp,
                                                     fontWeight: FontWeight.w500,
                                                     height: 1.30,
                                                     letterSpacing: -0.40,
@@ -325,9 +324,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                 Text(
                                                   post.content!,
                                                   maxLines: 2,
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF111111),
-                                                    fontSize: 14,
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xFF111111),
+                                                    fontSize: 14.sp,
                                                     fontWeight: FontWeight.w400,
                                                     height: 1.50,
                                                     letterSpacing: -0.35,
@@ -335,48 +335,50 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                         TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 8,
+                                                SizedBox(
+                                                  height: 8.h,
                                                 ),
                                                 Row(
                                                   children: [
-                                                    const Icon(
+                                                    Icon(
                                                       Icons.favorite_outline,
-                                                      size: 18,
-                                                      color: Color(0xff767676),
+                                                      size: 18.w,
+                                                      color: const Color(
+                                                          0xff767676),
                                                     ),
-                                                    const SizedBox(
-                                                      width: 5,
+                                                    SizedBox(
+                                                      width: 5.w,
                                                     ),
                                                     Text(
                                                       '${post.likeCount}',
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFF767676),
-                                                        fontSize: 12,
+                                                      style: TextStyle(
+                                                        color: const Color(
+                                                            0xFF767676),
+                                                        fontSize: 12.sp,
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         height: 1.50,
                                                         letterSpacing: -0.30,
                                                       ),
                                                     ),
-                                                    const SizedBox(
-                                                      width: 10,
+                                                    SizedBox(
+                                                      width: 10.w,
                                                     ),
-                                                    const Icon(
+                                                    Icon(
                                                       Icons.chat_bubble_outline,
-                                                      size: 18,
-                                                      color: Color(0xff767676),
+                                                      size: 18.w,
+                                                      color: const Color(
+                                                          0xff767676),
                                                     ),
-                                                    const SizedBox(
-                                                      width: 5,
+                                                    SizedBox(
+                                                      width: 5.w,
                                                     ),
                                                     Text(
                                                       '${post.commentCount}',
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFF767676),
-                                                        fontSize: 12,
+                                                      style: TextStyle(
+                                                        color: const Color(
+                                                            0xFF767676),
+                                                        fontSize: 12.sp,
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         height: 1.50,
@@ -388,8 +390,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                               ],
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 15,
+                                          SizedBox(
+                                            width: 15.w,
                                           ),
                                           // 이미지가 있는 경우에만 표시
                                           if (post.imageUrl != null &&
@@ -399,14 +401,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                   BorderRadius.circular(7),
                                               child: Image.network(
                                                 post.imageUrl!,
-                                                width: 66,
-                                                height: 66,
+                                                width: 66.w,
+                                                height: 66.h,
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (context, error,
                                                         stackTrace) =>
                                                     Container(
-                                                  width: 66,
-                                                  height: 66,
+                                                  width: 66.w,
+                                                  height: 66.h,
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey[300],
                                                     borderRadius:
@@ -429,12 +431,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   // 경제 톡톡 화면
                   Obx(() {
                     if (controller.economyTalkPosts.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
                           '내가 참여한 경제 톡톡이 없습니다.',
                           style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF767676),
+                            fontSize: 16.sp,
+                            color: const Color(0xFF767676),
                           ),
                         ),
                       );
@@ -466,7 +468,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               children: [
                                 // 경제톡톡 이미지
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 12),
+                                  padding: EdgeInsets.only(right: 12.w),
                                   child: // 이미지가 있는 경우에만 표시
                                       post.imageUrl != null &&
                                               post.imageUrl!.isNotEmpty
@@ -475,14 +477,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                   BorderRadius.circular(7),
                                               child: Image.network(
                                                 post.imageUrl!,
-                                                width: 97,
-                                                height: 118,
+                                                width: 97.w,
+                                                height: 118.h,
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (context, error,
                                                         stackTrace) =>
                                                     Container(
-                                                  width: 97,
-                                                  height: 118,
+                                                  width: 97.w,
+                                                  height: 118.h,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -495,8 +497,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                               ),
                                             )
                                           : Container(
-                                              width: 97,
-                                              height: 118,
+                                              width: 97.w,
+                                              height: 118.h,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(7),
@@ -514,16 +516,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   children: [
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width -
-                                          (32 + 97 + 12),
+                                          141.w,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             '${post.commentCount}명이 참여했어요',
-                                            style: const TextStyle(
-                                              color: Color(0xFF767676),
-                                              fontSize: 13,
+                                            style: TextStyle(
+                                              color: const Color(0xFF767676),
+                                              fontSize: 13.sp,
                                               fontWeight: FontWeight.w400,
                                               height: 1.50,
                                               letterSpacing: -0.33,
@@ -532,9 +534,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           Text(
                                             post.createdDate!,
                                             textAlign: TextAlign.right,
-                                            style: const TextStyle(
-                                              color: Color(0xFFA2A2A2),
-                                              fontSize: 12,
+                                            style: TextStyle(
+                                              color: const Color(0xFFA2A2A2),
+                                              fontSize: 12.sp,
                                               fontWeight: FontWeight.w400,
                                               height: 1.50,
                                               letterSpacing: -0.30,
@@ -543,19 +545,19 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 8,
+                                    SizedBox(
+                                      height: 8.h,
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width -
-                                          (32 + 97 + 12),
-                                      height: 60,
+                                          141.w,
+                                      height: 60.h,
                                       child: Flexible(
                                         child: Text(
                                           post.title!,
-                                          style: const TextStyle(
-                                            color: Color(0xFF111111),
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            color: const Color(0xFF111111),
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w500,
                                             height: 1.30,
                                             letterSpacing: -0.38,
@@ -563,46 +565,46 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 12,
+                                    SizedBox(
+                                      height: 12.h,
                                     ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        const Padding(
-                                          padding: EdgeInsets.only(right: 2),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 2.w),
                                           child: Icon(
                                             Icons.favorite_border,
-                                            size: 18,
-                                            color: Color(0xff767676),
+                                            size: 18.w,
+                                            color: const Color(0xff767676),
                                           ),
                                         ),
                                         Text(
                                           '${post.likeCount}',
-                                          style: const TextStyle(
-                                            color: Color(0xFF767676),
-                                            fontSize: 12,
+                                          style: TextStyle(
+                                            color: const Color(0xFF767676),
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w400,
                                             height: 1.50,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 8,
+                                        SizedBox(
+                                          width: 8.w,
                                         ),
-                                        const Padding(
-                                          padding: EdgeInsets.only(right: 2),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 2.w),
                                           child: Icon(
                                             Icons.chat_bubble_outline,
-                                            size: 18,
-                                            color: Color(0xff767676),
+                                            size: 18.w,
+                                            color: const Color(0xff767676),
                                           ),
                                         ),
                                         Text(
                                           '${post.commentCount}',
-                                          style: const TextStyle(
-                                            color: Color(0xFF767676),
-                                            fontSize: 12,
+                                          style: TextStyle(
+                                            color: const Color(0xFF767676),
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w400,
                                             height: 1.50,
                                           ),
@@ -621,12 +623,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   // 댓글 단 글 화면
                   Obx(() {
                     if (controller.otherCommentPosts.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Text(
                           '내가 댓글 단 게시글이 없습니다.',
                           style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF767676),
+                            fontSize: 16.sp,
+                            color: const Color(0xFF767676),
                           ),
                         ),
                       );
@@ -658,9 +660,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 children: [
                                   Text(
                                     controller.translatedType(post['type']),
-                                    style: const TextStyle(
-                                      color: Color(0xFF767676),
-                                      fontSize: 12,
+                                    style: TextStyle(
+                                      color: const Color(0xFF767676),
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       height: 1.30,
                                       letterSpacing: -0.30,
@@ -668,9 +670,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   ),
                                   Text(
                                     post['createdDate'],
-                                    style: const TextStyle(
-                                      color: Color(0xFF767676),
-                                      fontSize: 12,
+                                    style: TextStyle(
+                                      color: const Color(0xFF767676),
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       height: 1.50,
                                       letterSpacing: -0.30,
@@ -678,12 +680,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 6),
+                              SizedBox(height: 6.h),
                               // 게시글 제목
                               Text(
                                 post['comment'],
-                                style: const TextStyle(
-                                  fontSize: 16,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
                                   height: 1.3,
                                   letterSpacing: -0.4,
@@ -692,12 +694,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                               // 원문글 제목 표시
                               Column(
                                 children: [
-                                  const SizedBox(height: 6),
+                                  SizedBox(height: 6.h),
                                   Text(
                                     post['postTitle'],
-                                    style: const TextStyle(
-                                      color: Color(0xFFA2A2A2),
-                                      fontSize: 12,
+                                    style: TextStyle(
+                                      color: const Color(0xFFA2A2A2),
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       height: 1.30,
                                       letterSpacing: -0.30,

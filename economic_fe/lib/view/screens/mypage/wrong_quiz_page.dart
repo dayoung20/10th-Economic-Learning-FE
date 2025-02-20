@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/level_container.dart';
 import 'package:economic_fe/view_model/mypage/wrong_quiz_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class WrongQuizPage extends StatefulWidget {
@@ -16,11 +17,13 @@ class WrongQuizPage extends StatefulWidget {
 class _WrongQuizPageState extends State<WrongQuizPage> {
   final WrongQuizController controller = Get.put(WrongQuizController());
 
+  @override
   void initState() {
     super.initState();
     controller.fetchIncorrectQuestions(); // 초기 데이터 로드
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
@@ -32,7 +35,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 22, left: 15),
+            padding: EdgeInsets.only(top: 22.h, left: 15.w),
             child: Row(
               children: [
                 Obx(
@@ -42,7 +45,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                     onTap: () => controller.updateSelectedLevel('초급'),
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Obx(
                   () => LevelContainer(
                     level: '중급',
@@ -51,7 +54,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                     onTap: () => controller.updateSelectedLevel('중급'),
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Obx(
                   () => LevelContainer(
                     level: '고급',
@@ -62,10 +65,10 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18.h),
           // 버튼
           Padding(
-            padding: const EdgeInsets.only(left: 16),
+            padding: EdgeInsets.only(left: 16.w),
             child: GestureDetector(
               onTap: () {
                 // 버튼 클릭 시 동작
@@ -73,36 +76,36 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Text(
                         '틀린 모든 문제 다시 풀기',
                         style: TextStyle(
-                          color: Color(0xFF067BD5),
-                          fontSize: 14,
+                          color: const Color(0xFF067BD5),
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
                           height: 1.40,
                           letterSpacing: -0.35,
                         ),
                       ),
-                      SizedBox(width: 3),
+                      SizedBox(width: 3.w),
                       Icon(
                         Icons.arrow_circle_right,
-                        color: Color(0xff067bd5),
-                        size: 15,
+                        color: const Color(0xff067bd5),
+                        size: 15.w,
                       ),
                     ],
                   ),
                   Container(
-                    width: 158,
-                    height: 1,
+                    width: 158.w,
+                    height: 1.h,
                     color: const Color(0xff067bd5),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: 15.h),
           // 탭별 데이터 리스트
           Expanded(
             child: Obx(
@@ -113,8 +116,8 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                       itemBuilder: (context, index) {
                         final item = controller.incorrectQuestions[index];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 8.h),
                           child: GestureDetector(
                             onTap: () {
                               // 개별 퀴즈 화면으로 이동
@@ -140,18 +143,18 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                                 children: [
                                   Text(
                                     item['category']!,
-                                    style: const TextStyle(
-                                      color: Color(0xFF767676),
-                                      fontSize: 14,
+                                    style: TextStyle(
+                                      color: const Color(0xFF767676),
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2.h),
                                   Text(
                                     item['title']!,
-                                    style: const TextStyle(
-                                      color: Color(0xFF404040),
-                                      fontSize: 18,
+                                    style: TextStyle(
+                                      color: const Color(0xFF404040),
+                                      fontSize: 18.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),

@@ -2,6 +2,7 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/mypage/bookmarked_articles_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookmarkedArticlesPage extends StatefulWidget {
@@ -54,16 +55,16 @@ class _BookmarkedArticlesPageState extends State<BookmarkedArticlesPage> {
                   children: [
                     Text(
                       news.translatedCategory,
-                      style: const TextStyle(
-                        color: Color(0xFF2BD6D6),
-                        fontSize: 12,
+                      style: TextStyle(
+                        color: const Color(0xFF2BD6D6),
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                         letterSpacing: -0.3,
                         height: 1.3,
                       ),
                     ),
-                    const SizedBox(
-                      height: 6,
+                    SizedBox(
+                      height: 6.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,8 +75,8 @@ class _BookmarkedArticlesPageState extends State<BookmarkedArticlesPage> {
                           },
                           child: Text(
                             news.title ?? "제목 없음",
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                               height: 1.3,
                               letterSpacing: -0.4,
@@ -93,15 +94,15 @@ class _BookmarkedArticlesPageState extends State<BookmarkedArticlesPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           news.publisher ?? "알 수 없음",
-                          style: const TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
+                          style: TextStyle(
+                            color: const Color(0xFF767676),
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                             height: 1.5,
                             letterSpacing: -0.3,
@@ -110,9 +111,9 @@ class _BookmarkedArticlesPageState extends State<BookmarkedArticlesPage> {
                         // 기사 업로드 시간
                         Text(
                           news.createdDate!,
-                          style: const TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
+                          style: TextStyle(
+                            color: const Color(0xFF767676),
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                             height: 1.50,
                             letterSpacing: -0.30,

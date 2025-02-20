@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/learning_set/explanation_text.dart';
 import 'package:economic_fe/view_model/mypage/scrap_learning_set_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ScrapLearningSetPage extends StatefulWidget {
@@ -38,20 +39,20 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
         return Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 65),
+              padding: EdgeInsets.only(bottom: 65.h),
               child: SingleChildScrollView(
                 child: Center(
                   child: Container(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: 10.h),
                     width:
-                        MediaQuery.of(context).size.width * 0.9, // 화면 너비의 90%
-                    height:
-                        MediaQuery.of(context).size.height * 0.9, // 화면 높이의 90%
+                        MediaQuery.of(context).size.width * 0.9.w, // 화면 너비의 90%
+                    height: MediaQuery.of(context).size.height *
+                        0.9.h, // 화면 높이의 90%
                     child: Column(
                       mainAxisSize: MainAxisSize.max, // Column이 부모의 크기를 채우도록 설정
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
                           decoration: const BoxDecoration(
                             color: Color(0xFF1EB692), // 컨테이너 배경색
                             borderRadius: BorderRadius.only(
@@ -66,9 +67,9 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                             () => Text(
                               controller
                                   .convertLevel(controller.concept['level']),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                                 height: 1.4,
                                 letterSpacing: -0.4,
@@ -102,23 +103,23 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                             ),
                           ),
                           alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 24),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 24.h),
                           child: Column(
                             children: [
                               Row(
                                 children: [
                                   Text(
                                     controller.concept['name'],
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w500,
                                       height: 1.4,
                                       letterSpacing: -0.4,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 11,
+                                  SizedBox(
+                                    width: 11.w,
                                   ),
                                   Obx(() {
                                     return GestureDetector(
@@ -128,23 +129,23 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                                         controller.isScrapped.value
                                             ? "assets/bookmark_selected.png"
                                             : "assets/bookmark.png",
-                                        width: 13,
+                                        width: 13.w,
                                       ),
                                     );
                                   }),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 16,
+                              SizedBox(
+                                height: 16.h,
                               ),
                               Image.asset(
                                 // 예시 이미지
                                 "assets/example.png",
                                 fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width - 72,
+                                width: MediaQuery.of(context).size.width - 72.w,
                               ),
-                              const SizedBox(
-                                height: 22,
+                              SizedBox(
+                                height: 22.h,
                               ),
                               ExplanationText(
                                   explanation:
@@ -159,8 +160,8 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
               ),
             ),
             Positioned(
-              bottom: 110,
-              right: 10,
+              bottom: 110.h,
+              right: 10.w,
               child: ChatbotFAB(
                 onTap: () => controller.toChatbot(),
               ),
@@ -181,8 +182,8 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 30.0, top: 16.0),
+                padding: EdgeInsets.only(
+                    left: 16.w, right: 16.w, bottom: 30.h, top: 16.h),
                 // color: Colors.white, // 배경 색상
                 child: Center(
                   child: ElevatedButton(
@@ -190,7 +191,7 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                       Get.back();
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(328, 56),
+                      minimumSize: Size(328.w, 56.h),
                       backgroundColor: Palette.buttonColorBlue,
                       // padding: const EdgeInsets.symmetric(vertical: 15.0), // 버튼 크기
                       shape: RoundedRectangleBorder(
@@ -198,11 +199,11 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                             BorderRadius.circular(10), // 모서리를 30px로 둥글게 설정
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "학습 완료",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                         height: 1.4,
                         letterSpacing: -0.45,
