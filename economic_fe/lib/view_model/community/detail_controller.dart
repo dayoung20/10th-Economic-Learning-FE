@@ -38,6 +38,7 @@ class DetailController extends GetxController {
         postDetail.value = postData;
 
         await fetchLikedComments();
+
         comments.value = _parseComments(
             postData['commentListResponse']['commentResponseList']);
 
@@ -112,6 +113,8 @@ class DetailController extends GetxController {
             ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리
             : [],
         isDeleted: comment['isDeleted'],
+        commenterId: comment['commenterId'],
+        commenterProfileImageUrl: comment['commenterProfileImageUrl'],
       );
     }).toList();
   }
@@ -347,6 +350,8 @@ class DetailController extends GetxController {
           replies: comments[index].replies,
           isLiked: comments[index].isLiked,
           isDeleted: comments[index].isDeleted,
+          commenterId: comments[index].commenterId,
+          commenterProfileImageUrl: comments[index].commenterProfileImageUrl,
         );
         comments.refresh();
       }
@@ -382,6 +387,9 @@ class DetailController extends GetxController {
             replies: comment.replies[replyIndex].replies,
             isLiked: comment.replies[replyIndex].isLiked,
             isDeleted: comment.replies[replyIndex].isDeleted,
+            commenterId: comment.replies[replyIndex].commenterId,
+            commenterProfileImageUrl:
+                comment.replies[replyIndex].commenterProfileImageUrl,
           );
           comments.refresh();
           break;
