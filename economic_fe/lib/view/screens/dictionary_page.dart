@@ -137,14 +137,12 @@ class _DictionaryPageState extends State<DictionaryPage> {
                     color: Color(0xFFA2A2A2),
                   ),
                 ),
+                onFieldSubmitted: (value) {
+                  // print("검색 실행: $value");
+                  controller.typeValue.value = false;
+                  controller.getKewordResult(0, value);
+                },
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.typeValue.value = false;
-                controller.getKewordResult(0, controller.keyword.value);
-              },
-              child: const Text("검색"),
             ),
             // 자음 리스트 (가로 스크롤)
             Container(

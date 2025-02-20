@@ -52,9 +52,8 @@ class _QuizTestPageState extends State<QuizTestPage> {
             }
             return Align(
                 alignment: Alignment.topCenter,
-                child: quizList[controller.currentQuizIdx.value]
-                            .choiceList
-                            .length ==
+                child: controller.quizList[controller.currentQuizIdx.value]
+                            .choiceList.length ==
                         2
                     ? QuizCard(
                         screenHeight: screenHeight,
