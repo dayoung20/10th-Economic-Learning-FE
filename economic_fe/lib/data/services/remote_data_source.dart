@@ -53,44 +53,44 @@ class RemoteDataSource {
     }
   }
 
-  /// API POST
-  ///
-  /// 데이터 생성시 사용
-  /// jsonData 포함O
-  /// 앱에 저장된 accessToken 사용
-  Future<dynamic> postApiWithJsonTest(
-    String endPoint,
-    Map<String, dynamic> jsonData,
-  ) async {
-    String apiUrl = '$baseUrl/$endPoint';
+  // /// API POST
+  // ///
+  // /// 데이터 생성시 사용
+  // /// jsonData 포함O
+  // /// 앱에 저장된 accessToken 사용
+  // Future<dynamic> postApiWithJsonTest(
+  //   String endPoint,
+  //   Map<String, dynamic> jsonData,
+  // ) async {
+  //   String apiUrl = '$baseUrl/$endPoint';
 
-    String? access = await getToken("accessToken");
+  //   String? access = await getToken("accessToken");
 
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $access',
-    };
+  //   Map<String, String> headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer $access',
+  //   };
 
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: headers,
-        body: jsonEncode(jsonData),
-      );
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(apiUrl),
+  //       headers: headers,
+  //       body: jsonEncode(jsonData),
+  //     );
 
-      if (response.statusCode == 200) {
-        debugPrint('POST 요청 성공');
-        return response.statusCode;
-      } else {
-        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
-      }
+  //     if (response.statusCode == 200) {
+  //       debugPrint('POST 요청 성공');
+  //       return response.statusCode;
+  //     } else {
+  //       debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+  //     }
 
-      return response.statusCode;
-    } catch (e) {
-      debugPrint('POST 요청 중 예외 발생: $e');
-      return null;
-    }
-  }
+  //     return response.statusCode;
+  //   } catch (e) {
+  //     debugPrint('POST 요청 중 예외 발생: $e');
+  //     return null;
+  //   }
+  // }
 
   /// API POST
   ///
@@ -211,45 +211,45 @@ class RemoteDataSource {
     }
   }
 
-  /// API POST
-  ///
-  /// 데이터 생성시 사용
-  /// jsonData 포함X
-  /// response 전부 return
-  Future<dynamic> _postApiReturnResponse(
-    String endPoint,
-    // Map<String, dynamic> jsonData,
-  ) async {
-    String apiUrl = '$baseUrl/$endPoint';
-    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+  // /// API POST
+  // ///
+  // /// 데이터 생성시 사용
+  // /// jsonData 포함X
+  // /// response 전부 return
+  // Future<dynamic> _postApiReturnResponse(
+  //   String endPoint,
+  //   // Map<String, dynamic> jsonData,
+  // ) async {
+  //   String apiUrl = '$baseUrl/$endPoint';
+  //   // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
 
-    String? access = await getToken("accessToken");
+  //   String? access = await getToken("accessToken");
 
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $access',
-    };
+  //   Map<String, String> headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer $access',
+  //   };
 
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: headers,
-        // body: jsonEncode(jsonData),
-      );
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(apiUrl),
+  //       headers: headers,
+  //       // body: jsonEncode(jsonData),
+  //     );
 
-      if (response.statusCode == 200) {
-        debugPrint('POST 요청 성공');
-        return response;
-      } else {
-        debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
-      }
+  //     if (response.statusCode == 200) {
+  //       debugPrint('POST 요청 성공');
+  //       return response;
+  //     } else {
+  //       debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+  //     }
 
-      return response;
-    } catch (e) {
-      debugPrint('POST 요청 중 예외 발생: $e');
-      return null;
-    }
-  }
+  //     return response;
+  //   } catch (e) {
+  //     debugPrint('POST 요청 중 예외 발생: $e');
+  //     return null;
+  //   }
+  // }
 
   /// API POST
   ///
@@ -344,6 +344,33 @@ class RemoteDataSource {
     }
   }
 
+  // /// API GET (token 없이 사용)
+  // ///
+  // /// 데이터 받아올 때 사용
+  // static Future<dynamic> _getApiReturnStatus(String endPoint) async {
+  //   String apiUrl = '$baseUrl/$endPoint';
+  //   debugPrint('GET 요청: $endPoint');
+
+  //   try {
+  //     final response = await http.get(Uri.parse(apiUrl));
+
+  //     if (response.statusCode == 200) {
+  //       debugPrint('GET 요청 성공');
+
+  //       // return jsonDecode(response.body);
+  //       // 한글 깨지지 않도록 설정
+  //       final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+  //       return response;
+  //     } else {
+  //       debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+  //       return response;
+  //     }
+  //   } catch (e) {
+  //     debugPrint('GET 요청 중 예외 발생: $e');
+  //     return;
+  //   }
+  // }
+
   /// API GET (token 사용)
   ///
   /// 데이터 받아올 때 사용
@@ -416,6 +443,42 @@ class RemoteDataSource {
       return;
     }
   }
+
+  // /// API GET (token X)
+  // ///
+  // /// 데이터 받아올 때 사용
+  // Future<dynamic> _getApiWithoutToken(String endPoint) async {
+  //   String apiUrl = '$baseUrl/$endPoint';
+  //   debugPrint('GET 요청: $endPoint');
+
+  //   String? access = await getToken("accessToken");
+
+  //   try {
+  //     final headers = {
+  //       'Authorization': 'Bearer $access',
+  //       'accept': '*/*',
+  //     };
+  //     final response = await http.get(
+  //       Uri.parse(apiUrl),
+  //       headers: headers,
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       debugPrint('GET 요청 성공');
+
+  //       // return jsonDecode(response.body);
+  //       // 한글 깨지지 않도록 설정
+  //       final decodedResponse = jsonDecode(utf8.decode(response.bodyBytes));
+  //       return decodedResponse;
+  //     } else {
+  //       debugPrint('GET 요청 실패: (${response.statusCode})${response.body}');
+  //       return response;
+  //     }
+  //   } catch (e) {
+  //     debugPrint('GET 요청 중 예외 발생: $e');
+  //     return;
+  //   }
+  // }
 
   /// API DELETE
   ///
@@ -1067,6 +1130,7 @@ class RemoteDataSource {
       } else if (response.statusCode == 500) {
         // 서버 내부 오류
         print("서버 오류 (500): ${response.body}");
+
         return null;
       }
 
@@ -2367,6 +2431,123 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/learning/{learningSetId}/quizzes/{quizId}
+  /// 퀴즈 제출
+  Future<dynamic> postSubmitQuiz(int quizId, int answerIndex) async {
+    dynamic response;
+    print("postSubmitQuiz 안 : $quizId, $answerIndex");
+    String endPoint =
+        "api/v1/learning/quizzes/$quizId?answerIndex=$answerIndex";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+
+    if (response != null) {
+      debugPrint("퀴즈 제출 POST 성공 : $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 제출 POST 실패");
+    }
+    return response;
+  }
+
+  /// api/v1/learning/{learningSetId}/quizzes/end
+  /// 퀴즈 완료
+  Future<dynamic> postQuizFinish(int learningSetId) async {
+    dynamic response;
+
+    String endPoint = "api/v1/learning/$learningSetId/quizzes/end";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+
+    if (response != null) {
+      debugPrint("퀴즈 완료 POST 성공 : $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 완료 POST 실패");
+    }
+    return response;
+  }
+
+  /// api/v1/learning/quiz/{quizId}/scrap
+  /// 퀴즈 스크랩
+  Future<dynamic> postScrapQuiz(int quizId) async {
+    dynamic response;
+    String endPoint = "api/v1/learning/quiz/$quizId/scrap";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+    if (response != null) {
+      debugPrint("퀴즈 스크랩 POST 성공 : $response");
+    } else {
+      debugPrint("퀴즈 스크랩 POST 실패");
+    }
+  }
+
+  /// api/v1/learning/quiz/1/scrap
+  /// 퀴즈 스크랩 취소
+  Future<dynamic> postScrapDeleteQuiz(int quizId) async {
+    dynamic response;
+    String endPoint = 'api/v1/learning/quiz/$quizId/scrap';
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+    if (response != null) {
+      debugPrint("퀴즈 스크랩 취소 POST성공 : $response");
+    } else {
+      debugPrint("퀴즈 스크랩 취소 POST 실패");
+    }
+  }
+
+  /// 알림 구독 (SSE)
+  /// api: api/v1/notification/subscribe
+  Future<bool> subscribeToNotifications(
+      {Function(String)? onNotificationReceived}) async {
+    String url = '$baseUrl/api/v1/notification/subscribe';
+    String? access = await getToken("accessToken");
+
+    if (access == null) {
+      print("SSE 연결 실패: 액세스 토큰 없음");
+      return false;
+    }
+
+    try {
+      SSEClient.subscribeToSSE(
+        url: url,
+        header: {
+          "Authorization": "Bearer $access",
+          "Accept": "text/event-stream",
+        },
+        method: SSERequestType.GET,
+      ).listen((SSEModel event) {
+        if (event.data != null && onNotificationReceived != null) {
+          print("Received SSE event: ${event.data}");
+          onNotificationReceived(event.data!);
+        }
+      }, onError: (error) {
+        print("SSE 연결 오류: $error");
+      });
+
+      print("SSE 연결 성공");
+      return true;
+    } catch (e) {
+      print("SSE 구독 실패: $e");
+      return false;
+    }
+  }
+
+  /// JSON 데이터 파싱 (잘못된 데이터 방지)
+  Map<String, dynamic> parseNotificationData(String data) {
+    try {
+      if (!data.startsWith("{")) {
+        print("JSON 형식이 아님, 무시: $data");
+        return {};
+      }
+      return jsonDecode(data);
+    } catch (e) {
+      print("JSON 파싱 오류: $e");
+      return {};
+    }
+  }
+}
+
   // /// 알림 구독 (SSE)
   // /// api: api/v1/notification/subscribe
   // Future<bool> subscribeToNotifications(
@@ -2418,4 +2599,4 @@ class RemoteDataSource {
   //     }
   //   }
   // }
-}
+

@@ -27,6 +27,7 @@ class RippleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     // // 유효한 토큰이 있을 때만 SSE 실행
     // if (isLoggedIn) {
     //   Get.put(PushNotificationController(), permanent: true);
