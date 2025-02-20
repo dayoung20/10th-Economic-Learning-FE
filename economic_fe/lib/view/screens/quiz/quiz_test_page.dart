@@ -72,27 +72,6 @@ class _QuizTestPageState extends State<QuizTestPage> {
                             quizList[controller.currentQuizIdx.value].quizId,
                         onOptionSelected: (int selected) {
                           setState(() {
-                            // // 선택한 답안 저장
-                            // controller.levelTestAnswers.add(
-                            //   LevelTestAnswerModel(
-                            //     quizId:
-                            //         quizList[controller.currentQuizIdx.value]
-                            //             .id,
-                            //     answer:
-                            //         quizList[controller.currentQuizIdx.value]
-                            //             .choiceList[selected]
-                            //             .content, // 선택한 옵션의 ID 저장
-                            //   ),
-                            // );
-                            // print(
-                            //     "selected answer : ${controller.levelTestAnswers}");
-                            // print(
-                            //     "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
-                            // print("현재 idx : ${controller.currentQuizIdx}");
-                            // controller.postSubmitQuiz(
-                            //     quizList[controller.currentQuizIdx.value]
-                            //         .quizId,
-                            //     selected);
                             controller.currentQuizIdx++;
                             print("select : $selected");
                           });
@@ -101,7 +80,6 @@ class _QuizTestPageState extends State<QuizTestPage> {
                           controller.currentQuizIdx++;
                         },
                         onFinishTest: () {
-                          // controller.clickedToKaKao(quizList);
                           controller
                               .postQuizFinish(controller.learningSetId.value);
                         },
@@ -121,32 +99,15 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         isLast: (controller.currentQuizIdx.value + 1 ==
                             quizList.length),
                         isCorrectQuiz: controller.isCorrect.value,
+                        quizId:
+                            quizList[controller.currentQuizIdx.value].quizId,
                         onOptionSelected: (int selected) {
                           setState(() {
-                            // // 선택한 답안 저장
-                            // controller.levelTestAnswers.add(
-                            //   LevelTestAnswerModel(
-                            //     quizId:
-                            //         quizList[controller.currentQuizIdx.value]
-                            //             .id,
-                            //     answer:
-                            //         quizList[controller.currentQuizIdx.value]
-                            //             .choiceList[selected]
-                            //             .content, // 선택한 옵션의 ID 저장
-                            //   ),
-                            // );
-
-                            // print(
-                            //     "selected answer : ${controller.levelTestAnswers}");
-
-                            // print(
-                            //     "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
-                            // print("현재 idx : ${controller.currentQuizIdx}");
-                            controller.postSubmitQuiz(
-                                quizList[controller.currentQuizIdx.value]
-                                    .quizId,
-                                selected);
-                            // controller.currentQuizIdx++;
+                            // controller.postSubmitQuiz(
+                            //     quizList[controller.currentQuizIdx.value]
+                            //         .quizId,
+                            //     selected);
+                            controller.currentQuizIdx++;
                             print("select : $selected");
                           });
                         },

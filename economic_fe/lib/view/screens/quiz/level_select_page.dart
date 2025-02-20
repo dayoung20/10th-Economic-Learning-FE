@@ -33,7 +33,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
         title: "레벨선택",
         icon: Icons.arrow_back_ios_new,
         onPress: () {
-          Navigator.pop(context);
+          // Navigator.pop(context);
+          Get.toNamed('/learning_list');
         },
       ),
       body: Padding(

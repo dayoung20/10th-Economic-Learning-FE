@@ -142,19 +142,14 @@ class _QuizCardState extends State<QuizCard> {
                                               horizontal: 16,
                                             ),
                                             child: MultipleOptionContainer(
-                                              widget: widget,
-                                              optionNum: index + 1,
-                                              isSelected: controller
-                                                      .selectedOption.value ==
-                                                  index,
-                                              isQuiz: true,
-                                              isCorrect: controller
-                                                          .isCorrectAnswer
-                                                          .value ==
-                                                      1
-                                                  ? true
-                                                  : false,
-                                            ),
+                                                widget: widget,
+                                                optionNum: index + 1,
+                                                isSelected: controller
+                                                        .selectedOption.value ==
+                                                    index,
+                                                isQuiz: true,
+                                                isCorrect:
+                                                    controller.isCorrect.value),
                                           )
                                         : GestureDetector(
                                             onTap: () {
@@ -255,7 +250,7 @@ class _QuizCardState extends State<QuizCard> {
                               // 답안 제출
                               controller.postSubmitQuiz(widget.quizId!,
                                   controller.selectedOption.value);
-                              // print("se : ${controller.selectedOption.value}");
+                              print("se : ${controller.selectedOption.value}");
                             }
                           : widget.isLast
                               ? () {
@@ -416,6 +411,7 @@ class _QuizCardState extends State<QuizCard> {
                               widget.onNextQuizBtn!();
                               controller.clickCheckBtn.value = false;
                               controller.selectedOption.value = -1;
+                              controller.isBookmarked.value = false;
                             }
                           },
                           bgColor: controller.isCorrect.value

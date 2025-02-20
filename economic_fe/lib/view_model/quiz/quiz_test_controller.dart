@@ -91,6 +91,7 @@ class QuizTestController extends GetxController {
       dynamic response = await remoteDataSource.postQuizFinish(learningSetId);
 
       print("response quizFinish isSuccess : ${response['isSuccess']}");
+      Get.toNamed('/learning_list/quiz_level');
     } catch (e) {
       debugPrint('post quizFinish Error: $e');
     }
