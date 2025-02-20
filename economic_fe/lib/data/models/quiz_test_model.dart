@@ -1,10 +1,4 @@
-// 레벨 테스트 모델
-
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/foundation.dart';
+// 퀴즈 테스트 모델
 
 class QuizTestModel {
   int quizId;
@@ -12,7 +6,7 @@ class QuizTestModel {
   String name;
   String type;
   String question;
-  String answer;
+  // String answer;
   List<QuizChoice> choiceList;
 
   QuizTestModel({
@@ -21,7 +15,7 @@ class QuizTestModel {
     required this.name,
     required this.type,
     required this.question,
-    required this.answer,
+    // required this.answer,
     required this.choiceList,
   });
 
@@ -33,7 +27,7 @@ class QuizTestModel {
       name: json['name'],
       type: json['type'],
       question: json['question'],
-      answer: json['answer'],
+      // answer: json['answer'],
       choiceList: (json['choiceList']['choiceList'] as List)
           .map((choice) => QuizChoice.fromJson(choice))
           .toList(),
@@ -48,7 +42,7 @@ class QuizTestModel {
       'name': name,
       'type': type,
       'question': question,
-      'answer': answer,
+      // 'answer': answer,
       'choiceList': {
         'choiceList': choiceList.map((choice) => choice.toJson()).toList(),
       },

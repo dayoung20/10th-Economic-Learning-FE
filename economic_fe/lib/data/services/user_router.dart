@@ -63,14 +63,14 @@ class UserRouter {
         name: '/test',
         page: () => const TestPage(),
         children: [
-          GetPage(
-            name: '/multi',
-            page: () => const TestMultipleChoicePage(),
-          ),
-          GetPage(
-            name: '/ox',
-            page: () => const TestOxPage(),
-          ),
+          // GetPage(
+          //   name: '/multi',
+          //   page: () => const TestMultipleChoicePage(),
+          // ),
+          // GetPage(
+          //   name: '/ox',
+          //   page: () => const TestOxPage(),
+          // ),
           GetPage(
             name: '/test',
             page: () => const LevelTestTestPage(),
