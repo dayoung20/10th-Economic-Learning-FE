@@ -2396,7 +2396,7 @@ class RemoteDataSource {
   /// 오늘의 퀘스트 완료 여부 조회
   /// API: api/v1/attendance/today-quest
   Future<Map<String, dynamic>> fetchTodayQuestProgress() async {
-    String endPoint = 'api/v1/attendance/today-quest';
+    String endPoint = 'api/v1/attencance/today-quest';
 
     try {
       var response = await _getApiWithHeader(endPoint);
