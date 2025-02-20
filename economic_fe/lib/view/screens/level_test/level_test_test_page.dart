@@ -78,12 +78,12 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                               ),
                             );
 
-                            print(
-                                "selected answer : ${controller.levelTestAnswers}");
+                            // print(
+                            //     "selected answer : ${controller.levelTestAnswers}");
 
-                            print(
-                                "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
-                            print("현재 idx : ${controller.currentQuizIdx}");
+                            // print(
+                            //     "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
+                            // print("현재 idx : ${controller.currentQuizIdx}");
                             controller.currentQuizIdx++;
                           });
                         },
@@ -115,12 +115,11 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                               ),
                             );
 
-                            print(
-                                "selected answer : ${controller.levelTestAnswers}");
-
-                            print(
-                                "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
-                            print("현재 idx : ${controller.currentQuizIdx}");
+                            // print(
+                            //     "selected answer : ${controller.levelTestAnswers}");
+                            // print(
+                            //     "선택한 답변 리스트: ${controller.levelTestAnswers.map((e) => e.toJson()).toList()}");
+                            // print("현재 idx : ${controller.currentQuizIdx}");
                             controller.currentQuizIdx++;
                           });
                         },

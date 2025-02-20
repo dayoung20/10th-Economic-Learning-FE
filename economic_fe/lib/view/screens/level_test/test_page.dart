@@ -2,6 +2,7 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view_model/test/test_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class TestPage extends StatefulWidget {
@@ -30,15 +31,15 @@ class _TestPageState extends State<TestPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: EdgeInsets.symmetric(horizontal: 40.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 178,
+                SizedBox(
+                  height: 178.h,
                 ),
                 SizedBox(
-                  height: 78,
+                  height: 78.h,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,20 +54,20 @@ class _TestPageState extends State<TestPage> {
                             '나의 레벨은?',
                             style: Palette.cardTitle,
                           ),
-                          const SizedBox(
-                            width: 3,
+                          SizedBox(
+                            width: 3.w,
                           ),
                           Image.asset(
-                            "assets/icon.png", width: 35.0, // 원하는 가로 크기
-                            height: 35.0,
+                            "assets/icon.png", width: 35.w, // 원하는 가로 크기
+                            height: 35.h,
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 44,
+                SizedBox(
+                  height: 44.h,
                 ),
                 Text(
                   '학습 수준을 정확히 파악할 수 있도록 \n간단한 테스트를 준비했습니다. \n함께 시작해볼까요?',
@@ -87,30 +88,30 @@ class _TestPageState extends State<TestPage> {
                   bgColor: Palette.buttonColorBlue,
                 ),
               ),
-              const SizedBox(
-                height: 12,
+              SizedBox(
+                height: 12.h,
               ),
               Center(
                 child: GestureDetector(
                   onTap: () {
                     controller.clickedAfterBtn();
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
                     child: Text(
                       '나중에 시작할래요',
                       style: TextStyle(
-                        color: Color(0xFF404040),
+                        color: const Color(0xFF404040),
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        letterSpacing: -0.35,
+                        letterSpacing: -0.35.w,
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 69,
+              SizedBox(
+                height: 69.h,
               ),
             ],
           ),

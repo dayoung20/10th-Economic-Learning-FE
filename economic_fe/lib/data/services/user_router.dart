@@ -37,12 +37,8 @@ import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
-import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_test_page.dart';
 import 'package:economic_fe/view/screens/search/search_page.dart';
-import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
-import 'package:economic_fe/view/screens/level_test/test_multiple_choice_page.dart';
-import 'package:economic_fe/view/screens/level_test/test_ox_page.dart';
 import 'package:economic_fe/view/screens/level_test/test_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -80,11 +76,11 @@ class UserRouter {
       GetPage(
           name: '/leveltest_result',
           page: () => const LeveltestResultPage(),
-          children: [
-            GetPage(
-              name: '/answer',
-              page: () => const TestAnswerPage(),
-            ),
+          children: const [
+            // GetPage(
+            //   name: '/answer',
+            //   page: () => const TestAnswerPage(),
+            // ),
           ]),
       // 카카오로 시작하기
       GetPage(

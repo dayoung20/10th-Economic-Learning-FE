@@ -39,8 +39,6 @@ class LevelTestTestController extends GetxController {
       print("start");
       dynamic response = await RemoteDataSource.getLevelTest();
 
-      // print("response ::: $response");
-
       final data = response as Map<String, dynamic>;
       final quizList = data['results']['quizList'] as List;
       return quizList.map((quiz) => QuizModel.fromJson(quiz)).toList();
@@ -64,8 +62,6 @@ class LevelTestTestController extends GetxController {
     } catch (e) {
       debugPrint("error : $e");
     }
-
-    // print("response : : $response");
   }
 
   void clickedToKaKao(List<QuizModel> quizList) {
