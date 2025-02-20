@@ -15,7 +15,27 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  final MyProfileController controller = Get.put(MyProfileController());
+  late MyProfileController controller; // 컨트롤러 변수 선언
+
+  @override
+  void initState() {
+    super.initState();
+
+    int? userId = Get.arguments as int?; // Get.arguments에서 userId 가져오기
+
+    // 최초 진입 시 컨트롤러 등록 (앱이 처음 실행된 경우)
+    if (!Get.isRegistered<MyProfileController>()) {
+      controller = Get.put(MyProfileController());
+    } else {
+      controller = Get.find<MyProfileController>(); // 기존 컨트롤러 가져오기
+    }
+
+    // userId에 따라 프로필 정보 불러오기
+    controller.fetchUserInfo(userId);
+    controller.fetchMyPosts(userId);
+    controller.fetchCommentPosts(userId);
+    controller.fetchTokTok(userId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,136 +281,146 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 itemCount: posts.length,
                                 itemBuilder: (context, index) {
                                   var post = posts[index];
-                                  return Container(
-                                    padding: const EdgeInsets.all(16.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      border: const Border(
-                                        bottom: BorderSide(
-                                          color: Color(0xFFD9D9D9),
-                                          width: 1,
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      controller.toDetailPage(post.id!);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        border: const Border(
+                                          bottom: BorderSide(
+                                            color: Color(0xFFD9D9D9),
+                                            width: 1,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              (32 + 66 + 15),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                post.title!,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF111111),
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 1.30,
-                                                  letterSpacing: -0.40,
-                                                ),
-                                              ),
-                                              Text(
-                                                post.content!,
-                                                maxLines: 2,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF111111),
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.50,
-                                                  letterSpacing: -0.35,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 8,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.favorite_outline,
-                                                    size: 18,
-                                                    color: Color(0xff767676),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                (32 + 66 + 15),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  post.title!,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF111111),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    height: 1.30,
+                                                    letterSpacing: -0.40,
                                                   ),
-                                                  const SizedBox(
-                                                    width: 5,
+                                                ),
+                                                Text(
+                                                  post.content!,
+                                                  maxLines: 2,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF111111),
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.50,
+                                                    letterSpacing: -0.35,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
-                                                  Text(
-                                                    '${post.likeCount}',
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF767676),
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      height: 1.50,
-                                                      letterSpacing: -0.30,
+                                                ),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.favorite_outline,
+                                                      size: 18,
+                                                      color: Color(0xff767676),
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  const Icon(
-                                                    Icons.chat_bubble_outline,
-                                                    size: 18,
-                                                    color: Color(0xff767676),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    '${post.commentCount}',
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF767676),
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      height: 1.50,
-                                                      letterSpacing: -0.30,
+                                                    const SizedBox(
+                                                      width: 5,
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 15,
-                                        ),
-                                        // 이미지가 있는 경우에만 표시
-                                        if (post.imageUrl != null &&
-                                            post.imageUrl!.isNotEmpty)
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                            child: Image.network(
-                                              post.imageUrl!,
-                                              width: 66,
-                                              height: 66,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (context, error,
-                                                      stackTrace) =>
-                                                  Container(
-                                                width: 66,
-                                                height: 66,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[300],
-                                                  borderRadius:
-                                                      BorderRadius.circular(7),
+                                                    Text(
+                                                      '${post.likeCount}',
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xFF767676),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        height: 1.50,
+                                                        letterSpacing: -0.30,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    const Icon(
+                                                      Icons.chat_bubble_outline,
+                                                      size: 18,
+                                                      color: Color(0xff767676),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      '${post.commentCount}',
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xFF767676),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        height: 1.50,
+                                                        letterSpacing: -0.30,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                child: const Icon(
-                                                    Icons.image_not_supported,
-                                                    color: Colors.grey),
-                                              ),
+                                              ],
                                             ),
                                           ),
-                                      ],
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          // 이미지가 있는 경우에만 표시
+                                          if (post.imageUrl != null &&
+                                              post.imageUrl!.isNotEmpty)
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                              child: Image.network(
+                                                post.imageUrl!,
+                                                width: 66,
+                                                height: 66,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Container(
+                                                  width: 66,
+                                                  height: 66,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[300],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                  ),
+                                                  child: const Icon(
+                                                      Icons.image_not_supported,
+                                                      color: Colors.grey),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },

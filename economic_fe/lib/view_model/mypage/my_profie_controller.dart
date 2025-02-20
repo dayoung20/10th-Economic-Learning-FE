@@ -12,7 +12,7 @@ class MyProfileController extends GetxController
   final ImagePickerService _imagePickerService = ImagePickerService();
 
   late TabController tabController;
-  int? userId;
+  RxInt? userId = RxInt(-1); // RxInt로 변경하여 값이 변경될 때 UI 반영
 
   var isLoading = true.obs; // 로딩 상태
   var userInfo = Rx<UserProfile?>(null); // 사용자 프로필
@@ -29,14 +29,38 @@ class MyProfileController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    userId = Get.arguments as int?; // Get.arguments에서 userId 받아오기
     tabController = TabController(length: 3, vsync: this);
-
-    fetchUserInfo(userId);
-    fetchMyPosts(userId);
-    fetchCommentPosts(userId);
-    fetchTokTok(userId);
   }
+
+  // @override
+  // void onReady() {
+  //   super.onReady();
+  //   updateUserProfile();
+  // }
+
+  // /// `userId` 값이 변경될 때마다 프로필을 다시 조회
+  // void updateUserProfile() {
+  //   int? newUserId = Get.arguments as int?; // 새로운 userId 가져오기
+  //   debugPrint('프로필 업데이트 요청: userId = $newUserId');
+
+  //   if (newUserId != null) {
+  //     userId!.value = newUserId;
+  //   } else {
+  //     userId!.value = -1; // 내 프로필 (userId가 null이면 -1로 설정)
+  //   }
+
+  //   if (userId!.value != -1) {
+  //     fetchUserInfo(userId!.value);
+  //     fetchMyPosts(userId!.value);
+  //     fetchCommentPosts(userId!.value);
+  //     fetchTokTok(userId!.value);
+  //   } else {
+  //     fetchUserInfo(null);
+  //     fetchMyPosts(null);
+  //     fetchCommentPosts(null);
+  //     fetchTokTok(null);
+  //   }
+  // }
 
   // 사용자 정보 조회
   Future<void> fetchUserInfo(int? userId) async {
