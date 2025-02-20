@@ -413,6 +413,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
                   Get.toNamed('/mypage/article');
                 },
               ),
+              SizedBox(
+                height: 24.h,
+              ),
             ],
           );
         }),
