@@ -136,14 +136,12 @@ class _DictionaryPageState extends State<DictionaryPage> {
                     color: Color(0xFFA2A2A2),
                   ),
                 ),
+                onFieldSubmitted: (value) {
+                  // print("검색 실행: $value");
+                  controller.typeValue.value = false;
+                  controller.getKewordResult(0, value);
+                },
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.typeValue.value = false;
-                controller.getKewordResult(0, controller.keyword.value);
-              },
-              child: const Text("검색"),
             ),
             // 자음 리스트 (가로 스크롤)
             Container(
@@ -383,14 +381,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                           GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
-                                                // items[index]['selectedWord'] =
-                                                //     !(items[index]['selectedWord'] ??
-                                                //         false);
-                                                // terms.isScraped =
-                                                //     !terms.isScraped! ?? false;
-                                                // controller.postTermScrap(
-                                                //     terms.termId!);
                                                 if (terms.isScraped!) {
                                                   controller.deleteTermScrap(
                                                       terms.termId!);

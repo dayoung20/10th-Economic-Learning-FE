@@ -71,7 +71,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCate.value == "FINANCE",
-                          text: 'FINANCE'),
+                          text: '금융'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -81,7 +81,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCate.value == "INVESTMENT",
-                          text: 'INVESTMENT'),
+                          text: '투자'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -90,7 +90,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "NORMAL",
-                          text: 'NORMAL'),
+                          text: '경제 일반'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -99,7 +99,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "GLOBAL",
-                          text: 'GLOBAL'),
+                          text: '국제 경제'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -109,7 +109,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCate.value == "INDUSTRY",
-                          text: 'INDUSTRY'),
+                          text: '산업 경제'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -119,7 +119,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       child: CategoryTab(
                           isSelected:
                               controller.selectedCate.value == "REAL_ESTATE",
-                          text: 'REAL_ESTATE'),
+                          text: '부동산'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -130,7 +130,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value ==
                               "ECONOMIC_ANALYSIS",
-                          text: 'ECONOMIC_ANALYSIS'),
+                          text: '경제 분석'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -140,7 +140,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value ==
                               "ECONOMIC_POLICY",
-                          text: 'ECONOMIC_POLICY'),
+                          text: '정부와 경제 정책'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -149,7 +149,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "OTHER",
-                          text: 'OTHER'),
+                          text: '기타'),
                     ),
                   ],
                 );
@@ -275,7 +275,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                   child: Text(
                                                     (news.title != null &&
                                                             news.title!.length >
-                                                                30)
+                                                                20)
                                                         ? '${news.title!.substring(0, 20)}...'
                                                         : news.title ?? "제목 없음",
                                                     style: TextStyle(
