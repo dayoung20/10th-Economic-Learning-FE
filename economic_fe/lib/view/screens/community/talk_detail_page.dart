@@ -162,9 +162,9 @@ class TalkDetailPage extends StatelessWidget {
                                         ),
                                       )),
                                 ),
-                                const Text(
-                                  '999+', // 좋아요 수 연결 필요
-                                  style: TextStyle(
+                                Text(
+                                  '${post['likeCount']}', // 좋아요 수 연결 필요
+                                  style: const TextStyle(
                                     color: Color(0xFF767676),
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
@@ -212,9 +212,11 @@ class TalkDetailPage extends StatelessWidget {
                                         ),
                                       )),
                                 ),
-                                const Text(
-                                  '999+',
-                                  style: TextStyle(
+                                Text(
+                                  post['scrapCount'] != null
+                                      ? '${post['scrapCount']}'
+                                      : '999+',
+                                  style: const TextStyle(
                                     color: Color(0xFF767676),
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,

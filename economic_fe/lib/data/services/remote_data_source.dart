@@ -1358,6 +1358,32 @@ class RemoteDataSource {
     }
   }
 
+  /// 내가 참여한 경제톡톡 조회
+  /// API: api/v1/user/toktok
+  Future<List<Map<String, dynamic>>> fetchTokTok(int? userId) async {
+    late String endPoint;
+    if (userId != null) {
+      endPoint = 'api/v1/user/toktok?userId=$userId';
+    } else {
+      endPoint = 'api/v1/user/toktok';
+    }
+    var response = await _getApiWithHeader(endPoint);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<Map<String, dynamic>> myPosts =
+          posts.map((post) => Map<String, dynamic>.from(post)).toList();
+
+      debugPrint("내가 참여한 경제톡톡 목록 로드 완료, 개수: ${myPosts.length}개");
+
+      return myPosts; // 게시글 전체 데이터 리스트 반환
+    } else {
+      debugPrint("내가 참여한 경제톡톡 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
   /// 게시물 댓글 추가 API
   /// API: api/v1/post/{id}/comments
   Future<bool> addComment(int postId, String content) async {
@@ -1652,7 +1678,7 @@ class RemoteDataSource {
     final response = await _getApiWithHeader("api/v1/post/toktok/$postId");
 
     if (response != null && response["isSuccess"] == true) {
-      print("경제톡톡 게시글 상세 조회 응답: $response"); // Debugging
+      print("경제톡톡 게시글 상세 조회 응답: ${response["results"]}"); // Debugging
       return response["results"]; // "results" 필드만 반환하도록 수정
     } else {
       print("경제톡톡 게시글 조회 실패: ${response?["message"]}");

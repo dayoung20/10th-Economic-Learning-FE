@@ -35,6 +35,7 @@ class MyProfileController extends GetxController
     fetchUserInfo(userId);
     fetchMyPosts(userId);
     fetchCommentPosts(userId);
+    fetchTokTok(userId);
   }
 
   // 사용자 정보 조회
@@ -115,26 +116,40 @@ class MyProfileController extends GetxController
     try {
       var posts = await _remoteDataSource.fetchCommentPosts(userId);
 
-      // 게시글 타입별로 분류 (TokModel & 일반 Map)
-      var economyTalkList = <TokModel>[]; // TokModel 저장 리스트
       var otherCommentList = <Map<String, dynamic>>[]; // 일반 게시글은 Map 형태로 저장
 
       for (var json in posts) {
-        if (json['type'] == "ECONOMY_TALK") {
-          economyTalkList.add(TokModel.fromJson(json));
-        } else {
-          otherCommentList.add(json); // 변환 없이 원본 데이터 유지
-        }
+        otherCommentList.add(json); // 변환 없이 원본 데이터 유지
+      }
+
+      // 리스트에 저장
+      otherCommentPosts.assignAll(otherCommentList);
+
+      debugPrint(
+          "fetchCommentPosts() 완료, 기타 댓글 단 글: ${otherCommentPosts.length}");
+    } catch (e) {
+      debugPrint("Error fetching comment posts: $e");
+    }
+  }
+
+  // 참여한 경제톡톡
+  Future<void> fetchTokTok(int? userId) async {
+    debugPrint("fetchTokTok() 실행됨");
+    try {
+      var posts = await _remoteDataSource.fetchTokTok(userId);
+
+      var economyTalkList = <TokModel>[]; // TokModel 저장 리스트
+
+      for (var json in posts) {
+        economyTalkList.add(TokModel.fromJson(json));
       }
 
       // 리스트에 저장
       economyTalkPosts.assignAll(economyTalkList);
-      otherCommentPosts.assignAll(otherCommentList);
 
-      debugPrint(
-          "fetchCommentPosts() 완료, 경제 톡톡: ${economyTalkPosts.length}, 기타 댓글 단 글: ${otherCommentPosts.length}");
+      debugPrint("fetchTokTok() 완료, 경제 톡톡: ${economyTalkPosts.length}");
     } catch (e) {
-      debugPrint("Error fetching comment posts: $e");
+      debugPrint("Error fetching TokTok: $e");
     }
   }
 
