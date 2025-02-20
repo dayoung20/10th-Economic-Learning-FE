@@ -44,7 +44,7 @@ class MyLearningController extends GetxController
 
     // 초기 데이터 설정
     updateCurrentData(0);
-    fetchScrapConcepts();
+    // fetchScrapConcepts();
     // fetchScrapQuizzes();
     fetchScrapedTerms();
 

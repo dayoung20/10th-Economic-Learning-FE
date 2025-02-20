@@ -1,3 +1,4 @@
+import 'package:economic_fe/view/screens/mypage/scrap_learning_set_page.dart';
 import 'package:economic_fe/view/screens/quiz/scrap_quiz_page.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
@@ -22,6 +23,7 @@ class _MyLearningPageState extends State<MyLearningPage> {
   void initState() {
     super.initState();
     controller.fetchScrapQuizzes(); // 초기 데이터 로드
+    controller.fetchScrapConcepts();
   }
 
   // "스크랩 한 모든 퀴즈 다시 풀기" 버튼 클릭 시 모든 퀴즈 진행 함수
@@ -44,6 +46,29 @@ class _MyLearningPageState extends State<MyLearningPage> {
         'currentIndex': index + 1,
         'totalIndex': quizzes.length,
         'quizzes': quizzes, // 전체 리스트 전달
+      },
+    );
+  }
+
+  // "스크랩 한 모든 학습 다시 보기" 버튼 클릭 시 모든 학습 진행 함수
+  void startRetryAllScrapConcepts() {
+    if (controller.scrapConcepts.isNotEmpty) {
+      List<Map<String, dynamic>> scrapConcepts = controller.scrapConcepts;
+      navigateToConcept(0, scrapConcepts);
+    }
+  }
+
+  // 학습을 순차적으로 진행하는 함수
+  void navigateToConcept(int index, List<Map<String, dynamic>> concepts) {
+    Get.off(
+      const ScrapLearningSetPage(),
+      arguments: {
+        'isMultiLearningMode': true,
+        'currentIndex': index + 1,
+        'totalIndex': concepts.length,
+        'learningSets': concepts,
+        'learningSetId': concepts[index]['id'],
+        'learningSetName': concepts[index]['LearningSetName'],
       },
     );
   }
@@ -95,7 +120,8 @@ class _MyLearningPageState extends State<MyLearningPage> {
                   _buildScrapQuizzesTab(
                       controller, startRetryAllScrapQuestions),
                   // 스크랩 한 학습 화면
-                  _buildScrapLearningTab(controller),
+                  _buildScrapLearningTab(
+                      controller, startRetryAllScrapConcepts),
                   // 스크랩 한 단어 화면
                   const ScrapedWordListView(),
                 ],
@@ -273,7 +299,8 @@ Widget _buildScrapQuizzesTab(
   );
 }
 
-Widget _buildScrapLearningTab(MyLearningController controller) {
+Widget _buildScrapLearningTab(
+    MyLearningController controller, Function() startRetry) {
   return Column(
     children: [
       Padding(
@@ -318,7 +345,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
         padding: EdgeInsets.only(left: 16.w),
         child: GestureDetector(
           onTap: () {
-            // "스크랩 한 모든 학습 다시 보기" 버튼 동작 추가 가능
+            startRetry();
           },
           child: Obx(
             () => Column(
@@ -380,7 +407,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                     Get.toNamed(
                       '/mypage/learning/learning_concept',
                       arguments: {
-                        "conceptId": concept['id'],
+                        "learningSetId": concept['id'],
                         "learningSetName": concept['LearningSetName'],
                       },
                     );
