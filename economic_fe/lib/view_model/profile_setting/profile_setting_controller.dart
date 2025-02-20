@@ -57,13 +57,13 @@ class ProfileSettingController extends GetxController {
     }
   }
 
-  /// 모든 필수 데이터가 입력되었는지 확인
-  bool get isProfileReady {
-    bool ready = isInfoCompleted.value &&
-        isBusinessCompleted.value &&
-        isJobCompleted.value;
-    return ready;
-  }
+  // /// 모든 필수 데이터가 입력되었는지 확인
+  // bool get isProfileReady {
+  //   bool ready = isInfoCompleted.value &&
+  //       isBusinessCompleted.value &&
+  //       isJobCompleted.value;
+  //   return ready;
+  // }
 
   /// 이전 화면으로 이동
   void goBack() {
@@ -138,7 +138,7 @@ class ProfileSettingController extends GetxController {
 
   /// 변경된 값만 API에 전송
   Future<void> saveUserProfile() async {
-    if (!isProfileReady) {
+    if (!isInfoCompleted.value) {
       Get.snackbar('알림', '모든 정보를 입력해주세요.');
       return;
     }
