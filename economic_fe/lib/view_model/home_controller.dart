@@ -102,7 +102,7 @@ class HomeController extends GetxController {
   /// 사용자 정보 조회 (레벨테스트 진행 여부 확인)
   Future<void> fetchUserProfile() async {
     try {
-      var response = await remoteDataSource.fetchUserInfo();
+      var response = await remoteDataSource.fetchUserInfo(null);
 
       if (response.isNotEmpty) {
         // `UserProfile` 모델을 통해 안전하게 변환

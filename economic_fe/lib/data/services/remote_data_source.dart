@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:economic_fe/view_model/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_client_sse/constants/sse_request_type_enum.dart';
 import 'package:flutter_client_sse/flutter_client_sse.dart';
@@ -982,6 +983,27 @@ class RemoteDataSource {
     }
   }
 
+  /// 사용자 프로필 수정 API
+  /// API: api/v1/user/profile
+  Future<dynamic> updateUserProfile(Map<String, dynamic> userProfile) async {
+    String endpoint = 'api/v1/user/profile';
+
+    try {
+      final response = await _patchApi(endpoint, jsonEncode(userProfile));
+
+      if (response == 200) {
+        debugPrint('사용자 프로필 수정 성공');
+        return true;
+      } else {
+        debugPrint('사용자 프로필 수정 실패: $response');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('updateUserProfile Error: $e');
+      return false;
+    }
+  }
+
   /// api/v1/chatbot/list
   /// 대화 내역 조회
   Future<dynamic> getMessageList(int page) async {
@@ -1093,7 +1115,6 @@ class RemoteDataSource {
     String url = "$baseUrl/api/v2/auth/login/kakao?accessToken=$accessToken";
 
     try {
-
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -1281,6 +1302,84 @@ class RemoteDataSource {
       return myPostIds; // 내가 작성한 게시글 ID 리스트 반환
     } else {
       debugPrint("내 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
+  /// 내가 작성한 게시글 조회 (상세)
+  /// API: api/v1/user/posts
+  Future<List<Map<String, dynamic>>> fetchMyPostDetail(int? userId) async {
+    late String endPoint;
+    if (userId != null) {
+      endPoint = 'api/v1/user/posts?userId=$userId';
+    } else {
+      endPoint = 'api/v1/user/posts';
+    }
+    var response = await _getApiWithHeader(endPoint);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<Map<String, dynamic>> myPosts =
+          posts.map((post) => Map<String, dynamic>.from(post)).toList();
+
+      debugPrint("내가 작성한 게시글 목록 로드 완료, 개수: ${myPosts.length}개");
+
+      return myPosts; // 게시글 전체 데이터 리스트 반환
+    } else {
+      debugPrint("내 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
+  /// 내가 댓글 단 게시글 조회
+  /// API: api/v1/user/comment-posts
+  Future<List<Map<String, dynamic>>> fetchCommentPosts(int? userId) async {
+    late String endPoint;
+    if (userId != null) {
+      endPoint = 'api/v1/user/comment-posts?userId=$userId';
+    } else {
+      endPoint = 'api/v1/user/comment-posts';
+    }
+    var response = await _getApiWithHeader(endPoint);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['userCommentList'];
+
+      List<Map<String, dynamic>> myPosts =
+          posts.map((post) => Map<String, dynamic>.from(post)).toList();
+
+      debugPrint("내가 댓글 단 게시글 목록 로드 완료, 개수: ${myPosts.length}개");
+
+      return myPosts; // 게시글 전체 데이터 리스트 반환
+    } else {
+      debugPrint("내가 댓글 단 게시글 조회 실패: ${response?['message']}");
+      return [];
+    }
+  }
+
+  /// 내가 참여한 경제톡톡 조회
+  /// API: api/v1/user/toktok
+  Future<List<Map<String, dynamic>>> fetchTokTok(int? userId) async {
+    late String endPoint;
+    if (userId != null) {
+      endPoint = 'api/v1/user/toktok?userId=$userId';
+    } else {
+      endPoint = 'api/v1/user/toktok';
+    }
+    var response = await _getApiWithHeader(endPoint);
+
+    if (response != null && response['isSuccess'] == true) {
+      List<dynamic> posts = response['results']['postList'];
+
+      List<Map<String, dynamic>> myPosts =
+          posts.map((post) => Map<String, dynamic>.from(post)).toList();
+
+      debugPrint("내가 참여한 경제톡톡 목록 로드 완료, 개수: ${myPosts.length}개");
+
+      return myPosts; // 게시글 전체 데이터 리스트 반환
+    } else {
+      debugPrint("내가 참여한 경제톡톡 조회 실패: ${response?['message']}");
       return [];
     }
   }
@@ -1579,7 +1678,7 @@ class RemoteDataSource {
     final response = await _getApiWithHeader("api/v1/post/toktok/$postId");
 
     if (response != null && response["isSuccess"] == true) {
-      print("경제톡톡 게시글 상세 조회 응답: $response"); // Debugging
+      print("경제톡톡 게시글 상세 조회 응답: ${response["results"]}"); // Debugging
       return response["results"]; // "results" 필드만 반환하도록 수정
     } else {
       print("경제톡톡 게시글 조회 실패: ${response?["message"]}");
@@ -2103,9 +2202,14 @@ class RemoteDataSource {
 
   /// 회원 정보 조회
   /// api: api/v1/user/info
-  Future<Map<String, dynamic>> fetchUserInfo() async {
+  Future<Map<String, dynamic>> fetchUserInfo(int? userId) async {
     try {
-      String endPoint = 'api/v1/user/info';
+      late String endPoint;
+      if (userId != null) {
+        endPoint = 'api/v1/user/info?userId=$userId';
+      } else {
+        endPoint = 'api/v1/user/info';
+      }
       var response = await _getApiWithHeader(endPoint);
 
       // 응답이 null인지 체크
@@ -2351,7 +2455,6 @@ class RemoteDataSource {
       debugPrint("퀴즈 POST 실패");
     }
     return response;
-
   }
 
   /// api/v1/learning/{learningSetId}/quizzes/{quizId}
@@ -2469,8 +2572,7 @@ class RemoteDataSource {
       return {};
     }
   }
-
-  }
+}
 
   // /// 알림 구독 (SSE)
   // /// api: api/v1/notification/subscribe
@@ -2524,4 +2626,3 @@ class RemoteDataSource {
   //   }
   // }
 
-}

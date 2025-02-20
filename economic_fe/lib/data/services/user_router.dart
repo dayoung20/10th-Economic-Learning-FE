@@ -21,6 +21,7 @@ import 'package:economic_fe/view/screens/mypage/bookmarked_articles_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_post_page.dart';
 import 'package:economic_fe/view/screens/mypage/community_activity_page.dart';
 import 'package:economic_fe/view/screens/mypage/my_learning_page.dart';
+import 'package:economic_fe/view/screens/mypage/my_profile_page.dart';
 import 'package:economic_fe/view/screens/mypage/mypage_home_page.dart';
 import 'package:economic_fe/view/screens/mypage/scrap_learning_set_page.dart';
 import 'package:economic_fe/view/screens/mypage/setting_page.dart';
@@ -37,7 +38,6 @@ import 'package:economic_fe/view/screens/profile_setting/job_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/part_select_page.dart';
 import 'package:economic_fe/view/screens/profile_setting/profile_setting_page.dart';
 import 'package:economic_fe/view/screens/quiz/level_select_page.dart';
-import 'package:economic_fe/view/screens/quiz/quiz_page.dart';
 import 'package:economic_fe/view/screens/quiz/quiz_test_page.dart';
 import 'package:economic_fe/view/screens/search/search_page.dart';
 import 'package:economic_fe/view/screens/level_test/test_answer_page.dart';
@@ -199,6 +199,11 @@ class UserRouter {
         name: '/mypage',
         page: () => const MypageHomePage(),
         children: [
+          // 설정 및 약관
+          GetPage(
+            name: '/profile',
+            page: () => const MyProfilePage(),
+          ),
           // 설정 및 약관
           GetPage(
             name: '/setting',

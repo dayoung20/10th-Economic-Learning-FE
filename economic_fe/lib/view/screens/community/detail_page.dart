@@ -79,14 +79,22 @@ class _DetailPageState extends State<DetailPage> {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: post["authorProfileImage"] !=
-                                          null
-                                      ? NetworkImage(post["authorProfileImage"])
-                                      : const AssetImage(
-                                              'assets/profile_example.png')
-                                          as ImageProvider,
-                                  radius: 17,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed('/mypage/profile',
+                                        arguments: post['authorId']);
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundImage: post[
+                                                "authorProfileImage"] !=
+                                            null
+                                        ? NetworkImage(
+                                            post["authorProfileImage"])
+                                        : const AssetImage(
+                                                'assets/profile_example.png')
+                                            as ImageProvider,
+                                    radius: 17,
+                                  ),
                                 ),
                                 const SizedBox(width: 7),
                                 Text(

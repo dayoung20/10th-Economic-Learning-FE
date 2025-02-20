@@ -8,22 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BasicController extends GetxController {
-  final RemoteDataSource remoteDataSource = RemoteDataSource();
+  final remoteDataSource = RemoteDataSource();
 
   // ImagePickerService 인스턴스
   final ImagePickerService _imagePickerService = ImagePickerService();
-  var selectedProfileImage = Rx<String?>(null);
+
+  var selectedProfileImage = Rx<String?>(null); // 로컬 이미지 파일 경로
+  var profileImageURL = Rx<String?>(null); // 서버에서 받은 프로필 이미지 URL
+  var imageId = Rxn<int>(); // 업로드된 이미지 ID (API 전송용)
 
   // 닉네임 입력값과 유효성 상태 관리
+  var isDeleteMode = false.obs; // 삭제 모드 활성화 여부
   var nickname = ''.obs;
   var isValid = false.obs;
   var errorMessage = ''.obs;
-
-  // 프로필 이미지
-  var imageId = Rxn<int>();
-
-  // 삭제 모드 활성화 여부
-  var isDeleteMode = false.obs;
 
   // 닉네임 입력 컨트롤러 (키보드 입력 문제 해결)
   final TextEditingController nicknameController = TextEditingController();
@@ -46,6 +44,31 @@ class BasicController extends GetxController {
   // 저장 버튼 클릭 여부
   var saveButtonClicked = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    final profileController = Get.find<ProfileSettingController>();
+
+    if (profileController.isEditMode) {
+      // 기존 프로필 데이터 불러오기
+      final user = profileController.userProfile.value;
+
+      nicknameController.text = user.nickname;
+      selectedGender.value = user.gender;
+      selectedBirthday.value = user.birthDate;
+      userInputController.text = user.profileIntro;
+
+      profileImageURL.value = user.profileImageURL; // 서버에서 받은 프로필 이미지 사용
+      imageId.value = user.imageId; // 기존 업로드된 이미지 ID
+
+      // 닉네임이 유효한 상태로 설정
+      isValid.value = user.nickname.length >= 2 && user.nickname.length <= 10;
+
+      _updateSaveButtonState();
+    }
+  }
+
   /// 프로필 설정 페이지로 이동
   void navigateToProfileSetting() {
     Get.toNamed('/profile_setting');
@@ -56,6 +79,7 @@ class BasicController extends GetxController {
     final image = await _imagePickerService.showImagePickerDialog(context);
     if (image != null) {
       selectedProfileImage.value = image.path;
+      profileImageURL.value = null; // 기존 URL 제거
 
       // 이미지 업로드 후 imageId 받아오기
       int? uploadedImageId =
@@ -87,6 +111,8 @@ class BasicController extends GetxController {
         // 프로필 이미지 초기화
         imageId.value = null; // imageId를 null로 설정
         selectedProfileImage.value = null;
+        profileImageURL.value = null; // 기본 이미지로 설정
+
         imageId.refresh(); // UI 반영
         profileController.updateProfileField('imageId', null);
 
@@ -99,6 +125,15 @@ class BasicController extends GetxController {
 
   /// 닉네임 유효성 검사
   void validateNickname(String value) {
+    final profileController = Get.find<ProfileSettingController>();
+
+    // 닉네임이 기존과 동일한 경우, 유효하다고 간주하여 체크 표시 유지
+    if (profileController.isEditMode &&
+        value == profileController.userProfile.value.nickname) {
+      isValid.value = true;
+      return;
+    }
+
     nickname.value = value;
 
     if (value.length < 2) {
@@ -113,13 +148,12 @@ class BasicController extends GetxController {
     }
 
     _updateProfileField('nickname', value);
-
-    // 저장 버튼 상태 업데이트
     _updateSaveButtonState();
   }
 
   /// 성별 선택 (서버 전송 값 `MALE` / `FEMALE`)
   void selectGender(String gender) {
+    // if (gender == selectedGender.value) return; // 변경 없음
     selectedGender.value = gender;
 
     // ProfileSettingController에 업데이트 반영
@@ -137,9 +171,11 @@ class BasicController extends GetxController {
   Future<void> selectBirthday(BuildContext context) async {
     DateTime? pickedDate = await _datePickerService.pickDate(context);
     if (pickedDate != null) {
-      selectedBirthday.value =
+      String newDate =
           '${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}';
-      _updateProfileField('birthDate', selectedBirthday.value);
+      // if (newDate == selectedBirthday.value) return; // 변경 없음
+      selectedBirthday.value = newDate;
+      _updateProfileField('birthDate', newDate);
 
       // 저장 버튼 상태 업데이트
       _updateSaveButtonState();

@@ -65,20 +65,23 @@ class BasicInfoPage extends StatelessWidget {
                           children: [
                             // 프로필 이미지 또는 기본 아이콘
                             ClipOval(
-                              child: controller.selectedProfileImage.value !=
-                                      null
-                                  ? Image.file(
-                                      File(controller
-                                          .selectedProfileImage.value!),
-                                      fit: BoxFit.cover,
-                                      width: ScreenUtils.getWidth(context, 88),
-                                      height:
-                                          ScreenUtils.getHeight(context, 88),
-                                    )
-                                  : Icon(
-                                      Icons.person,
-                                      size: ScreenUtils.getWidth(context, 43),
-                                    ),
+                              child:
+                                  controller.selectedProfileImage.value != null
+                                      ? Image.file(
+                                          File(controller
+                                              .selectedProfileImage.value!),
+                                          fit: BoxFit.cover,
+                                          width: 88,
+                                          height: 88,
+                                        )
+                                      : controller.profileImageURL.value != null
+                                          ? Image.network(
+                                              controller.profileImageURL.value!,
+                                              fit: BoxFit.cover,
+                                              width: 88,
+                                              height: 88,
+                                            )
+                                          : const Icon(Icons.person, size: 43),
                             ),
 
                             // 어두운 오버레이 및 삭제 버튼 (삭제 모드일 때 표시)
