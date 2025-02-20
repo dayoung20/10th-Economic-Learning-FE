@@ -29,7 +29,7 @@ class MypageHomeController extends GetxController {
   // 사용자 정보 조회
   Future<void> fetchUserInfo() async {
     try {
-      var response = await _remoteDataSource.fetchUserInfo();
+      var response = await _remoteDataSource.fetchUserInfo(null);
       if (response.isNotEmpty) {
         userInfo.value = UserProfile.fromJsonMypage(response);
       }

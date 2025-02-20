@@ -76,10 +76,22 @@ class _CommentWidgetState extends State<CommentWidget> {
                       Row(
                         children: [
                           // 프로필 & 작성자 정보
-                          Image.asset(
-                            'assets/profile_example.png',
-                            width: 18,
-                            height: 18,
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed('/mypage/profile',
+                                  arguments: widget.comment.commenterId);
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: widget
+                                          .comment.commenterProfileImageUrl !=
+                                      null
+                                  ? NetworkImage(
+                                      widget.comment.commenterProfileImageUrl!)
+                                  : const AssetImage(
+                                          'assets/profile_example.png')
+                                      as ImageProvider,
+                              radius: 17,
+                            ),
                           ),
                           const SizedBox(width: 7),
                           Text(

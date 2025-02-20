@@ -76,7 +76,7 @@ class ProfileSettingPage extends StatelessWidget {
             ),
             // 저장하기 버튼 활성화
             Obx(() {
-              return controller.isProfileReady
+              return controller.isInfoCompleted.value
                   ? Center(
                       child: CustomButton(
                         text: '저장하기',

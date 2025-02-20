@@ -21,7 +21,7 @@ Future<bool> validateAccessToken() async {
     );
 
     if (response.statusCode == 200) {
-      print("토큰 유효함");
+      print("토큰 유효함: $accessToken");
       return true;
     } else if (response.statusCode == 401) {
       print("토큰 만료됨: ${response.statusCode}");

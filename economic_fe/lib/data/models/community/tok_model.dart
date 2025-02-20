@@ -8,6 +8,7 @@ class TokModel with ChangeNotifier {
   String? imageUrl;
   bool? isScraped;
   String? createdDate;
+  int? commentCount;
 
   TokModel({
     this.id,
@@ -17,6 +18,7 @@ class TokModel with ChangeNotifier {
     this.imageUrl,
     this.isScraped,
     this.createdDate,
+    this.commentCount,
   });
 
   factory TokModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class TokModel with ChangeNotifier {
       imageUrl: json['imageUrl'],
       isScraped: json['isScraped'],
       createdDate: json['createdDate'],
+      commentCount: json['commentCount'],
     );
   }
 }

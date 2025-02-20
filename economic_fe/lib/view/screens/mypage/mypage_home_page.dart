@@ -140,7 +140,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                             // 카메라 버튼
                             child: GestureDetector(
                               onTap: () {
-                                controller.selectProfileImage(context);
+                                Get.toNamed('/profile_setting',
+                                    arguments: controller.userInfo.value);
                               },
                               child: Container(
                                 width: 26,
@@ -172,46 +173,51 @@ class _MypageHomePageState extends State<MypageHomePage> {
                     const SizedBox(
                       width: 16,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 사용자 이름
-                        Text(
-                          user.nickname,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            height: 1.40,
-                            letterSpacing: -0.50,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/mypage/profile');
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 사용자 이름
+                          Text(
+                            user.nickname,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              height: 1.40,
+                              letterSpacing: -0.50,
+                            ),
                           ),
-                        ),
-                        // 생년월일
-                        Text(
-                          controller.formatBirthDate(user.birthDate),
-                          style: const TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            height: 1.50,
-                            letterSpacing: -0.30,
+                          // 생년월일
+                          Text(
+                            controller.formatBirthDate(user.birthDate),
+                            style: const TextStyle(
+                              color: Color(0xFF767676),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              height: 1.50,
+                              letterSpacing: -0.30,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        // 한 줄 소개
-                        Text(
-                          controller.truncateIntro(user.profileIntro),
-                          style: const TextStyle(
-                            color: Color(0xFF404040),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            height: 1.30,
-                            letterSpacing: -0.35,
+                          const SizedBox(
+                            height: 6,
                           ),
-                        ),
-                      ],
+                          // 한 줄 소개
+                          Text(
+                            controller.truncateIntro(user.profileIntro),
+                            style: const TextStyle(
+                              color: Color(0xFF404040),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              height: 1.30,
+                              letterSpacing: -0.35,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

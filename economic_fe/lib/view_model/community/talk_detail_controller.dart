@@ -65,6 +65,8 @@ class TalkDetailController extends GetxController {
             ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리
             : [],
         isDeleted: comment['isDeleted'],
+        commenterId: comment['commenterId'],
+        commenterProfileImageUrl: comment['commenterProfileImageUrl'],
       );
     }).toList();
   }
@@ -339,6 +341,8 @@ class TalkDetailController extends GetxController {
           replies: comments[index].replies,
           isLiked: comments[index].isLiked,
           isDeleted: comments[index].isDeleted,
+          commenterId: comments[index].commenterId,
+          commenterProfileImageUrl: comments[index].commenterProfileImageUrl,
         );
         comments.refresh();
       }
@@ -374,6 +378,9 @@ class TalkDetailController extends GetxController {
             replies: comment.replies[replyIndex].replies,
             isLiked: comment.replies[replyIndex].isLiked,
             isDeleted: comment.replies[replyIndex].isDeleted,
+            commenterId: comment.replies[replyIndex].commenterId,
+            commenterProfileImageUrl:
+                comment.replies[replyIndex].commenterProfileImageUrl,
           );
           comments.refresh();
           break;
