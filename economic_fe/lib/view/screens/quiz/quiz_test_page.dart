@@ -78,8 +78,9 @@ class _QuizTestPageState extends State<QuizTestPage> {
                           controller.currentQuizIdx++;
                         },
                         onFinishTest: () {
-                          controller
-                              .postQuizFinish(controller.learningSetId.value);
+                          controller.postQuizFinish(
+                              controller.learningSetId.value,
+                              controller.level.value);
                         },
                       )
                     : QuizCard(
@@ -109,8 +110,9 @@ class _QuizTestPageState extends State<QuizTestPage> {
                           controller.currentQuizIdx++;
                         },
                         onFinishTest: () {
-                          controller
-                              .postQuizFinish(controller.learningSetId.value);
+                          controller.postQuizFinish(
+                              controller.learningSetId.value,
+                              controller.level.value);
                         },
                       ));
           }),

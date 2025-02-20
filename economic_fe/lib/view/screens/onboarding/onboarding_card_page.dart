@@ -42,7 +42,7 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
             height: 50.h,
           ),
           SizedBox(
-            height: 520.h,
+            height: 510.h,
             child: PageView(
               controller: _pageController,
               onPageChanged: (index) {
@@ -74,6 +74,9 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
           ),
           Column(
             children: [
+              SizedBox(
+                height: 32.h,
+              ),
               CustomButton(
                 text: "시작하기",
                 onPress: () {
