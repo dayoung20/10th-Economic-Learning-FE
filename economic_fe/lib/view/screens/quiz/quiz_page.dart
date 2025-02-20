@@ -15,11 +15,13 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   final QuizPageController controller = Get.put(QuizPageController());
   late final int? quizId;
+  late final String? learningSetName;
 
   @override
   void initState() {
     super.initState();
     quizId = Get.arguments['quizId']; // Get.arguments에서 quizId 가져오기
+    learningSetName = Get.arguments['learningSetName'];
     controller.fetchQuizById(quizId!); // 서버에서 퀴즈 데이터 로드
   }
 
@@ -38,7 +40,7 @@ class _QuizPageState extends State<QuizPage> {
               totalIndex: 3,
             )
           : CustomAppBar(
-              title: '학습 세트 이름', // 수정 필요
+              title: learningSetName!, // 수정 필요
               icon: Icons.close,
               onPress: () => controller.showModal(),
             ),

@@ -812,7 +812,7 @@ class RemoteDataSource {
   Future<dynamic> fetchQuizById(int quizId) async {
     try {
       // API Endpoint 구성
-      String endPoint = 'api/v1/learning/learning/quiz/$quizId';
+      String endPoint = 'api/v1/learning/quiz/$quizId';
 
       // GET 요청 수행
       // final response = await _getApiWithHeaderTest(endPoint, accessToken);

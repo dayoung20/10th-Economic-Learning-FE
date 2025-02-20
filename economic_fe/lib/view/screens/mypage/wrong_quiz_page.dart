@@ -125,6 +125,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
                                 const QuizPage(),
                                 arguments: {
                                   'quizId': item['id'],
+                                  'learningSetName': item['category'],
                                 }, // 전달할 quizId
                               );
                             },

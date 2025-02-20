@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class QuizPageController extends GetxController {
@@ -7,6 +8,8 @@ class QuizPageController extends GetxController {
   // 학습 중단 확인창 표시 여부 관리
   var isModalVisible = false.obs;
   var quizData = {}.obs;
+  var isCorrect = true.obs;
+  var explanation = "".obs;
 
   void showModal() {
     isModalVisible.value = true;
@@ -31,6 +34,24 @@ class QuizPageController extends GetxController {
       }
     } catch (e) {
       print('fetchQuizById 에러: $e');
+    }
+  }
+
+  // 퀴즈 제출
+  Future<void> postSubmitQuiz(int quizId, int answerIndex) async {
+    try {
+      print("start quizId : $quizId");
+      dynamic response =
+          await remoteDataSource.postSubmitQuiz(quizId, answerIndex);
+
+      final data = response as Map<String, dynamic>;
+
+      isCorrect.value = data['results']['isCorrect'];
+      explanation.value = data['results']['explanation'];
+
+      print("result : ${isCorrect.value}, $explanation");
+    } catch (e) {
+      debugPrint('Error: $e');
     }
   }
 }
