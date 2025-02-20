@@ -50,7 +50,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF111111),
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   fontFamily: 'Pretendard Variable',
                   fontWeight: FontWeight.w500,
                   height: 1.40.h,
@@ -67,9 +67,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             Get.toNamed('/search');
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.search,
-            size: 24,
+            size: 24.w,
           ),
         ),
         // 알림
@@ -77,9 +77,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             Get.toNamed('/notification');
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.notifications_none,
-            size: 24,
+            size: 24.w,
           ),
         ),
       ],

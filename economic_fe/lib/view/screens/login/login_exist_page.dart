@@ -1,8 +1,7 @@
-import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
-import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/login/login_exist_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LoginExistPage extends StatefulWidget {
@@ -13,20 +12,9 @@ class LoginExistPage extends StatefulWidget {
 }
 
 class _LoginExistPageState extends State<LoginExistPage> {
-  // var levelTestAnswers = Get.arguments as List<LevelTestAnswerModel>;
-
   @override
   Widget build(BuildContext context) {
     final LoginExistController controller = Get.put(LoginExistController());
-
-    // final arguments = Get.arguments as Map<String, dynamic>;
-    // final List<LevelTestAnswerModel> answers = arguments['levelTestAnswers'];
-    // final List<QuizModel> quizList = arguments['quizList'];
-    // // print("quizListsss : $quizList");
-    // @override
-    // void initState() {
-    //   super.initState();
-    // }
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -36,33 +24,33 @@ class _LoginExistPageState extends State<LoginExistPage> {
           children: [
             Column(
               children: [
-                const SizedBox(
-                  height: 164,
+                SizedBox(
+                  height: 164.h,
                 ),
                 // 어플 로고
                 Image.asset(
                   "assets/icon.png",
-                  width: 65.34,
-                  height: 77.87,
+                  width: 65.34.w,
+                  height: 77.87.h,
                 ),
-                const Text(
+                Text(
                   "Ripple",
                   style: TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 45,
+                    color: const Color(0xFF111111),
+                    fontSize: 45.sp,
                     fontFamily: 'Palanquin',
                     fontWeight: FontWeight.w400,
                     letterSpacing: -0.90,
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 10.h,
                 ),
-                const Text(
+                Text(
                   '처음 시작하는 경제 학습',
                   style: TextStyle(
-                    color: Color(0xFF404040),
-                    fontSize: 16,
+                    color: const Color(0xFF404040),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.40,
                     letterSpacing: -0.40,
@@ -73,24 +61,18 @@ class _LoginExistPageState extends State<LoginExistPage> {
             // 카카오 로그인 버튼
             Column(
               children: [
-                // Text(quizList.length.toString()),
                 IconButton(
                   onPressed: () {
                     controller.login();
-                    // print("로그인 페이지 : $answers");
-                    // Get.toNamed("login/agreement", arguments: {
-                    //   'levelTestAnswers': answers,
-                    //   'quizList': quizList,
-                    // });
                   },
                   icon: Image.asset(
                     'assets/kakao_login_btn.png',
-                    width: 300,
-                    height: 45,
+                    width: 300.w,
+                    height: 45.h,
                   ),
                 ),
-                const SizedBox(
-                  height: 267,
+                SizedBox(
+                  height: 267.h,
                 ),
               ],
             ),

@@ -8,9 +8,9 @@ import 'package:economic_fe/view/widgets/profile_setting/basic_gender_button.dar
 import 'package:economic_fe/view/widgets/profile_setting/basic_label.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/profile_setting/basic_controller.dart';
-import 'package:economic_fe/view_model/profile_setting/profile_setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BasicInfoPage extends StatelessWidget {
@@ -20,8 +20,6 @@ class BasicInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // GetX 컨트롤러 가져오기
     final BasicController controller = Get.put(BasicController());
-    final ProfileSettingController profileController =
-        Get.find<ProfileSettingController>();
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -36,16 +34,16 @@ class BasicInfoPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 10),
+              height: ScreenUtils.getHeight(context, 10.h),
             ),
             // 프로필 사진 설정 부분
             SizedBox(
-              height: 88,
+              height: 88.h,
               child: Stack(
                 children: [
                   Container(
-                    width: 88,
-                    height: 88,
+                    width: 88.w,
+                    height: 88.h,
                     decoration: ShapeDecoration(
                       color: const Color(0xFFF3F3F3),
                       shape: RoundedRectangleBorder(
@@ -71,17 +69,17 @@ class BasicInfoPage extends StatelessWidget {
                                           File(controller
                                               .selectedProfileImage.value!),
                                           fit: BoxFit.cover,
-                                          width: 88,
-                                          height: 88,
+                                          width: 88.w,
+                                          height: 88.h,
                                         )
                                       : controller.profileImageURL.value != null
                                           ? Image.network(
                                               controller.profileImageURL.value!,
                                               fit: BoxFit.cover,
-                                              width: 88,
-                                              height: 88,
+                                              width: 88.w,
+                                              height: 88.h,
                                             )
-                                          : const Icon(Icons.person, size: 43),
+                                          : Icon(Icons.person, size: 43.w),
                             ),
 
                             // 어두운 오버레이 및 삭제 버튼 (삭제 모드일 때 표시)
@@ -93,9 +91,9 @@ class BasicInfoPage extends StatelessWidget {
                                       },
                                       child: Container(
                                         width:
-                                            ScreenUtils.getWidth(context, 88),
-                                        height:
-                                            ScreenUtils.getHeight(context, 88),
+                                            ScreenUtils.getWidth(context, 88.w),
+                                        height: ScreenUtils.getHeight(
+                                            context, 88.h),
                                         decoration: BoxDecoration(
                                           color: Colors.black
                                               .withOpacity(0.5), // 반투명 어두운 효과
@@ -133,8 +131,8 @@ class BasicInfoPage extends StatelessWidget {
                         controller.selectProfileImage(context);
                       },
                       child: Container(
-                        width: ScreenUtils.getWidth(context, 26),
-                        height: ScreenUtils.getHeight(context, 26),
+                        width: ScreenUtils.getWidth(context, 26.w),
+                        height: ScreenUtils.getHeight(context, 26.h),
                         decoration: ShapeDecoration(
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
@@ -151,7 +149,7 @@ class BasicInfoPage extends StatelessWidget {
                         ),
                         child: Icon(
                           Icons.camera_alt_outlined,
-                          size: ScreenUtils.getWidth(context, 15),
+                          size: ScreenUtils.getWidth(context, 15.w),
                         ),
                       ),
                     ),
@@ -160,7 +158,7 @@ class BasicInfoPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 18.8),
+              height: ScreenUtils.getHeight(context, 18.8.h),
             ),
             const BasicLabel(
               label: '닉네임',
@@ -169,8 +167,8 @@ class BasicInfoPage extends StatelessWidget {
               height: ScreenUtils.getHeight(context, 4),
             ),
             SizedBox(
-              width: ScreenUtils.getWidth(context, 281),
-              height: ScreenUtils.getHeight(context, 44),
+              width: ScreenUtils.getWidth(context, 281.w),
+              height: ScreenUtils.getHeight(context, 44.h),
               child: Obx(() {
                 return TextField(
                   onChanged: (value) {
@@ -182,8 +180,8 @@ class BasicInfoPage extends StatelessWidget {
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(
-                        width: ScreenUtils.getWidth(context, 18),
-                        height: ScreenUtils.getHeight(context, 18),
+                        width: ScreenUtils.getWidth(context, 18.w),
+                        height: ScreenUtils.getHeight(context, 18.h),
                         decoration: ShapeDecoration(
                           color: const Color(0xFFF3F3F3),
                           shape: RoundedRectangleBorder(
@@ -227,16 +225,16 @@ class BasicInfoPage extends StatelessWidget {
                   ? const SizedBox() // 에러 메시지가 없을 때는 아무것도 표시하지 않음
                   : Padding(
                       padding: EdgeInsets.only(
-                        left: ScreenUtils.getWidth(context, 8),
+                        left: ScreenUtils.getWidth(context, 8.w),
                       ),
                       child: SizedBox(
-                        width: ScreenUtils.getWidth(context, 280),
+                        width: ScreenUtils.getWidth(context, 280.w),
                         child: Text(
                           controller.errorMessage.value,
                           style: Palette.pretendard(
                             context,
                             const Color(0xFFD50606),
-                            12,
+                            12.sp,
                             FontWeight.w400,
                             1.5,
                             -0.3,
@@ -246,14 +244,14 @@ class BasicInfoPage extends StatelessWidget {
                     );
             }),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 10),
+              height: ScreenUtils.getHeight(context, 10.h),
             ),
             // 성별 선택
             const BasicLabel(
               label: '성별',
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 8),
+              height: ScreenUtils.getHeight(context, 8.h),
             ),
             SizedBox(
               width: 300,
@@ -263,7 +261,7 @@ class BasicInfoPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      height: 46,
+                      height: 46.h,
                       padding: const EdgeInsets.all(4),
                       decoration: ShapeDecoration(
                         color: Colors.white,
@@ -304,15 +302,15 @@ class BasicInfoPage extends StatelessWidget {
                     ),
                     // 생년월일 선택 위젯
                     SizedBox(
-                      width: 148,
-                      height: 44,
+                      width: 148.w,
+                      height: 44.h,
                       child: Obx(() {
                         return GestureDetector(
                           onTap: () =>
                               controller.selectBirthday(context), // 날짜 선택
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 18.w, vertical: 10.h),
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
@@ -324,9 +322,9 @@ class BasicInfoPage extends StatelessWidget {
                             child: Text(
                               controller.selectedBirthday.value ??
                                   '생년월일', // 텍스트 표시
-                              style: const TextStyle(
-                                color: Color(0xFFA2A2A2),
-                                fontSize: 16,
+                              style: TextStyle(
+                                color: const Color(0xFFA2A2A2),
+                                fontSize: 16.sp,
                                 fontFamily: 'Pretendard Variable',
                                 fontWeight: FontWeight.w400,
                               ),
@@ -340,30 +338,30 @@ class BasicInfoPage extends StatelessWidget {
               }),
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 18),
+              height: ScreenUtils.getHeight(context, 18.h),
             ),
             // 한 줄 소개 입력칸
             const BasicLabel(
               label: '한 줄 소개',
             ),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 8),
+              height: ScreenUtils.getHeight(context, 8.h),
             ),
             Container(
-              width: ScreenUtils.getWidth(context, 281),
+              width: ScreenUtils.getWidth(context, 281.w),
               padding: EdgeInsets.all(
                 ScreenUtils.getWidth(context, 12),
               ),
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                      width: ScreenUtils.getWidth(context, 1),
+                      width: ScreenUtils.getWidth(context, 1.w),
                       color: const Color(0xFFA2A2A2)),
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
               child: SizedBox(
-                width: ScreenUtils.getWidth(context, 257),
+                width: ScreenUtils.getWidth(context, 257.w),
                 child: Column(
                   children: [
                     Row(
@@ -372,12 +370,12 @@ class BasicInfoPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
-                            top: ScreenUtils.getHeight(context, 10),
+                            top: ScreenUtils.getHeight(context, 10.h),
                           ),
                           child: const Icon(Icons.edit),
                         ),
                         SizedBox(
-                          width: ScreenUtils.getWidth(context, 216),
+                          width: ScreenUtils.getWidth(context, 216.w),
                           child: TextField(
                             controller: controller.userInputController,
                             onChanged: controller.onTextChanged,
@@ -393,7 +391,7 @@ class BasicInfoPage extends StatelessWidget {
                               hintStyle: Palette.pretendard(
                                 context,
                                 const Color(0xFFA2A2A2),
-                                16,
+                                16.sp,
                                 FontWeight.w400,
                                 1.5,
                                 -0.4,
@@ -404,7 +402,7 @@ class BasicInfoPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      width: ScreenUtils.getWidth(context, 257),
+                      width: ScreenUtils.getWidth(context, 257.w),
                       child: Obx(() {
                         return Text.rich(
                           TextSpan(
@@ -417,7 +415,7 @@ class BasicInfoPage extends StatelessWidget {
                                           controller.maxLength
                                       ? const Color(0xFFD50606)
                                       : const Color(0xFF111111),
-                                  12,
+                                  12.sp,
                                   FontWeight.w400,
                                   1.5,
                                   1.0,
@@ -428,7 +426,7 @@ class BasicInfoPage extends StatelessWidget {
                                 style: Palette.pretendard(
                                   context,
                                   const Color(0xFFA2A2A2),
-                                  12,
+                                  12.sp,
                                   FontWeight.w400,
                                   1.5,
                                   1.0,
@@ -444,8 +442,8 @@ class BasicInfoPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: 40.h,
             ),
             // 저장하기 버튼 활성화
             Obx(() {

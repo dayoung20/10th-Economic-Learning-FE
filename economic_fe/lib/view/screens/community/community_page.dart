@@ -5,6 +5,7 @@ import 'package:economic_fe/view/widgets/home_app_bar.dart';
 import 'package:economic_fe/view/widgets/order_tab.dart';
 import 'package:economic_fe/view_model/community/community_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CommunityPage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _CommunityPageState extends State<CommunityPage> {
           children: [
             Column(
               children: [
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Center(
                   child: Obx(() {
                     if (controller.isLoading.value) {
@@ -45,8 +46,8 @@ class _CommunityPageState extends State<CommunityPage> {
                         controller.toTalkDetailPage(todaysTok['id']);
                       }, // 오늘의 경제톡톡 연결 필요
                       child: Container(
-                        width: MediaQuery.of(context).size.width - 32,
-                        height: 122,
+                        width: MediaQuery.of(context).size.width - 32.w,
+                        height: 122.h,
                         decoration: ShapeDecoration(
                           image: DecorationImage(
                             image: todaysTok['imageUrl'] != null
@@ -83,19 +84,19 @@ class _CommunityPageState extends State<CommunityPage> {
                               children: [
                                 Text(
                                   todaysTok['title'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 22,
+                                    fontSize: 22.sp,
                                     fontWeight: FontWeight.w700,
                                     height: 1.2,
                                     letterSpacing: -0.55,
                                   ),
                                 ),
-                                const Text(
+                                Text(
                                   '현재 뜨거운 톡톡!',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: -0.35,
                                   ),
@@ -109,7 +110,7 @@ class _CommunityPageState extends State<CommunityPage> {
                   }),
                 ),
 
-                const SizedBox(height: 14),
+                SizedBox(height: 14.h),
                 // 일반 게시물 / 경제톡톡 탭
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -121,8 +122,8 @@ class _CommunityPageState extends State<CommunityPage> {
                     length: 2,
                     child: Column(
                       children: [
-                        const TabBar(
-                          indicator: BoxDecoration(
+                        TabBar(
+                          indicator: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 width: 3,
@@ -132,15 +133,15 @@ class _CommunityPageState extends State<CommunityPage> {
                           ),
                           indicatorSize: TabBarIndicatorSize.tab,
                           labelStyle: TextStyle(
-                            color: Color(0xFF111111),
-                            fontSize: 14,
+                            color: const Color(0xFF111111),
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                             height: 1.50,
                             letterSpacing: -0.35,
                           ),
                           unselectedLabelStyle: TextStyle(
-                            color: Color(0xFF767676),
-                            fontSize: 14,
+                            color: const Color(0xFF767676),
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                             height: 1.50,
                             letterSpacing: -0.35,
@@ -148,11 +149,11 @@ class _CommunityPageState extends State<CommunityPage> {
                           tabs: [
                             Tab(
                               text: '일반게시판',
-                              height: 44,
+                              height: 44.h,
                             ),
                             Tab(
                               text: '경제톡톡',
-                              height: 44,
+                              height: 44.h,
                             ),
                           ],
                         ),
@@ -167,8 +168,8 @@ class _CommunityPageState extends State<CommunityPage> {
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w, vertical: 10.h),
                                         child: Row(
                                           children: [
                                             GestureDetector(
@@ -236,8 +237,8 @@ class _CommunityPageState extends State<CommunityPage> {
                                     var posts = controller.postList;
 
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w),
                                       child: Column(
                                         children: [
                                           // 인기순 / 최신순 선택
@@ -270,83 +271,65 @@ class _CommunityPageState extends State<CommunityPage> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 5),
+                                          SizedBox(height: 5.h),
                                           // 리스트
                                           controller.isLoading.value
                                               ? const Center(
                                                   child:
                                                       CircularProgressIndicator()) // 로딩 UI
-                                              : SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height -
-                                                      475,
-                                                  child: posts.isEmpty
-                                                      ? const Center(
-                                                          child: Text(
-                                                              '게시글이 없습니다.'))
-                                                      : SingleChildScrollView(
-                                                          child: ListView
-                                                              .separated(
-                                                            shrinkWrap: true,
-                                                            physics:
-                                                                const NeverScrollableScrollPhysics(),
-                                                            itemCount:
-                                                                posts.length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              var post =
-                                                                  posts[index];
+                                              : posts.isEmpty
+                                                  ? const Center(
+                                                      child: Text('게시글이 없습니다.'))
+                                                  : ListView.separated(
+                                                      shrinkWrap: true,
+                                                      itemCount: posts.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        var post = posts[index];
 
-                                                              return GestureDetector(
-                                                                onTap: () {
-                                                                  controller
-                                                                      .toDetailPage(
-                                                                          post[
-                                                                              "id"]);
-                                                                },
-                                                                child: ListItem(
-                                                                  title: post[
-                                                                      "title"],
-                                                                  description: post[
-                                                                      "content"],
-                                                                  date: post[
-                                                                      "createdDate"],
-                                                                  likes: post[
-                                                                      "likeCount"],
-                                                                  comments: post[
-                                                                      "commentCount"],
-                                                                  imageUrl: post[
-                                                                      "imageUrl"],
-                                                                  onTap: () {
-                                                                    controller
-                                                                        .toDetailPage(
-                                                                            post["id"]);
-                                                                  },
-                                                                ),
-                                                              );
-                                                            },
-                                                            separatorBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            16),
-                                                                child:
-                                                                    Container(
-                                                                  height: 1,
-                                                                  color: const Color(
-                                                                      0xffd9d9d9),
-                                                                ),
-                                                              );
+                                                        return GestureDetector(
+                                                          onTap: () {
+                                                            controller
+                                                                .toDetailPage(
+                                                                    post["id"]);
+                                                          },
+                                                          child: ListItem(
+                                                            title:
+                                                                post["title"],
+                                                            description:
+                                                                post["content"],
+                                                            date: post[
+                                                                "createdDate"],
+                                                            likes: post[
+                                                                "likeCount"],
+                                                            comments: post[
+                                                                "commentCount"],
+                                                            imageUrl: post[
+                                                                "imageUrl"],
+                                                            onTap: () {
+                                                              controller
+                                                                  .toDetailPage(
+                                                                      post[
+                                                                          "id"]);
                                                             },
                                                           ),
-                                                        ),
-                                                ),
+                                                        );
+                                                      },
+                                                      separatorBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      16.h),
+                                                          child: Container(
+                                                            height: 1,
+                                                            color: const Color(
+                                                                0xffd9d9d9),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                         ],
                                       ),
                                     );
@@ -358,14 +341,14 @@ class _CommunityPageState extends State<CommunityPage> {
                                 // 선택된 카테고리에 따라 데이터 필터링
                                 var tokPosts = controller.tokPostList;
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
                                   child: Column(
                                     children: [
                                       // 인기순 / 최신순 선택
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10.h),
                                         child: Row(
                                           children: [
                                             GestureDetector(
@@ -380,7 +363,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                                     0,
                                               ),
                                             ),
-                                            const SizedBox(width: 6),
+                                            SizedBox(width: 6.w),
                                             GestureDetector(
                                               onTap: () {
                                                 controller.selectTokOrder(1);
@@ -401,66 +384,50 @@ class _CommunityPageState extends State<CommunityPage> {
                                           ? const Center(
                                               child:
                                                   CircularProgressIndicator()) // 로딩 UI
-                                          : SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height -
-                                                  475,
-                                              child: tokPosts.isEmpty
-                                                  ? const Center(
-                                                      child: Text('게시글이 없습니다.'))
-                                                  : SingleChildScrollView(
-                                                      child: ListView.separated(
-                                                        shrinkWrap: true,
-                                                        physics:
-                                                            const NeverScrollableScrollPhysics(),
-                                                        itemCount:
-                                                            tokPosts.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          var tokPost =
-                                                              tokPosts[index];
+                                          : tokPosts.isEmpty
+                                              ? const Center(
+                                                  child: Text('게시글이 없습니다.'))
+                                              : ListView.separated(
+                                                  shrinkWrap: true,
+                                                  itemCount: tokPosts.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    var tokPost =
+                                                        tokPosts[index];
 
-                                                          return TalkListItem(
-                                                            onTap: () {
-                                                              controller
-                                                                  .toTalkDetailPage(
-                                                                      tokPost[
-                                                                          "id"]);
-                                                            },
-                                                            participantCount:
-                                                                tokPost[
-                                                                    'participantCount'],
-                                                            createdDate: tokPost[
-                                                                'createdDate'],
-                                                            title: tokPost[
-                                                                'title'],
-                                                            likeCount: tokPost[
-                                                                'likeCount'],
-                                                            commentCount:
-                                                                0, // 댓글 수 연결 필요
-                                                            imageUrl: tokPost[
-                                                                'imageUrl'],
-                                                          );
-                                                        },
-                                                        separatorBuilder:
-                                                            (context, index) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        16),
-                                                            child: Container(
-                                                              height: 1,
-                                                              color: const Color(
-                                                                  0xffd9d9d9),
-                                                            ),
-                                                          );
-                                                        },
+                                                    return TalkListItem(
+                                                      onTap: () {
+                                                        controller
+                                                            .toTalkDetailPage(
+                                                                tokPost["id"]);
+                                                      },
+                                                      participantCount: tokPost[
+                                                          'participantCount'],
+                                                      createdDate: tokPost[
+                                                          'createdDate'],
+                                                      title: tokPost['title'],
+                                                      likeCount:
+                                                          tokPost['likeCount'],
+                                                      commentCount:
+                                                          0, // 댓글 수 연결 필요
+                                                      imageUrl:
+                                                          tokPost['imageUrl'],
+                                                    );
+                                                  },
+                                                  separatorBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 16.h),
+                                                      child: Container(
+                                                        height: 1,
+                                                        color: const Color(
+                                                            0xffd9d9d9),
                                                       ),
-                                                    ),
-                                            ),
+                                                    );
+                                                  },
+                                                ),
                                     ],
                                   ),
                                 );
@@ -485,12 +452,12 @@ class _CommunityPageState extends State<CommunityPage> {
               ),
             if (controller.isModalVisible.value)
               Positioned(
-                bottom: 135,
-                right: 15,
+                bottom: 135.h,
+                right: 15.w,
                 child: Container(
-                  width: 156,
-                  height: 88,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  width: 156.w,
+                  height: 88.h,
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   decoration: ShapeDecoration(
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -508,15 +475,15 @@ class _CommunityPageState extends State<CommunityPage> {
                           children: [
                             Image.asset(
                               'assets/chatbot_green.png',
-                              width: 24,
-                              height: 24,
+                              width: 24.w,
+                              height: 24.h,
                             ),
-                            const SizedBox(width: 6),
-                            const Text(
+                            SizedBox(width: 6.w),
+                            Text(
                               '챗봇',
                               style: TextStyle(
-                                color: Color(0xFF404040),
-                                fontSize: 14,
+                                color: const Color(0xFF404040),
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
                                 height: 1.40,
                                 letterSpacing: -0.35,
@@ -533,15 +500,15 @@ class _CommunityPageState extends State<CommunityPage> {
                           children: [
                             Image.asset(
                               'assets/edit_square.png',
-                              width: 24,
-                              height: 24,
+                              width: 24.w,
+                              height: 24.h,
                             ),
-                            const SizedBox(width: 6),
-                            const Text(
+                            SizedBox(width: 6.w),
+                            Text(
                               '글쓰기',
                               style: TextStyle(
-                                color: Color(0xFF404040),
-                                fontSize: 14,
+                                color: const Color(0xFF404040),
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
                                 height: 1.40,
                                 letterSpacing: -0.35,
@@ -556,22 +523,22 @@ class _CommunityPageState extends State<CommunityPage> {
               ),
             if (controller.isModalVisible.value)
               Positioned(
-                bottom: 75,
-                right: 15,
+                bottom: 75.h,
+                right: 15.w,
                 child: GestureDetector(
                   onTap: () {
                     controller.toggleModal();
                   },
                   child: Container(
-                    width: 48,
-                    height: 48,
+                    width: 48.w,
+                    height: 48.h,
                     decoration: const ShapeDecoration(
                       color: Colors.white,
                       shape: OvalBorder(),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.close,
-                      size: 25,
+                      size: 25.w,
                       color: Colors.black,
                     ),
                   ),
@@ -585,15 +552,15 @@ class _CommunityPageState extends State<CommunityPage> {
           controller.toggleModal();
         },
         child: Container(
-          width: 48,
-          height: 48,
+          width: 48.w,
+          height: 48.h,
           decoration: const ShapeDecoration(
             color: Color(0xFF2AD6D6),
             shape: OvalBorder(),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.add,
-            size: 25,
+            size: 25.w,
             color: Colors.white,
           ),
         ),
@@ -630,7 +597,7 @@ class TalkListItem extends StatelessWidget {
       children: [
         // 경제톡톡 이미지
         Padding(
-          padding: const EdgeInsets.only(right: 12),
+          padding: EdgeInsets.only(right: 12.w),
           child: // 이미지가 있는 경우에만 표시
               imageUrl != null && imageUrl!.isNotEmpty
                   ? GestureDetector(
@@ -639,13 +606,13 @@ class TalkListItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(7),
                         child: Image.network(
                           imageUrl!,
-                          width: 97,
-                          height: 118,
+                          width: 97.w,
+                          height: 118.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
-                            width: 97,
-                            height: 118,
+                            width: 97.w,
+                            height: 118.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(7),
                             ),
@@ -658,8 +625,8 @@ class TalkListItem extends StatelessWidget {
                   : GestureDetector(
                       onTap: onTap,
                       child: Container(
-                        width: 97,
-                        height: 118,
+                        width: 97.w,
+                        height: 118.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(7),
                           image: const DecorationImage(
@@ -675,15 +642,15 @@ class TalkListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width - (32 + 97 + 12),
+              width: MediaQuery.of(context).size.width - 141.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '$participantCount명이 참여했어요',
-                    style: const TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 13,
+                    style: TextStyle(
+                      color: const Color(0xFF767676),
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.33,
@@ -692,9 +659,9 @@ class TalkListItem extends StatelessWidget {
                   Text(
                     createdDate,
                     textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      color: Color(0xFFA2A2A2),
-                      fontSize: 12,
+                    style: TextStyle(
+                      color: const Color(0xFFA2A2A2),
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.30,
@@ -703,20 +670,20 @@ class TalkListItem extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 8,
+            SizedBox(
+              height: 8.h,
             ),
             GestureDetector(
               onTap: onTap,
               child: SizedBox(
-                width: MediaQuery.of(context).size.width - (32 + 97 + 12),
-                height: 60,
+                width: MediaQuery.of(context).size.width - 141.w,
+                height: 60.h,
                 child: Flexible(
                   child: Text(
                     title,
-                    style: const TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 15,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
                       height: 1.30,
                       letterSpacing: -0.38,
@@ -725,45 +692,45 @@ class TalkListItem extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 12,
+            SizedBox(
+              height: 12.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 2),
+                Padding(
+                  padding: EdgeInsets.only(right: 2.w),
                   child: Icon(
                     Icons.favorite_border,
-                    size: 18,
-                    color: Color(0xff767676),
+                    size: 18.w,
+                    color: const Color(0xff767676),
                   ),
                 ),
                 Text(
                   '$likeCount',
-                  style: const TextStyle(
-                    color: Color(0xFF767676),
-                    fontSize: 12,
+                  style: TextStyle(
+                    color: const Color(0xFF767676),
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                     height: 1.50,
                   ),
                 ),
-                const SizedBox(
-                  width: 8,
+                SizedBox(
+                  width: 8.w,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(right: 2),
+                Padding(
+                  padding: EdgeInsets.only(right: 2.w),
                   child: Icon(
                     Icons.chat_bubble_outline,
-                    size: 18,
-                    color: Color(0xff767676),
+                    size: 18.sp,
+                    color: const Color(0xff767676),
                   ),
                 ),
                 Text(
                   '$commentCount',
-                  style: const TextStyle(
-                    color: Color(0xFF767676),
-                    fontSize: 12,
+                  style: TextStyle(
+                    color: const Color(0xFF767676),
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                     height: 1.50,
                   ),
@@ -800,7 +767,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -811,29 +778,29 @@ class ListItem extends StatelessWidget {
                 onTap: onTap,
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 16,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.30,
                     letterSpacing: -0.40,
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 4,
+              SizedBox(
+                height: 4.h,
               ),
               GestureDetector(
                 onTap: onTap,
                 child: SizedBox(
-                  width: 235,
-                  height: 42,
+                  width: 235.w,
+                  height: 42.h,
                   child: Flexible(
                     child: Text(
                       description,
-                      style: const TextStyle(
-                        color: Color(0xFF111111),
-                        fontSize: 14,
+                      style: TextStyle(
+                        color: const Color(0xFF111111),
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         height: 1.50,
                         letterSpacing: -0.35,
@@ -842,58 +809,58 @@ class ListItem extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 8,
+              SizedBox(
+                height: 8.h,
               ),
               Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 2),
+                  Padding(
+                    padding: EdgeInsets.only(right: 2.w),
                     child: Icon(
                       Icons.favorite_border,
-                      size: 18,
-                      color: Color(0xff767676),
+                      size: 18.sp,
+                      color: const Color(0xff767676),
                     ),
                   ),
                   Text(
                     '$likes',
-                    style: const TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 12,
+                    style: TextStyle(
+                      color: const Color(0xFF767676),
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.30,
                     ),
                   ),
-                  const SizedBox(
-                    width: 8,
+                  SizedBox(
+                    width: 8.w,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(right: 2),
+                  Padding(
+                    padding: EdgeInsets.only(right: 2.w),
                     child: Icon(
                       Icons.chat_bubble_outline,
-                      size: 18,
-                      color: Color(0xff767676),
+                      size: 18.sp,
+                      color: const Color(0xff767676),
                     ),
                   ),
                   Text(
                     comments < 0 ? '0' : '$comments',
-                    style: const TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 12,
+                    style: TextStyle(
+                      color: const Color(0xFF767676),
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.30,
                     ),
                   ),
-                  const SizedBox(
-                    width: 14,
+                  SizedBox(
+                    width: 14.w,
                   ),
                   Text(
                     date,
-                    style: const TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 12,
+                    style: TextStyle(
+                      color: const Color(0xFF767676),
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.30,
@@ -911,12 +878,12 @@ class ListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
                 child: Image.network(
                   imageUrl!,
-                  width: 66,
-                  height: 66,
+                  width: 66.w,
+                  height: 66.h,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
-                    width: 66,
-                    height: 66,
+                    width: 66.w,
+                    height: 66.h,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(7),

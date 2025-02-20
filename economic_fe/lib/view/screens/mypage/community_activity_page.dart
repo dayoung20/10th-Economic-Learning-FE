@@ -3,6 +3,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/category_options.dart';
 import 'package:economic_fe/view/widgets/mypage/category_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CommunityActivityPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _CommunityActivityPageState extends State<CommunityActivityPage> {
         onPress: () => Get.back(),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13.5),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.5.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,8 +38,8 @@ class _CommunityActivityPageState extends State<CommunityActivityPage> {
                 );
               },
             ),
-            const SizedBox(
-              height: 31.5,
+            SizedBox(
+              height: 31.5.h,
             ),
             const CategoryText(text: '좋아요'),
             CategoryOptions(

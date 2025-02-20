@@ -4,6 +4,7 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view_model/mypage/mypage_home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MypageHomePage extends StatefulWidget {
@@ -28,17 +29,17 @@ class _MypageHomePageState extends State<MypageHomePage> {
           children: [
             Image.asset(
               'assets/icon.png',
-              width: 25.88,
-              height: 31.74,
+              width: 25.88.w,
+              height: 31.74.h,
             ),
-            const SizedBox(
-              width: 4,
+            SizedBox(
+              width: 4.w,
             ),
-            const Text(
+            Text(
               'Ripple',
               style: TextStyle(
-                color: Color(0xFF111111),
-                fontSize: 22.40,
+                color: const Color(0xFF111111),
+                fontSize: 22.40.sp,
                 fontFamily: 'Palanquin',
                 fontWeight: FontWeight.w400,
                 letterSpacing: -0.45,
@@ -51,22 +52,22 @@ class _MypageHomePageState extends State<MypageHomePage> {
             onTap: () {
               Get.toNamed('/notification');
             }, // 알림 화면으로
-            child: const Icon(
+            child: Icon(
               Icons.notifications_none,
-              size: 24,
-              color: Color(0xff1c1b1f),
+              size: 24.w,
+              color: const Color(0xff1c1b1f),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20, left: 8),
+            padding: EdgeInsets.only(right: 20.w, left: 8.w),
             child: GestureDetector(
               onTap: () {
                 Get.toNamed('/mypage/setting');
               }, // 설정 화면으로
-              child: const Icon(
+              child: Icon(
                 Icons.settings_outlined,
-                size: 24,
-                color: Color(0xff1c1b1f),
+                size: 24.w,
+                color: const Color(0xff1c1b1f),
               ),
             ),
           ),
@@ -74,7 +75,7 @@ class _MypageHomePageState extends State<MypageHomePage> {
       ),
       bottomNavigationBar: const CustomBottomBar(currentIndex: 4),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Obx(() {
           if (controller.isLoading.value) {
             return const Center(
@@ -92,17 +93,17 @@ class _MypageHomePageState extends State<MypageHomePage> {
           return ListView(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 10.h),
                 child: Row(
                   children: [
                     // 사용자 프로필 사진
                     SizedBox(
-                      height: 81,
+                      height: 81.h,
                       child: Stack(
                         children: [
                           Container(
-                            width: 81,
-                            height: 81,
+                            width: 81.w,
+                            height: 81.h,
                             decoration: ShapeDecoration(
                               color: const Color(0xFFF3F3F3),
                               shape: RoundedRectangleBorder(
@@ -115,8 +116,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                                       File(controller
                                           .selectedProfileImage.value!),
                                       fit: BoxFit.cover,
-                                      width: 81,
-                                      height: 81,
+                                      width: 81.w,
+                                      height: 81.h,
                                     ),
                                   )
                                 : user.profileImageURL != null
@@ -125,13 +126,13 @@ class _MypageHomePageState extends State<MypageHomePage> {
                                           image: NetworkImage(
                                               user.profileImageURL!),
                                           fit: BoxFit.cover,
-                                          width: 81,
-                                          height: 81,
+                                          width: 81.w,
+                                          height: 81.h,
                                         ),
                                       )
-                                    : const Icon(
+                                    : Icon(
                                         Icons.person,
-                                        size: 35,
+                                        size: 35.w,
                                       ),
                           ),
                           Positioned(
@@ -144,8 +145,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                                     arguments: controller.userInfo.value);
                               },
                               child: Container(
-                                width: 26,
-                                height: 26,
+                                width: 26.w,
+                                height: 26.h,
                                 decoration: ShapeDecoration(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
@@ -160,9 +161,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
                                     )
                                   ],
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.edit_outlined,
-                                  size: 15,
+                                  size: 15.w,
                                 ),
                               ),
                             ),
@@ -170,8 +171,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      width: 16,
+                    SizedBox(
+                      width: 16.w,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -183,9 +184,9 @@ class _MypageHomePageState extends State<MypageHomePage> {
                           // 사용자 이름
                           Text(
                             user.nickname,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
                               height: 1.40,
                               letterSpacing: -0.50,
@@ -194,23 +195,23 @@ class _MypageHomePageState extends State<MypageHomePage> {
                           // 생년월일
                           Text(
                             controller.formatBirthDate(user.birthDate),
-                            style: const TextStyle(
-                              color: Color(0xFF767676),
-                              fontSize: 12,
+                            style: TextStyle(
+                              color: const Color(0xFF767676),
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
                               height: 1.50,
                               letterSpacing: -0.30,
                             ),
                           ),
-                          const SizedBox(
-                            height: 6,
+                          SizedBox(
+                            height: 6.h,
                           ),
                           // 한 줄 소개
                           Text(
                             controller.truncateIntro(user.profileIntro),
-                            style: const TextStyle(
-                              color: Color(0xFF404040),
-                              fontSize: 14,
+                            style: TextStyle(
+                              color: const Color(0xFF404040),
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                               height: 1.30,
                               letterSpacing: -0.35,
@@ -223,40 +224,40 @@ class _MypageHomePageState extends State<MypageHomePage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 17),
+                padding: EdgeInsets.only(top: 17.h),
                 child: Row(
                   children: [
                     // 직무
                     JobContainer(text: user.job),
-                    const SizedBox(
-                      width: 8,
+                    SizedBox(
+                      width: 8.w,
                     ),
                     // 업종
                     JobContainer(text: user.businessType),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 24,
+              SizedBox(
+                height: 24.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        const Text(
+                        Text(
                           '연속 학습일',
                           style: TextStyle(
-                            color: Color(0xFF4A4A4A),
-                            fontSize: 12,
+                            color: const Color(0xFF4A4A4A),
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                             height: 0.80,
                           ),
                         ),
-                        const SizedBox(
-                          height: 11,
+                        SizedBox(
+                          height: 11.h,
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -264,18 +265,18 @@ class _MypageHomePageState extends State<MypageHomePage> {
                             // 연속 학습일 수
                             Obx(() => Text(
                                   '${controller.currentStreak.value}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF2AD6D6),
-                                    fontSize: 32,
+                                  style: TextStyle(
+                                    color: const Color(0xFF2AD6D6),
+                                    fontSize: 32.sp,
                                     fontWeight: FontWeight.w600,
                                     height: 0.80,
                                   ),
                                 )),
-                            const Text(
+                            Text(
                               '일째',
                               style: TextStyle(
-                                color: Color(0xFF4A4A4A),
-                                fontSize: 12,
+                                color: const Color(0xFF4A4A4A),
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 height: 0.80,
                               ),
@@ -285,30 +286,30 @@ class _MypageHomePageState extends State<MypageHomePage> {
                       ],
                     ),
                     Container(
-                      width: 1,
-                      height: 76,
+                      width: 1.w,
+                      height: 76.h,
                       color: const Color(0xffa2a2a2),
                     ),
                     Column(
                       children: [
-                        const Text(
+                        Text(
                           '나의 레벨',
                           style: TextStyle(
-                            color: Color(0xFF4A4A4A),
-                            fontSize: 12,
+                            color: const Color(0xFF4A4A4A),
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                             height: 0.80,
                           ),
                         ),
-                        const SizedBox(
-                          height: 9,
+                        SizedBox(
+                          height: 9.h,
                         ),
                         // 나의 레벨
                         Text(
                           controller.convertLevel(user.level!),
-                          style: const TextStyle(
-                            color: Color(0xFF2AD6D6),
-                            fontSize: 24,
+                          style: TextStyle(
+                            color: const Color(0xFF2AD6D6),
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.w700,
                             height: 1.30,
                             letterSpacing: -0.60,
@@ -317,30 +318,30 @@ class _MypageHomePageState extends State<MypageHomePage> {
                       ],
                     ),
                     Container(
-                      width: 1,
-                      height: 76,
+                      width: 1.w,
+                      height: 76.h,
                       color: const Color(0xffa2a2a2),
                     ),
                     Column(
                       children: [
-                        const Text(
+                        Text(
                           '퀴즈 정답률',
                           style: TextStyle(
-                            color: Color(0xFF4A4A4A),
-                            fontSize: 12,
+                            color: const Color(0xFF4A4A4A),
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
                             height: 0.80,
                           ),
                         ),
-                        const SizedBox(
-                          height: 9,
+                        SizedBox(
+                          height: 9.h,
                         ),
                         // 퀴즈 정답률
                         Text(
                           '${user.quizCorrectRate}%',
-                          style: const TextStyle(
-                            color: Color(0xFF2AD6D6),
-                            fontSize: 24,
+                          style: TextStyle(
+                            color: const Color(0xFF2AD6D6),
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.w700,
                             height: 1.30,
                             letterSpacing: -0.60,
@@ -351,11 +352,11 @@ class _MypageHomePageState extends State<MypageHomePage> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 28,
+              SizedBox(
+                height: 28.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Obx(() {
                   if (controller.isCheckedList.length < 7) {
                     return const CircularProgressIndicator(); // 데이터 로딩 중
@@ -372,8 +373,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                   );
                 }),
               ),
-              const SizedBox(
-                height: 28,
+              SizedBox(
+                height: 28.h,
               ),
               MyContentsContainer(
                 title: '틀린 문제 다시 풀기',
@@ -382,8 +383,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                   Get.toNamed('/mypage/wrong');
                 },
               ),
-              const SizedBox(
-                height: 12,
+              SizedBox(
+                height: 12.h,
               ),
               MyContentsContainer(
                 title: '스크랩 한 나의 학습',
@@ -392,8 +393,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                   Get.toNamed('/mypage/learning');
                 },
               ),
-              const SizedBox(
-                height: 12,
+              SizedBox(
+                height: 12.h,
               ),
               MyContentsContainer(
                 title: '커뮤니티 활동',
@@ -402,8 +403,8 @@ class _MypageHomePageState extends State<MypageHomePage> {
                   Get.toNamed('/mypage/community');
                 },
               ),
-              const SizedBox(
-                height: 12,
+              SizedBox(
+                height: 12.h,
               ),
               MyContentsContainer(
                 title: '스크랩 한 기사',
@@ -437,9 +438,9 @@ class MyContentsContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: MediaQuery.of(context).size.width - 32,
-        height: 80,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        width: MediaQuery.of(context).size.width - 32.w,
+        height: 80.h,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -453,22 +454,22 @@ class MyContentsContainer extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                color: Color(0xFF111111),
-                fontSize: 14,
+              style: TextStyle(
+                color: const Color(0xFF111111),
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.30,
                 letterSpacing: -0.35,
               ),
             ),
-            const SizedBox(
-              height: 4,
+            SizedBox(
+              height: 4.h,
             ),
             Text(
               subTitle,
-              style: const TextStyle(
-                color: Color(0xFF404040),
-                fontSize: 12,
+              style: TextStyle(
+                color: const Color(0xFF404040),
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.30,
                 letterSpacing: -0.30,
@@ -497,19 +498,19 @@ class DailyCheck extends StatelessWidget {
       children: [
         Text(
           day,
-          style: const TextStyle(
-            color: Color(0xFF111111),
-            fontSize: 12,
+          style: TextStyle(
+            color: const Color(0xFF111111),
+            fontSize: 12.sp,
             fontFamily: 'Noto',
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(
-          height: 6,
+        SizedBox(
+          height: 6.h,
         ),
         Container(
-          width: 38,
-          height: 38,
+          width: 38.w,
+          height: 38.h,
           decoration: ShapeDecoration(
             color:
                 isChecked ? const Color(0xFF2AD6D6) : const Color(0xfff2f3f5),
@@ -519,8 +520,8 @@ class DailyCheck extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              width: 20,
-              height: 20,
+              width: 20.w,
+              height: 20.h,
               padding: const EdgeInsets.all(2),
               decoration: ShapeDecoration(
                 color: Colors.white,
@@ -533,7 +534,7 @@ class DailyCheck extends StatelessWidget {
                 color: isChecked
                     ? const Color(0xFF2AD6D6)
                     : const Color(0xfff2f3f5),
-                size: 15,
+                size: 15.w,
               ),
             ),
           ),
@@ -554,7 +555,7 @@ class JobContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -564,9 +565,9 @@ class JobContainer extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Color(0xFF767676),
-          fontSize: 12,
+        style: TextStyle(
+          color: const Color(0xFF767676),
+          fontSize: 12.sp,
           fontWeight: FontWeight.w400,
           height: 1.50,
           letterSpacing: -0.30,

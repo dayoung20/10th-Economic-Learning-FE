@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/mypage/level_container.dart';
 import 'package:economic_fe/view/widgets/mypage/scrap_word_list_view.dart';
 import 'package:economic_fe/view_model/mypage/my_learning_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyLearningPage extends StatefulWidget {
@@ -26,11 +27,11 @@ class _MyLearningPageState extends State<MyLearningPage> {
         onPress: () => Get.back(),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 12),
+        padding: EdgeInsets.only(top: 12.h),
         child: Column(
           children: [
             Container(
-              height: 1,
+              height: 1.h,
               color: Colors.black,
             ),
             // 탭바
@@ -39,8 +40,8 @@ class _MyLearningPageState extends State<MyLearningPage> {
               child: TabBar(
                 controller: controller.tabController,
                 labelColor: Colors.black,
-                labelStyle: const TextStyle(
-                  fontSize: 14,
+                labelStyle: TextStyle(
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                 ),
                 unselectedLabelColor: const Color(0xff767676),
@@ -79,7 +80,7 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
   return Column(
     children: [
       Padding(
-        padding: const EdgeInsets.only(top: 22, left: 15),
+        padding: EdgeInsets.only(top: 22.h, left: 15.w),
         child: Row(
           children: [
             Obx(
@@ -91,7 +92,7 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Obx(
               () => LevelContainer(
                 level: '중급',
@@ -101,7 +102,7 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Obx(
               () => LevelContainer(
                 level: '고급',
@@ -114,10 +115,10 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
           ],
         ),
       ),
-      const SizedBox(height: 18),
+      SizedBox(height: 18.h),
       // 스크랩 한 모든 학습 다시 보기 버튼
       Padding(
-        padding: const EdgeInsets.only(left: 16),
+        padding: EdgeInsets.only(left: 16.w),
         child: GestureDetector(
           onTap: () {
             // "스크랩 한 모든 학습 다시 보기" 버튼 동작 추가 가능
@@ -130,25 +131,25 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
                   children: [
                     Text(
                       controller.buttonText.value,
-                      style: const TextStyle(
-                        color: Color(0xFF067BD5),
-                        fontSize: 14,
+                      style: TextStyle(
+                        color: const Color(0xFF067BD5),
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w700,
                         height: 1.40,
                         letterSpacing: -0.35,
                       ),
                     ),
-                    const SizedBox(width: 3),
-                    const Icon(
+                    SizedBox(width: 3.w),
+                    Icon(
                       Icons.arrow_circle_right,
-                      color: Color(0xff067bd5),
-                      size: 15,
+                      color: const Color(0xff067bd5),
+                      size: 15.sp,
                     ),
                   ],
                 ),
                 Container(
-                  width: 185,
-                  height: 1,
+                  width: 185.w,
+                  height: 1.h,
                   color: const Color(0xff067bd5),
                 ),
               ],
@@ -156,17 +157,17 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
           ),
         ),
       ),
-      const SizedBox(height: 15),
+      SizedBox(height: 15.h),
       // 학습 리스트
       Expanded(
         child: Obx(() {
           if (controller.scrapQuizzes.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 '데이터가 없습니다.',
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF767676),
+                  fontSize: 16.sp,
+                  color: const Color(0xFF767676),
                 ),
               ),
             );
@@ -176,8 +177,7 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
             itemBuilder: (context, index) {
               final quiz = controller.scrapQuizzes[index];
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -196,18 +196,18 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
                         children: [
                           Text(
                             quiz['learningSetName'] ?? '',
-                            style: const TextStyle(
-                              color: Color(0xFF767676),
-                              fontSize: 14,
+                            style: TextStyle(
+                              color: const Color(0xFF767676),
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             quiz['quizName'] ?? '',
-                            style: const TextStyle(
-                              color: Color(0xFF404040),
-                              fontSize: 18,
+                            style: TextStyle(
+                              color: const Color(0xFF404040),
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -236,7 +236,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
   return Column(
     children: [
       Padding(
-        padding: const EdgeInsets.only(top: 22, left: 15),
+        padding: EdgeInsets.only(top: 22.h, left: 15.w),
         child: Row(
           children: [
             Obx(
@@ -248,7 +248,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Obx(
               () => LevelContainer(
                 level: '중급',
@@ -258,7 +258,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                 },
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Obx(
               () => LevelContainer(
                 level: '고급',
@@ -271,10 +271,10 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
           ],
         ),
       ),
-      const SizedBox(height: 18),
+      SizedBox(height: 18.h),
       // 스크랩 한 모든 학습 다시 보기 버튼
       Padding(
-        padding: const EdgeInsets.only(left: 16),
+        padding: EdgeInsets.only(left: 16.w),
         child: GestureDetector(
           onTap: () {
             // "스크랩 한 모든 학습 다시 보기" 버튼 동작 추가 가능
@@ -287,24 +287,24 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                   children: [
                     Text(
                       controller.buttonText.value,
-                      style: const TextStyle(
-                        color: Color(0xFF067BD5),
-                        fontSize: 14,
+                      style: TextStyle(
+                        color: const Color(0xFF067BD5),
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w700,
                         height: 1.40,
                         letterSpacing: -0.35,
                       ),
                     ),
-                    const SizedBox(width: 3),
-                    const Icon(
+                    SizedBox(width: 3.w),
+                    Icon(
                       Icons.arrow_circle_right,
-                      color: Color(0xff067bd5),
-                      size: 15,
+                      color: const Color(0xff067bd5),
+                      size: 15.w,
                     ),
                   ],
                 ),
                 Container(
-                  width: 185,
+                  width: 185.w,
                   height: 1,
                   color: const Color(0xff067bd5),
                 ),
@@ -313,17 +313,17 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
           ),
         ),
       ),
-      const SizedBox(height: 15),
+      SizedBox(height: 15.h),
       // 학습 리스트
       Expanded(
         child: Obx(() {
           if (controller.scrapConcepts.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 '스크랩한 학습이 없습니다.',
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF767676),
+                  fontSize: 16.sp,
+                  color: const Color(0xFF767676),
                 ),
               ),
             );
@@ -333,8 +333,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
             itemBuilder: (context, index) {
               final concept = controller.scrapConcepts[index];
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: GestureDetector(
                   onTap: () {
                     Get.toNamed(
@@ -352,7 +351,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: const Color(0xFFD9D9D9),
-                        width: 1,
+                        width: 1.w,
                       ),
                     ),
                     child: Row(
@@ -363,18 +362,18 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                           children: [
                             Text(
                               concept['LearningSetName'] ?? '',
-                              style: const TextStyle(
-                                color: Color(0xFF767676),
-                                fontSize: 14,
+                              style: TextStyle(
+                                color: const Color(0xFF767676),
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: 2.h),
                             Text(
                               concept['name'] ?? '',
-                              style: const TextStyle(
-                                color: Color(0xFF404040),
-                                fontSize: 18,
+                              style: TextStyle(
+                                color: const Color(0xFF404040),
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
