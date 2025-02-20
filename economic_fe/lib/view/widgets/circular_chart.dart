@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CircularChart extends StatelessWidget {
   final double progress; // 원형 차트의 진행 정도 (0.0 ~ 1.0)
@@ -25,21 +26,21 @@ class CircularChart extends StatelessWidget {
           children: [
             Image.asset(
               'assets/$icon.png',
-              width: 28.11,
-              height: 23,
+              width: 28.11.w,
+              height: 23.h,
             ),
-            const SizedBox(
-              height: 5,
+            SizedBox(
+              height: 5.h,
             ),
             Text(
               text,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF767676),
+              style: TextStyle(
+                color: const Color(0xFF767676),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                height: 1.20,
-                letterSpacing: -0.30,
+                height: 1.20.h,
+                letterSpacing: -0.30.w,
               ),
             ),
           ],
@@ -59,12 +60,12 @@ class CirclePainter extends CustomPainter {
     final Paint grayPaint = Paint()
       ..color = const Color(0xff767676)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 13; // 원의 테두리 두께
+      ..strokeWidth = 13.w; // 원의 테두리 두께
 
     final Paint greenPaint = Paint()
       ..color = const Color(0xff1EB692)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 13;
+      ..strokeWidth = 13.w;
 
     // 원형 차트의 배경 원을 그린다 (회색)
     canvas.drawCircle(

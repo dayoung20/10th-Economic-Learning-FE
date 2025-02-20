@@ -5,6 +5,7 @@ import 'package:economic_fe/view/widgets/learning_set/explanation_text.dart';
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 import 'package:economic_fe/view_model/learning_set/learning_concept_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LearningConceptPage extends StatefulWidget {
@@ -61,11 +62,11 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
         return Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 65),
+              padding: EdgeInsets.only(bottom: 65.h),
               child: SingleChildScrollView(
                 child: Center(
                   child: Container(
-                    padding: const EdgeInsets.only(top: 18),
+                    padding: EdgeInsets.only(top: 18.h),
                     width:
                         MediaQuery.of(context).size.width * 0.9, // 화면 너비의 90%
                     height:
@@ -74,7 +75,7 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                       mainAxisSize: MainAxisSize.max, // Column이 부모의 크기를 채우도록 설정
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
                           decoration: const BoxDecoration(
                             color: Color(0xFF1EB692), // 컨테이너 배경색
                             borderRadius: BorderRadius.only(
@@ -92,12 +93,12 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                 () => Text(
                                   controller.levelOptions[
                                       controller.selectedLevelIndex.value],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    height: 1.4,
-                                    letterSpacing: -0.4,
+                                    height: 1.4.h,
+                                    letterSpacing: -0.4.w,
                                   ),
                                 ),
                               ),
@@ -115,8 +116,9 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                                     .size
                                                     .height *
                                                 0.8,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 16, vertical: 16),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16.w,
+                                                vertical: 16.h),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -142,7 +144,7 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 16),
+                                                SizedBox(height: 16.h),
                                                 Expanded(
                                                   child: ListView.builder(
                                                     itemCount: controller
@@ -179,8 +181,8 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                                                 index
                                                             ? Image.asset(
                                                                 'assets/check_fill.png', // 이미지 경로
-                                                                width: 24,
-                                                                height: 24,
+                                                                width: 24.w,
+                                                                height: 24.h,
                                                               )
                                                             : null,
                                                         onTap: () {
@@ -212,10 +214,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                           ),
                         ),
                         Container(
-                          decoration: const BoxDecoration(
-                            color:
-                                Color.fromARGB(255, 255, 255, 255), // 컨테이너 배경색
-                            borderRadius: BorderRadius.only(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(
+                                255, 255, 255, 255), // 컨테이너 배경색
+                            borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
                               bottomRight: Radius.circular(10.0), // 오른쪽 위 둥글게
                               // 아래쪽은 둥글게 하지 않음
@@ -223,37 +225,37 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                             border: Border(
                               top: BorderSide.none, // 윗변 테두리 없음
                               left: BorderSide(
-                                color: Color(0xFFA2A2A2), // 테두리 두께
-                                width: 1.0,
+                                color: const Color(0xFFA2A2A2), // 테두리 두께
+                                width: 1.0.w,
                               ),
                               right: BorderSide(
-                                color: Color(0xFFA2A2A2), // 오른쪽 테두리 색상
-                                width: 1.0, // 테두리 두께
+                                color: const Color(0xFFA2A2A2), // 오른쪽 테두리 색상
+                                width: 1.0.w, // 테두리 두께
                               ),
                               bottom: BorderSide(
-                                color: Color(0xFFA2A2A2), // 아랫변 테두리 색상
-                                width: 1.0, // 테두리 두께
+                                color: const Color(0xFFA2A2A2), // 아랫변 테두리 색상
+                                width: 1.0.w, // 테두리 두께
                               ),
                             ),
                           ),
                           alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 24),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 24.h),
                           child: Column(
                             children: [
                               Row(
                                 children: [
                                   Text(
                                     concept["name"],
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      height: 1.4,
-                                      letterSpacing: -0.4,
+                                      height: 1.4.h,
+                                      letterSpacing: -0.4.w,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 11,
+                                  SizedBox(
+                                    width: 11.w,
                                   ),
                                   Obx(() {
                                     final conceptId = controller.conceptList[
@@ -269,14 +271,14 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                         isScrapped
                                             ? "assets/bookmark_selected.png"
                                             : "assets/bookmark.png",
-                                        width: 13,
+                                        width: 13.w,
                                       ),
                                     );
                                   }),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 16,
+                              SizedBox(
+                                height: 16.h,
                               ),
                               Image.asset(
                                 // 예시 이미지
@@ -284,8 +286,8 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                 fit: BoxFit.cover,
                                 width: MediaQuery.of(context).size.width - 72,
                               ),
-                              const SizedBox(
-                                height: 22,
+                              SizedBox(
+                                height: 22.h,
                               ),
                               ExplanationText(
                                   explanation: concept["explanation"]),
@@ -299,8 +301,8 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
               ),
             ),
             Positioned(
-              bottom: 110,
-              right: 10,
+              bottom: 110.h,
+              right: 10.w,
               child: ChatbotFAB(
                 onTap: () => controller.toChatbot(),
               ),
@@ -321,8 +323,8 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 30.0, top: 16.0),
+                padding: EdgeInsets.only(
+                    left: 16.0.w, right: 16.0.w, bottom: 30.h, top: 16.h),
                 // color: Colors.white, // 배경 색상
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -350,13 +352,13 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                               : const Color(0xFFA2A2A2),
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
-                          height: 1.4,
-                          letterSpacing: -0.45,
+                          height: 1.4.h,
+                          letterSpacing: -0.45.w,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 8,
+                    SizedBox(
+                      width: 8.w,
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -372,8 +374,8 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                             : const Color(0xFF00D6D6), // 버튼 색상
                         foregroundColor:
                             const Color.fromARGB(255, 255, 255, 255), // 텍스트 색상
-                        padding: const EdgeInsets.only(
-                            top: 16.0, bottom: 12), // 버튼 크기
+                        padding:
+                            EdgeInsets.only(top: 16.h, bottom: 12.h), // 버튼 크기
                         minimumSize: const Size(170, 53),
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -386,12 +388,12 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                   controller.conceptList.length - 1
                               ? "다음"
                               : "학습완료",
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            height: 1.4,
-                            letterSpacing: -0.45,
+                            height: 1.4.h,
+                            letterSpacing: -0.45.w,
                           ),
                         );
                       }),

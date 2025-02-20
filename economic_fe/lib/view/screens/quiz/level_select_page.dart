@@ -3,6 +3,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/quiz/level_select_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -37,12 +38,12 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
         },
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+        padding: EdgeInsets.symmetric(horizontal: 32.w),
         child: Center(
           child: Column(
             children: [
-              const SizedBox(
-                height: 62,
+              SizedBox(
+                height: 62.h,
               ),
               _buildLevelButton(
                 label: '초급',
@@ -62,7 +63,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                 },
                 isCompleted: true,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               _buildLevelButton(
                 label: '중급',
                 isSelected: _selectedLevel == 'INTERMEDIATE',
@@ -80,7 +81,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                 },
                 isCompleted: false,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               _buildLevelButton(
                 label: '고급',
                 isSelected: _selectedLevel == 'ADVANCED',
@@ -115,12 +116,12 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
       onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width - 64,
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
         decoration: ShapeDecoration(
           color: isSelected ? Palette.buttonColorGreen : Colors.white,
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              width: 1,
+              width: 1.w,
               color: isSelected
                   ? Palette.buttonColorGreen
                   : const Color(0xFFD9D9D9),
@@ -137,8 +138,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                 color: isSelected ? Colors.white : const Color(0xFF111111),
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
-                height: 1.50,
-                letterSpacing: -0.50,
+                height: 1.50.h,
+                letterSpacing: -0.50.w,
               ),
             ),
             Icon(

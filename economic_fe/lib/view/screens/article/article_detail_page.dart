@@ -1,10 +1,10 @@
-import 'package:economic_fe/data/models/article.dart';
 import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/article/article_detail_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -48,7 +48,7 @@ class _ArticleDetailPageState extends State<ArticleDetailPage> {
       ),
       bottomNavigationBar: Container(
         color: Palette.background,
-        height: 34,
+        height: 34.h,
       ),
     );
   }

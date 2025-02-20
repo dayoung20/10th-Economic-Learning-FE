@@ -3,6 +3,7 @@ import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/test/leveltest_result_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LeveltestResultPage extends StatefulWidget {
@@ -40,21 +41,21 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const SizedBox(
-                    height: 34,
+                  SizedBox(
+                    height: 34.h,
                   ),
-                  const Text(
+                  Text(
                     '레벨 테스트 결과',
                     style: TextStyle(
-                      color: Color(0xFF111111),
+                      color: const Color(0xFF111111),
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      height: 1.30,
-                      letterSpacing: -0.50,
+                      height: 1.30.h,
+                      letterSpacing: -0.50.w,
                     ),
                   ),
-                  const SizedBox(
-                    height: 29,
+                  SizedBox(
+                    height: 29.h,
                   ),
                   Stack(
                     alignment: Alignment.center,
@@ -66,18 +67,18 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                       // 원형 차트의 중앙에 텍스트 추가
                       Column(
                         children: [
-                          const Text(
+                          Text(
                             '내 레벨',
                             style: TextStyle(
-                              color: Color(0xFFA2A2A2),
+                              color: const Color(0xFFA2A2A2),
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              height: 1.20,
-                              letterSpacing: -0.35,
+                              height: 1.20.h,
+                              letterSpacing: -0.35.w,
                             ),
                           ),
-                          const SizedBox(
-                            height: 9,
+                          SizedBox(
+                            height: 9.h,
                           ),
                           // 레벨
                           Text(
@@ -88,12 +89,12 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                     : response["results"]["level"] == "ADVANCED"
                                         ? "고급"
                                         : "알 수 없음",
-                            style: const TextStyle(
-                              color: Color(0xFF111111),
+                            style: TextStyle(
+                              color: const Color(0xFF111111),
                               fontSize: 32,
                               fontWeight: FontWeight.w600,
-                              height: 1.20,
-                              letterSpacing: -0.80,
+                              height: 1.20.h,
+                              letterSpacing: -0.80.w,
                             ),
                           ),
                         ],
@@ -104,50 +105,50 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                   GestureDetector(
                     // onTap: controller.showModal, // 모달창 열기
                     onTap: () => showCategoryModal(context),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
-                          height: 13.5,
+                          height: 13.5.h,
                         ),
                         Text(
                           '리플이 점수를 계산하는 방법',
                           style: TextStyle(
-                            color: Color(0xFF767676),
+                            color: const Color(0xFF767676),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            height: 1.20,
-                            letterSpacing: -0.35,
+                            height: 1.20.h,
+                            letterSpacing: -0.35.w,
                           ),
                         ),
                         SizedBox(
-                          width: 5,
+                          width: 5.w,
                         ),
                         Icon(
                           Icons.arrow_forward_ios,
-                          size: 15,
-                          color: Color(0xFFD9D9D9),
+                          size: 15.w,
+                          color: const Color(0xFFD9D9D9),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 13.5,
+                  SizedBox(
+                    height: 13.5.h,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Container(
-                      height: 387,
-                      padding: const EdgeInsets.only(
-                        top: 24,
-                        left: 24,
-                        right: 24,
-                        bottom: 20,
+                      height: 387.h,
+                      padding: EdgeInsets.only(
+                        top: 24.h,
+                        left: 24.w,
+                        right: 24.w,
+                        bottom: 20.h,
                       ),
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 1, color: Color(0xFFA2A2A2)),
+                          side: BorderSide(
+                              width: 1.w, color: const Color(0xFFA2A2A2)),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -163,16 +164,16 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                   // 레벨에 따른 텍스트 변경 필요
                                   Text(
                                     '${response["results"]["level"] == "BEGINNER" ? "축하합니다!" : response["results"]["level"] == "INTERMEDIATE" ? "잘했어요!" : response["results"]["level"] == "ADVANCED" ? "대단합니다!" : "알 수 없음"} 🎉\n당신은 ${response["results"]["level"] == "BEGINNER" ? "초급" : response["results"]["level"] == "INTERMEDIATE" ? "중급" : response["results"]["level"] == "ADVANCED" ? "고급" : "알 수 없음"} 단계입니다!',
-                                    style: const TextStyle(
-                                      color: Color(0xFF111111),
+                                    style: TextStyle(
+                                      color: const Color(0xFF111111),
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
-                                      height: 1.50,
-                                      letterSpacing: -0.50,
+                                      height: 1.50.h,
+                                      letterSpacing: -0.50.w,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 19,
+                                  SizedBox(
+                                    height: 19.h,
                                   ),
                                   Text(
                                     response["results"]["level"] == "BEGINNER"
@@ -184,12 +185,12 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                                     "ADVANCED"
                                                 ? "이미 탄탄한 경제 지식을 바탕으로 더욱 심화된 학습을 시작할 준비가 되었어요! 고급 단계에서는 복잡한 경제 이론과 글로벌 트렌드를 심도 있게 다루며, 경제적 관점을 확장할 수 있습니다. 경제를 분석하고 깊이 있는 통찰력을 통해 한발 앞서 나가는 힘을 기를 수 있어요. 당신은 이제 경제 분야에서 전문가 수준으로 도약할 수 있는 준비가 되어 있습니다. 오늘부터 심화된 학습으로 경제 지식을 한 단계 더 높여보세요! 🚀"
                                                 : "알 수 없음",
-                                    style: const TextStyle(
-                                      color: Color(0xFF111111),
+                                    style: TextStyle(
+                                      color: const Color(0xFF111111),
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
-                                      height: 1.50,
-                                      letterSpacing: -0.40,
+                                      height: 1.50.h,
+                                      letterSpacing: -0.40.w,
                                     ),
                                   ),
                                 ],
@@ -202,7 +203,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               left: 0,
                               right: 0,
                               child: Container(
-                                height: 20, // 그림자 높이
+                                height: 20.h, // 그림자 높이
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.bottomCenter,
@@ -222,8 +223,8 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                   ),
                   Column(
                     children: [
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
                       // 문제 및 해설 버튼
                       GestureDetector(
@@ -239,21 +240,21 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               '문제 및 해설',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
-                                height: 1.40,
+                                height: 1.40.h,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 12,
+                      SizedBox(
+                        height: 12.h,
                       ),
                       // 학습 시작하기 버튼
                       GestureDetector(
@@ -262,28 +263,28 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width - 32,
-                          height: 60,
+                          height: 60.h,
                           decoration: ShapeDecoration(
                             color: Palette.buttonColorBlue,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               '학습 시작하기',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
-                                height: 1.40,
+                                height: 1.40.h,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 34,
+                      SizedBox(
+                        height: 34.h,
                       ),
                     ],
                   ),
@@ -308,7 +309,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: 500,
+              height: 500.h,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
@@ -318,23 +319,23 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 24,
-                      left: 24,
-                      right: 24,
-                      bottom: 20,
+                    padding: EdgeInsets.only(
+                      top: 24.h,
+                      left: 24.w,
+                      right: 24.w,
+                      bottom: 20.h,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '점수 계산 방법',
                           style: TextStyle(
-                            color: Color(0xFF111111),
+                            color: const Color(0xFF111111),
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            height: 1.20,
-                            letterSpacing: -0.45,
+                            height: 1.20.h,
+                            letterSpacing: -0.45.w,
                           ),
                         ),
                         GestureDetector(
@@ -348,107 +349,107 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                       ],
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
                         padding: EdgeInsets.only(
-                            top: 9, left: 24, right: 24, bottom: 24),
+                            top: 9.h, left: 24.w, right: 24.w, bottom: 24.h),
                         child: Text.rich(
                           TextSpan(
                             children: [
                               TextSpan(
                                 text: '✔️ 문제 구성 및 점수 배분\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text:
                                     '- 초급(OX 문제, 3개): 각 문제 1점\n- 중급(사지선다 단답, 3개): 각 문제 2점\n- 고급(사지선다 문장 답, 3개): 각 문제 3점\n\t→ 총점: 0~18점\n\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text: '✔️ 단계 구분 기준\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text: '- 초급(Beginner): 0~6점\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text:
                                     '\t\t\t\t- 초급 문제를 모두 맞히지 못하거나 일부만 맞힌 경우.\n\t\t\t\t- 기본 경제 개념 이해가 부족하거나, \n\t\t\t\t\t\t처음 학습 단계에 해당.\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text: '- 중급(Intermediate): 7~12점\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text:
                                     '\t\t\t\t- 초급 문제를 대부분 맞히고 중급 문제를 일부\n\t\t\t\t\t 맞힌 경우.\n\t\t\t\t- 경제의 기본 원리를 이해하며, 특정 주제에 대한 \n\t\t\t\t\t 개념이 존재함.\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text: '- 고급(Advanced): 13~18점\n',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                               TextSpan(
                                 text:
                                     '\t\t\t\t- 중급 문제를 대부분 맞히고 고급 문제도 상당 부분 \n\t\t\t\t\t 맞힌 경우.\n\t\t\t\t- 복잡한 경제 원리와 실생활 적용 능력이 있음.',
                                 style: TextStyle(
-                                  color: Color(0xFF111111),
+                                  color: const Color(0xFF111111),
                                   fontSize: 16,
                                   fontFamily: 'Pretendard Variable',
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50,
-                                  letterSpacing: -0.40,
+                                  height: 1.50.h,
+                                  letterSpacing: -0.40.w,
                                 ),
                               ),
                             ],
@@ -477,12 +478,12 @@ class CirclePainter extends CustomPainter {
     final Paint grayPaint = Paint()
       ..color = const Color(0x33111111)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 18; // 원의 테두리 두께
+      ..strokeWidth = 18.w; // 원의 테두리 두께
 
     final Paint greenPaint = Paint()
       ..color = const Color(0xFF2BD6D6)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 18;
+      ..strokeWidth = 18.w;
 
     // 원형 차트의 배경 원을 그린다 (회색)
     canvas.drawCircle(

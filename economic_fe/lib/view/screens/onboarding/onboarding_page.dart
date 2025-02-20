@@ -1,7 +1,7 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/onboarding_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -33,35 +33,35 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 160),
+              height: 160.h,
             ),
             // 어플 로고
             Image.asset(
               "assets/icon.png",
-              width: ScreenUtils.getWidth(context, 65.34),
-              height: ScreenUtils.getHeight(context, 77.87),
+              width: 65.34.w,
+              height: 77.87.h,
             ),
-            const Text(
+            Text(
               "Ripple",
               style: TextStyle(
-                color: Color(0xFF111111),
+                color: const Color(0xFF111111),
                 fontSize: 45,
                 fontFamily: 'Palanquin',
                 fontWeight: FontWeight.w400,
-                letterSpacing: -0.90,
+                letterSpacing: -0.90.w,
               ),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: 10.h,
             ),
-            const Text(
+            Text(
               "처음 시작하는 경제 학습",
               style: TextStyle(
-                color: Color(0xFF404040),
+                color: const Color(0xFF404040),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                height: 1.40,
-                letterSpacing: -0.40,
+                height: 1.40.h,
+                letterSpacing: -0.40.w,
               ),
             ),
           ],
