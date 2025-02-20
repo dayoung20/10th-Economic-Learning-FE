@@ -64,7 +64,8 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         option: 1, // ox 문제
                         question:
                             quizList[controller.currentQuizIdx.value].question,
-                        isLast: !(controller.currentQuizIdx.value < 8),
+                        isLast: (controller.currentQuizIdx.value + 1 ==
+                            quizList.length),
                         isQuiz: true,
                         isCorrectQuiz: controller.isCorrect.value,
                         quizId:
@@ -99,6 +100,11 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         onNextQuizBtn: () {
                           controller.currentQuizIdx++;
                         },
+                        onFinishTest: () {
+                          // controller.clickedToKaKao(quizList);
+                          controller
+                              .postQuizFinish(controller.learningSetId.value);
+                        },
                       )
                     : QuizCard(
                         screenHeight: screenHeight,
@@ -112,7 +118,8 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         question:
                             quizList[controller.currentQuizIdx.value].question,
                         isQuiz: true,
-                        isLast: controller.currentQuizIdx.value == 8,
+                        isLast: (controller.currentQuizIdx.value + 1 ==
+                            quizList.length),
                         isCorrectQuiz: controller.isCorrect.value,
                         onOptionSelected: (int selected) {
                           setState(() {
@@ -148,6 +155,8 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         },
                         onFinishTest: () {
                           // controller.clickedToKaKao(quizList);
+                          controller
+                              .postQuizFinish(controller.learningSetId.value);
                         },
                       ));
           }),

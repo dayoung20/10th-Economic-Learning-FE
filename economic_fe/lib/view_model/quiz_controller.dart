@@ -116,4 +116,17 @@ class QuizController extends GetxController {
       debugPrint('post Scrap Delete Error: $e');
     }
   }
+
+  // 퀴즈 완료 (한 세트 다 풀고 끝)
+  Future<void> postQuizFinish(int learningSetId) async {
+    try {
+      print("start");
+
+      dynamic response = await remoteDataSource.postQuizFinish(learningSetId);
+
+      print("response quizFinish isSuccess : ${response['isSuccess']}");
+    } catch (e) {
+      debugPrint('post quizFinish Error: $e');
+    }
+  }
 }
