@@ -25,15 +25,15 @@ class RippleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 앱 실행 시 PushNotificationController를 전역적으로 실행 (SSE 연결 유지)
-    if (accessToken != null) {
-      Get.put(PushNotificationController(), permanent: true);
-    }
+    // // 앱 실행 시 PushNotificationController를 전역적으로 실행 (SSE 연결 유지)
+    // if (accessToken != null) {
+    //   Get.put(PushNotificationController(), permanent: true);
+    // }
 
     return GetMaterialApp(
       title: 'Ripple',
-      // initialRoute: accessToken != null ? '/home' : '/',
-      initialRoute: '/test',
+      initialRoute: accessToken != null ? '/home' : '/',
+      // initialRoute: '/test',
       getPages: UserRouter.getPages(),
     );
   }
