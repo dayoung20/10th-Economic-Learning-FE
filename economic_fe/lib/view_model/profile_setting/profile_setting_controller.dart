@@ -121,28 +121,28 @@ class ProfileSettingController extends GetxController {
     }
 
     try {
-      // **1. 알림 권한 요청 (완료될 때까지 대기)**
-      bool isNotificationAllowed = await requestNotificationPermission();
+      // // **1. 알림 권한 요청 (완료될 때까지 대기)**
+      // bool isNotificationAllowed = await requestNotificationPermission();
 
-      // **2. 사용자의 선택값을 반영하여 userProfile 업데이트**
-      userProfile.update((profile) {
-        if (profile != null) {
-          profile.isLearningAlarmAllowed = isNotificationAllowed;
-          profile.isCommunityAlarmAllowed = isNotificationAllowed;
-        }
-      });
+      // // **2. 사용자의 선택값을 반영하여 userProfile 업데이트**
+      // userProfile.update((profile) {
+      //   if (profile != null) {
+      //     profile.isLearningAlarmAllowed = isNotificationAllowed;
+      //     profile.isCommunityAlarmAllowed = isNotificationAllowed;
+      //   }
+      // });
 
-      // **3. 알림을 허용한 경우, SSE 구독 API 호출 (성공 여부 확인)**
-      if (isNotificationAllowed) {
-        debugPrint("알림 허용됨 - 알림 구독 API 호출 시작");
-        bool sseSuccess = await remoteDataSource.subscribeToNotifications();
-        if (!sseSuccess) {
-          debugPrint("SSE 구독 실패");
-          Get.snackbar('오류', '푸쉬 알림 구독에 실패했습니다. 네트워크를 확인해주세요.');
-        } else {
-          debugPrint("알림 구독 API 호출 완료");
-        }
-      }
+      // // **3. 알림을 허용한 경우, SSE 구독 API 호출 (성공 여부 확인)**
+      // if (isNotificationAllowed) {
+      //   debugPrint("알림 허용됨 - 알림 구독 API 호출 시작");
+      //   bool sseSuccess = await remoteDataSource.subscribeToNotifications();
+      //   if (!sseSuccess) {
+      //     debugPrint("SSE 구독 실패");
+      //     Get.snackbar('오류', '푸쉬 알림 구독에 실패했습니다. 네트워크를 확인해주세요.');
+      //   } else {
+      //     debugPrint("알림 구독 API 호출 완료");
+      //   }
+      // }
 
       // **4. 프로필 데이터 준비**
       Map<String, dynamic> profileData = userProfile.value.toJson();
