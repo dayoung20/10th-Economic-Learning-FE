@@ -385,6 +385,7 @@ class _QuizCardState extends State<QuizCard> {
                           onPress: () {
                             if (widget.isLast) {
                               widget.onFinishTest!();
+                              print("종료 끝");
                             } else {
                               print("next ::");
                               widget.onNextQuizBtn!();

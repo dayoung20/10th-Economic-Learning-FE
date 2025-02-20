@@ -617,6 +617,16 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/news/{id}
+  /// 뉴스 상세 조회
+  Future<dynamic> getNewsDetail(int id) async {
+    dynamic response;
+
+    response = await _getApiWithHeaderTest('api/news/$id');
+
+    return response;
+  }
+
   /// 뉴스 목록 조회 (카카오 로그인 X)
   /// api/news
   Future<dynamic> getNewsList2(int page, String sort, String? category) async {
@@ -2478,11 +2488,11 @@ class RemoteDataSource {
 
   /// api/v1/learning/{learningSetId}/quizzes/end
   /// 퀴즈 완료
-  Future<dynamic> postQuizFinish(int learningSetId) async {
+  Future<dynamic> postQuizFinish(int learningSetId, String level) async {
     dynamic response;
 
-    String endPoint = "api/v1/learning/$learningSetId/quizzes/end";
-
+    String endPoint = "api/v1/learning/$learningSetId/quizzes/end?level=$level";
+    //  api/v1/learning/1/quizzes/end?level=BEGINNER
     response = await postApiWithoutJsonReturnResponse(endPoint);
 
     if (response != null) {
