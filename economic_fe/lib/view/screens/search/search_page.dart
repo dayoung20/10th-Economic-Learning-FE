@@ -6,6 +6,7 @@ import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/search/search_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class SearchPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _SearchPageState extends State<SearchPage>
       body: Column(
         children: [
           _buildSearchBar(),
-          const SizedBox(height: 21),
+          SizedBox(height: 21.h),
           Obx(() =>
               controller.isSearching.value && controller.isTextNotEmpty.value
                   ? _buildTabBar()
@@ -69,9 +70,9 @@ class _SearchPageState extends State<SearchPage>
   Widget _buildSearchBar() {
     return Center(
       child: Container(
-        width: Get.width - 32,
-        height: 42,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        width: Get.width - 32.w,
+        height: 42.h,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: ShapeDecoration(
           color: const Color(0xFFF2F3F5),
           shape:
@@ -80,21 +81,26 @@ class _SearchPageState extends State<SearchPage>
         child: Row(
           children: [
             const Icon(Icons.search, color: Color(0xffa2a2a2)),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Expanded(
-              child: TextField(
-                controller: controller.searchController,
-                cursorColor: const Color(0xff111111),
-                style: const TextStyle(fontSize: 16, color: Color(0xFF111111)),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: '검색어를 입력해주세요.',
-                  hintStyle: TextStyle(color: Color(0xFFA2A2A2), fontSize: 16),
+              child: Padding(
+                padding: EdgeInsets.only(top: 3.h),
+                child: TextField(
+                  controller: controller.searchController,
+                  cursorColor: const Color(0xff111111),
+                  style: TextStyle(
+                      fontSize: 16.sp, color: const Color(0xFF111111)),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '검색어를 입력해주세요.',
+                    hintStyle: TextStyle(
+                        color: const Color(0xFFA2A2A2), fontSize: 16.sp),
+                  ),
+                  onSubmitted: (value) {
+                    controller.search(value);
+                    tabController.index = 0; // 검색 실행 시 기본 카테고리를 "통합"으로 설정
+                  },
                 ),
-                onSubmitted: (value) {
-                  controller.search(value);
-                  tabController.index = 0; // 검색 실행 시 기본 카테고리를 "통합"으로 설정
-                },
               ),
             ),
             Obx(() {
@@ -117,7 +123,7 @@ class _SearchPageState extends State<SearchPage>
   /// 가로 스크롤 가능한 탭바 (수정)
   Widget _buildTabBar() {
     return SizedBox(
-      height: 50,
+      height: 40.h,
       child: TabBar(
         tabAlignment: TabAlignment.start,
         controller: tabController,
@@ -126,8 +132,8 @@ class _SearchPageState extends State<SearchPage>
         indicatorWeight: 3,
         indicatorColor: Colors.black,
         labelColor: Colors.black,
-        labelStyle: const TextStyle(
-          fontSize: 16,
+        labelStyle: TextStyle(
+          fontSize: 16.sp,
           fontWeight: FontWeight.w600,
           height: 1.50,
           letterSpacing: -0.40,
@@ -230,15 +236,15 @@ class _SearchPageState extends State<SearchPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+          padding: EdgeInsets.only(top: 24.h, left: 16.w, right: 16.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: Color(0xFF111111),
-                  fontSize: 18,
+                style: TextStyle(
+                  color: const Color(0xFF111111),
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                   height: 1.50,
                   letterSpacing: -0.45,
@@ -249,24 +255,24 @@ class _SearchPageState extends State<SearchPage>
                   controller.changeTab(tabIndex); // 해당 카테고리 탭으로 이동
                   tabController.animateTo(tabIndex);
                 },
-                child: const Row(
+                child: Row(
                   children: [
                     Text(
                       '더보기',
                       style: TextStyle(
-                        color: Color(0xFF767676),
-                        fontSize: 14,
+                        color: const Color(0xFF767676),
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         height: 1.20,
                         letterSpacing: -0.21,
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 3, left: 3),
+                      padding: EdgeInsets.only(top: 3.h, left: 3.w),
                       child: Icon(
                         Icons.arrow_forward_ios,
-                        size: 12,
-                        color: Color(0xff767676),
+                        size: 12.w,
+                        color: const Color(0xff767676),
                       ),
                     ),
                   ],
@@ -293,9 +299,9 @@ class _SearchPageState extends State<SearchPage>
             ),
           ),
         ),
-        const Divider(
-          thickness: 5, // 섹션 구분선
-          color: Color(0xffF2F3F5),
+        Divider(
+          thickness: 5.h, // 섹션 구분선
+          color: const Color(0xffF2F3F5),
         ),
       ],
     );
@@ -304,7 +310,7 @@ class _SearchPageState extends State<SearchPage>
   /// 용어 검색 결과 UI
   Widget _buildDictionaryCard(DictionaryModel term) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,28 +320,28 @@ class _SearchPageState extends State<SearchPage>
               showTermDetailDialog(context, term);
             },
             child: SizedBox(
-              width: 292,
+              width: 292.w,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     term.termName!,
-                    style: const TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 16,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                       height: 1.40,
                       letterSpacing: -0.40,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
+                  SizedBox(
+                    height: 8.h,
                   ),
                   Text(
                     term.termDescription!,
-                    style: const TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 14,
+                    style: TextStyle(
+                      color: const Color(0xFF767676),
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.40,
                       letterSpacing: -0.35,
@@ -348,7 +354,7 @@ class _SearchPageState extends State<SearchPage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 8.h),
             child: GestureDetector(
               onTap: () {
                 controller.scrapTermToggle(term);
@@ -384,23 +390,23 @@ class _SearchPageState extends State<SearchPage>
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 14),
+                    SizedBox(height: 14.h),
                     // 용어 제목
                     Text(
                       term.termName ?? "용어 제목",
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w600,
                         letterSpacing: -0.45,
                         height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.h),
                     // 용어 설명
                     Text(
                       term.termDescription ?? "상세 내용이 없습니다.",
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: 14.sp,
                         color: Colors.black87,
                       ),
                     ),
@@ -410,8 +416,8 @@ class _SearchPageState extends State<SearchPage>
               ),
               // 오른쪽 상단 X 버튼 (팝업 닫기)
               Positioned(
-                top: 16,
-                right: 16,
+                top: 16.h,
+                right: 16.w,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop(); // 팝업 닫기
@@ -438,29 +444,29 @@ class _SearchPageState extends State<SearchPage>
         children: [
           Text(
             news.translatedCategory,
-            style: const TextStyle(
-              color: Color(0xFF2AD6D6),
-              fontSize: 12,
+            style: TextStyle(
+              color: const Color(0xFF2AD6D6),
+              fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               height: 1.30,
               letterSpacing: -0.30,
             ),
           ),
-          const SizedBox(
-            height: 6,
+          SizedBox(
+            height: 6.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 298,
+                width: 298.w,
                 child: Text(
                   maxLines: 2,
                   news.title!,
-                  style: const TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 16,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.30,
                     letterSpacing: -0.40,
@@ -481,17 +487,17 @@ class _SearchPageState extends State<SearchPage>
               ),
             ],
           ),
-          const SizedBox(
-            height: 6,
+          SizedBox(
+            height: 6.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 news.publisher!,
-                style: const TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
+                style: TextStyle(
+                  color: const Color(0xFF767676),
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                   height: 1.50,
                   letterSpacing: -0.30,
@@ -499,9 +505,9 @@ class _SearchPageState extends State<SearchPage>
               ),
               Text(
                 news.createdDate!,
-                style: const TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 12,
+                style: TextStyle(
+                  color: const Color(0xFF767676),
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                   height: 1.50,
                   letterSpacing: -0.30,
@@ -529,15 +535,15 @@ class _SearchPageState extends State<SearchPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: 235,
+              width: 235.w,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     post.title!,
-                    style: const TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 16,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                       height: 1.30,
                       letterSpacing: -0.40,
@@ -546,69 +552,69 @@ class _SearchPageState extends State<SearchPage>
                   Text(
                     post.content!,
                     maxLines: 2,
-                    style: const TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 14,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.35,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
+                  SizedBox(
+                    height: 8.h,
                   ),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.favorite_outline,
-                        size: 20,
-                        color: Color(0xff767676),
+                        size: 20.w,
+                        color: const Color(0xff767676),
                       ),
-                      const SizedBox(
-                        width: 3,
+                      SizedBox(
+                        width: 3.w,
                       ),
                       Text(
                         '${post.likeCount!}',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
+                        style: TextStyle(
+                          color: const Color(0xFF767676),
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.30,
                         ),
                       ),
-                      const SizedBox(
-                        width: 8,
+                      SizedBox(
+                        width: 8.w,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.chat_bubble_outline,
-                        size: 20,
-                        color: Color(0xff767676),
+                        size: 20.w,
+                        color: const Color(0xff767676),
                       ),
-                      const SizedBox(
-                        width: 3,
+                      SizedBox(
+                        width: 3.w,
                       ),
                       Text(
                         '${post.commentCount!}',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
+                        style: TextStyle(
+                          color: const Color(0xFF767676),
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.30,
                         ),
                       ),
-                      const SizedBox(
-                        width: 14,
+                      SizedBox(
+                        width: 14.w,
                       ),
                       Text(
                         post.createdDate!,
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 12,
+                        style: TextStyle(
+                          color: const Color(0xFF767676),
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.30,
@@ -621,8 +627,8 @@ class _SearchPageState extends State<SearchPage>
             ),
             post.imageUrl != null
                 ? Container(
-                    width: 66,
-                    height: 66,
+                    width: 66.w,
+                    height: 66.h,
                     decoration: BoxDecoration(
                       color: const Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(7),
@@ -654,20 +660,20 @@ class _SearchPageState extends State<SearchPage>
           children: [
             // 경제톡톡 이미지
             Padding(
-              padding: const EdgeInsets.only(right: 12),
+              padding: EdgeInsets.only(right: 12.w),
               child: // 이미지가 있는 경우에만 표시
                   tok.imageUrl != null && tok.imageUrl!.isNotEmpty
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(7),
                           child: Image.network(
                             tok.imageUrl!,
-                            width: 97,
-                            height: 118,
+                            width: 97.w,
+                            height: 118.h,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
                                 Container(
-                              width: 97,
-                              height: 118,
+                              width: 97.w,
+                              height: 118.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7),
                               ),
@@ -677,8 +683,8 @@ class _SearchPageState extends State<SearchPage>
                           ),
                         )
                       : Container(
-                          width: 97,
-                          height: 118,
+                          width: 97.w,
+                          height: 118.h,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
                             image: const DecorationImage(
@@ -693,15 +699,15 @@ class _SearchPageState extends State<SearchPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - (32 + 97 + 12),
+                  width: MediaQuery.of(context).size.width - 141.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         '${tok.participantCount}명이 참여했어요',
-                        style: const TextStyle(
-                          color: Color(0xFF767676),
-                          fontSize: 13,
+                        style: TextStyle(
+                          color: const Color(0xFF767676),
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.33,
@@ -710,9 +716,9 @@ class _SearchPageState extends State<SearchPage>
                       Text(
                         tok.createdDate!,
                         textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          color: Color(0xFFA2A2A2),
-                          fontSize: 12,
+                        style: TextStyle(
+                          color: const Color(0xFFA2A2A2),
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.30,
@@ -721,18 +727,18 @@ class _SearchPageState extends State<SearchPage>
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 8,
+                SizedBox(
+                  height: 8.h,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - (32 + 97 + 12),
-                  height: 60,
+                  width: MediaQuery.of(context).size.width - 141.w,
+                  height: 60.h,
                   child: Flexible(
                     child: Text(
                       tok.title!,
-                      style: const TextStyle(
-                        color: Color(0xFF111111),
-                        fontSize: 15,
+                      style: TextStyle(
+                        color: const Color(0xFF111111),
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w500,
                         height: 1.30,
                         letterSpacing: -0.38,
@@ -740,45 +746,45 @@ class _SearchPageState extends State<SearchPage>
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 12,
+                SizedBox(
+                  height: 12.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 2),
+                    Padding(
+                      padding: EdgeInsets.only(right: 2.w),
                       child: Icon(
                         Icons.favorite_border,
-                        size: 18,
-                        color: Color(0xff767676),
+                        size: 18.w,
+                        color: const Color(0xff767676),
                       ),
                     ),
                     Text(
                       '${tok.likeCount}',
-                      style: const TextStyle(
-                        color: Color(0xFF767676),
-                        fontSize: 12,
+                      style: TextStyle(
+                        color: const Color(0xFF767676),
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         height: 1.50,
                       ),
                     ),
-                    const SizedBox(
-                      width: 8,
+                    SizedBox(
+                      width: 8.w,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 2),
+                    Padding(
+                      padding: EdgeInsets.only(right: 2.w),
                       child: Icon(
                         Icons.chat_bubble_outline,
-                        size: 18,
-                        color: Color(0xff767676),
+                        size: 18.w,
+                        color: const Color(0xff767676),
                       ),
                     ),
                     Text(
                       '${tok.participantCount}',
-                      style: const TextStyle(
-                        color: Color(0xFF767676),
-                        fontSize: 12,
+                      style: TextStyle(
+                        color: const Color(0xFF767676),
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         height: 1.50,
                       ),
@@ -797,21 +803,21 @@ class _SearchPageState extends State<SearchPage>
   Widget _buildRecentSearches() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 26),
+        padding: EdgeInsets.symmetric(horizontal: 26.h),
         child: Obx(() {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (controller.keywords.isEmpty) {
-            return const Padding(
-              padding: EdgeInsets.only(top: 82),
+            return Padding(
+              padding: EdgeInsets.only(top: 82.h),
               child: Text(
                 '최근 검색한 내용이 없습니다.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF767676),
-                  fontSize: 18,
+                  color: const Color(0xFF767676),
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w400,
                   height: 1.50,
                 ),
@@ -824,11 +830,11 @@ class _SearchPageState extends State<SearchPage>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     '최근 검색',
                     style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 16,
+                      color: const Color(0xFF111111),
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       height: 1.50,
                       letterSpacing: -0.40,
@@ -836,11 +842,11 @@ class _SearchPageState extends State<SearchPage>
                   ),
                   GestureDetector(
                     onTap: controller.deleteSearchKeywordAll,
-                    child: const Text(
+                    child: Text(
                       '전체삭제',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         height: 1.50,
                         letterSpacing: -0.30,
@@ -854,7 +860,7 @@ class _SearchPageState extends State<SearchPage>
                   itemCount: controller.keywords.length,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.only(top: 16),
+                      padding: EdgeInsets.only(top: 16.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -868,9 +874,9 @@ class _SearchPageState extends State<SearchPage>
                             },
                             child: Text(
                               controller.keywords[index],
-                              style: const TextStyle(
-                                color: Color(0xFF404040),
-                                fontSize: 16,
+                              style: TextStyle(
+                                color: const Color(0xFF404040),
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
                                 height: 1.50,
                                 letterSpacing: -0.40,

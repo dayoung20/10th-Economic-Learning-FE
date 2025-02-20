@@ -47,6 +47,9 @@ class _QuizTestPageState extends State<QuizTestPage> {
       body: Stack(
         children: [
           Obx(() {
+            if (controller.quizList.isEmpty) {
+              return const Center(child: CircularProgressIndicator()); // 로딩 표시
+            }
             return Align(
                 alignment: Alignment.topCenter,
                 child: quizList[controller.currentQuizIdx.value]

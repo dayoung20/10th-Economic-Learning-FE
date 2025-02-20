@@ -2,6 +2,7 @@ import 'package:economic_fe/data/models/chatbot/chatbot_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/chatbot_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -73,11 +74,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
           child: const Icon(Icons.arrow_back_ios_new),
         ),
         centerTitle: true,
-        title: const Text(
+        title: Text(
           '챗봇',
           style: TextStyle(
-            color: Color(0xFF111111),
-            fontSize: 20,
+            color: const Color(0xFF111111),
+            fontSize: 20.sp,
             fontWeight: FontWeight.w500,
             height: 1.30,
             letterSpacing: -0.50,
@@ -85,14 +86,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: 16.w),
             child: GestureDetector(
               onTap: () {
                 _showDeleteDialog();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.more_horiz,
-                size: 28,
+                size: 28.w,
               ),
             ),
           ),
@@ -103,14 +104,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
         child: Stack(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height - 210,
+              height: MediaQuery.of(context).size.height - 210.h,
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
                         child: Obx(
                           () {
                             return FutureBuilder<List<ChatbotModel>>(
@@ -162,10 +163,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                           children: [
                                             Center(
                                               child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 4),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 12.w,
+                                                    vertical: 4.h),
                                                 decoration: ShapeDecoration(
                                                   color: Colors.white,
                                                   shape: RoundedRectangleBorder(
@@ -181,18 +181,19 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                 child: Text(
                                                   // DateTime.now().toString(),
                                                   message.createdAt!,
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF404040),
-                                                    fontSize: 12,
+                                                  style: TextStyle(
+                                                    color:
+                                                        const Color(0xFF404040),
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w400,
-                                                    height: 1.4,
+                                                    height: 1.4.h,
                                                     letterSpacing: -0.30,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 10,
+                                            SizedBox(
+                                              height: 10.h,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -207,10 +208,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                         height: 5,
                                                       ),
                                                 Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 16.w,
+                                                      vertical: 10.h),
                                                   decoration: ShapeDecoration(
                                                     color:
                                                         // message.isSystemMessage
@@ -242,7 +242,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                             ? const Color(
                                                                 0xFF404040)
                                                             : Colors.white,
-                                                        fontSize: 16,
+                                                        fontSize: 16.sp,
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         height: 1.40,
@@ -302,8 +302,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                 ? const SizedBox()
                                                 : showChatbotIcon
                                                     ? Container(
-                                                        width: 40,
-                                                        height: 40,
+                                                        width: 40.w,
+                                                        height: 40.h,
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(8),
@@ -325,11 +325,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                         child: Image.asset(
                                                             'assets/icon.png'),
                                                       )
-                                                    : const SizedBox(
-                                                        width: 40,
+                                                    : SizedBox(
+                                                        width: 40.w,
                                                       ),
-                                            const SizedBox(
-                                              width: 8,
+                                            SizedBox(
+                                              width: 8.w,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -341,12 +341,12 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                 message.sender == "USER"
                                                     ? const SizedBox()
                                                     : showChatbotIcon
-                                                        ? const Text(
+                                                        ? Text(
                                                             '챗봇',
                                                             style: TextStyle(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xFF767676),
-                                                              fontSize: 14,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w400,
@@ -356,14 +356,13 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                             ),
                                                           )
                                                         : const SizedBox(),
-                                                const SizedBox(
-                                                  height: 5,
+                                                SizedBox(
+                                                  height: 5.h,
                                                 ),
                                                 Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 16.w,
+                                                      vertical: 10.h),
                                                   decoration: ShapeDecoration(
                                                     color:
                                                         // message.isSystemMessage
@@ -385,9 +384,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                     ),
                                                   ),
                                                   child: Container(
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                            maxWidth: 250),
+                                                    constraints: BoxConstraints(
+                                                        maxWidth: 250.w),
                                                     child: Text(
                                                       message.message!,
                                                       style: TextStyle(
@@ -396,7 +394,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                             ? const Color(
                                                                 0xFF404040)
                                                             : Colors.white,
-                                                        fontSize: 16,
+                                                        fontSize: 16.sp,
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         height: 1.40,
@@ -412,10 +410,10 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                             .format(DateTime
                                                                 .parse(message
                                                                     .createdAt!)),
-                                                        style: const TextStyle(
-                                                          color:
-                                                              Color(0xFFA2A2A2),
-                                                          fontSize: 12,
+                                                        style: TextStyle(
+                                                          color: const Color(
+                                                              0xFFA2A2A2),
+                                                          fontSize: 12.sp,
                                                           fontWeight:
                                                               FontWeight.w400,
                                                           height: 1.40,
@@ -423,7 +421,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                         ),
                                                       )
                                                     : const SizedBox(),
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
                                               ],
                                             ),
                                           ],
@@ -448,7 +446,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
               ),
             ),
             Positioned(
-              bottom: 10,
+              bottom: 10.h,
               left: 0,
               right: 0,
               child: Column(
@@ -477,8 +475,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                   ),
                                   child: Image.asset(
                                     'assets/chatbot_slider.png',
-                                    width: 30.5,
-                                    height: 3,
+                                    width: 30.5.w,
+                                    height: 3.h,
                                   ),
                                 ),
                               ),
@@ -497,24 +495,24 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w, vertical: 10.h),
                                   decoration: const BoxDecoration(
                                       color: Color(0xFFDEF7F1)),
                                   child: Row(
                                     children: [
                                       Image.asset(
                                         'assets/chatbot.png',
-                                        width: 28,
+                                        width: 28.w,
                                       ),
-                                      const SizedBox(
-                                        width: 10,
+                                      SizedBox(
+                                        width: 10.w,
                                       ),
-                                      const Text(
+                                      Text(
                                         '챗봇 이용꿀팁',
                                         style: TextStyle(
-                                          color: Color(0xFF404040),
-                                          fontSize: 14,
+                                          color: const Color(0xFF404040),
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
                                           height: 1.40,
                                           letterSpacing: -0.35,
@@ -547,8 +545,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               ),
                               child: Image.asset(
                                 'assets/chatbot_slider.png',
-                                width: 30.5,
-                                height: 3,
+                                width: 30.5.w,
+                                height: 3.h,
                               ),
                             ),
                           );
@@ -556,11 +554,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
                   // 메세지 전송창
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 7),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
                       decoration: ShapeDecoration(
                         color: const Color(0xFFF2F3F5),
                         shape: RoundedRectangleBorder(
@@ -574,7 +572,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                           Expanded(
                             child: Obx(() {
                               return SizedBox(
-                                width: 280,
+                                width: 280.w,
                                 child: TextField(
                                   controller: controller.messageController,
                                   onChanged: (value) {
@@ -582,9 +580,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                   },
                                   decoration: InputDecoration(
                                     hintText: '메시지를 입력해주세요.',
-                                    hintStyle: const TextStyle(
-                                      color: Color(0xFFA2A2A2),
-                                      fontSize: 16,
+                                    hintStyle: TextStyle(
+                                      color: const Color(0xFFA2A2A2),
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
                                       letterSpacing: -0.40,
                                     ),
@@ -599,11 +597,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                               .messageText.value.isNotEmpty
                                           ? Image.asset(
                                               'assets/send_active.png',
-                                              width: 24,
+                                              width: 24.w,
                                             )
                                           : Image.asset(
                                               'assets/send.png',
-                                              width: 24,
+                                              width: 24.w,
                                             ),
                                     ),
                                   ),

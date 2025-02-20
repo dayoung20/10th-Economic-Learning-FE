@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view_model/dictionary_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class DictionaryPage extends StatefulWidget {
@@ -100,8 +101,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
         body: Column(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              height: 60,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              height: 60.h,
               child: TextFormField(
                 onChanged: (value) {
                   // 텍스트가 변경될 때마다 controller.keyword를 업데이트
@@ -112,9 +113,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 focusNode: _focusNode,
                 decoration: InputDecoration(
                   hintText: '검색',
-                  hintStyle: const TextStyle(
-                    color: Color(0xFFA2A2A2),
-                    fontSize: 16,
+                  hintStyle: TextStyle(
+                    color: const Color(0xFFA2A2A2),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.4,
                     letterSpacing: -0.4,
@@ -147,9 +148,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
             ),
             // 자음 리스트 (가로 스크롤)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20.h),
               child: SizedBox(
-                height: 50, // 높이 설정
+                height: 50.h, // 높이 설정
                 child: ListView(
                   scrollDirection: Axis.horizontal, // 가로 스크롤
                   children: List.generate(consonants.length, (index) {
@@ -166,8 +167,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                             });
                           },
                           child: Container(
-                            height: 30,
-                            width: 45,
+                            height: 30.h,
+                            width: 45.w,
                             decoration: BoxDecoration(
                               color: _selectedIndex == index
                                   ? const Color(0xFF1EB692) // 선택된 항목은 초록색
@@ -183,21 +184,21 @@ class _DictionaryPageState extends State<DictionaryPage> {
                               child: Text(
                                 consonants[index], // 자음 리스트에서 해당 항목을 표시
                                 style: _selectedIndex == index
-                                    ? const TextStyle(
+                                    ? TextStyle(
                                         color: Colors.white,
-                                        fontSize: 16,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w500,
                                       )
-                                    : const TextStyle(
-                                        color: Color(0xFF767676),
-                                        fontSize: 16,
+                                    : TextStyle(
+                                        color: const Color(0xFF767676),
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                       ],
                     );
                   }),
@@ -273,41 +274,39 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      const SizedBox(
-                                                        height: 14,
+                                                      SizedBox(
+                                                        height: 14.h,
                                                       ),
                                                       // 제목
                                                       Text(
                                                         terms.termName ??
                                                             "용어 제목",
-                                                        style: const TextStyle(
-                                                          fontSize: 18,
+                                                        style: TextStyle(
+                                                          fontSize: 18.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           letterSpacing: -0.45,
                                                           height: 1.2,
                                                         ),
                                                       ),
-                                                      const SizedBox(
-                                                          height: 12),
+                                                      SizedBox(height: 12.h),
                                                       // 내용
                                                       Text(
                                                         terms.termDescription ??
                                                             "상세 내용이 없습니다.",
-                                                        style: const TextStyle(
-                                                          fontSize: 14,
+                                                        style: TextStyle(
+                                                          fontSize: 14.sp,
                                                           color: Colors.black87,
                                                         ),
                                                       ),
-                                                      const SizedBox(
-                                                          height: 16),
+                                                      SizedBox(height: 16.h),
                                                     ],
                                                   ),
                                                 ),
                                                 // 오른쪽 위 X 버튼
                                                 Positioned(
-                                                  top: 8,
-                                                  right: 8,
+                                                  top: 8.h,
+                                                  right: 8.w,
                                                   child: GestureDetector(
                                                     onTap: () {
                                                       Navigator.of(context)
@@ -346,19 +345,20 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                   // terms.termName ?? "",
                                                   truncateWithEllipsis(
                                                       terms.termName ?? "", 20),
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
+                                                  style: TextStyle(
+                                                      fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: Color.fromARGB(
-                                                          255, 0, 0, 0),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 0, 0),
                                                       height: 1.4,
                                                       letterSpacing: -0.4),
                                                 ),
-                                                const SizedBox(
-                                                    height: 8), // 단어와 설명 간 간격
                                                 SizedBox(
-                                                  width: 300,
+                                                    height: 8.h), // 단어와 설명 간 간격
+                                                SizedBox(
+                                                  width: 300.w,
                                                   child: Text(
                                                     // items[index]['description'] ??
                                                     //     "설명이 없습니다",
@@ -367,9 +367,10 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                         terms.termDescription ??
                                                             "",
                                                         25),
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Color(0xFF767676),
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color: const Color(
+                                                          0xFF767676),
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       height: 1.4,
@@ -383,14 +384,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                           GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
-                                                // items[index]['selectedWord'] =
-                                                //     !(items[index]['selectedWord'] ??
-                                                //         false);
-                                                // terms.isScraped =
-                                                //     !terms.isScraped! ?? false;
-                                                // controller.postTermScrap(
-                                                //     terms.termId!);
                                                 if (terms.isScraped!) {
                                                   controller.deleteTermScrap(
                                                       terms.termId!);
@@ -403,14 +396,16 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                               });
                                             },
                                             child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 11, top: 8, bottom: 8),
+                                              padding: EdgeInsets.only(
+                                                  left: 11.w,
+                                                  top: 8.h,
+                                                  bottom: 8.h),
                                               child: Image.asset(
                                                 terms.isScraped ?? false
                                                     ? "assets/bookmark_selected.png"
                                                     : "assets/bookmark.png",
-                                                width: 13,
-                                                height: 18.2,
+                                                width: 13.w,
+                                                height: 18.2.h,
                                               ),
                                             ),
                                           )
@@ -501,64 +496,39 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      const SizedBox(
-                                                        height: 14,
+                                                      SizedBox(
+                                                        height: 14.h,
                                                       ),
                                                       // 제목
                                                       Text(
                                                         terms.termName ??
                                                             "용어 제목",
-                                                        style: const TextStyle(
-                                                          fontSize: 18,
+                                                        style: TextStyle(
+                                                          fontSize: 18.sp,
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           letterSpacing: -0.45,
                                                           height: 1.2,
                                                         ),
                                                       ),
-                                                      const SizedBox(
-                                                          height: 12),
+                                                      SizedBox(height: 12.h),
                                                       // 내용
                                                       Text(
                                                         terms.termDescription ??
                                                             "상세 내용이 없습니다.",
-                                                        style: const TextStyle(
-                                                          fontSize: 14,
+                                                        style: TextStyle(
+                                                          fontSize: 14.sp,
                                                           color: Colors.black87,
                                                         ),
                                                       ),
-                                                      const SizedBox(
-                                                          height: 16),
-                                                      // 하단 버튼
-                                                      // Row(
-                                                      //   mainAxisAlignment:
-                                                      //       MainAxisAlignment.end,
-                                                      //   children: [
-                                                      //     TextButton(
-                                                      //       onPressed: () {
-                                                      //         Navigator.of(context)
-                                                      //             .pop(); // 팝업 닫기
-                                                      //       },
-                                                      //       child: const Text("닫기"),
-                                                      //     ),
-                                                      //     TextButton(
-                                                      //       onPressed: () {
-                                                      //         // 추가 동작 수행
-                                                      //         print('추가 동작 수행');
-                                                      //         Navigator.of(context)
-                                                      //             .pop(); // 팝업 닫기
-                                                      //       },
-                                                      //       child: const Text("확인"),
-                                                      //     ),
-                                                      //   ],
-                                                      // ),
+                                                      SizedBox(height: 16.h),
                                                     ],
                                                   ),
                                                 ),
                                                 // 오른쪽쪽 위 X 버튼
                                                 Positioned(
-                                                  top: 8,
-                                                  right: 8,
+                                                  top: 8.h,
+                                                  right: 8.w,
                                                   child: GestureDetector(
                                                     onTap: () {
                                                       Navigator.of(context)
@@ -577,8 +547,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                       );
                                     },
                                     child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 8),
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 8.h),
                                       padding: const EdgeInsets.all(16),
                                       decoration: const BoxDecoration(
                                         color: Colors.white,
@@ -593,34 +563,31 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  // items[index]['word']!, // 단어 표시
-                                                  // terms.termName ?? "",
                                                   truncateWithEllipsis(
                                                       terms.termName ?? "", 20),
-                                                  style: const TextStyle(
-                                                      fontSize: 16,
+                                                  style: TextStyle(
+                                                      fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: Color.fromARGB(
-                                                          255, 0, 0, 0),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 0, 0),
                                                       height: 1.4,
                                                       letterSpacing: -0.4),
                                                 ),
-                                                const SizedBox(
-                                                    height: 8), // 단어와 설명 간 간격
                                                 SizedBox(
-                                                  width: 300,
+                                                    height: 8.h), // 단어와 설명 간 간격
+                                                SizedBox(
+                                                  width: 300.w,
                                                   child: Text(
-                                                    // items[index]['description'] ??
-                                                    //     "설명이 없습니다",
-                                                    // terms.termDescription ?? "",
                                                     truncateWithEllipsis(
                                                         terms.termDescription ??
                                                             "",
                                                         25),
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Color(0xFF767676),
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color: const Color(
+                                                          0xFF767676),
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       height: 1.4,
@@ -631,28 +598,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                               ],
                                             ),
                                           ),
-                                          // GestureDetector(
-                                          //   onTap: () {
-                                          //     setState(() {
-                                          //       // 'selectedWord'가 null인 경우에는 false로 초기화하고, 값을 반전시킴
-                                          //       items[index]['selectedWord'] =
-                                          //           !(items[index]['selectedWord'] ??
-                                          //               false);
-                                          //       // print("Dd");
-                                          //     });
-                                          //   },
-                                          //   child: Padding(
-                                          //     padding: const EdgeInsets.only(
-                                          //         left: 11, top: 8, bottom: 8),
-                                          //     child: Image.asset(
-                                          //       items[index]['selectedWord'] ?? false
-                                          //           ? "assets/bookmark_selected.png"
-                                          //           : "assets/bookmark.png",
-                                          //       width: 13,
-                                          //       height: 18.2,
-                                          //     ),
-                                          //   ),
-                                          // )
                                         ],
                                       ),
                                     ),
@@ -708,17 +653,17 @@ class _DictionaryPageState extends State<DictionaryPage> {
           builder: (BuildContext context, StateSetter setState) {
             return Container(
               height: MediaQuery.of(context).size.height * 0.8,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "카테고리",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       IconButton(
                         onPressed: () {
@@ -728,7 +673,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Expanded(
                     child: ListView.builder(
                       itemCount: categories.length,
@@ -738,7 +683,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           title: Text(
                             categories[index],
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               color: selectedIndex == index
                                   ? const Color(0xFF2BD6D6)
                                   : Colors.black,
@@ -750,8 +695,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                           trailing: selectedIndex == index
                               ? Image.asset(
                                   'assets/check_fill.png', // 이미지 경로
-                                  width: 24,
-                                  height: 24,
+                                  width: 24.w,
+                                  height: 24.h,
                                 )
                               : null,
                           onTap: () {

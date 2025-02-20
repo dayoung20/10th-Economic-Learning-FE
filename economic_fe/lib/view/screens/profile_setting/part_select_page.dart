@@ -1,4 +1,3 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
@@ -6,6 +5,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/profile_setting/select_button_line.dart';
 import 'package:economic_fe/view_model/profile_setting/part_select_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class PartSelectPage extends StatelessWidget {
@@ -28,17 +28,17 @@ class PartSelectPage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-            width: ScreenUtils.getWidth(context, 360),
+            width: 360.w,
             child: Padding(
               padding: EdgeInsets.only(
-                left: ScreenUtils.getWidth(context, 16),
+                left: 16.w,
               ),
               child: Text(
                 '직무',
                 style: Palette.pretendard(
                   context,
                   const Color(0xff111111),
-                  20,
+                  20.sp,
                   FontWeight.w500,
                   1.5,
                   -0.5,
@@ -47,23 +47,23 @@ class PartSelectPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 17),
+            height: 17.h,
           ),
           // 직무 선택 부분
           SizedBox(
-            height: ScreenUtils.getHeight(context, 500),
+            height: 500.h,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   // 전문직
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: Text(
                       '[전문직]',
                       style: Palette.pretendard(
                         context,
                         const Color(0xFF767676),
-                        16,
+                        16.sp,
                         FontWeight.w500,
                         1.5,
                         -0.4,
@@ -71,10 +71,10 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 8),
+                    height: 8.h,
                   ),
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: const Column(
                       children: [
                         // 첫번째 줄
@@ -95,17 +95,17 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 3),
+                    height: 3.h,
                   ),
                   // 기업/사무직
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: Text(
                       '[기업/사무직]',
                       style: Palette.pretendard(
                         context,
                         const Color(0xFF767676),
-                        16,
+                        16.sp,
                         FontWeight.w500,
                         1.5,
                         -0.4,
@@ -113,10 +113,10 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 8),
+                    height: 8.h,
                   ),
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: const Column(
                       children: [
                         // 첫번째 줄
@@ -144,11 +144,11 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 14),
+                    height: 14.h,
                   ),
                   // IT/기술직
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: Text(
                       '[IT/기술직]',
                       style: Palette.pretendard(
@@ -162,10 +162,10 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 8),
+                    height: 8.h,
                   ),
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: const Column(
                       children: [
                         // 첫번째 줄
@@ -200,17 +200,17 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 15),
+                    height: 15.h,
                   ),
                   // 서비스/창업
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: Text(
                       '[서비스/창업]',
                       style: Palette.pretendard(
                         context,
                         const Color(0xFF767676),
-                        16,
+                        16.sp,
                         FontWeight.w500,
                         1.5,
                         -0.4,
@@ -218,10 +218,10 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 8),
+                    height: 8.h,
                   ),
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: const Column(
                       children: [
                         // 첫번째 줄
@@ -242,17 +242,17 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 16),
+                    height: 16.h,
                   ),
                   // 기타
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: Text(
                       '[기타]',
                       style: Palette.pretendard(
                         context,
                         const Color(0xFF767676),
-                        16,
+                        16.sp,
                         FontWeight.w500,
                         1.5,
                         -0.4,
@@ -260,10 +260,10 @@ class PartSelectPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ScreenUtils.getHeight(context, 8),
+                    height: 8.h,
                   ),
                   SizedBox(
-                    width: ScreenUtils.getWidth(context, 312),
+                    width: 312.w,
                     child: const Column(
                       children: [
                         // 첫번째 줄
@@ -288,7 +288,7 @@ class PartSelectPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 16),
+            height: 8.h,
           ),
           // 저장하기 버튼 활성화
           Obx(() {

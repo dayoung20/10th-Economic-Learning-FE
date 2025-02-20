@@ -1,4 +1,3 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
@@ -6,6 +5,7 @@ import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
 import 'package:economic_fe/view/widgets/profile_setting/profile_setting_button.dart';
 import 'package:economic_fe/view_model/profile_setting/profile_setting_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ProfileSettingPage extends StatelessWidget {
@@ -30,7 +30,7 @@ class ProfileSettingPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: ScreenUtils.getHeight(context, 37),
+              height: 37.h,
             ),
             // "기본 정보" 저장 상태에 따라 디자인 변경
             Obx(() {
@@ -44,7 +44,7 @@ class ProfileSettingPage extends StatelessWidget {
               );
             }),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 16),
+              height: 16.h,
             ),
             // "업종" 저장 상태에 따라 디자인 변경
             Obx(() {
@@ -58,7 +58,7 @@ class ProfileSettingPage extends StatelessWidget {
               );
             }),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 16),
+              height: 16.h,
             ),
             // "직무" 저장 상태에 따라 디자인 변경
             Obx(() {
@@ -72,7 +72,7 @@ class ProfileSettingPage extends StatelessWidget {
               );
             }),
             SizedBox(
-              height: ScreenUtils.getHeight(context, 241),
+              height: 210.h,
             ),
             // 저장하기 버튼 활성화
             Obx(() {

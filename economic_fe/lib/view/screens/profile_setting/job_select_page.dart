@@ -1,4 +1,3 @@
-import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_button.dart';
 import 'package:economic_fe/view/widgets/custom_button_unfilled.dart';
@@ -6,6 +5,7 @@ import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/profile_setting/select_button_line.dart';
 import 'package:economic_fe/view_model/profile_setting/job_select_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class JobSelectPage extends StatelessWidget {
@@ -29,28 +29,24 @@ class JobSelectPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-              left: ScreenUtils.getWidth(context, 16),
-            ),
+            padding: EdgeInsets.only(left: 16.w),
             child: Text(
               '업종',
               style: Palette.pretendard(
                 context,
                 const Color(0xff111111),
-                20,
+                20.sp,
                 FontWeight.w500,
                 1.5,
                 -0.5,
               ),
             ),
           ),
-          SizedBox(
-            height: ScreenUtils.getHeight(context, 17),
-          ),
+          SizedBox(height: 17.h),
           // 업종 선택 버튼들
           Center(
             child: SizedBox(
-              width: ScreenUtils.getWidth(context, 312),
+              width: 312.w,
               child: const Column(
                 children: [
                   // 첫번째 줄
@@ -94,7 +90,7 @@ class JobSelectPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: ScreenUtils.getHeight(context, 230),
+            height: 200.h,
           ),
           // 저장하기 버튼 활성화
           Obx(() {
