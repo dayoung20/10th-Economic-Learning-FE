@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view_model/notification/push_notification_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,25 +67,47 @@ class LoginController extends GetxController {
     try {
       print("백엔드 로그인 요청 시작");
 
-      dynamic response = await RemoteDataSource.getlogin(accessToken);
+      // HTTP GET 요청 실행
+      http.Response? response = await RemoteDataSource.getlogin(accessToken);
 
-      if (response != null && response['results'] != null) {
-        String serverToken = response['results'];
+      if (response == null) {
+        print("백엔드 응답 없음 (로그인 실패)");
+        Get.snackbar("로그인 실패", "서버와의 연결이 원활하지 않습니다.");
+        return;
+      }
 
-        // 로그인 유지 옵션도 저장
-        await saveToken("accessToken", serverToken);
-        await saveLoginState(true); // 자동 로그인 활성화
+      // 응답 상태 코드 확인
+      if (response.statusCode == 200) {
+        // response.body를 JSON으로 변환 후 Map 형태로 저장
+        Map<String, dynamic> responseData = jsonDecode(response.body);
 
-        print("백엔드 인증 성공, 저장된 accessToken: $serverToken");
-        Get.toNamed("login/agreement", arguments: {
-          'levelTestAnswers': answers,
-          'quizList': quizList,
-        });
+        // 서버 응답이 성공적인지 확인
+        if (responseData["isSuccess"] == true &&
+            responseData.containsKey("results")) {
+          String serverToken = responseData["results"]; // 실제 accessToken
+
+          // 토큰 저장 (자동 로그인 유지)
+          await saveToken("accessToken", serverToken);
+          await saveLoginState(true);
+
+          print("백엔드 인증 성공, 저장된 accessToken: $serverToken");
+
+          // 로그인 성공 후 다음 화면으로 이동
+          Get.toNamed("login/agreement", arguments: {
+            'levelTestAnswers': answers,
+            'quizList': quizList,
+          });
+        } else {
+          print("백엔드 인증 실패: ${responseData["message"] ?? "응답 데이터 없음"}");
+          Get.snackbar("로그인 실패", responseData["message"] ?? "알 수 없는 오류 발생");
+        }
       } else {
-        print("백엔드 인증 실패: 응답 데이터 없음");
+        print("로그인 실패: ${response.statusCode}, 응답 본문: ${response.body}");
+        Get.snackbar("로그인 실패", "서버 응답 오류: ${response.statusCode}");
       }
     } catch (e) {
       debugPrint("백엔드 로그인 요청 실패: $e");
+      Get.snackbar("로그인 오류", "네트워크 오류가 발생했습니다.");
     }
   }
 
@@ -105,7 +130,7 @@ class LoginController extends GetxController {
     await prefs.setBool("isLoggedIn", false);
 
     // SSE 연결 해제
-    Get.find<PushNotificationController>().disconnectSse();
+    // Get.find<PushNotificationController>().disconnectSse();
 
     // 로그인 화면으로 이동
     Get.offAllNamed("/login");
