@@ -23,6 +23,36 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
     controller.fetchIncorrectQuestions(); // 초기 데이터 로드
   }
 
+  // "틀린 모든 문제 다시 풀기" 버튼 클릭 시 모든 퀴즈 진행 함수
+  void startRetryAllIncorrectQuestions() {
+    if (controller.incorrectQuestions.isNotEmpty) {
+      List<Map<String, dynamic>> incorrectQuizzes =
+          controller.incorrectQuestions;
+      navigateToQuiz(0, incorrectQuizzes);
+    }
+  }
+
+  // 퀴즈를 순차적으로 진행하는 함수
+  void navigateToQuiz(int index, List<Map<String, dynamic>> quizzes) {
+    if (index >= quizzes.length) {
+      Get.back(); // 모든 퀴즈 완료 후 원래 화면으로 돌아가기
+      return;
+    }
+
+    Get.to(
+      const QuizPage(),
+      arguments: {
+        'quizId': quizzes[index]['id'],
+        'learningSetName': quizzes[index]['category'],
+        'option': quizzes[index]['type'] == "OX" ? 1 : 0,
+        'isMultiQuizMode': true, // 연속 퀴즈 모드 활성화
+        'currentIndex': index + 1,
+        'totalIndex': quizzes.length,
+        'quizzes': quizzes, // 전체 리스트 전달
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +60,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
       appBar: CustomAppBar(
         title: '틀린 문제 다시 풀기',
         icon: Icons.arrow_back_ios_new,
-        onPress: () => Get.back(),
+        onPress: () => Get.toNamed('/mypage'),
       ),
       body: Column(
         children: [
@@ -70,9 +100,7 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
           Padding(
             padding: EdgeInsets.only(left: 16.w),
             child: GestureDetector(
-              onTap: () {
-                // 버튼 클릭 시 동작
-              },
+              onTap: startRetryAllIncorrectQuestions,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

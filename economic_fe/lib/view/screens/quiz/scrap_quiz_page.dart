@@ -1,19 +1,20 @@
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';
-import 'package:economic_fe/view_model/quiz/quiz_page_controller.dart';
+import 'package:economic_fe/view_model/quiz/scrap_quiz_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+class ScrapQuizPage extends StatefulWidget {
+  const ScrapQuizPage({super.key});
 
   @override
-  State<QuizPage> createState() => _QuizPageState();
+  State<ScrapQuizPage> createState() => _ScrapQuizPageState();
 }
 
-class _QuizPageState extends State<QuizPage> {
-  final QuizPageController controller = Get.put(QuizPageController());
+class _ScrapQuizPageState extends State<ScrapQuizPage> {
+  final ScrapQuizController controller = Get.put(ScrapQuizController());
+
   late final int quizId;
   late final String? learningSetName;
   late final bool isMultiQuizMode;
@@ -42,10 +43,10 @@ class _QuizPageState extends State<QuizPage> {
       print("다음 퀴즈로 이동: ${currentIndex + 1} / 총 $totalIndex 개");
 
       Get.to(
-        () => const QuizPage(),
+        () => const ScrapQuizPage(),
         arguments: {
-          'quizId': quizzes![currentIndex + 1]['id'],
-          'learningSetName': quizzes![currentIndex + 1]['category'],
+          'quizId': quizzes![currentIndex + 1]['quizId'],
+          'learningSetName': quizzes![currentIndex + 1]['learningSetName'],
           'isMultiQuizMode': true,
           'currentIndex': currentIndex + 1,
           'totalIndex': totalIndex,
@@ -57,7 +58,7 @@ class _QuizPageState extends State<QuizPage> {
       );
     } else {
       print("퀴즈 종료: 총 $totalIndex 개 완료");
-      Get.offNamed('/mypage/wrong'); // 퀴즈 종료 후 WrongQuizPage로 이동
+      Get.offNamed('/mypage/learning'); // 퀴즈 종료 후 WrongQuizPage로 이동
     }
   }
 
@@ -116,7 +117,7 @@ class _QuizPageState extends State<QuizPage> {
               onNextQuizBtn: isMultiQuizMode ? goToNextQuiz : null,
               onFinishTest: isMultiQuizMode
                   ? goToNextQuiz
-                  : () => Get.offNamed('/mypage/wrong'),
+                  : () => Get.offNamed('/mypage/learning'),
             ),
             Obx(() {
               return controller.isModalVisible.value
@@ -126,7 +127,7 @@ class _QuizPageState extends State<QuizPage> {
                       keepBtnText: '계속할래요',
                       stopBtnText: '그만할래요',
                       keepFunc: () => controller.hideModal(),
-                      stopFunc: () => Get.offNamed('/mypage/wrong'),
+                      stopFunc: () => Get.offNamed('/mypage/learning'),
                     )
                   : const SizedBox();
             }),

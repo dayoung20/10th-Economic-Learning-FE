@@ -45,7 +45,7 @@ class MyLearningController extends GetxController
     // 초기 데이터 설정
     updateCurrentData(0);
     fetchScrapConcepts();
-    fetchScrapQuizzes();
+    // fetchScrapQuizzes();
     fetchScrapedTerms();
 
     // 탭 변경 시 데이터와 버튼 텍스트 업데이트

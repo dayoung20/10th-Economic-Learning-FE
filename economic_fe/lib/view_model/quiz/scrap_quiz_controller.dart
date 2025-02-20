@@ -2,7 +2,7 @@ import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class QuizPageController extends GetxController {
+class ScrapQuizController extends GetxController {
   final remoteDataSource = RemoteDataSource();
 
   var isModalVisible = false.obs;
