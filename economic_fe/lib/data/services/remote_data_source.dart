@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:economic_fe/view_model/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_client_sse/constants/sse_request_type_enum.dart';
 import 'package:flutter_client_sse/flutter_client_sse.dart';
@@ -1093,7 +1094,6 @@ class RemoteDataSource {
     String url = "$baseUrl/api/v2/auth/login/kakao?accessToken=$accessToken";
 
     try {
-
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -2351,7 +2351,6 @@ class RemoteDataSource {
       debugPrint("퀴즈 POST 실패");
     }
     return response;
-
   }
 
   /// api/v1/learning/{learningSetId}/quizzes/{quizId}
@@ -2469,8 +2468,7 @@ class RemoteDataSource {
       return {};
     }
   }
-
-  }
+}
 
   // /// 알림 구독 (SSE)
   // /// api: api/v1/notification/subscribe
@@ -2524,4 +2522,3 @@ class RemoteDataSource {
   //   }
   // }
 
-}
