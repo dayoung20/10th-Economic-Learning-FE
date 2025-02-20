@@ -72,10 +72,12 @@ class HomeController extends GetxController {
 
   void saveGoalSets() {
     goalSets.assignAll(tempGoalSets);
+    goalSets.refresh();
   }
 
   void resetGoalSets() {
     tempGoalSets.assignAll(goalSets);
+    tempGoalSets.refresh();
   }
 
   // 진도율 (초기값은 0)
@@ -191,6 +193,7 @@ class HomeController extends GetxController {
 
     if (success) {
       Get.snackbar('성공', '퀘스트 목표 수정이 완료되었습니다.');
+      await fetchTodayQuestProgress();
     } else {
       Get.snackbar('오류', '퀘스트 목표 수정에 실패하였습니다.');
     }
@@ -202,11 +205,14 @@ class HomeController extends GetxController {
       final response = await remoteDataSource.fetchTodayQuestProgress();
 
       if (response.isNotEmpty) {
-        conceptProgress.value =
-            (response['conceptProgress'] / 100).clamp(0.0, 1.0);
-        quizProgress.value = (response['quizProgress'] / 100).clamp(0.0, 1.0);
-        articleProgress.value =
-            (response['articleProgress'] / 100).clamp(0.0, 1.0);
+        conceptProgress.value = response['conceptProgress'].toDouble();
+        quizProgress.value = response['quizProgress'].toDouble();
+        articleProgress.value = response['articleProgress'].toDouble();
+
+        // UI 강제 업데이트
+        conceptProgress.refresh();
+        quizProgress.refresh();
+        articleProgress.refresh();
 
         debugPrint(
             "오늘의 퀘스트 진행률 업데이트 완료: 개념 ${conceptProgress.value}, 기사 ${articleProgress.value}, 퀴즈 ${quizProgress.value}");

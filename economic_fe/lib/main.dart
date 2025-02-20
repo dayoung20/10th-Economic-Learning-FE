@@ -37,8 +37,8 @@ class RippleApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Ripple',
-          initialRoute: isLoggedIn ? '/home' : '/',
-          // initialRoute: '/',
+          // initialRoute: isLoggedIn ? '/home' : '/',
+          initialRoute: '/',
           getPages: UserRouter.getPages(),
           builder: (context, widget) {
             return MediaQuery(
