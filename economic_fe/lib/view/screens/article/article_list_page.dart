@@ -257,7 +257,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${news.category}",
+                                                  _getCategoryName(
+                                                      news.category!),
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xFF2BD6D6),
@@ -365,5 +366,30 @@ class _ArticleListPageState extends State<ArticleListPage> {
       }),
       bottomNavigationBar: const CustomBottomBar(currentIndex: 2),
     );
+  }
+
+  String _getCategoryName(String category) {
+    switch (category) {
+      case "FINANCE":
+        return "금융";
+      case "INVESTMENT":
+        return "투자";
+      case "NORMAL":
+        return "경제 일반";
+      case "GLOBAL":
+        return "국제 경제";
+      case "INDUSTRY":
+        return "산업 경제";
+      case "REAL_ESTATE":
+        return "부동산";
+      case "ECONOMIC_ANALYSIS":
+        return "경제 분석";
+      case "ECONOMIC_POLICY":
+        return "정부와 경제 정책";
+      case "ECONOMIC_POLICY":
+        return "정부와 경제 정책";
+      default:
+        return "기타"; // 예외 처리
+    }
   }
 }
