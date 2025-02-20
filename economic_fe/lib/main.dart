@@ -2,6 +2,7 @@ import 'package:economic_fe/data/services/user_router.dart';
 import 'package:economic_fe/data/services/validate_access_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
@@ -29,11 +30,24 @@ class RippleApp extends StatelessWidget {
     // if (isLoggedIn) {
     //   Get.put(PushNotificationController(), permanent: true);
     // }
-
-    return GetMaterialApp(
-      title: 'Ripple',
-      initialRoute: isLoggedIn ? '/home' : '/',
-      getPages: UserRouter.getPages(),
+    return ScreenUtilInit(
+      designSize: const Size(360, 740),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          title: 'Ripple',
+          initialRoute: isLoggedIn ? '/home' : '/',
+          getPages: UserRouter.getPages(),
+          builder: (context, widget) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                  textScaler: const TextScaler.linear(1.0)), // 시스템 폰트 크기 조절 방지
+              child: widget!,
+            );
+          },
+        );
+      },
     );
   }
 }
