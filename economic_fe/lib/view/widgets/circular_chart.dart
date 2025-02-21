@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CircularChart extends StatelessWidget {
+class CircularChart extends StatefulWidget {
   final double progress; // 원형 차트의 진행 정도 (0.0 ~ 1.0)
   final String icon; // 원형 차트 내부에 들어갈 아이콘
   final String text; // 원형 차트 내부에 들어갈 글자
@@ -13,19 +13,24 @@ class CircularChart extends StatelessWidget {
       required this.text});
 
   @override
+  State<CircularChart> createState() => _CircularChartState();
+}
+
+class _CircularChartState extends State<CircularChart> {
+  @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center, // Stack 내 위젯을 중앙에 배치
       children: [
         CustomPaint(
           size: const Size(90, 90), // 원형 차트의 크기
-          painter: CirclePainter(progress: progress),
+          painter: CirclePainter(progress: widget.progress),
         ),
         // 원형 차트의 중앙에 텍스트 추가
         Column(
           children: [
             Image.asset(
-              'assets/$icon.png',
+              'assets/${widget.icon}.png',
               width: 28.11.w,
               height: 23.h,
             ),
@@ -33,7 +38,7 @@ class CircularChart extends StatelessWidget {
               height: 5.h,
             ),
             Text(
-              text,
+              widget.text,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: const Color(0xFF767676),
@@ -85,7 +90,7 @@ class CirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false; // 차트가 고정적이라 다시 그릴 필요 없음
+  bool shouldRepaint(CirclePainter oldDelegate) {
+    return oldDelegate.progress != progress; // 진행률이 변경되었을 때 다시 그림
   }
 }

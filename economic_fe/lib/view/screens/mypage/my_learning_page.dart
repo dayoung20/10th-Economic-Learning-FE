@@ -1,3 +1,5 @@
+import 'package:economic_fe/view/screens/mypage/scrap_learning_set_page.dart';
+import 'package:economic_fe/view/screens/quiz/scrap_quiz_page.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/mypage/level_container.dart';
@@ -18,13 +20,67 @@ class _MyLearningPageState extends State<MyLearningPage> {
   final MyLearningController controller = Get.put(MyLearningController());
 
   @override
+  void initState() {
+    super.initState();
+    controller.fetchScrapQuizzes(); // 초기 데이터 로드
+    controller.fetchScrapConcepts();
+  }
+
+  // "스크랩 한 모든 퀴즈 다시 풀기" 버튼 클릭 시 모든 퀴즈 진행 함수
+  void startRetryAllScrapQuestions() {
+    if (controller.scrapQuizzes.isNotEmpty) {
+      List<Map<String, dynamic>> incorrectQuizzes = controller.scrapQuizzes;
+      navigateToQuiz(0, incorrectQuizzes);
+    }
+  }
+
+  // 퀴즈를 순차적으로 진행하는 함수
+  void navigateToQuiz(int index, List<Map<String, dynamic>> quizzes) {
+    Get.off(
+      const ScrapQuizPage(),
+      arguments: {
+        'quizId': quizzes[index]['quizId'],
+        'learningSetName': quizzes[index]['learningSetName'],
+        // 'option': quizzes[index]['type'] == "OX" ? 1 : 0,
+        'isMultiQuizMode': true, // 연속 퀴즈 모드 활성화
+        'currentIndex': index + 1,
+        'totalIndex': quizzes.length,
+        'quizzes': quizzes, // 전체 리스트 전달
+      },
+    );
+  }
+
+  // "스크랩 한 모든 학습 다시 보기" 버튼 클릭 시 모든 학습 진행 함수
+  void startRetryAllScrapConcepts() {
+    if (controller.scrapConcepts.isNotEmpty) {
+      List<Map<String, dynamic>> scrapConcepts = controller.scrapConcepts;
+      navigateToConcept(0, scrapConcepts);
+    }
+  }
+
+  // 학습을 순차적으로 진행하는 함수
+  void navigateToConcept(int index, List<Map<String, dynamic>> concepts) {
+    Get.off(
+      const ScrapLearningSetPage(),
+      arguments: {
+        'isMultiLearningMode': true,
+        'currentIndex': index + 1,
+        'totalIndex': concepts.length,
+        'learningSets': concepts,
+        'learningSetId': concepts[index]['id'],
+        'learningSetName': concepts[index]['LearningSetName'],
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
         title: '나의 학습',
         icon: Icons.arrow_back_ios_new,
-        onPress: () => Get.back(),
+        onPress: () => Get.toNamed('/mypage'),
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 12.h),
@@ -61,9 +117,11 @@ class _MyLearningPageState extends State<MyLearningPage> {
                 controller: controller.tabController,
                 children: [
                   // 스크랩 한 퀴즈 화면
-                  _buildScrapQuizzesTab(controller),
+                  _buildScrapQuizzesTab(
+                      controller, startRetryAllScrapQuestions),
                   // 스크랩 한 학습 화면
-                  _buildScrapLearningTab(controller),
+                  _buildScrapLearningTab(
+                      controller, startRetryAllScrapConcepts),
                   // 스크랩 한 단어 화면
                   const ScrapedWordListView(),
                 ],
@@ -76,7 +134,8 @@ class _MyLearningPageState extends State<MyLearningPage> {
   }
 }
 
-Widget _buildScrapQuizzesTab(MyLearningController controller) {
+Widget _buildScrapQuizzesTab(
+    MyLearningController controller, Function() startRetry) {
   return Column(
     children: [
       Padding(
@@ -116,12 +175,12 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
         ),
       ),
       SizedBox(height: 18.h),
-      // 스크랩 한 모든 학습 다시 보기 버튼
+      // 스크랩 한 모든 퀴즈 다시 풀기 버튼
       Padding(
         padding: EdgeInsets.only(left: 16.w),
         child: GestureDetector(
           onTap: () {
-            // "스크랩 한 모든 학습 다시 보기" 버튼 동작 추가 가능
+            startRetry();
           },
           child: Obx(
             () => Column(
@@ -178,49 +237,57 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
               final quiz = controller.scrapQuizzes[index];
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: const Color(0xFFD9D9D9),
-                      width: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(const ScrapQuizPage(), arguments: {
+                      'quizId': quiz['quizId'],
+                      'learningSetName': quiz['learningSetName'],
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: const Color(0xFFD9D9D9),
+                        width: 1,
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            quiz['learningSetName'] ?? '',
-                            style: TextStyle(
-                              color: const Color(0xFF767676),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              quiz['learningSetName'] ?? '',
+                              style: TextStyle(
+                                color: const Color(0xFF767676),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            quiz['quizName'] ?? '',
-                            style: TextStyle(
-                              color: const Color(0xFF404040),
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
+                            const SizedBox(height: 2),
+                            Text(
+                              quiz['quizName'] ?? '',
+                              style: TextStyle(
+                                color: const Color(0xFF404040),
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.bookmark,
-                          color: Palette.buttonColorGreen,
+                          ],
                         ),
-                      ),
-                    ],
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Icon(
+                            Icons.bookmark,
+                            color: Palette.buttonColorGreen,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -232,7 +299,8 @@ Widget _buildScrapQuizzesTab(MyLearningController controller) {
   );
 }
 
-Widget _buildScrapLearningTab(MyLearningController controller) {
+Widget _buildScrapLearningTab(
+    MyLearningController controller, Function() startRetry) {
   return Column(
     children: [
       Padding(
@@ -277,7 +345,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
         padding: EdgeInsets.only(left: 16.w),
         child: GestureDetector(
           onTap: () {
-            // "스크랩 한 모든 학습 다시 보기" 버튼 동작 추가 가능
+            startRetry();
           },
           child: Obx(
             () => Column(
@@ -339,7 +407,7 @@ Widget _buildScrapLearningTab(MyLearningController controller) {
                     Get.toNamed(
                       '/mypage/learning/learning_concept',
                       arguments: {
-                        "conceptId": concept['id'],
+                        "learningSetId": concept['id'],
                         "learningSetName": concept['LearningSetName'],
                       },
                     );

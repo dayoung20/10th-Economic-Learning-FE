@@ -66,55 +66,46 @@ class _SearchPageState extends State<SearchPage>
     );
   }
 
-  /// 검색창 UI
   Widget _buildSearchBar() {
     return Center(
       child: Container(
-        width: Get.width - 32.w,
-        height: 42.h,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        decoration: ShapeDecoration(
-          color: const Color(0xFFF2F3F5),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(52)),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.search, color: Color(0xffa2a2a2)),
-            SizedBox(width: 8.w),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 3.h),
-                child: TextField(
-                  controller: controller.searchController,
-                  cursorColor: const Color(0xff111111),
-                  style: TextStyle(
-                      fontSize: 16.sp, color: const Color(0xFF111111)),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '검색어를 입력해주세요.',
-                    hintStyle: TextStyle(
-                        color: const Color(0xFFA2A2A2), fontSize: 16.sp),
-                  ),
-                  onSubmitted: (value) {
-                    controller.search(value);
-                    tabController.index = 0; // 검색 실행 시 기본 카테고리를 "통합"으로 설정
-                  },
-                ),
-              ),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        height: 60.h,
+        child: TextFormField(
+          // onChanged: (value) {
+          //   controller.search(value);
+          // },
+          controller: controller.searchController,
+          decoration: InputDecoration(
+            hintText: '검색',
+            hintStyle: TextStyle(
+              color: const Color(0xFFA2A2A2),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              height: 1.4,
+              letterSpacing: -0.4,
             ),
-            Obx(() {
-              return controller.isTextNotEmpty.value
-                  ? GestureDetector(
-                      onTap: () {
-                        controller.searchController.clear();
-                        controller.isTextNotEmpty.value = false;
-                      },
-                      child: const Icon(Icons.close, color: Colors.grey),
-                    )
-                  : const SizedBox();
-            }),
-          ],
+            fillColor: const Color(0xFFF2F3F5),
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(52),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(52),
+              borderSide: const BorderSide(color: Colors.transparent),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(52),
+            ),
+            prefixIcon: const Icon(
+              Icons.search,
+              color: Color(0xFFA2A2A2),
+            ),
+          ),
+          onFieldSubmitted: (value) {
+            controller.search(value);
+            tabController.index = 0;
+          },
         ),
       ),
     );

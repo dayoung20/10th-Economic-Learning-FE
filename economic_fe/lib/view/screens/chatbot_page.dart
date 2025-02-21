@@ -152,10 +152,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                     itemBuilder: (context, index) {
                                       final message = chatResponses[index];
                                       if (index == 0 ||
-                                          _isDifferentDate(
-                                              message.createdAt!,
-                                              chatResponses[index - 1]
-                                                  .createdAt!)) {
+                                          controller.formatCreatedAt(
+                                                  message.createdAt!) !=
+                                              controller.formatCreatedAt(
+                                                  chatResponses[index - 1]
+                                                      .createdAt!)) {
                                         //날짜 표시 위젯 여부 message.isDateMessage!
                                         return Column(
                                           crossAxisAlignment:
@@ -180,7 +181,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                                 ),
                                                 child: Text(
                                                   // DateTime.now().toString(),
-                                                  message.createdAt!,
+                                                  controller.formatCreatedAt(
+                                                      message.createdAt!),
+                                                  // message.createdAt!,
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xFF404040),
@@ -259,11 +262,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                         bool showChatbotIcon = true;
                                         bool showTime = false;
 
-                                        // 첫 번째 챗봇 메시지에만 챗봇 아이콘 표시
-                                        if (message.sender != "USER") {
-                                          showChatbotIcon =
-                                              !(message.sender == "USER");
-                                        }
+                                        // // 첫 번째 챗봇 메시지에만 챗봇 아이콘 표시
+                                        // if (message.sender != "USER") {
+                                        //   showChatbotIcon =
+                                        //       !(message.sender == "USER");
+                                        // }
 
                                         if (index == chatResponses.length - 1) {
                                           showTime = true; // 마지막 메시지

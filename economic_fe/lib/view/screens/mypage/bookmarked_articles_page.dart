@@ -73,13 +73,16 @@ class _BookmarkedArticlesPageState extends State<BookmarkedArticlesPage> {
                           onTap: () {
                             controller.toDetailPage(news);
                           },
-                          child: Text(
-                            news.title ?? "제목 없음",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              height: 1.3,
-                              letterSpacing: -0.4,
+                          child: SizedBox(
+                            width: 290.w,
+                            child: Text(
+                              news.title ?? "제목 없음",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                height: 1.3,
+                                letterSpacing: -0.4,
+                              ),
                             ),
                           ),
                         ),

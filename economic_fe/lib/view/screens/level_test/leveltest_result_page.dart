@@ -42,27 +42,28 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
-                    height: 34.h,
+                    height: 54.h,
                   ),
                   Text(
                     '레벨 테스트 결과',
                     style: TextStyle(
                       color: const Color(0xFF111111),
-                      fontSize: 20,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
                       height: 1.30.h,
                       letterSpacing: -0.50.w,
                     ),
                   ),
                   SizedBox(
-                    height: 29.h,
+                    height: 15.h,
                   ),
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       CustomPaint(
-                        size: const Size(155, 155),
-                        painter: CirclePainter(progress: 3 / 8), // 점수 / 총점(18)
+                        size: Size(130.w, 130.h),
+                        painter: CirclePainter(
+                            progress: response["results"]["correctCount"] / 9),
                       ),
                       // 원형 차트의 중앙에 텍스트 추가
                       Column(
@@ -71,7 +72,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                             '내 레벨',
                             style: TextStyle(
                               color: const Color(0xFFA2A2A2),
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                               height: 1.20.h,
                               letterSpacing: -0.35.w,
@@ -91,7 +92,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                         : "알 수 없음",
                             style: TextStyle(
                               color: const Color(0xFF111111),
-                              fontSize: 32,
+                              fontSize: 25.sp,
                               fontWeight: FontWeight.w600,
                               height: 1.20.h,
                               letterSpacing: -0.80.w,
@@ -109,13 +110,13 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
-                          height: 13.5.h,
+                          height: 40.h,
                         ),
                         Text(
                           '리플이 점수를 계산하는 방법',
                           style: TextStyle(
                             color: const Color(0xFF767676),
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                             height: 1.20.h,
                             letterSpacing: -0.35.w,
@@ -138,12 +139,11 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Container(
-                      height: 387.h,
                       padding: EdgeInsets.only(
-                        top: 24.h,
-                        left: 24.w,
-                        right: 24.w,
-                        bottom: 20.h,
+                        top: 16.h,
+                        left: 16.w,
+                        right: 16.w,
+                        bottom: 16.h,
                       ),
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -152,72 +152,40 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: SizedBox(
-                        height: 387 - 44,
-                        child: Stack(
-                          children: [
-                            // 스크롤 가능한 영역
-                            SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // 레벨에 따른 텍스트 변경 필요
-                                  Text(
-                                    '${response["results"]["level"] == "BEGINNER" ? "축하합니다!" : response["results"]["level"] == "INTERMEDIATE" ? "잘했어요!" : response["results"]["level"] == "ADVANCED" ? "대단합니다!" : "알 수 없음"} 🎉\n당신은 ${response["results"]["level"] == "BEGINNER" ? "초급" : response["results"]["level"] == "INTERMEDIATE" ? "중급" : response["results"]["level"] == "ADVANCED" ? "고급" : "알 수 없음"} 단계입니다!',
-                                    style: TextStyle(
-                                      color: const Color(0xFF111111),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.50.h,
-                                      letterSpacing: -0.50.w,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 19.h,
-                                  ),
-                                  Text(
-                                    response["results"]["level"] == "BEGINNER"
-                                        ? "경제를 처음 시작하려는 당신에게 딱 맞는 학습이 준비되어 있어요. 초급 단계에서는 어렵고 복잡하게 느껴질 수 있는 경제를 친근하게 다가갈 수 있도록 구성했어요. 기초적인 용어와 개념부터 차근차근 배우면서 경제의 기본기를 탄탄히 다질 수 있습니다. 배운 내용을 퀴즈로 복습하며 자신감을 쌓아보세요! 오늘부터 경제의 첫걸음을 가볍게 시작해 보세요! 😊"
-                                        : response["results"]["level"] ==
-                                                "INTERMEDIATE"
-                                            ? "경제를 이해하고 활용하고자 하는 당신에게 적합한 수준이에요. 중급 단계에서는 경제가 일상 속에서 어떻게 작동하는지 다양한 사례와 함께 배우게 됩니다. 더 나아가, 경제 기사를 읽고 분석하며 복잡한 상황에서도 올바른 결정을 내릴 수 있는 능력을 기를 수 있습니다. 이 단계는 당신이 경제적 통찰력을 키우고 실생활에 적용할 수 있는 중요한 과정이에요. 이제 한층 더 깊이 있는 경제 학습을 시작해보세요!** 💪"
-                                            : response["results"]["level"] ==
-                                                    "ADVANCED"
-                                                ? "이미 탄탄한 경제 지식을 바탕으로 더욱 심화된 학습을 시작할 준비가 되었어요! 고급 단계에서는 복잡한 경제 이론과 글로벌 트렌드를 심도 있게 다루며, 경제적 관점을 확장할 수 있습니다. 경제를 분석하고 깊이 있는 통찰력을 통해 한발 앞서 나가는 힘을 기를 수 있어요. 당신은 이제 경제 분야에서 전문가 수준으로 도약할 수 있는 준비가 되어 있습니다. 오늘부터 심화된 학습으로 경제 지식을 한 단계 더 높여보세요! 🚀"
-                                                : "알 수 없음",
-                                    style: TextStyle(
-                                      color: const Color(0xFF111111),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.50.h,
-                                      letterSpacing: -0.40.w,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 레벨에 따른 텍스트 변경 필요
+                          Text(
+                            '${response["results"]["level"] == "BEGINNER" ? "축하합니다!" : response["results"]["level"] == "INTERMEDIATE" ? "잘했어요!" : response["results"]["level"] == "ADVANCED" ? "대단합니다!" : "알 수 없음"} 🎉\n당신은 ${response["results"]["level"] == "BEGINNER" ? "초급" : response["results"]["level"] == "INTERMEDIATE" ? "중급" : response["results"]["level"] == "ADVANCED" ? "고급" : "알 수 없음"} 단계입니다!',
+                            style: TextStyle(
+                              color: const Color(0xFF111111),
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              height: 1.50,
+                              letterSpacing: -0.50.w,
                             ),
-
-                            // 하단 그림자
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                height: 20.h, // 그림자 높이
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                    colors: [
-                                      Colors.white, // 배경색
-                                      Colors.white.withOpacity(0), // 투명
-                                    ],
-                                  ),
-                                ),
-                              ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            response["results"]["level"] == "BEGINNER"
+                                ? "경제를 처음 시작하려는 당신에게 딱 맞는 학습이 준비되어 있어요. 초급 단계에서는 어렵고 복잡하게 느껴질 수 있는 경제를 친근하게 다가갈 수 있도록 구성했어요. 기초적인 용어와 개념부터 차근차근 배우면서 경제의 기본기를 탄탄히 다질 수 있습니다. 배운 내용을 퀴즈로 복습하며 자신감을 쌓아보세요! 오늘부터 경제의 첫걸음을 가볍게 시작해 보세요! 😊"
+                                : response["results"]["level"] == "INTERMEDIATE"
+                                    ? "경제를 이해하고 활용하고자 하는 당신에게 적합한 수준이에요. 중급 단계에서는 경제가 일상 속에서 어떻게 작동하는지 다양한 사례와 함께 배우게 됩니다. 더 나아가, 경제 기사를 읽고 분석하며 복잡한 상황에서도 올바른 결정을 내릴 수 있는 능력을 기를 수 있습니다. 이 단계는 당신이 경제적 통찰력을 키우고 실생활에 적용할 수 있는 중요한 과정이에요. 이제 한층 더 깊이 있는 경제 학습을 시작해보세요!** 💪"
+                                    : response["results"]["level"] == "ADVANCED"
+                                        ? "이미 탄탄한 경제 지식을 바탕으로 더욱 심화된 학습을 시작할 준비가 되었어요! 고급 단계에서는 복잡한 경제 이론과 글로벌 트렌드를 심도 있게 다루며, 경제적 관점을 확장할 수 있습니다. 경제를 분석하고 깊이 있는 통찰력을 통해 한발 앞서 나가는 힘을 기를 수 있어요. 당신은 이제 경제 분야에서 전문가 수준으로 도약할 수 있는 준비가 되어 있습니다. 오늘부터 심화된 학습으로 경제 지식을 한 단계 더 높여보세요! 🚀"
+                                        : "알 수 없음",
+                            style: TextStyle(
+                              color: const Color(0xFF111111),
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              height: 1.50.h,
+                              letterSpacing: -0.40.w,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -232,8 +200,8 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                           controller.toAnswer(response, answers, quizList);
                         },
                         child: Container(
-                          width: MediaQuery.of(context).size.width - 32,
-                          height: 60,
+                          width: MediaQuery.of(context).size.width - 32.w,
+                          height: 60.h,
                           decoration: ShapeDecoration(
                             color: Palette.buttonColorGreen,
                             shape: RoundedRectangleBorder(
@@ -245,7 +213,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               '문제 및 해설',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                                 height: 1.40.h,
                               ),
@@ -262,7 +230,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                           controller.toProfileSetting();
                         },
                         child: Container(
-                          width: MediaQuery.of(context).size.width - 32,
+                          width: MediaQuery.of(context).size.width - 32.w,
                           height: 60.h,
                           decoration: ShapeDecoration(
                             color: Palette.buttonColorBlue,
@@ -275,7 +243,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               '학습 시작하기',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                                 height: 1.40.h,
                               ),
@@ -323,7 +291,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                       top: 24.h,
                       left: 24.w,
                       right: 24.w,
-                      bottom: 20.h,
+                      bottom: 24.h,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

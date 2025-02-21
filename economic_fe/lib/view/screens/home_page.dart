@@ -444,19 +444,19 @@ class _HomePageState extends State<HomePage> {
                           icon: 'book_ribbon',
                           text: '개념 학습',
                           quest: controller.goalSets[0],
-                          progress: controller.conceptProgress.value,
+                          progress: controller.conceptProgress,
                         ),
                         TodaysQuestChart(
                           icon: 'news',
                           text: '경제 기사',
                           quest: controller.goalSets[1],
-                          progress: controller.articleProgress.value,
+                          progress: controller.articleProgress,
                         ),
                         TodaysQuestChart(
                           icon: 'quiz',
                           text: '퀴즈',
                           quest: controller.goalSets[2],
-                          progress: controller.quizProgress.value,
+                          progress: controller.quizProgress,
                         ),
                       ],
                     );
@@ -937,8 +937,8 @@ class _HomePageState extends State<HomePage> {
                         // 저장하기 버튼
                         GestureDetector(
                           onTap: () {
-                            controller.setUserGoal();
                             controller.saveGoalSets();
+                            controller.setUserGoal();
                             controller.hideGoalDialog();
                           },
                           child: Container(
@@ -1201,10 +1201,10 @@ class ExampleArticle extends StatelessWidget {
 }
 
 class TodaysQuestChart extends StatelessWidget {
-  final double progress;
   final String icon;
   final String text;
   final int quest;
+  final RxDouble progress;
 
   const TodaysQuestChart({
     super.key,
@@ -1220,14 +1220,16 @@ class TodaysQuestChart extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         children: [
-          CircularChart(
-            progress: progress,
-            icon: icon,
-            text: text,
-          ),
-          const SizedBox(
-            height: 15,
-          ),
+          Obx(() {
+            debugPrint("$text Progress Updated in UI: ${progress.value}");
+
+            return CircularChart(
+              progress: progress.value / 100, // 0.0 ~ 1.0 사이 값으로 정규화
+              icon: icon,
+              text: text,
+            );
+          }),
+          const SizedBox(height: 15),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
