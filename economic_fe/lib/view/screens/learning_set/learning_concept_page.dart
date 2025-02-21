@@ -68,9 +68,9 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                   child: Container(
                     padding: EdgeInsets.only(top: 18.h),
                     width:
-                        MediaQuery.of(context).size.width * 0.9, // 화면 너비의 90%
-                    height:
-                        MediaQuery.of(context).size.height * 0.9, // 화면 높이의 90%
+                        MediaQuery.of(context).size.width * 0.8.w, // 화면 너비의 90%
+                    height: MediaQuery.of(context).size.height *
+                        0.9.h, // 화면 높이의 90%
                     child: Column(
                       mainAxisSize: MainAxisSize.max, // Column이 부모의 크기를 채우도록 설정
                       children: [
@@ -204,10 +204,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                     },
                                   );
                                 },
-                                child: const Icon(
+                                child: Icon(
                                   Icons.keyboard_arrow_down,
                                   color: Colors.white,
-                                  size: 24,
+                                  size: 24.w,
                                 ),
                               ),
                             ],
@@ -284,7 +284,7 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                 // 예시 이미지
                                 "assets/example.png",
                                 fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width - 72,
+                                width: MediaQuery.of(context).size.width - 72.w,
                               ),
                               SizedBox(
                                 height: 22.h,
@@ -327,21 +327,19 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                     left: 16.0.w, right: 16.0.w, bottom: 30.h, top: 16.h),
                 // color: Colors.white, // 배경 색상
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       onPressed: () {
                         controller.prevConcept();
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(170, 53),
+                        minimumSize: Size(150.w, 50.h), // 버튼 크기 동일하게 설정
                         backgroundColor: controller.currentStepIdx.value != 0
                             ? const Color(0xFF1EB692)
                             : const Color(0xFFF2F3F5), // 버튼 색상
-                        // padding: const EdgeInsets.symmetric(vertical: 15.0), // 버튼 크기
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // 모서리를 30px로 둥글게 설정
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: Text(
@@ -358,7 +356,7 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                       ),
                     ),
                     SizedBox(
-                      width: 8.w,
+                      width: 15.w,
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -368,18 +366,13 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                             : controller.completeLearningSet();
                       },
                       style: ElevatedButton.styleFrom(
+                        minimumSize: Size(150.w, 50.h), // 동일한 크기로 설정
                         backgroundColor: controller.currentStepIdx.value !=
                                 controller.conceptList.length - 1
                             ? Palette.buttonColorGreen
                             : const Color(0xFF00D6D6), // 버튼 색상
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255), // 텍스트 색상
-                        padding:
-                            EdgeInsets.only(top: 16.h, bottom: 12.h), // 버튼 크기
-                        minimumSize: const Size(170, 53),
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // 모서리를 30px로 둥글게 설정
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: Obx(() {

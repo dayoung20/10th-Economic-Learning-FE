@@ -2,7 +2,7 @@ import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class QuizPageController extends GetxController {
+class ScrapQuizController extends GetxController {
   final remoteDataSource = RemoteDataSource();
 
   var isModalVisible = false.obs;
@@ -69,6 +69,6 @@ class QuizPageController extends GetxController {
 
   void finishQuiz() {
     resetQuizState();
-    Get.offNamed('/mypage/wrong'); // 이전 화면으로 돌아가기
+    Get.offNamed('/mypage/learning'); // 이전 화면으로 돌아가기
   }
 }

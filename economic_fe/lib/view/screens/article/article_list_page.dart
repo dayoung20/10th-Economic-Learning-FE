@@ -46,7 +46,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
       body: Column(
         children: [
           SizedBox(
-            height: 53.h,
+            height: 45.h,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Obx(() {

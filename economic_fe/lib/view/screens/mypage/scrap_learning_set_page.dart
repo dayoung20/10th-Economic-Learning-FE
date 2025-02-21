@@ -18,14 +18,35 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
   final ScrapLearningSetController controller =
       Get.put(ScrapLearningSetController());
 
+  late final bool isMultiLearningMode;
+  late int currentIndex;
+  late final int totalIndex;
+  late final List<dynamic>? learningSets;
+  late int learningSetId;
+  late final String learningSetName;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isMultiLearningMode = Get.arguments?['isMultiLearningMode'] ?? false;
+    currentIndex = Get.arguments?['currentIndex'] ?? 1;
+    totalIndex = Get.arguments?['totalIndex'] ?? 1;
+    learningSets = Get.arguments?['learningSets'];
+    learningSetId = Get.arguments?['learningSetId'];
+    learningSetName = Get.arguments?['learningSetName'];
+
+    controller.fetchSingleConcept(learningSetId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
-        title: controller.learningSetName.value, // 초기값 제공
+        title: learningSetName,
         icon: Icons.close,
-        onPress: () => Get.back(),
+        onPress: () => Get.offNamed('/mypage/learning'),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -44,115 +65,13 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
                 child: Center(
                   child: Container(
                     padding: EdgeInsets.only(top: 10.h),
-                    width:
-                        MediaQuery.of(context).size.width * 0.9.w, // 화면 너비의 90%
-                    height: MediaQuery.of(context).size.height *
-                        0.9.h, // 화면 높이의 90%
+                    width: MediaQuery.of(context).size.width * 0.8.w,
+                    height: MediaQuery.of(context).size.height * 0.9.h,
                     child: Column(
-                      mainAxisSize: MainAxisSize.max, // Column이 부모의 크기를 채우도록 설정
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF1EB692), // 컨테이너 배경색
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
-                              topRight: Radius.circular(10.0), // 오른쪽 위 둥글게
-                              // 아래쪽은 둥글게 하지 않음
-                            ),
-                            // border: Border
-                          ),
-                          alignment: Alignment.center,
-                          child: Obx(
-                            () => Text(
-                              controller
-                                  .convertLevel(controller.concept['level']),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                height: 1.4,
-                                letterSpacing: -0.4,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            color:
-                                Color.fromARGB(255, 255, 255, 255), // 컨테이너 배경색
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
-                              bottomRight: Radius.circular(10.0), // 오른쪽 위 둥글게
-                              // 아래쪽은 둥글게 하지 않음
-                            ),
-                            border: Border(
-                              top: BorderSide.none, // 윗변 테두리 없음
-                              left: BorderSide(
-                                color: Color(0xFFA2A2A2), // 테두리 두께
-                                width: 1.0,
-                              ),
-                              right: BorderSide(
-                                color: Color(0xFFA2A2A2), // 오른쪽 테두리 색상
-                                width: 1.0, // 테두리 두께
-                              ),
-                              bottom: BorderSide(
-                                color: Color(0xFFA2A2A2), // 아랫변 테두리 색상
-                                width: 1.0, // 테두리 두께
-                              ),
-                            ),
-                          ),
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 24.h),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    controller.concept['name'],
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.4,
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 11.w,
-                                  ),
-                                  Obx(() {
-                                    return GestureDetector(
-                                      onTap: () =>
-                                          controller.toggleScrapStatus(),
-                                      child: Image.asset(
-                                        controller.isScrapped.value
-                                            ? "assets/bookmark_selected.png"
-                                            : "assets/bookmark.png",
-                                        width: 13.w,
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 16.h,
-                              ),
-                              Image.asset(
-                                // 예시 이미지
-                                "assets/example.png",
-                                fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width - 72.w,
-                              ),
-                              SizedBox(
-                                height: 22.h,
-                              ),
-                              ExplanationText(
-                                  explanation:
-                                      controller.concept['explanation']),
-                            ],
-                          ),
-                        ),
+                        _buildLevelHeader(),
+                        _buildLearningContent(),
                       ],
                     ),
                   ),
@@ -170,52 +89,198 @@ class _ScrapLearningSetPageState extends State<ScrapLearningSetPage> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white, // 배경 색상을 decoration에 포함
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black
-                          .withOpacity(0.1), // rgba(0, 0, 0, 0.10) 변환
-                      blurRadius: 15.0, // 그림자의 흐림 정도
-                      offset: const Offset(0, -2), // 0px x, -2px y (위로 2px 이동)
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.only(
-                    left: 16.w, right: 16.w, bottom: 30.h, top: 16.h),
-                // color: Colors.white, // 배경 색상
-                child: Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(328.w, 56.h),
-                      backgroundColor: Palette.buttonColorBlue,
-                      // padding: const EdgeInsets.symmetric(vertical: 15.0), // 버튼 크기
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // 모서리를 30px로 둥글게 설정
-                      ),
-                    ),
-                    child: Text(
-                      "학습 완료",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                        letterSpacing: -0.45,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              child: _buildBottomNavigation(),
             ),
           ],
         );
       }),
+    );
+  }
+
+  /// 🔹 상단 레벨 표시 바
+  Widget _buildLevelHeader() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.h),
+      decoration: const BoxDecoration(
+        color: Color(0xFF1EB692),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Obx(
+        () => Text(
+          controller.convertLevel(controller.concept['level']),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+            height: 1.4,
+            letterSpacing: -0.4,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 🔹 학습 내용
+  Widget _buildLearningContent() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10.0),
+          bottomRight: Radius.circular(10.0),
+        ),
+        border: Border(
+          left: BorderSide(color: Color(0xFFA2A2A2), width: 1.0),
+          right: BorderSide(color: Color(0xFFA2A2A2), width: 1.0),
+          bottom: BorderSide(color: Color(0xFFA2A2A2), width: 1.0),
+        ),
+      ),
+      alignment: Alignment.topLeft,
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                controller.concept['name'],
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4,
+                  letterSpacing: -0.4,
+                ),
+              ),
+              SizedBox(width: 11.w),
+              Obx(() {
+                return GestureDetector(
+                  onTap: () => controller.toggleScrapStatus(learningSetId),
+                  child: Image.asset(
+                    controller.isScrapped.value
+                        ? "assets/bookmark_selected.png"
+                        : "assets/bookmark.png",
+                    width: 13.w,
+                  ),
+                );
+              }),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Image.asset(
+            "assets/example.png",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width - 72.w,
+          ),
+          SizedBox(height: 22.h),
+          ExplanationText(explanation: controller.concept['explanation']),
+        ],
+      ),
+    );
+  }
+
+  /// 🔹 하단 네비게이션 버튼
+  Widget _buildBottomNavigation() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15.0,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      padding:
+          EdgeInsets.only(left: 16.w, right: 16.w, bottom: 30.h, top: 16.h),
+      child: isMultiLearningMode
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (currentIndex > 1) {
+                      setState(() {
+                        currentIndex--;
+                        learningSetId = learningSets![currentIndex - 1]['id'];
+                      });
+                      controller.fetchSingleConcept(learningSetId);
+                    } else {
+                      Get.offNamed('/mypage/learning');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(150.w, 50.h),
+                    backgroundColor: currentIndex > 1
+                        ? const Color(0xFF1EB692)
+                        : const Color(0xFFF2F3F5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    "이전",
+                    style: TextStyle(
+                      color: currentIndex > 1
+                          ? Colors.white
+                          : const Color(0xFFA2A2A2),
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      height: 1.4.h,
+                      letterSpacing: -0.45.w,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15.w),
+                ElevatedButton(
+                  onPressed: () {
+                    if (currentIndex < totalIndex) {
+                      setState(() {
+                        currentIndex++;
+                        learningSetId = learningSets![currentIndex - 1]['id'];
+                      });
+                      controller.fetchSingleConcept(learningSetId);
+                    } else {
+                      Get.offNamed('/mypage/learning');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(150.w, 50.h),
+                    backgroundColor: currentIndex < totalIndex
+                        ? Palette.buttonColorGreen
+                        : const Color(0xFF00D6D6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    currentIndex < totalIndex ? "다음" : "학습완료",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      height: 1.4.h,
+                      letterSpacing: -0.45.w,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : ElevatedButton(
+              onPressed: () => Get.back(),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(328.w, 56.h),
+                backgroundColor: Palette.buttonColorBlue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text("학습 완료",
+                  style: TextStyle(color: Colors.white, fontSize: 18.sp)),
+            ),
     );
   }
 }
