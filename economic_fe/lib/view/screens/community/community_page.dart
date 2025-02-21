@@ -774,14 +774,17 @@ class ListItem extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: onTap,
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: const Color(0xFF111111),
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    height: 1.30,
-                    letterSpacing: -0.40,
+                child: SizedBox(
+                  width: 235.w,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      height: 1.30,
+                      letterSpacing: -0.40,
+                    ),
                   ),
                 ),
               ),

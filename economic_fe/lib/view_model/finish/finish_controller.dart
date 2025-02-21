@@ -48,7 +48,7 @@ class FinishController extends GetxController {
 
   // 퀴즈 풀러 가기
   void toQuiz() {
-    Get.toNamed('/learning_list/quiz_level/quiz');
+    Get.toNamed('/learning_list');
   }
 
   // 기사 읽으러 가기

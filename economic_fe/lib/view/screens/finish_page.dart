@@ -32,14 +32,16 @@ class FinishPage extends StatelessWidget {
           category: category,
           level: level,
         );
-      } else if (isQuiz) {
-        return FinishLayout(
-          contents: contents,
-          number: number,
-          category: category,
-          level: level,
-        );
-      } else {
+      }
+      // else if (isQuiz) {
+      //   return FinishLayout(
+      //     contents: contents,
+      //     number: number,
+      //     category: category,
+      //     level: level,
+      //   );
+      // }
+      else {
         // 모든 학습이 완료되었을 경우 다른 화면으로 이동
         return Scaffold(
           backgroundColor: const Color(0xffDEF7F1),
