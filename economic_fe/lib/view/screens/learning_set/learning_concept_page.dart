@@ -64,249 +64,261 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 65.h),
-              child: SingleChildScrollView(
-                child: Center(
-                  child: Container(
-                    padding: EdgeInsets.only(top: 18.h),
-                    width:
-                        MediaQuery.of(context).size.width * 0.8.w, // 화면 너비의 90%
-                    height: MediaQuery.of(context).size.height *
-                        0.9.h, // 화면 높이의 90%
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max, // Column이 부모의 크기를 채우도록 설정
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF1EB692), // 컨테이너 배경색
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
-                              topRight: Radius.circular(10.0), // 오른쪽 위 둥글게
-                              // 아래쪽은 둥글게 하지 않음
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height, // 화면 높이의 90%,
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 18.h),
+                      width: MediaQuery.of(context).size.width *
+                          0.8.w, // 화면 너비의 90%
+
+                      child: Column(
+                        mainAxisSize:
+                            MainAxisSize.min, // Column이 부모의 크기를 채우도록 설정
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF1EB692), // 컨테이너 배경색
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
+                                topRight: Radius.circular(10.0), // 오른쪽 위 둥글게
+                                // 아래쪽은 둥글게 하지 않음
+                              ),
+                              // border: Border
                             ),
-                            // border: Border
-                          ),
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Obx(
-                                () => Text(
-                                  controller.levelOptions[
-                                      controller.selectedLevelIndex.value],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.4,
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    backgroundColor: Colors.white,
-                                    builder: (BuildContext context) {
-                                      return StatefulBuilder(
-                                        builder: (BuildContext context,
-                                            StateSetter setState) {
-                                          return Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.8,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 16.w,
-                                                vertical: 16.h),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "카테고리",
-                                                      style: TextStyle(
-                                                          fontSize: 18.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    IconButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: const Icon(
-                                                          Icons.close),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 16.h),
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                    itemCount: controller
-                                                        .levelOptions.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return ListTile(
-                                                        contentPadding:
-                                                            EdgeInsets.zero,
-                                                        title: Text(
-                                                          controller
-                                                                  .levelOptions[
-                                                              index],
-                                                          style: TextStyle(
-                                                            fontSize: 16.sp,
-                                                            color: controller
-                                                                        .selectedLevelIndex ==
-                                                                    index
-                                                                ? const Color(
-                                                                    0xFF2BD6D6)
-                                                                : Colors.black,
-                                                            fontWeight:
-                                                                controller.selectedLevelIndex ==
-                                                                        index
-                                                                    ? FontWeight
-                                                                        .bold
-                                                                    : FontWeight
-                                                                        .normal,
-                                                          ),
-                                                        ),
-                                                        trailing: controller
-                                                                    .selectedLevelIndex ==
-                                                                index
-                                                            ? Image.asset(
-                                                                'assets/check_fill.png', // 이미지 경로
-                                                                width: 24.w,
-                                                                height: 24.h,
-                                                              )
-                                                            : null,
-                                                        onTap: () {
-                                                          controller
-                                                              .changeLevel(
-                                                                  index);
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.white,
-                                  size: 24.w,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(
-                                255, 255, 255, 255), // 컨테이너 배경색
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
-                              bottomRight: Radius.circular(10.0), // 오른쪽 위 둥글게
-                              // 아래쪽은 둥글게 하지 않음
-                            ),
-                            border: Border(
-                              top: BorderSide.none, // 윗변 테두리 없음
-                              left: BorderSide(
-                                color: const Color(0xFFA2A2A2), // 테두리 두께
-                                width: 1.0.w,
-                              ),
-                              right: BorderSide(
-                                color: const Color(0xFFA2A2A2), // 오른쪽 테두리 색상
-                                width: 1.0.w, // 테두리 두께
-                              ),
-                              bottom: BorderSide(
-                                color: const Color(0xFFA2A2A2), // 아랫변 테두리 색상
-                                width: 1.0.w, // 테두리 두께
-                              ),
-                            ),
-                          ),
-                          alignment: Alignment.topLeft,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 24.h),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    concept["name"],
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Obx(
+                                  () => Text(
+                                    controller.levelOptions[
+                                        controller.selectedLevelIndex.value],
                                     style: TextStyle(
+                                      color: Colors.white,
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w500,
                                       height: 1.4,
                                       letterSpacing: -0.4,
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 11.w,
-                                  ),
-                                  Obx(() {
-                                    final conceptId = controller.conceptList[
-                                            controller.currentStepIdx.value]
-                                        ["conceptId"];
-                                    final isScrapped =
-                                        controller.isConceptScrapped(conceptId);
-
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        bool? wasScrapped =
-                                            await controller.toggleScrapConcept(
-                                                conceptId, context);
-                                        if (wasScrapped != null) {
-                                          CustomSnackBar.show(
-                                            context: context,
-                                            message: wasScrapped
-                                                ? '개념 학습을 스크랩했어요'
-                                                : '스크랩을 취소했어요',
-                                          );
-                                        }
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Colors.white,
+                                      builder: (BuildContext context) {
+                                        return StatefulBuilder(
+                                          builder: (BuildContext context,
+                                              StateSetter setState) {
+                                            return Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.8,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16.w,
+                                                  vertical: 16.h),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "카테고리",
+                                                        style: TextStyle(
+                                                            fontSize: 18.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      IconButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.close),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 16.h),
+                                                  Expanded(
+                                                    child: ListView.builder(
+                                                      itemCount: controller
+                                                          .levelOptions.length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return ListTile(
+                                                          contentPadding:
+                                                              EdgeInsets.zero,
+                                                          title: Text(
+                                                            controller
+                                                                    .levelOptions[
+                                                                index],
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              color: controller
+                                                                          .selectedLevelIndex ==
+                                                                      index
+                                                                  ? const Color(
+                                                                      0xFF2BD6D6)
+                                                                  : Colors
+                                                                      .black,
+                                                              fontWeight: controller
+                                                                          .selectedLevelIndex ==
+                                                                      index
+                                                                  ? FontWeight
+                                                                      .bold
+                                                                  : FontWeight
+                                                                      .normal,
+                                                            ),
+                                                          ),
+                                                          trailing: controller
+                                                                      .selectedLevelIndex ==
+                                                                  index
+                                                              ? Image.asset(
+                                                                  'assets/check_fill.png', // 이미지 경로
+                                                                  width: 24.w,
+                                                                  height: 24.h,
+                                                                )
+                                                              : null,
+                                                          onTap: () {
+                                                            controller
+                                                                .changeLevel(
+                                                                    index);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
-                                      child: Image.asset(
-                                        isScrapped
-                                            ? "assets/bookmark_selected.png"
-                                            : "assets/bookmark.png",
-                                        width: 13.w,
-                                      ),
                                     );
-                                  }),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 16.h,
-                              ),
-                              Image.asset(
-                                // 예시 이미지
-                                "assets/example.png",
-                                fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width - 72.w,
-                              ),
-                              SizedBox(
-                                height: 22.h,
-                              ),
-                              ExplanationText(
-                                  explanation: concept["explanation"]),
-                            ],
+                                  },
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.white,
+                                    size: 24.w,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(
+                                  255, 255, 255, 255), // 컨테이너 배경색
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(10.0), // 왼쪽 위 둥글게
+                                bottomRight: Radius.circular(10.0), // 오른쪽 위 둥글게
+                                // 아래쪽은 둥글게 하지 않음
+                              ),
+                              border: Border(
+                                top: BorderSide.none, // 윗변 테두리 없음
+                                left: BorderSide(
+                                  color: const Color(0xFFA2A2A2), // 테두리 두께
+                                  width: 1.0.w,
+                                ),
+                                right: BorderSide(
+                                  color: const Color(0xFFA2A2A2), // 오른쪽 테두리 색상
+                                  width: 1.0.w, // 테두리 두께
+                                ),
+                                bottom: BorderSide(
+                                  color: const Color(0xFFA2A2A2), // 아랫변 테두리 색상
+                                  width: 1.0.w, // 테두리 두께
+                                ),
+                              ),
+                            ),
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.only(
+                              left: 20.w,
+                              right: 20.w,
+                              top: 24.h,
+                              bottom: 24.h,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      concept["name"],
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.4,
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 11.w,
+                                    ),
+                                    Obx(() {
+                                      final conceptId = controller.conceptList[
+                                              controller.currentStepIdx.value]
+                                          ["conceptId"];
+                                      final isScrapped = controller
+                                          .isConceptScrapped(conceptId);
+
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          bool? wasScrapped = await controller
+                                              .toggleScrapConcept(
+                                                  conceptId, context);
+                                          if (wasScrapped != null) {
+                                            CustomSnackBar.show(
+                                              context: context,
+                                              message: wasScrapped
+                                                  ? '개념 학습을 스크랩했어요'
+                                                  : '스크랩을 취소했어요',
+                                            );
+                                          }
+                                        },
+                                        child: Image.asset(
+                                          isScrapped
+                                              ? "assets/bookmark_selected.png"
+                                              : "assets/bookmark.png",
+                                          width: 13.w,
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16.h,
+                                ),
+                                Image.asset(
+                                  // 예시 이미지
+                                  "assets/example.png",
+                                  fit: BoxFit.cover,
+                                  width:
+                                      MediaQuery.of(context).size.width - 72.w,
+                                ),
+                                SizedBox(
+                                  height: 22.h,
+                                ),
+                                ExplanationText(
+                                    explanation: concept["explanation"]),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
