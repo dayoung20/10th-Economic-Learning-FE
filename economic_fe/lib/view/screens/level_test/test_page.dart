@@ -102,9 +102,9 @@ class _TestPageState extends State<TestPage> {
                       '나중에 시작할래요',
                       style: TextStyle(
                         color: const Color(0xFF404040),
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        letterSpacing: -0.35.w,
+                        letterSpacing: -0.35,
                       ),
                     ),
                   ),

@@ -32,17 +32,17 @@ class CustomBottomBar extends StatelessWidget {
         unselectedItemColor: Colors.black,
         selectedLabelStyle: TextStyle(
           color: const Color(0xFF2AD6D6),
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w700,
-          height: 1.20.h,
-          letterSpacing: -0.30.w,
+          height: 1.20,
+          letterSpacing: -0.30,
         ),
         unselectedLabelStyle: TextStyle(
           color: const Color(0xFF111111),
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w500,
-          height: 1.20.h,
-          letterSpacing: -0.30.w,
+          height: 1.20,
+          letterSpacing: -0.30,
         ),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

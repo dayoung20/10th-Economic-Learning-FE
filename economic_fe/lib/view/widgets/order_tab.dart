@@ -32,7 +32,7 @@ class OrderTab extends StatelessWidget {
             fontSize: 12,
             fontWeight: FontWeight.w400,
             height: 1.50.h,
-            letterSpacing: -0.30.w,
+            letterSpacing: -0.30,
           ),
         ),
       ],

@@ -98,10 +98,10 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
                     '계정이 이미 있어요',
                     style: TextStyle(
                       color: const Color(0xFF404040),
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       decoration: TextDecoration.underline,
-                      letterSpacing: -0.35.w,
+                      letterSpacing: -0.35,
                     ),
                   ),
                 ),

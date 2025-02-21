@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OptionsDialog {
   static void showOptionsDialog({
@@ -17,7 +18,7 @@ class OptionsDialog {
       ),
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: Wrap(
             children: [
               // 옵션 1: 수정 또는 신고
@@ -44,9 +45,9 @@ class OptionsDialog {
                       : isComment
                           ? '댓글 신고하기'
                           : '글 신고하기',
-                  style: const TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 16,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.30,
                     letterSpacing: -0.60,
@@ -66,11 +67,11 @@ class OptionsDialog {
                       isReport: false,
                     );
                   },
-                  title: const Text(
+                  title: Text(
                     '삭제',
                     style: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 16,
+                      color: const Color(0xFF111111),
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                       height: 1.30,
                       letterSpacing: -0.60,
@@ -82,11 +83,11 @@ class OptionsDialog {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                title: const Text(
+                title: Text(
                   '닫기',
                   style: TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 16,
+                    color: const Color(0xFF111111),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.30,
                     letterSpacing: -0.60,
@@ -115,16 +116,16 @@ class OptionsDialog {
           content: Container(
             width: 312,
             height: 108,
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 12.h),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   content,
-                  style: const TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 16,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                     height: 1.40,
                     letterSpacing: -0.40,
@@ -135,19 +136,19 @@ class OptionsDialog {
                   children: [
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
-                      child: const Text(
+                      child: Text(
                         '취소',
                         style: TextStyle(
-                          color: Color(0xFF9B9A99),
-                          fontSize: 16,
+                          color: const Color(0xFF9B9A99),
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                           height: 1.40,
                           letterSpacing: -0.40,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 32,
+                    SizedBox(
+                      width: 32.w,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -160,7 +161,7 @@ class OptionsDialog {
                           color: isReport
                               ? const Color(0xFFFF5468)
                               : const Color(0xFF2AD6D6),
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                           height: 1.40,
                           letterSpacing: -0.40,

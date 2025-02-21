@@ -48,10 +48,13 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                     '레벨 테스트 결과',
                     style: TextStyle(
                       color: const Color(0xFF111111),
+
+                      fontSize: 20.sp,
+
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
-                      height: 1.30.h,
-                      letterSpacing: -0.50.w,
+                      height: 1.30,
+                      letterSpacing: -0.50,
                     ),
                   ),
                   SizedBox(
@@ -74,8 +77,8 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               color: const Color(0xFFA2A2A2),
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
-                              height: 1.20.h,
-                              letterSpacing: -0.35.w,
+                              height: 1.20,
+                              letterSpacing: -0.35,
                             ),
                           ),
                           SizedBox(
@@ -92,10 +95,14 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                         : "알 수 없음",
                             style: TextStyle(
                               color: const Color(0xFF111111),
+
+                              
+
                               fontSize: 25.sp,
+
                               fontWeight: FontWeight.w600,
-                              height: 1.20.h,
-                              letterSpacing: -0.80.w,
+                              height: 1.20,
+                              letterSpacing: -0.80,
                             ),
                           ),
                         ],
@@ -118,8 +125,8 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                             color: const Color(0xFF767676),
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
-                            height: 1.20.h,
-                            letterSpacing: -0.35.w,
+                            height: 1.20,
+                            letterSpacing: -0.35,
                           ),
                         ),
                         SizedBox(
@@ -164,6 +171,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               fontWeight: FontWeight.w600,
                               height: 1.50,
                               letterSpacing: -0.50.w,
+
                             ),
                           ),
                           SizedBox(
@@ -213,7 +221,9 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               '문제 및 해설',
                               style: TextStyle(
                                 color: Colors.white,
+
                                 fontSize: 16.sp,
+
                                 fontWeight: FontWeight.w500,
                                 height: 1.40.h,
                               ),
@@ -300,10 +310,10 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                           '점수 계산 방법',
                           style: TextStyle(
                             color: const Color(0xFF111111),
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
-                            height: 1.20.h,
-                            letterSpacing: -0.45.w,
+                            height: 1.20,
+                            letterSpacing: -0.45,
                           ),
                         ),
                         GestureDetector(
@@ -329,10 +339,10 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                 text: '✔️ 문제 구성 및 점수 배분\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
@@ -340,30 +350,30 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                     '- 초급(OX 문제, 3개): 각 문제 1점\n- 중급(사지선다 단답, 3개): 각 문제 2점\n- 고급(사지선다 문장 답, 3개): 각 문제 3점\n\t→ 총점: 0~18점\n\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
                                 text: '✔️ 단계 구분 기준\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
                                 text: '- 초급(Beginner): 0~6점\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
@@ -371,20 +381,20 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                     '\t\t\t\t- 초급 문제를 모두 맞히지 못하거나 일부만 맞힌 경우.\n\t\t\t\t- 기본 경제 개념 이해가 부족하거나, \n\t\t\t\t\t\t처음 학습 단계에 해당.\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
                                 text: '- 중급(Intermediate): 7~12점\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
@@ -392,20 +402,20 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                     '\t\t\t\t- 초급 문제를 대부분 맞히고 중급 문제를 일부\n\t\t\t\t\t 맞힌 경우.\n\t\t\t\t- 경제의 기본 원리를 이해하며, 특정 주제에 대한 \n\t\t\t\t\t 개념이 존재함.\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
                                 text: '- 고급(Advanced): 13~18점\n',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                               TextSpan(
@@ -413,11 +423,11 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                     '\t\t\t\t- 중급 문제를 대부분 맞히고 고급 문제도 상당 부분 \n\t\t\t\t\t 맞힌 경우.\n\t\t\t\t- 복잡한 경제 원리와 실생활 적용 능력이 있음.',
                                 style: TextStyle(
                                   color: const Color(0xFF111111),
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontFamily: 'Pretendard Variable',
                                   fontWeight: FontWeight.w400,
-                                  height: 1.50.h,
-                                  letterSpacing: -0.40.w,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                             ],

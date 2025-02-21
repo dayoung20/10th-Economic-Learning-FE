@@ -1,5 +1,6 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LevelContainer extends StatelessWidget {
   final String level;
@@ -18,7 +19,7 @@ class LevelContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 6.h),
         decoration: ShapeDecoration(
           color: isSelected ? const Color(0xFF1DB691) : Colors.white,
           shape: RoundedRectangleBorder(
@@ -34,7 +35,7 @@ class LevelContainer extends StatelessWidget {
           level,
           style: TextStyle(
             color: isSelected ? Colors.white : const Color(0xffa2a2a2),
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w600,
             height: 1.50,
             letterSpacing: -0.35,
