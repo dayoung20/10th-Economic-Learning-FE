@@ -1,6 +1,7 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/chatbot_fab.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
+import 'package:economic_fe/view/widgets/custom_snack_bar.dart';
 import 'package:economic_fe/view/widgets/learning_set/explanation_text.dart';
 import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 import 'package:economic_fe/view_model/learning_set/learning_concept_controller.dart';
@@ -265,8 +266,19 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                         controller.isConceptScrapped(conceptId);
 
                                     return GestureDetector(
-                                      onTap: () => controller
-                                          .toggleScrapConcept(conceptId),
+                                      onTap: () async {
+                                        bool? wasScrapped =
+                                            await controller.toggleScrapConcept(
+                                                conceptId, context);
+                                        if (wasScrapped != null) {
+                                          CustomSnackBar.show(
+                                            context: context,
+                                            message: wasScrapped
+                                                ? '개념 학습을 스크랩했어요'
+                                                : '스크랩을 취소했어요',
+                                          );
+                                        }
+                                      },
                                       child: Image.asset(
                                         isScrapped
                                             ? "assets/bookmark_selected.png"

@@ -102,13 +102,33 @@ class LearningConceptController extends GetxController {
   }
 
   /// 개념 학습 세트 스크랩 & 스크랩 취소 (토글 기능)
-  Future<void> toggleScrapConcept(int conceptId) async {
+  // Future<void> toggleScrapConcept(int conceptId) async {
+  //   if (isConceptScrapped(conceptId)) {
+  //     // 스크랩 취소
+  //     bool success = await _remoteDataSource.deleteConceptScrap(conceptId);
+  //     if (success) {
+  //       scrapConceptList.remove(conceptId);
+  //       print("스크랩 취소 성공: $conceptId");
+  //     }
+  //   } else {
+  //     // 스크랩 추가
+  //     bool success = await _remoteDataSource.scrapLearningConcept(conceptId);
+  //     if (success) {
+  //       scrapConceptList.add(conceptId);
+  //       print("스크랩 성공: $conceptId");
+  //     }
+  //   }
+  // }
+
+  /// 개념 학습 세트 스크랩 & 스크랩 취소 (토글 기능)
+  Future<bool?> toggleScrapConcept(int conceptId, BuildContext context) async {
     if (isConceptScrapped(conceptId)) {
       // 스크랩 취소
       bool success = await _remoteDataSource.deleteConceptScrap(conceptId);
       if (success) {
         scrapConceptList.remove(conceptId);
         print("스크랩 취소 성공: $conceptId");
+        return false; // 스크랩 취소 성공 시 false 반환
       }
     } else {
       // 스크랩 추가
@@ -116,8 +136,10 @@ class LearningConceptController extends GetxController {
       if (success) {
         scrapConceptList.add(conceptId);
         print("스크랩 성공: $conceptId");
+        return true; // 스크랩 성공 시 true 반환
       }
     }
+    return null; // 실패 시 null 반환
   }
 
   /// 개념 학습 완료 처리
