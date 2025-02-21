@@ -11,8 +11,8 @@ class ExplanationText extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: _parseExplanation(explanation),
-        style: const TextStyle(
-          fontSize: 14,
+        style: TextStyle(
+          fontSize: 14.sp,
           fontWeight: FontWeight.w400,
           height: 1.4,
           letterSpacing: -0.35,
