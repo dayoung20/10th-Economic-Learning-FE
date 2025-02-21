@@ -15,6 +15,8 @@ class FinishPage extends StatelessWidget {
     final number = arguments['number'];
     final category = arguments['category'];
     final level = arguments['level'];
+    final isQuiz = arguments['isQuiz'] ?? false;
+    controller.isQuiz.value = isQuiz;
 
     return Obx(() {
       if (controller.isLoading.value) {
@@ -24,6 +26,13 @@ class FinishPage extends StatelessWidget {
       }
 
       if (controller.shouldShowFinishLayout.value) {
+        return FinishLayout(
+          contents: contents,
+          number: number,
+          category: category,
+          level: level,
+        );
+      } else if (isQuiz) {
         return FinishLayout(
           contents: contents,
           number: number,

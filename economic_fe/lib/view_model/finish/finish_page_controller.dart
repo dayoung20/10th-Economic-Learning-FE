@@ -8,7 +8,7 @@ class FinishPageController extends GetxController {
   var isLoading = true.obs;
   var learningProgress = <String, dynamic>{}.obs;
   var shouldShowFinishLayout = true.obs; // 기본적으로 FinishLayout 표시
-
+  var isQuiz = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -29,6 +29,8 @@ class FinishPageController extends GetxController {
         // 모든 학습 진행 상태가 100이면 FinishLayout 대신 다른 화면 표시
         bool allCompleted = progressData.values.every((value) => value == 100);
         shouldShowFinishLayout.value = !allCompleted;
+
+        print("allcompleted : $allCompleted");
       }
     } catch (e) {
       debugPrint("fetchTodayQuestProgress() 오류 발생: $e");
