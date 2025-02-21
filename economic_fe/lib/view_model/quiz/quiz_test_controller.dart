@@ -88,14 +88,14 @@ class QuizTestController extends GetxController {
           await remoteDataSource.postQuizFinish(learningSetId, level);
 
       print("response quizFinish isSuccess : ${response['isSuccess']}");
-      Get.toNamed('/learning_list/quiz_level');
+      // Get.offNamed('/learning_list/quiz_level');
     } catch (e) {
       debugPrint('post quizFinish Error: $e');
     }
   }
 
   void finishQuiz() {
-    Get.to(() => const FinishPage(), arguments: {
+    Get.off(() => const FinishPage(), arguments: {
       'contents': conceptName.value,
       'number': 1,
       'category': 1,

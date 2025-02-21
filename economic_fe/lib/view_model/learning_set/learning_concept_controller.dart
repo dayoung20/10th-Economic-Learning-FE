@@ -181,7 +181,7 @@ class LearningConceptController extends GetxController {
 
   /// 학습 완료 시 종료 화면으로 이동
   void clickedFinishBtn() {
-    Get.to(() => const FinishPage(), arguments: {
+    Get.off(() => const FinishPage(), arguments: {
       'contents': conceptName.value,
       'number': 1,
       'category': 0,
@@ -191,7 +191,7 @@ class LearningConceptController extends GetxController {
 
   // 챗봇 화면으로 이동
   void toChatbot() {
-    Get.toNamed('/chatbot');
+    Get.offNamed('/chatbot');
   }
 
   void clickedCloseBtn() {

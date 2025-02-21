@@ -278,8 +278,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                   child: Text(
                                                     (news.title != null &&
                                                             news.title!.length >
-                                                                20)
-                                                        ? '${news.title!.substring(0, 20)}...'
+                                                                18)
+                                                        ? '${news.title!.substring(0, 18)}...'
                                                         : news.title ?? "제목 없음",
                                                     style: TextStyle(
                                                       fontSize: 16.sp,
