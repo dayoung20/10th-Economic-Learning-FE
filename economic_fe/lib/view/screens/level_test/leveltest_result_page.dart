@@ -48,9 +48,6 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                     '레벨 테스트 결과',
                     style: TextStyle(
                       color: const Color(0xFF111111),
-
-                      fontSize: 20.sp,
-
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
                       height: 1.30,
@@ -95,11 +92,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                                         : "알 수 없음",
                             style: TextStyle(
                               color: const Color(0xFF111111),
-
-                              
-
                               fontSize: 25.sp,
-
                               fontWeight: FontWeight.w600,
                               height: 1.20,
                               letterSpacing: -0.80,
@@ -171,7 +164,6 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               fontWeight: FontWeight.w600,
                               height: 1.50,
                               letterSpacing: -0.50.w,
-
                             ),
                           ),
                           SizedBox(
@@ -221,9 +213,7 @@ class _LeveltestResultPageState extends State<LeveltestResultPage> {
                               '문제 및 해설',
                               style: TextStyle(
                                 color: Colors.white,
-
                                 fontSize: 16.sp,
-
                                 fontWeight: FontWeight.w500,
                                 height: 1.40.h,
                               ),

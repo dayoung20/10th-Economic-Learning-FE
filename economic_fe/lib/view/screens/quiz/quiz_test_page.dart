@@ -35,7 +35,7 @@ class _QuizTestPageState extends State<QuizTestPage> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight), // 기본 높이 설정
           child: Obx(() => CustomAppBar(
-                title: '레벨선택',
+                title: controller.conceptName.value,
                 icon: Icons.close,
                 onPress: () {
                   Navigator.pop(context);
