@@ -40,7 +40,7 @@ class CircularChart extends StatelessWidget {
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 height: 1.20.h,
-                letterSpacing: -0.30.w,
+                letterSpacing: -0.30,
               ),
             ),
           ],

@@ -33,7 +33,7 @@ class CategoryTab extends StatelessWidget {
             color: isSelected ? Colors.white : const Color(0xffa2a2a2),
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            letterSpacing: -0.35.w,
+            letterSpacing: -0.35,
           ),
         ),
       ),

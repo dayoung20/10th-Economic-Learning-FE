@@ -1,6 +1,7 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileButtonSelected extends StatefulWidget {
   final double paddingWidth;
@@ -33,9 +34,7 @@ class _ProfileButtonSelectedState extends State<ProfileButtonSelected> {
       decoration: ShapeDecoration(
         color: const Color(0xFFDEF7F7),
         shape: RoundedRectangleBorder(
-          side: BorderSide(
-              width: ScreenUtils.getWidth(context, 1),
-              color: const Color(0xFF767676)),
+          side: BorderSide(width: 1.w, color: const Color(0xFF767676)),
           borderRadius: BorderRadius.circular(14),
         ),
       ),

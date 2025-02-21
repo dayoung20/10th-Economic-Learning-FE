@@ -36,10 +36,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
           '경제 기사',
           style: TextStyle(
             color: const Color(0xFF111111),
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.w500,
-            height: 1.30.h,
-            letterSpacing: -0.50.w,
+            height: 1.30,
+            letterSpacing: -0.50,
           ),
         ),
       ),
@@ -262,10 +262,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xFF2BD6D6),
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w600,
-                                                    letterSpacing: -0.3.w,
-                                                    height: 1.3.h,
+                                                    letterSpacing: -0.3,
+                                                    height: 1.3,
                                                   ),
                                                 ),
                                                 GestureDetector(
@@ -282,11 +282,11 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                         ? '${news.title!.substring(0, 20)}...'
                                                         : news.title ?? "제목 없음",
                                                     style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      height: 1.3.h,
-                                                      letterSpacing: -0.4.w,
+                                                      height: 1.3,
+                                                      letterSpacing: -0.4,
                                                     ),
                                                   ),
                                                 ),
@@ -296,10 +296,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xFF767676),
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w400,
-                                                    height: 1.5.h,
-                                                    letterSpacing: -0.3.w,
+                                                    height: 1.5,
+                                                    letterSpacing: -0.3,
                                                   ),
                                                 ),
                                               ],
@@ -333,10 +333,10 @@ class _ArticleListPageState extends State<ArticleListPage> {
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xFF767676),
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w400,
-                                                    height: 1.5.h,
-                                                    letterSpacing: -0.3.w,
+                                                    height: 1.5,
+                                                    letterSpacing: -0.3,
                                                   ),
                                                 ),
                                               ],

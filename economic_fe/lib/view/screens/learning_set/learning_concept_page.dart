@@ -95,10 +95,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                       controller.selectedLevelIndex.value],
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    height: 1.4.h,
-                                    letterSpacing: -0.4.w,
+                                    height: 1.4,
+                                    letterSpacing: -0.4,
                                   ),
                                 ),
                               ),
@@ -128,10 +128,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    const Text(
+                                                    Text(
                                                       "카테고리",
                                                       style: TextStyle(
-                                                          fontSize: 18,
+                                                          fontSize: 18.sp,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
@@ -160,7 +160,7 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                                                   .levelOptions[
                                                               index],
                                                           style: TextStyle(
-                                                            fontSize: 16,
+                                                            fontSize: 16.sp,
                                                             color: controller
                                                                         .selectedLevelIndex ==
                                                                     index
@@ -248,10 +248,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                                   Text(
                                     concept["name"],
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w500,
-                                      height: 1.4.h,
-                                      letterSpacing: -0.4.w,
+                                      height: 1.4,
+                                      letterSpacing: -0.4,
                                     ),
                                   ),
                                   SizedBox(
@@ -350,10 +350,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                           color: controller.currentStepIdx.value != 0
                               ? Colors.white
                               : const Color(0xFFA2A2A2),
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
-                          height: 1.4.h,
-                          letterSpacing: -0.45.w,
+                          height: 1.4,
+                          letterSpacing: -0.45,
                         ),
                       ),
                     ),
@@ -390,10 +390,10 @@ class _LearningConceptPageState extends State<LearningConceptPage> {
                               : "학습완료",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
-                            height: 1.4.h,
-                            letterSpacing: -0.45.w,
+                            height: 1.4,
+                            letterSpacing: -0.45,
                           ),
                         );
                       }),

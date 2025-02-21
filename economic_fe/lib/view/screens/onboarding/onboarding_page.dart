@@ -45,10 +45,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
               "Ripple",
               style: TextStyle(
                 color: const Color(0xFF111111),
-                fontSize: 45,
+                fontSize: 45.sp,
                 fontFamily: 'Palanquin',
                 fontWeight: FontWeight.w400,
-                letterSpacing: -0.90.w,
+                letterSpacing: -0.90,
               ),
             ),
             SizedBox(
@@ -58,10 +58,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
               "처음 시작하는 경제 학습",
               style: TextStyle(
                 color: const Color(0xFF404040),
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
                 height: 1.40.h,
-                letterSpacing: -0.40.w,
+                letterSpacing: -0.40,
               ),
             ),
           ],

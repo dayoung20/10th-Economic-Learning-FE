@@ -1,6 +1,5 @@
-import 'package:economic_fe/utils/screen_utils.dart';
-import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BasicGenderButton extends StatefulWidget {
   final bool isSelected;
@@ -22,13 +21,13 @@ class _BasicGenderButtonState extends State<BasicGenderButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 58,
-      height: 38,
+      width: 58.w,
+      height: 38.h,
       decoration: widget.isSelected
           ? ShapeDecoration(
               color: const Color(0xFFDEF7F7),
               shape: RoundedRectangleBorder(
-                side: const BorderSide(width: 1, color: Color(0xFFD9D9D9)),
+                side: BorderSide(width: 1.w, color: const Color(0xFFD9D9D9)),
                 borderRadius: BorderRadius.circular(8),
               ),
             )
@@ -38,7 +37,7 @@ class _BasicGenderButtonState extends State<BasicGenderButton> {
           widget.text,
           style: TextStyle(
             color: widget.textColor,
-            fontSize: 16,
+            fontSize: 16.sp,
             fontFamily: 'Pretendard Variable',
             fontWeight: FontWeight.w500,
             height: 1.50,

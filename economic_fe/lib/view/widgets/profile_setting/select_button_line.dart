@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/profile_setting/profile_button_unselect
 import 'package:economic_fe/view_model/profile_setting/job_select_controller.dart';
 import 'package:economic_fe/view_model/profile_setting/part_select_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class SelectButtonLine extends StatefulWidget {
@@ -106,14 +107,14 @@ class _SelectButtonLineState extends State<SelectButtonLine> {
 
     return Padding(
       padding: EdgeInsets.only(
-        bottom: ScreenUtils.getHeight(context, 8),
+        bottom: 8.h,
       ),
       child: Row(
         children: List.generate(widget.indexNum, (index) {
           String label = listToUse[index + widget.indexAddNum];
           return Padding(
             padding: EdgeInsets.only(
-              right: ScreenUtils.getWidth(context, 8),
+              right: 8.w,
             ),
             child: GestureDetector(
               onTap: () => isJobSelection
@@ -124,32 +125,32 @@ class _SelectButtonLineState extends State<SelectButtonLine> {
                     ? (jobController.selectedJob.value == label
                         ? ProfileButtonSelected(
                             text: label,
-                            paddingWidth: 8,
-                            paddingHeight: 8,
-                            height: 40,
-                            fontSize: 16,
+                            paddingWidth: 8.w,
+                            paddingHeight: 8.h,
+                            height: 40.h,
+                            fontSize: 16.sp,
                           )
                         : ProfileButtonUnselected(
                             text: label,
-                            paddingWidth: 8,
-                            paddingHeight: 8,
-                            height: 40,
-                            fontSize: 16,
+                            paddingWidth: 8.w,
+                            paddingHeight: 8.h,
+                            height: 40.h,
+                            fontSize: 16.sp,
                           ))
                     : (partController.selectedPart.value == label
                         ? ProfileButtonSelected(
                             text: label,
-                            paddingWidth: 8,
-                            paddingHeight: 8,
-                            height: 40,
-                            fontSize: 16,
+                            paddingWidth: 8.w,
+                            paddingHeight: 8.h,
+                            height: 40.h,
+                            fontSize: 16.sp,
                           )
                         : ProfileButtonUnselected(
                             text: label,
-                            paddingWidth: 8,
-                            paddingHeight: 8,
-                            height: 40,
-                            fontSize: 16,
+                            paddingWidth: 8.w,
+                            paddingHeight: 8.h,
+                            height: 40.h,
+                            fontSize: 16.sp,
                           ));
               }),
             ),

@@ -3,6 +3,7 @@ import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/test/test_answer_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 
@@ -51,9 +52,9 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
               children: [
                 Text(
                   '${controller.currentQuestionIndex.value + 1}번',
-                  style: const TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 20,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.30,
                     letterSpacing: -0.50,
@@ -72,26 +73,26 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
               length: 2,
               child: Column(
                 children: [
-                  const TabBar(
+                  TabBar(
                     indicator: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          width: 3,
+                          width: 3.w,
                           color: Colors.black,
                         ),
                       ),
                     ),
                     indicatorSize: TabBarIndicatorSize.tab,
                     labelStyle: TextStyle(
-                      color: Color(0xFF111111),
-                      fontSize: 14,
+                      color: const Color(0xFF111111),
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       height: 1.50,
                       letterSpacing: -0.35,
                     ),
                     unselectedLabelStyle: TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 14,
+                      color: const Color(0xFF767676),
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       height: 1.50,
                       letterSpacing: -0.35,
@@ -99,16 +100,16 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                     tabs: [
                       Tab(
                         text: '문제',
-                        height: 44,
+                        height: 44.h,
                       ),
                       Tab(
                         text: '해설',
-                        height: 44,
+                        height: 44.h,
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 29,
+                  SizedBox(
+                    height: 29.h,
                   ),
                   // 문제 탭 내용
                   Expanded(
@@ -120,18 +121,19 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                             children: [
                               Container(
                                 width: MediaQuery.of(context).size.width - 32,
-                                padding: const EdgeInsets.only(
-                                  top: 28,
-                                  left: 40,
-                                  right: 40,
-                                  bottom: 24,
+                                padding: EdgeInsets.only(
+                                  top: 28.h,
+                                  left: 40.w,
+                                  right: 40.w,
+                                  bottom: 24.w,
                                 ),
-                                decoration: const ShapeDecoration(
-                                  color: Color(0xFFF2F3F5),
+                                decoration: ShapeDecoration(
+                                  color: const Color(0xFFF2F3F5),
                                   shape: RoundedRectangleBorder(
                                     side: BorderSide(
-                                        width: 1, color: Color(0xFFA2A2A2)),
-                                    borderRadius: BorderRadius.only(
+                                        width: 1.w,
+                                        color: const Color(0xFFA2A2A2)),
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(12),
                                       topRight: Radius.circular(12),
                                     ),
@@ -139,9 +141,9 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                 ),
                                 child: Text(
                                   '${controller.currentQuestionIndex.value + 1}. ${response["results"]["answerResponses"][controller.currentQuestionIndex.value]["question"]}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 20,
+                                  style: TextStyle(
+                                    color: const Color(0xFF111111),
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w500,
                                     height: 1.70,
                                     letterSpacing: -0.50,
@@ -151,20 +153,23 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                               // 선지
                               Container(
                                 width: MediaQuery.of(context).size.width - 32,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 32, vertical: 24),
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 32.w, vertical: 24.h),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
                                     bottomLeft: Radius.circular(10),
                                     bottomRight: Radius.circular(10),
                                   ),
                                   border: Border(
                                     left: BorderSide(
-                                        width: 1, color: Color(0xFFA2A2A2)),
+                                        width: 1.w,
+                                        color: const Color(0xFFA2A2A2)),
                                     right: BorderSide(
-                                        width: 1, color: Color(0xFFA2A2A2)),
+                                        width: 1.w,
+                                        color: const Color(0xFFA2A2A2)),
                                     bottom: BorderSide(
-                                        width: 1, color: Color(0xFFA2A2A2)),
+                                        width: 1.w,
+                                        color: const Color(0xFFA2A2A2)),
                                   ),
                                 ),
                                 child: Column(
@@ -186,11 +191,12 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                             .value]["isCorrect"];
                                     print("isCorrect : $isCorrect");
                                     return Container(
-                                      margin: const EdgeInsets.only(
-                                          bottom: 16), // 선지 간 간격
+                                      margin: EdgeInsets.only(
+                                          bottom: 16.h), // 선지 간 간격
                                       width: MediaQuery.of(context).size.width -
                                           96,
-                                      padding: const EdgeInsets.all(16),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w, vertical: 16.h),
                                       decoration: ShapeDecoration(
                                         color: isSelected
                                             ? isCorrect
@@ -216,8 +222,8 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                       child: Row(
                                         children: [
                                           Container(
-                                            width: 24,
-                                            height: 24,
+                                            width: 24.w,
+                                            height: 24.h,
                                             decoration: ShapeDecoration(
                                               color: isSelected
                                                   ? isCorrect
@@ -241,22 +247,22 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                                           .white // 선택된 번호 텍스트 색상
                                                       : const Color(
                                                           0xFF111111), // 기본 번호 텍스트 색상
-                                                  fontSize: 14,
+                                                  fontSize: 14.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  height: 1.40,
+                                                  height: 1.40.h,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(width: 12),
+                                          SizedBox(width: 12.w),
                                           Text(
                                             quizList[controller
                                                     .currentQuestionIndex.value]
                                                 .choiceList[index]
                                                 .content, // 선지 내용
-                                            style: const TextStyle(
-                                              color: Color(0xFF111111),
-                                              fontSize: 18,
+                                            style: TextStyle(
+                                              color: const Color(0xFF111111),
+                                              fontSize: 18.sp,
                                               fontWeight: FontWeight.w500,
                                               height: 1.40,
                                               letterSpacing: -0.45,
@@ -274,12 +280,12 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                         Obx(() {
                           return // 해설
                               Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
                             child: Text(
                               '${response["results"]["answerResponses"][controller.currentQuestionIndex.value]["explanation"]}',
-                              style: const TextStyle(
-                                color: Color(0xFF111111),
-                                fontSize: 16,
+                              style: TextStyle(
+                                color: const Color(0xFF111111),
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
                                 height: 1.70,
                                 letterSpacing: -0.40,
@@ -311,7 +317,7 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: 500,
+              height: 500.h,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
@@ -321,20 +327,20 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 24,
-                      left: 24,
-                      right: 24,
-                      bottom: 20,
+                    padding: EdgeInsets.only(
+                      top: 24.h,
+                      left: 24.w,
+                      right: 24.w,
+                      bottom: 20.h,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '문제 번호',
                           style: TextStyle(
-                            color: Color(0xFF111111),
-                            fontSize: 18,
+                            color: const Color(0xFF111111),
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
                             height: 1.20,
                             letterSpacing: -0.45,
@@ -355,8 +361,8 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                     return Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 9, left: 24, right: 24, bottom: 24),
+                          padding: EdgeInsets.only(
+                              top: 9.h, left: 24.w, right: 24.w, bottom: 24.h),
                           child: Column(
                             children: List.generate(
                               // controller.answers.length,
@@ -379,8 +385,8 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                     print("sele : $index");
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 15), // Row 간 간격
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15.h), // Row 간 간격
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -396,8 +402,8 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                                   ? Palette.buttonColorBlue
                                                   : const Color(0xff767676),
                                             ),
-                                            const SizedBox(
-                                              width: 8.5,
+                                            SizedBox(
+                                              width: 8.5.w,
                                             ),
                                             Text(
                                               '${index + 1}번', // 번호 표시
@@ -405,7 +411,7 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                                 color: isSelected
                                                     ? const Color(0xFF2AD6D6)
                                                     : const Color(0xff767676),
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600,
                                                 height: 1.40,
                                                 letterSpacing: -0.40,

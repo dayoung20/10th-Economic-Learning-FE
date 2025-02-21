@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/community/option_dialog.dart';
 import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:economic_fe/view_model/community/talk_detail_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CommentWidget extends StatefulWidget {
@@ -46,20 +47,20 @@ class _CommentWidgetState extends State<CommentWidget> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 10), // 답글 들여쓰기 적용
+          padding: EdgeInsets.only(top: 10.h), // 답글 들여쓰기 적용
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start, // 상단 정렬
             children: [
               // 답글이면 turn_left 아이콘을 프로필 왼쪽에 배치
               if (widget.isReply)
                 Padding(
-                  padding: const EdgeInsets.only(right: 6, left: 16),
+                  padding: EdgeInsets.only(right: 6.w, left: 16.w),
                   child: Transform.rotate(
                     angle: 3.14, // 180도 회전
-                    child: const Icon(
+                    child: Icon(
                       Icons.turn_left,
-                      size: 20,
-                      color: Color(0xffa2a2a2),
+                      size: 20.w,
+                      color: const Color(0xffa2a2a2),
                     ),
                   ),
                 ),
@@ -68,8 +69,8 @@ class _CommentWidgetState extends State<CommentWidget> {
               Expanded(
                 child: Padding(
                   padding: widget.isReply
-                      ? const EdgeInsets.only(right: 16)
-                      : const EdgeInsets.symmetric(horizontal: 16),
+                      ? EdgeInsets.only(right: 16.w)
+                      : EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -93,23 +94,23 @@ class _CommentWidgetState extends State<CommentWidget> {
                               radius: 17,
                             ),
                           ),
-                          const SizedBox(width: 7),
+                          SizedBox(width: 7.w),
                           Text(
                             widget.comment.author,
-                            style: const TextStyle(
-                              color: Color(0xFF404040),
-                              fontSize: 14,
+                            style: TextStyle(
+                              color: const Color(0xFF404040),
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               height: 1.50,
                               letterSpacing: -0.35,
                             ),
                           ),
-                          const SizedBox(width: 7),
+                          SizedBox(width: 7.w),
                           Text(
                             widget.comment.date,
-                            style: const TextStyle(
-                              color: Color(0xFF767676),
-                              fontSize: 12,
+                            style: TextStyle(
+                              color: const Color(0xFF767676),
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
                               height: 1.50,
                               letterSpacing: -0.30,
@@ -123,12 +124,12 @@ class _CommentWidgetState extends State<CommentWidget> {
                               _handleOptions(
                                   context, widget.isAuthor, widget.isReply);
                             },
-                            child: const Icon(Icons.more_horiz,
-                                size: 20, color: Colors.grey),
+                            child: Icon(Icons.more_horiz,
+                                size: 20.w, color: Colors.grey),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.h),
 
                       // 댓글 내용 표시
                       Text(
@@ -139,20 +140,20 @@ class _CommentWidgetState extends State<CommentWidget> {
                           color: widget.comment.isDeleted
                               ? Colors.grey
                               : const Color(0xFF404040),
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           height: 1.50,
                           letterSpacing: -0.35,
                         ),
                       ),
 
-                      const SizedBox(height: 8.5),
+                      SizedBox(height: 8.5.h),
 
                       Row(
                         children: [
                           // 좋아요 수
                           Padding(
-                            padding: const EdgeInsets.only(right: 5),
+                            padding: EdgeInsets.only(right: 5.w),
                             child: GestureDetector(
                               onTap: () {
                                 widget.isTalk!
@@ -176,7 +177,7 @@ class _CommentWidgetState extends State<CommentWidget> {
 
                           // 답글 버튼
                           if (!widget.isReply) ...[
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8.w),
                             GestureDetector(
                               onTap: () {
                                 widget.isTalk!
@@ -189,9 +190,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                               },
                               child: Row(
                                 children: [
-                                  const Icon(Icons.chat_bubble_outline,
-                                      size: 18, color: Colors.grey),
-                                  const SizedBox(width: 5),
+                                  Icon(Icons.chat_bubble_outline,
+                                      size: 18.w, color: Colors.grey),
+                                  SizedBox(width: 5.w),
                                   Text("${widget.comment.replies.length}"),
                                 ],
                               ),
@@ -208,9 +209,9 @@ class _CommentWidgetState extends State<CommentWidget> {
         ),
 
         // 댓글/답글 사이 구분선 추가
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Divider(
+        Padding(
+          padding: EdgeInsets.only(top: 10.h),
+          child: const Divider(
             color: Color(0xFFD9D9D9), // 연한 회색 구분선
             thickness: 1,
           ),
