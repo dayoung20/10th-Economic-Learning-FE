@@ -67,10 +67,10 @@ class FinishLayout extends StatelessWidget {
                       '$contents - $level',
                       style: TextStyle(
                         color: const Color(0xFF767676),
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
-                        height: 1.40.h,
-                        letterSpacing: -0.30.w,
+                        height: 1.40,
+                        letterSpacing: -0.30,
                       ),
                     ),
                   ),
@@ -89,10 +89,10 @@ class FinishLayout extends StatelessWidget {
                           : '$completedCount번째 퀴즈 완료',
                       style: TextStyle(
                         color: const Color(0xFF111111),
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w400,
-                        height: 1.40.h,
-                        letterSpacing: -0.45.w,
+                        height: 1.40,
+                        letterSpacing: -0.45,
                       ),
                     );
                   }),

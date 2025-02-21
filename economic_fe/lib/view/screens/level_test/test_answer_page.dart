@@ -51,9 +51,9 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
               children: [
                 Text(
                   '${controller.currentQuestionIndex.value + 1}번',
-                  style: const TextStyle(
-                    color: Color(0xFF111111),
-                    fontSize: 20,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.w500,
                     height: 1.30,
                     letterSpacing: -0.50,
@@ -411,8 +411,8 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                                   ? Palette.buttonColorBlue
                                                   : const Color(0xff767676),
                                             ),
-                                            const SizedBox(
-                                              width: 8.5,
+                                            SizedBox(
+                                              width: 8.5.w,
                                             ),
                                             Text(
                                               '${index + 1}번', // 번호 표시

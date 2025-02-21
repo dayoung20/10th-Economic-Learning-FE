@@ -37,10 +37,10 @@ class ExplanationText extends StatelessWidget {
           TextSpan(
             text: text.substring(lastMatchEnd, match.start),
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w400,
-              height: 1.4.h,
-              letterSpacing: -0.35.w,
+              height: 1.4,
+              letterSpacing: -0.35,
             ),
           ),
         );
@@ -50,10 +50,10 @@ class ExplanationText extends StatelessWidget {
       spans.add(TextSpan(
         text: match.group(1), // `**` 사이의 텍스트만 가져옴
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.bold,
-          height: 1.4.h,
-          letterSpacing: -0.35.w,
+          height: 1.4,
+          letterSpacing: -0.35,
         ),
       ));
 
@@ -66,10 +66,10 @@ class ExplanationText extends StatelessWidget {
         TextSpan(
           text: text.substring(lastMatchEnd),
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w400,
-            height: 1.4.h,
-            letterSpacing: -0.35.w,
+            height: 1.4,
+            letterSpacing: -0.35,
           ),
         ),
       );

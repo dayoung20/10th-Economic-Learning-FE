@@ -1,6 +1,7 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BasicLabel extends StatefulWidget {
   final String label;
@@ -18,7 +19,7 @@ class _BasicLabelState extends State<BasicLabel> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ScreenUtils.getWidth(context, 281),
+      width: 281.w,
       child: Text(
         widget.label,
         style: Palette.pretendard(

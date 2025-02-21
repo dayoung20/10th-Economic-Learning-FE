@@ -1,6 +1,7 @@
 import 'package:economic_fe/utils/screen_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileSettingButton extends StatefulWidget {
   final String title;
@@ -38,22 +39,18 @@ class _ProfileSettingButtonState extends State<ProfileSettingButton> {
           ),
         ),
         SizedBox(
-          height: ScreenUtils.getHeight(context, 8),
+          height: 8.h,
         ),
         GestureDetector(
           onTap: widget.onPress,
           child: Container(
-            width: ScreenUtils.getWidth(context, 280),
-            height: ScreenUtils.getHeight(context, 58),
-            padding: EdgeInsets.all(
-              ScreenUtils.getWidth(context, 12),
-            ),
+            width: 280.w,
+            height: 58.h,
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
             decoration: ShapeDecoration(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: ScreenUtils.getWidth(context, 1),
-                    color: const Color(0xFFA2A2A2)),
+                side: BorderSide(width: 1.w, color: const Color(0xFFA2A2A2)),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -65,7 +62,7 @@ class _ProfileSettingButtonState extends State<ProfileSettingButton> {
                     widget.icon,
                     Padding(
                       padding: EdgeInsets.only(
-                        left: ScreenUtils.getWidth(context, 6),
+                        left: 6.w,
                       ),
                       child: Text(
                         widget.title,

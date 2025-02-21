@@ -136,10 +136,10 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
               label,
               style: TextStyle(
                 color: isSelected ? Colors.white : const Color(0xFF111111),
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w500,
-                height: 1.50.h,
-                letterSpacing: -0.50.w,
+                height: 1.50,
+                letterSpacing: -0.50,
               ),
             ),
             Icon(
