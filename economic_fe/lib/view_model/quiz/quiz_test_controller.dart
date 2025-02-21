@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/models/quiz_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/view/screens/finish_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -91,5 +92,15 @@ class QuizTestController extends GetxController {
     } catch (e) {
       debugPrint('post quizFinish Error: $e');
     }
+  }
+
+  void finishQuiz() {
+    Get.to(() => const FinishPage(), arguments: {
+      'contents': conceptName.value,
+      'number': 1,
+      'category': 1,
+      'level': level.value,
+      'isQuiz': true,
+    });
   }
 }
