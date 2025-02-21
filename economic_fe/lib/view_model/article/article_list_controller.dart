@@ -39,18 +39,17 @@ class ArticleListController extends GetxController {
   //뉴스 기사 목록 불러오기
   Future<List<ArticleModel>> getNewsList(
       int page, String sort, String? category) async {
-    // final remoteDataSource = RemoteDataSource();
-
     try {
       print("start");
       dynamic response;
 
-      if (category != null) {
+      // "전체" 선택 시 category를 null로 전달
+      if (category == null || category == "전체") {
+        response = await remoteDataSource.getNewsList(page, sort, null);
+        print("category == null $response");
+      } else {
         response = await remoteDataSource.getNewsList(page, sort, category);
         print("category != null $response");
-      } else if (category == null || selectedCate == "전체") {
-        response = await remoteDataSource.getNewsList(page, sort, null);
-        print("n : $response");
       }
 
       final data = response as Map<String, dynamic>;
