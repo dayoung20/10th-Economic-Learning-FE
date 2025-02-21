@@ -4,6 +4,7 @@ import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view/widgets/home_app_bar.dart';
 import 'package:economic_fe/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,23 +29,23 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 9,
+                    horizontal: 16.w,
+                    vertical: 9.h,
                   ),
-                  child: HomeTitle(
+                  child: const HomeTitle(
                     title: '나의 학습 현황',
                   ),
                 ),
-                const SizedBox(
-                  height: 16,
+                SizedBox(
+                  height: 16.h,
                 ),
                 // 학습 현황 컨테이너
                 Center(
                   child: Container(
-                    width: 317,
-                    height: 292,
+                    width: 317.w,
+                    height: 292.h,
                     decoration: ShapeDecoration(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -56,8 +57,8 @@ class _HomePageState extends State<HomePage> {
                     child: Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24.w, vertical: 20.h),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -66,25 +67,25 @@ class _HomePageState extends State<HomePage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   // 진도율
-                                  const Row(
+                                  Row(
                                     children: [
                                       Text(
                                         '진도율',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: Color(0xFF111111),
-                                          fontSize: 14,
+                                          color: const Color(0xFF111111),
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
                                           letterSpacing: -0.35,
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(horizontal: 2),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 2.w),
                                         child: Icon(
                                           Icons.help_outline,
-                                          size: 14,
-                                          color: Color(0xffa2a2a2),
+                                          size: 14.w,
+                                          color: const Color(0xffa2a2a2),
                                         ),
                                       ),
                                     ],
@@ -102,28 +103,29 @@ class _HomePageState extends State<HomePage> {
                               // 진도율 그래프
                               Obx(() {
                                 return SizedBox(
-                                  width: 240,
-                                  height: 156,
+                                  width: 240.w,
+                                  height: 156.h,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       // Beginner
                                       SizedBox(
-                                        width: 72,
-                                        height: 156,
+                                        width: 72.w,
+                                        height: 156.h,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
                                             SizedBox(
-                                              width: 44,
+                                              width: 44.w,
                                               child: Text(
                                                 '${(controller.beginnerProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF111111),
-                                                  fontSize: 12,
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF111111),
+                                                  fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
                                                   height: 1.50,
                                                   letterSpacing: -0.30,
@@ -131,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 36,
+                                              width: 36.w,
                                               height: controller.maxHeight *
                                                   controller
                                                       .beginnerProgress.value *
@@ -148,11 +150,11 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                             ),
-                                            const Text(
+                                            Text(
                                               'Beginner',
                                               style: TextStyle(
-                                                color: Color(0xFF404040),
-                                                fontSize: 12,
+                                                color: const Color(0xFF404040),
+                                                fontSize: 10.sp,
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.50,
                                                 letterSpacing: -0.30,
@@ -163,20 +165,21 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       // Intermediate
                                       SizedBox(
-                                        width: 72,
-                                        height: 156,
+                                        width: 72.w,
+                                        height: 156.h,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
                                             SizedBox(
-                                              width: 44,
+                                              width: 44.w,
                                               child: Text(
                                                 '${(controller.intermediateProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF111111),
-                                                  fontSize: 12,
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF111111),
+                                                  fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
                                                   height: 1.50,
                                                   letterSpacing: -0.30,
@@ -184,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 36,
+                                              width: 36.w,
                                               height: controller.maxHeight *
                                                   controller
                                                       .intermediateProgress
@@ -202,11 +205,11 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                             ),
-                                            const Text(
+                                            Text(
                                               'Intermediate',
                                               style: TextStyle(
-                                                color: Color(0xFF404040),
-                                                fontSize: 12,
+                                                color: const Color(0xFF404040),
+                                                fontSize: 10.sp,
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.50,
                                                 letterSpacing: -0.30,
@@ -217,20 +220,21 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       // Advanced
                                       SizedBox(
-                                        width: 72,
-                                        height: 156,
+                                        width: 72.w,
+                                        height: 156.h,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
                                             SizedBox(
-                                              width: 44,
+                                              width: 44.w,
                                               child: Text(
                                                 '${(controller.advancedProgress.value).toInt()}%',
                                                 textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF111111),
-                                                  fontSize: 12,
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF111111),
+                                                  fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
                                                   height: 1.50,
                                                   letterSpacing: -0.30,
@@ -238,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 36,
+                                              width: 36.w,
                                               height: controller.maxHeight *
                                                   controller
                                                       .advancedProgress.value *
@@ -255,11 +259,11 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                             ),
-                                            const Text(
+                                            Text(
                                               'Advanced',
                                               style: TextStyle(
-                                                color: Color(0xFF404040),
-                                                fontSize: 12,
+                                                color: const Color(0xFF404040),
+                                                fontSize: 10.sp,
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.50,
                                                 letterSpacing: -0.30,
@@ -274,8 +278,8 @@ class _HomePageState extends State<HomePage> {
                               }),
 
                               Container(
-                                width: 269,
-                                height: 44,
+                                width: 269.w,
+                                height: 44.h,
                                 decoration: ShapeDecoration(
                                   color: const Color(0xFF2AD6D6),
                                   shape: RoundedRectangleBorder(
@@ -288,12 +292,12 @@ class _HomePageState extends State<HomePage> {
                                     // 학습 진행 상황에 따라 다음 화면 반환하는 로직 필요
                                     controller.navigateToLearningList();
                                   },
-                                  child: const Center(
+                                  child: Center(
                                     child: Text(
                                       '학습 하러 가기',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.w600,
                                         height: 1.50,
                                         letterSpacing: -0.45,
@@ -309,8 +313,8 @@ class _HomePageState extends State<HomePage> {
                           return controller.isProgressContainerVisible.value ==
                                   false
                               ? Container(
-                                  width: 337,
-                                  height: 292,
+                                  width: 337.w,
+                                  height: 292.h,
                                   decoration: ShapeDecoration(
                                     color: const Color(0xBF111111),
                                     shape: RoundedRectangleBorder(
@@ -338,29 +342,29 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            const Center(
+                                            Center(
                                               child: Text(
                                                 '레벨테스트를 진행해야 \n더 정확한 학습이 가능해요.',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 20,
+                                                  fontSize: 20.sp,
                                                   fontWeight: FontWeight.w600,
                                                   height: 1.30,
                                                   letterSpacing: -0.50,
                                                 ),
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 30,
+                                            SizedBox(
+                                              height: 30.h,
                                             ),
                                             GestureDetector(
                                               onTap: () =>
                                                   controller.toLevelTest(),
                                               child: Center(
                                                 child: Container(
-                                                  width: 280,
-                                                  height: 60,
+                                                  width: 280.w,
+                                                  height: 60.h,
                                                   decoration: ShapeDecoration(
                                                     color:
                                                         Palette.buttonColorBlue,
@@ -371,12 +375,12 @@ class _HomePageState extends State<HomePage> {
                                                               16),
                                                     ),
                                                   ),
-                                                  child: const Center(
+                                                  child: Center(
                                                     child: Text(
                                                       '레벨테스트 시작하기',
                                                       style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 18,
+                                                        fontSize: 18.sp,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         height: 1.20,
@@ -399,29 +403,29 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 36,
+                SizedBox(
+                  height: 36.h,
                 ),
                 // 오늘의 퀘스트
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
                   ),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         '오늘의 퀘스트',
                         style: TextStyle(
-                          color: Color(0xFF111111),
-                          fontSize: 20,
+                          color: const Color(0xFF111111),
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                           height: 1.30,
                           letterSpacing: -0.50,
                         ),
                       ),
-                      const SizedBox(
-                        width: 8,
+                      SizedBox(
+                        width: 8.w,
                       ),
                       // 목표 변경하기 버튼
                       HomeSmallButton(
@@ -432,8 +436,8 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 18,
+                SizedBox(
+                  height: 18.h,
                 ),
                 Center(
                   child: Obx(() {
@@ -462,8 +466,8 @@ class _HomePageState extends State<HomePage> {
                     );
                   }),
                 ),
-                const SizedBox(
-                  height: 36,
+                SizedBox(
+                  height: 36.h,
                 ),
                 // 경제 기사
                 TitleWithMoreBtn(
@@ -473,8 +477,8 @@ class _HomePageState extends State<HomePage> {
                     Get.toNamed('/article');
                   },
                 ),
-                const SizedBox(
-                  height: 16,
+                SizedBox(
+                  height: 16.h,
                 ),
                 // 경제 기사 리스트 불러오기
                 Obx(() {
@@ -512,7 +516,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     separatorBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
                         child: Divider(
                           color: Colors.grey.shade300,
                           thickness: 1,
@@ -522,8 +526,8 @@ class _HomePageState extends State<HomePage> {
                   );
                 }),
 
-                const SizedBox(
-                  height: 36,
+                SizedBox(
+                  height: 36.h,
                 ),
                 // 경제 톡톡
                 TitleWithMoreBtn(
@@ -532,12 +536,12 @@ class _HomePageState extends State<HomePage> {
                     Get.toNamed('/community');
                   },
                 ),
-                const SizedBox(
-                  height: 16,
+                SizedBox(
+                  height: 16.h,
                 ),
                 // 경제 톡톡 주제 컨테이너
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Obx(() {
                     if (controller.isLoading.value) {
                       return const Center(child: CircularProgressIndicator());
@@ -577,21 +581,21 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Text(
                                 todaysTok['title'],
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 22,
+                                  fontSize: 22.sp,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -0.55,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 5,
+                              SizedBox(
+                                height: 5.h,
                               ),
-                              const Text(
+                              Text(
                                 '현재 뜨거운 톡톡!',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontFamily: 'Pretendard Variable',
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: -0.35,
@@ -613,16 +617,16 @@ class _HomePageState extends State<HomePage> {
 
                                     return SizedBox(
                                       width: spacing, // 프로필 개수에 따른 크기 조절
-                                      height: 18,
+                                      height: 18.h,
                                       child: Stack(
                                         children: List.generate(
                                           profileCount,
                                           (index) {
                                             return Positioned(
-                                              left: 14.0 * index, // 위치를 겹치게 조정
+                                              left: 14.w * index, // 위치를 겹치게 조정
                                               child: Container(
-                                                width: 18,
-                                                height: 18,
+                                                width: 18.w,
+                                                height: 18.h,
                                                 decoration: ShapeDecoration(
                                                   color:
                                                       const Color(0xFFF3F3F3),
@@ -683,9 +687,9 @@ class _HomePageState extends State<HomePage> {
                                           left: textPadding), // 동적 간격 조절
                                       child: Text(
                                         '${controller.todaysTokDetail["participantCount"] ?? 0}명이 참여했어요',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
                                           height: 1.50,
                                           letterSpacing: -0.30,
@@ -702,8 +706,8 @@ class _HomePageState extends State<HomePage> {
                     );
                   }),
                 ),
-                const SizedBox(
-                  height: 36,
+                SizedBox(
+                  height: 36.h,
                 ),
                 // 인기게시물
                 TitleWithMoreBtn(
@@ -713,13 +717,13 @@ class _HomePageState extends State<HomePage> {
                     Get.toNamed('/community');
                   },
                 ),
-                const SizedBox(
-                  height: 16,
+                SizedBox(
+                  height: 16.h,
                 ),
                 // 인기게시물 2개
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Obx(() {
                       if (controller.isLoading.value) {
                         return const Center(
@@ -737,8 +741,8 @@ class _HomePageState extends State<HomePage> {
                           (index) {
                             final post = controller.popularPosts[index];
                             return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 20),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24.w, vertical: 20.h),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
@@ -778,8 +782,8 @@ class _HomePageState extends State<HomePage> {
                     }),
                   ),
                 ),
-                const SizedBox(
-                  height: 48,
+                SizedBox(
+                  height: 48.h,
                 ),
               ],
             ),
@@ -797,10 +801,10 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black.withOpacity(0.5),
                 child: Center(
                   child: Container(
-                    width: MediaQuery.of(context).size.width - 32,
-                    height: 360,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 26, vertical: 24),
+                    width: MediaQuery.of(context).size.width - 32.w,
+                    height: 360.h,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 26.w, vertical: 24.h),
                     decoration: ShapeDecoration(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -812,11 +816,11 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               '오늘의 퀘스트 변경',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w500,
                                 height: 1.20,
                                 letterSpacing: -0.45,
@@ -832,8 +836,8 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20, left: 26, right: 26, bottom: 2),
+                          padding: EdgeInsets.only(
+                              top: 20.h, left: 26.w, right: 26.w, bottom: 2.h),
                           child: Container(
                             height: 1,
                             color: const Color(0xffd9d9d9),
@@ -858,16 +862,16 @@ class _HomePageState extends State<HomePage> {
                             final isMaximum = controller.tempGoalSets[index] ==
                                 controller.maxGoalSets;
                             return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              padding: EdgeInsets.symmetric(vertical: 18.h),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     questTitle,
-                                    style: const TextStyle(
-                                      color: Color(0xFF111111),
-                                      fontSize: 18,
+                                    style: TextStyle(
+                                      color: const Color(0xFF111111),
+                                      fontSize: 18.sp,
                                       fontWeight: FontWeight.w500,
                                       height: 1.60,
                                       letterSpacing: -0.45,
@@ -887,30 +891,30 @@ class _HomePageState extends State<HomePage> {
                                                 : const Color(0xffa2a2a2),
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 16,
+                                        SizedBox(
+                                          width: 16.w,
                                         ),
                                         // 세트 수
                                         Text(
                                           '${controller.tempGoalSets[index]}',
-                                          style: const TextStyle(
-                                            color: Color(0xFF111111),
-                                            fontSize: 16,
+                                          style: TextStyle(
+                                            color: const Color(0xFF111111),
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.w600,
                                             height: 1.20,
                                           ),
                                         ),
-                                        const Text(
+                                        Text(
                                           '세트',
                                           style: TextStyle(
-                                            color: Color(0xFF111111),
-                                            fontSize: 12,
+                                            color: const Color(0xFF111111),
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w400,
                                             height: 1.20,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 16,
+                                        SizedBox(
+                                          width: 16.w,
                                         ),
                                         // + 버튼
                                         GestureDetector(
@@ -931,8 +935,8 @@ class _HomePageState extends State<HomePage> {
                             );
                           }),
                         ),
-                        const SizedBox(
-                          height: 6,
+                        SizedBox(
+                          height: 6.h,
                         ),
                         // 저장하기 버튼
                         GestureDetector(
@@ -942,20 +946,20 @@ class _HomePageState extends State<HomePage> {
                             controller.hideGoalDialog();
                           },
                           child: Container(
-                            width: MediaQuery.of(context).size.width - 84,
-                            height: 60,
+                            width: MediaQuery.of(context).size.width - 84.w,
+                            height: 60.h,
                             decoration: ShapeDecoration(
                               color: const Color(0xFF2AD6D6),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 '저장하기',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,
                                   height: 1.20,
                                   letterSpacing: -0.45,
@@ -1003,7 +1007,7 @@ class PopularPosts extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 2.h),
           decoration: ShapeDecoration(
             color: const Color(0xFF2AD6D6),
             shape:
@@ -1011,86 +1015,86 @@ class PopularPosts extends StatelessWidget {
           ),
           child: Text(
             category,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               height: 1.50,
               letterSpacing: -0.30,
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 10.h,
         ),
         Text(
           title,
-          style: const TextStyle(
-            color: Color(0xFF404040),
-            fontSize: 16,
+          style: TextStyle(
+            color: const Color(0xFF404040),
+            fontSize: 16.sp,
             fontWeight: FontWeight.w500,
             height: 1.50,
           ),
         ),
-        const SizedBox(
-          height: 5,
+        SizedBox(
+          height: 5.h,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Icon(
+            Icon(
               Icons.favorite_border,
-              size: 20,
-              color: Color(0xff767676),
+              size: 20.w,
+              color: const Color(0xff767676),
             ),
-            const SizedBox(
-              width: 4,
+            SizedBox(
+              width: 4.w,
             ),
             // 좋아요 수
             Text(
               '$likesCount',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF767676),
-                fontSize: 14,
+              style: TextStyle(
+                color: const Color(0xFF767676),
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.50,
                 letterSpacing: -0.35,
               ),
             ),
-            const SizedBox(
-              width: 8,
+            SizedBox(
+              width: 8.w,
             ),
-            const Icon(
+            Icon(
               Icons.chat_bubble_outline,
-              size: 20,
-              color: Color(0xff767676),
+              size: 20.w,
+              color: const Color(0xff767676),
             ),
-            const SizedBox(
-              width: 4,
+            SizedBox(
+              width: 4.w,
             ),
             // 댓글 수
             Text(
               '$commentsCount',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF767676),
-                fontSize: 14,
+              style: TextStyle(
+                color: const Color(0xFF767676),
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.50,
                 letterSpacing: -0.35,
               ),
             ),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: 10.w,
             ),
             // 게시글 업로드 시간
             Text(
               time,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF767676),
-                fontSize: 12,
+              style: TextStyle(
+                color: const Color(0xFF767676),
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.50,
                 letterSpacing: -0.30,
@@ -1116,7 +1120,7 @@ class TitleWithMoreBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
@@ -1126,23 +1130,23 @@ class TitleWithMoreBtn extends StatelessWidget {
             // 더보기 버튼
             GestureDetector(
               onTap: onTap,
-              child: const Row(
+              child: Row(
                 children: [
                   Text(
                     '더보기',
                     style: TextStyle(
-                      color: Color(0xFF767676),
-                      fontSize: 14,
+                      color: const Color(0xFF767676),
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 5.w,
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
-                    size: 10,
-                    color: Color(0xff767676),
+                    size: 10.w,
+                    color: const Color(0xff767676),
                   ),
                 ],
               ),
@@ -1167,28 +1171,28 @@ class ExampleArticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             category,
-            style: const TextStyle(
-              color: Color(0xFF2AD6D6),
-              fontSize: 12,
+            style: TextStyle(
+              color: const Color(0xFF2AD6D6),
+              fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               height: 1.30,
               letterSpacing: -0.30,
             ),
           ),
-          const SizedBox(
-            height: 6,
+          SizedBox(
+            height: 6.h,
           ),
           Text(
             headline,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.black,
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w500,
               height: 1.30,
               letterSpacing: -0.40,
@@ -1217,7 +1221,7 @@ class TodaysQuestChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: Column(
         children: [
           Obx(() {
@@ -1229,26 +1233,26 @@ class TodaysQuestChart extends StatelessWidget {
               text: text,
             );
           }),
-          const SizedBox(height: 15),
+          SizedBox(height: 15.h),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 '$quest',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Color(0xFF111111),
-                  fontSize: 16,
+                style: TextStyle(
+                  color: const Color(0xFF111111),
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                   height: 1.20,
                 ),
               ),
-              const Text(
+              Text(
                 '세트',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF111111),
-                  fontSize: 12,
+                  color: const Color(0xFF111111),
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                   height: 1.20,
                 ),
@@ -1279,8 +1283,8 @@ class HomeSmallButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 26,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        height: 26.h,
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -1293,21 +1297,21 @@ class HomeSmallButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: const TextStyle(
-                color: Color(0xFF767676),
-                fontSize: 12,
+              style: TextStyle(
+                color: const Color(0xFF767676),
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.50,
                 letterSpacing: -0.30,
               ),
             ),
-            const SizedBox(
-              width: 5,
+            SizedBox(
+              width: 5.w,
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
-              size: 9.42,
-              color: Color(0xff767676),
+              size: 9.42.w,
+              color: const Color(0xff767676),
             ),
           ],
         ),
@@ -1328,9 +1332,9 @@ class HomeTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(
-        color: Color(0xFF111111),
-        fontSize: 20,
+      style: TextStyle(
+        color: const Color(0xFF111111),
+        fontSize: 20.sp,
         fontWeight: FontWeight.w500,
         height: 1.30,
         letterSpacing: -0.50,

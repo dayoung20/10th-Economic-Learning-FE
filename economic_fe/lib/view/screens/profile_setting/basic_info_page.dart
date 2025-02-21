@@ -18,10 +18,10 @@ class BasicInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // GetX 컨트롤러 가져오기
     final BasicController controller = Get.put(BasicController());
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
         title: '기본 정보',
@@ -30,156 +30,446 @@ class BasicInfoPage extends StatelessWidget {
         },
         icon: Icons.close,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    SizedBox(height: ScreenUtils.getHeight(context, 10.h)),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          // 프로필 사진 설정 부분
-                          SizedBox(height: 88.h),
-                          const BasicLabel(label: '닉네임'),
-                          SizedBox(height: ScreenUtils.getHeight(context, 4)),
-                          SizedBox(
-                            width: ScreenUtils.getWidth(context, 281.w),
-                            height: ScreenUtils.getHeight(context, 44.h),
-                            child: Obx(() {
-                              return TextField(
-                                onChanged: (value) {
-                                  controller.nickname.value = value;
-                                  controller.validateNickname(value);
-                                },
-                                controller: controller.nicknameController,
-                                decoration: InputDecoration(
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Icon(Icons.person, size: 18.w),
-                                  ),
-                                  suffixIcon: controller.isValid.value
-                                      ? const Icon(
-                                          Icons.check_circle_outline,
-                                          color: Color(0xff067BD5),
-                                        )
-                                      : controller.nickname.value.isEmpty
-                                          ? null
-                                          : const Icon(
-                                              Icons.error_outline,
-                                              color: Colors.red,
-                                            ),
-                                ),
-                              );
-                            }),
+      body: Center(
+        child: ListView(
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 10.h),
+                ),
+                // 프로필 사진 설정 부분
+                SizedBox(
+                  height: 88.h,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 88.w,
+                        height: 88.h,
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFF3F3F3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(43),
                           ),
-                          SizedBox(
-                              height: ScreenUtils.getHeight(context, 10.h)),
-                          const BasicLabel(label: '성별'),
-                          SizedBox(height: ScreenUtils.getHeight(context, 8.h)),
-                          Obx(() {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        child: Obx(() {
+                          return GestureDetector(
+                            onTap: () {
+                              if (controller.selectedProfileImage.value !=
+                                  null) {
+                                controller.isDeleteMode.value =
+                                    true; // 어두운 오버레이 활성화
+                              }
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
                               children: [
-                                GestureDetector(
-                                  onTap: () => controller.selectGender('MALE'),
-                                  child: BasicGenderButton(
-                                    text: '남',
-                                    textColor:
-                                        controller.selectedGender.value ==
-                                                'MALE'
-                                            ? Colors.black
-                                            : const Color(0xffa2a2a2),
-                                    isSelected:
-                                        controller.selectedGender.value ==
-                                            'MALE',
-                                  ),
+                                // 프로필 이미지 또는 기본 아이콘
+                                ClipOval(
+                                  child: controller
+                                              .selectedProfileImage.value !=
+                                          null
+                                      ? Image.file(
+                                          File(controller
+                                              .selectedProfileImage.value!),
+                                          fit: BoxFit.cover,
+                                          width: 88.w,
+                                          height: 88.h,
+                                        )
+                                      : controller.profileImageURL.value != null
+                                          ? Image.network(
+                                              controller.profileImageURL.value!,
+                                              fit: BoxFit.cover,
+                                              width: 88.w,
+                                              height: 88.h,
+                                            )
+                                          : Icon(Icons.person, size: 43.w),
                                 ),
-                                SizedBox(width: 10.w),
-                                GestureDetector(
-                                  onTap: () =>
-                                      controller.selectGender('FEMALE'),
-                                  child: BasicGenderButton(
-                                    text: '여',
-                                    textColor:
-                                        controller.selectedGender.value ==
-                                                'FEMALE'
-                                            ? Colors.black
-                                            : const Color(0xffa2a2a2),
-                                    isSelected:
-                                        controller.selectedGender.value ==
-                                            'FEMALE',
-                                  ),
-                                ),
+
+                                // 어두운 오버레이 및 삭제 버튼 (삭제 모드일 때 표시)
+                                Obx(() {
+                                  return controller.isDeleteMode.value
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            controller.isDeleteMode.value =
+                                                false;
+                                          },
+                                          child: Container(
+                                            width: ScreenUtils.getWidth(
+                                                context, 88.w),
+                                            height: ScreenUtils.getHeight(
+                                                context, 88.h),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(
+                                                  0.5), // 반투명 어두운 효과
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Center(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  controller
+                                                      .deleteProfileImage();
+                                                  controller
+                                                          .isDeleteMode.value =
+                                                      false; // 삭제 후 초기화
+                                                },
+                                                child: const Icon(
+                                                  Icons.delete_outline,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox
+                                          .shrink(); // 삭제 모드가 아닐 때는 아무것도 표시 안 함
+                                }),
                               ],
+                            ),
+                          );
+                        }),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        // 카메라 버튼
+                        child: GestureDetector(
+                          onTap: () {
+                            controller.selectProfileImage(context);
+                          },
+                          child: Container(
+                            width: ScreenUtils.getWidth(context, 26.w),
+                            height: ScreenUtils.getHeight(context, 26.h),
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(26),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.camera_alt_outlined,
+                              size: ScreenUtils.getWidth(context, 15.w),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 18.8.h),
+                ),
+                const BasicLabel(
+                  label: '닉네임',
+                ),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 4),
+                ),
+                SizedBox(
+                  width: ScreenUtils.getWidth(context, 281.w),
+                  height: ScreenUtils.getHeight(context, 44.h),
+                  child: Obx(() {
+                    return TextField(
+                      onChanged: (value) {
+                        controller.nickname.value = value; // 닉네임 업데이트
+                        controller.validateNickname(value);
+                      },
+                      controller: controller.nicknameController,
+                      decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                            width: ScreenUtils.getWidth(context, 18.w),
+                            height: ScreenUtils.getHeight(context, 18.h),
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFF3F3F3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(43),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 1,
+                                  offset: Offset(0.20, 0.20),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.person,
+                              size: ScreenUtils.getWidth(context, 15),
+                            ),
+                          ),
+                        ),
+                        suffixIcon: controller.isValid.value
+                            ? const Icon(
+                                Icons.check_circle_outline,
+                                color: Color(0xff067BD5),
+                              )
+                            : controller.nickname.value.isEmpty
+                                ? null
+                                : const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                  ),
+                      ),
+                    );
+                  }),
+                ),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 4),
+                ),
+                Obx(() {
+                  return controller.isValid.value
+                      ? const SizedBox() // 에러 메시지가 없을 때는 아무것도 표시하지 않음
+                      : Padding(
+                          padding: EdgeInsets.only(
+                            left: ScreenUtils.getWidth(context, 8.w),
+                          ),
+                          child: SizedBox(
+                            width: ScreenUtils.getWidth(context, 280.w),
+                            child: Text(
+                              controller.errorMessage.value,
+                              style: Palette.pretendard(
+                                context,
+                                const Color(0xFFD50606),
+                                12.sp,
+                                FontWeight.w400,
+                                1.5,
+                                -0.3,
+                              ),
+                            ),
+                          ),
+                        );
+                }),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 10.h),
+                ),
+                // 성별 선택
+                const BasicLabel(
+                  label: '성별',
+                ),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 8.h),
+                ),
+                SizedBox(
+                  width: 300,
+                  height: 46,
+                  child: Obx(() {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 46.h,
+                          padding: const EdgeInsets.all(4),
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 1, color: Color(0xFFA2A2A2)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () => controller.selectGender('MALE'),
+                                child: BasicGenderButton(
+                                  text: '남',
+                                  textColor:
+                                      controller.selectedGender.value == 'MALE'
+                                          ? Colors.black
+                                          : const Color(0xffa2a2a2),
+                                  isSelected:
+                                      controller.selectedGender.value == 'MALE',
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => controller.selectGender('FEMALE'),
+                                child: BasicGenderButton(
+                                  text: '여',
+                                  textColor: controller.selectedGender.value ==
+                                          'FEMALE'
+                                      ? Colors.black
+                                      : const Color(0xffa2a2a2),
+                                  isSelected: controller.selectedGender.value ==
+                                      'FEMALE',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // 생년월일 선택 위젯
+                        SizedBox(
+                          width: 148.w,
+                          height: 44.h,
+                          child: Obx(() {
+                            return GestureDetector(
+                              onTap: () =>
+                                  controller.selectBirthday(context), // 날짜 선택
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 18.w, vertical: 10.h),
+                                decoration: ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        width: 1, color: Color(0xFFA2A2A2)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text(
+                                  controller.selectedBirthday.value ??
+                                      '생년월일', // 텍스트 표시
+                                  style: TextStyle(
+                                    color: const Color(0xFFA2A2A2),
+                                    fontSize: 16.sp,
+                                    fontFamily: 'Pretendard Variable',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
                             );
                           }),
-                          SizedBox(
-                              height: ScreenUtils.getHeight(context, 10.h)),
-                          const BasicLabel(label: '한 줄 소개'),
-                          SizedBox(height: ScreenUtils.getHeight(context, 8.h)),
-                          Container(
-                            width: ScreenUtils.getWidth(context, 281.w),
-                            padding: EdgeInsets.all(
-                                ScreenUtils.getWidth(context, 12)),
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    width: ScreenUtils.getWidth(context, 1.w),
-                                    color: const Color(0xFFA2A2A2)),
-                                borderRadius: BorderRadius.circular(16),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 18.h),
+                ),
+                // 한 줄 소개 입력칸
+                const BasicLabel(
+                  label: '한 줄 소개',
+                ),
+                SizedBox(
+                  height: ScreenUtils.getHeight(context, 8.h),
+                ),
+                Container(
+                  width: ScreenUtils.getWidth(context, 281.w),
+                  padding: EdgeInsets.all(
+                    ScreenUtils.getWidth(context, 12),
+                  ),
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          width: ScreenUtils.getWidth(context, 1.w),
+                          color: const Color(0xFFA2A2A2)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: SizedBox(
+                    width: ScreenUtils.getWidth(context, 257.w),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: ScreenUtils.getHeight(context, 10.h),
                               ),
+                              child: const Icon(Icons.edit),
                             ),
-                            child: TextField(
-                              controller: controller.userInputController,
-                              onChanged: controller.onTextChanged,
-                              maxLines: 5,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(
-                                    controller.maxLength)
-                              ],
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '한 줄 소개를 입력하세요.',
-                                hintStyle: Palette.pretendard(
-                                  context,
-                                  const Color(0xFFA2A2A2),
-                                  16.sp,
-                                  FontWeight.w400,
-                                  1.5,
-                                  -0.4,
+                            SizedBox(
+                              width: ScreenUtils.getWidth(context, 216.w),
+                              child: TextField(
+                                controller: controller.userInputController,
+                                onChanged: controller.onTextChanged,
+                                maxLines: 5,
+                                inputFormatters: [
+                                  // 글자 수가 maxLength를 초과하지 않도록 제한
+                                  LengthLimitingTextInputFormatter(
+                                      controller.maxLength),
+                                ],
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '한 줄 소개를 입력하세요.',
+                                  hintStyle: Palette.pretendard(
+                                    context,
+                                    const Color(0xFFA2A2A2),
+                                    16.sp,
+                                    FontWeight.w400,
+                                    1.5,
+                                    -0.4,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Obx(() {
-                      return controller.isValid.value &&
-                              controller.selectedBirthday.value != null
-                          ? CustomButton(
-                              text: '저장하기',
-                              onPress: () => controller.onSaveButtonClicked(),
-                              bgColor: Palette.buttonColorGreen,
-                            )
-                          : CustomButtonUnfilled(
-                              text: '저장하기',
-                              onPress: () {},
+                          ],
+                        ),
+                        SizedBox(
+                          width: ScreenUtils.getWidth(context, 257.w),
+                          child: Obx(() {
+                            return Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '${controller.currentLength.value}',
+                                    style: Palette.pretendard(
+                                      context,
+                                      controller.currentLength.value >=
+                                              controller.maxLength
+                                          ? const Color(0xFFD50606)
+                                          : const Color(0xFF111111),
+                                      12.sp,
+                                      FontWeight.w400,
+                                      1.5,
+                                      1.0,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '/${controller.maxLength}',
+                                    style: Palette.pretendard(
+                                      context,
+                                      const Color(0xFFA2A2A2),
+                                      12.sp,
+                                      FontWeight.w400,
+                                      1.5,
+                                      1.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.right,
                             );
-                    }),
-                    SizedBox(height: ScreenUtils.getHeight(context, 20.h)),
-                  ],
+                          }),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                // 저장하기 버튼 활성화
+                Obx(() {
+                  return controller.isValid.value &&
+                          controller.selectedBirthday.value != null
+                      ? CustomButton(
+                          text: '저장하기',
+                          onPress: () => controller.onSaveButtonClicked(),
+                          bgColor: Palette.buttonColorGreen,
+                        )
+                      : CustomButtonUnfilled(
+                          text: '저장하기',
+                          onPress: () {},
+                        );
+                }),
+              ],
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
