@@ -755,3 +755,244 @@ class _ChatbotPageState extends State<ChatbotPage> {
         });
   }
 }
+
+// import 'package:economic_fe/view_model/chatbot_controller.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:get/get.dart';
+// import 'package:economic_fe/view/theme/palette.dart';
+
+// class ChatbotPage extends StatefulWidget {
+//   const ChatbotPage({super.key});
+
+//   @override
+//   State<ChatbotPage> createState() => _ChatbotPageState();
+// }
+
+// class _ChatbotPageState extends State<ChatbotPage> {
+//   final controller = Get.put(ChatbotController());
+//   final ScrollController _scrollController = ScrollController();
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     controller.fetchChatbotMessages();
+
+//     _scrollController.addListener(() {
+//       if (_scrollController.position.pixels ==
+//               _scrollController.position.maxScrollExtent &&
+//           !controller.isLoading.value) {
+//         controller.currentPage++;
+//         controller.fetchChatbotMessages();
+//       }
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     _scrollController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Palette.background,
+//       appBar: AppBar(
+//         backgroundColor: Palette.background,
+//         automaticallyImplyLeading: true,
+//         title: const Text('챗봇'),
+//         centerTitle: true,
+//       ),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: Obx(() {
+//               if (controller.isLoading.value) {
+//                 return const Center(child: CircularProgressIndicator());
+//               }
+
+//               if (controller.messages.isEmpty) {
+//                 return const Center(child: Text("대화 내용이 없습니다."));
+//               }
+
+//               // 메시지 추가 시 자동 스크롤
+//               WidgetsBinding.instance.addPostFrameCallback((_) {
+//                 _scrollController
+//                     .jumpTo(_scrollController.position.maxScrollExtent);
+//               });
+
+//               return ListView.builder(
+//                 controller: _scrollController,
+//                 reverse: false, // 오래된 메시지부터 표시
+//                 itemCount: controller.messages.length,
+//                 itemBuilder: (context, index) {
+//                   final message = controller.messages[index];
+
+//                   bool isFirstMessageOfDay = index == 0 ||
+//                       controller.formatDate(message.createdAt!) !=
+//                           controller.formatDate(
+//                               controller.messages[index - 1].createdAt!);
+
+//                   return Padding(
+//                     padding:
+//                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+//                     child: Column(
+//                       crossAxisAlignment: message.sender == "USER"
+//                           ? CrossAxisAlignment.end
+//                           : CrossAxisAlignment.start,
+//                       children: [
+//                         if (isFirstMessageOfDay)
+//                           Center(
+//                             child: Padding(
+//                               padding: EdgeInsets.only(bottom: 10.h),
+//                               child: Text(
+//                                 controller.formatDate(message.createdAt!),
+//                                 style: TextStyle(
+//                                     fontSize: 12.sp, color: Colors.grey),
+//                               ),
+//                             ),
+//                           ),
+//                         Row(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             if (message.sender != "USER")
+//                               Column(
+//                                 children: [
+//                                   Container(
+//                                     width: 40.w,
+//                                     height: 40.h,
+//                                     decoration: ShapeDecoration(
+//                                       color: Colors.white,
+//                                       shape: RoundedRectangleBorder(
+//                                         side: const BorderSide(
+//                                             width: 0.50,
+//                                             color: Color(0xFFA2A2A2)),
+//                                         borderRadius: BorderRadius.circular(20),
+//                                       ),
+//                                     ),
+//                                     child: const Icon(Icons.android,
+//                                         color: Colors.green),
+//                                   ),
+//                                   SizedBox(height: 5.h),
+//                                   Text('챗봇',
+//                                       style: TextStyle(
+//                                           fontSize: 12.sp, color: Colors.grey))
+//                                 ],
+//                               ),
+//                             SizedBox(width: 8.w),
+//                             Expanded(
+//                               child: Container(
+//                                 padding: EdgeInsets.symmetric(
+//                                     horizontal: 16.w, vertical: 10.h),
+//                                 decoration: ShapeDecoration(
+//                                   color: message.sender == "USER"
+//                                       ? const Color(0xFF1DB691)
+//                                       : const Color(0xFFF2F3F5),
+//                                   shape: RoundedRectangleBorder(
+//                                     side: const BorderSide(
+//                                         width: 0.50, color: Color(0xFFA2A2A2)),
+//                                     borderRadius: BorderRadius.circular(12),
+//                                   ),
+//                                 ),
+//                                 child: Text(
+//                                   message.message!,
+//                                   style: TextStyle(
+//                                     color: message.sender == "USER"
+//                                         ? Colors.white
+//                                         : const Color(0xFF404040),
+//                                     fontSize: 16.sp,
+//                                     fontWeight: FontWeight.w400,
+//                                     height: 1.4,
+//                                     letterSpacing: -0.40,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         Align(
+//                           alignment: message.sender == "USER"
+//                               ? Alignment.centerRight
+//                               : Alignment.centerLeft,
+//                           child: Padding(
+//                             padding: EdgeInsets.only(top: 4.h),
+//                             child: Text(
+//                               controller.formatTime(message.createdAt!),
+//                               style: TextStyle(
+//                                   fontSize: 12.sp, color: Colors.grey),
+//                             ),
+//                           ),
+//                         )
+//                       ],
+//                     ),
+//                   );
+//                 },
+//               );
+//             }),
+//           ),
+//           _buildMessageInput(),
+//         ],
+//       ),
+//     );
+//   }
+
+//   Widget _buildMessageInput() {
+//     return Padding(
+//       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+//       child: Container(
+//         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
+//         decoration: ShapeDecoration(
+//           color: const Color(0xFFF2F3F5),
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(17),
+//           ),
+//         ),
+//         child: Row(
+//           children: [
+//             Expanded(
+//               child: Obx(() {
+//                 return SizedBox(
+//                   width: 280.w,
+//                   child: TextField(
+//                     controller: controller.messageController,
+//                     onChanged: (value) {
+//                       controller.updateMessage(value);
+//                     },
+//                     decoration: InputDecoration(
+//                       hintText: '메시지를 입력해주세요.',
+//                       hintStyle: TextStyle(
+//                         color: const Color(0xFFA2A2A2),
+//                         fontSize: 16.sp,
+//                         fontWeight: FontWeight.w400,
+//                         letterSpacing: -0.40,
+//                       ),
+//                       border: InputBorder.none,
+//                       suffixIcon: IconButton(
+//                         onPressed: () {
+//                           controller.postChatbotMessage();
+//                           controller.messageController.clear();
+
+//                           // 메시지 전송 후 스크롤 맨 아래로 이동
+//                           Future.delayed(const Duration(milliseconds: 300), () {
+//                             _scrollController.jumpTo(
+//                                 _scrollController.position.maxScrollExtent);
+//                           });
+//                         },
+//                         icon: controller.messageText.value.isNotEmpty
+//                             ? Image.asset('assets/send_active.png', width: 24.w)
+//                             : Image.asset('assets/send.png', width: 24.w),
+//                       ),
+//                     ),
+//                     maxLines: 5,
+//                     minLines: 1,
+//                   ),
+//                 );
+//               }),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
