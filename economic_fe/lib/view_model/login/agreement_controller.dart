@@ -10,6 +10,12 @@ class AgreementController extends GetxController {
   late BuildContext context;
   final remoteDataSource = RemoteDataSource();
 
+  String from = 'login';
+
+  void setFrom(String value) {
+    from = value;
+  }
+
   // 체크박스 상태 관리
   RxBool isCheckedAll = false.obs; // '모두 동의합니다.' 체크 상태
   RxBool isCheckedOne = false.obs; // '리플 서비스 이용 약관' 체크 상태
@@ -44,14 +50,18 @@ class AgreementController extends GetxController {
 
       print("response : $response");
 
-      Get.toNamed(
-        '/leveltest_result',
-        arguments: {
-          'response': response,
-          'answer': answers,
-          'quizList': quizList,
-        },
-      );
+      if (from == 'skip') {
+        Get.offAllNamed('/profile_setting');
+      } else {
+        Get.toNamed(
+          '/leveltest_result',
+          arguments: {
+            'response': response,
+            'answer': answers,
+            'quizList': quizList,
+          },
+        );
+      }
     } catch (e) {
       debugPrint("error : $e");
     }

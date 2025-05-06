@@ -1,20 +1,22 @@
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view_model/login/login_exist_controller.dart';
+import 'package:economic_fe/view_model/login/login_leveltest_skip_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class LoginExistPage extends StatefulWidget {
-  const LoginExistPage({super.key});
+class LoginLeveltestSkipPage extends StatefulWidget {
+  const LoginLeveltestSkipPage({super.key});
 
   @override
-  State<LoginExistPage> createState() => _LoginExistPageState();
+  State<LoginLeveltestSkipPage> createState() => _LoginLeveltestSkipState();
 }
 
-class _LoginExistPageState extends State<LoginExistPage> {
+class _LoginLeveltestSkipState extends State<LoginLeveltestSkipPage> {
   @override
   Widget build(BuildContext context) {
-    final LoginExistController controller = Get.put(LoginExistController());
+    final LoginLevelTestSkipController controller =
+        Get.put(LoginLevelTestSkipController());
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -66,7 +68,7 @@ class _LoginExistPageState extends State<LoginExistPage> {
                     controller.login();
                   },
                   icon: Image.asset(
-                    'assets/kakao_login_exist_btn.png',
+                    'assets/kakao_login_btn.png',
                     width: 300.w,
                     height: 45.h,
                   ),

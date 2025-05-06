@@ -18,6 +18,7 @@ import 'package:economic_fe/view/screens/home_page.dart';
 import 'package:economic_fe/view/screens/learning_set/learning_list_page.dart';
 import 'package:economic_fe/view/screens/level_test/leveltest_result_page.dart';
 import 'package:economic_fe/view/screens/login/login_exist_page.dart';
+import 'package:economic_fe/view/screens/login/login_leveltest_skip_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_articles_page.dart';
 import 'package:economic_fe/view/screens/mypage/bookmarked_post_page.dart';
 import 'package:economic_fe/view/screens/mypage/community_activity_page.dart';
@@ -95,6 +96,11 @@ class UserRouter {
             children: [
               GetPage(name: '/detail', page: () => const AgreementDetailPage())
             ],
+          ),
+          // 레벨테스트 스킵
+          GetPage(
+            name: '/skip',
+            page: () => const LoginLeveltestSkipPage(),
           ),
         ],
       ),
