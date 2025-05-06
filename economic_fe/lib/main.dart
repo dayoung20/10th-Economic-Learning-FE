@@ -41,7 +41,7 @@ class RippleApp extends StatelessWidget {
           ),
           child: GetMaterialApp(
             title: 'Ripple',
-            initialRoute: '/chatbot',
+            initialRoute: '/',
             getPages: UserRouter.getPages(),
             builder: (context, widget) {
               return MediaQuery(
