@@ -1,5 +1,7 @@
 import 'package:economic_fe/data/services/user_router.dart';
 import 'package:economic_fe/data/services/validate_access_token.dart';
+import 'package:economic_fe/view/screens/home_page.dart';
+import 'package:economic_fe/view/screens/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +41,7 @@ class RippleApp extends StatelessWidget {
           ),
           child: GetMaterialApp(
             title: 'Ripple',
-            initialRoute: '/',
+            initialRoute: '/chatbot',
             getPages: UserRouter.getPages(),
             builder: (context, widget) {
               return MediaQuery(

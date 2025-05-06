@@ -147,7 +147,7 @@ class UserRouter {
       ),
       GetPage(
         name: '/chatbot',
-        page: () => const ChatbotPage(),
+        page: () => ChatbotPage(),
       ),
       GetPage(
         name: '/dictionary',
