@@ -20,13 +20,18 @@ class _AgreementPageState extends State<AgreementPage> {
   void initState() {
     super.initState();
     controller = Get.put(AgreementController());
+
+    final from = Get.arguments['from'] ?? 'login';
+    controller.setFrom(from);
   }
 
   @override
   Widget build(BuildContext context) {
     final arguments = Get.arguments as Map<String, dynamic>;
-    final List<LevelTestAnswerModel> answers = arguments['levelTestAnswers'];
-    final List<QuizModel> quizList = arguments['quizList'];
+    final String from = arguments['from'] ?? 'login';
+    final List<LevelTestAnswerModel> answers =
+        arguments['levelTestAnswers'] ?? [];
+    final List<QuizModel> quizList = arguments['quizList'] ?? [];
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -205,7 +210,7 @@ class _AgreementPageState extends State<AgreementPage> {
                             ),
                           ),
                           SizedBox(
-                            width: 16.w,
+                            width: 17.w,
                           ),
                           Text(
                             "(필수) 리플 서비스 이용 약관",
