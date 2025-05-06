@@ -261,8 +261,8 @@ class BasicInfoPage extends StatelessWidget {
                   height: ScreenUtils.getHeight(context, 8.h),
                 ),
                 SizedBox(
-                  width: 300,
-                  height: 46,
+                  width: 300.w,
+                  height: 46.h,
                   child: Obx(() {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
