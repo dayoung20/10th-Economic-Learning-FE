@@ -258,66 +258,74 @@ class _DictionaryPageState extends State<DictionaryPage> {
                                             backgroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(
-                                                      10), // 팝업 테두리 둥글게
+                                                  BorderRadius.circular(10),
                                             ),
-                                            child: Stack(
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 14.h,
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                maxHeight: 400.h, // 최대 높이 지정
+                                                maxWidth: 340.w,
+                                              ),
+                                              child: Stack(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          SizedBox(
+                                                              height: 14.h),
+                                                          Text(
+                                                            terms.termName ??
+                                                                "용어 제목",
+                                                            style: TextStyle(
+                                                              fontSize: 18.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              letterSpacing:
+                                                                  -0.45,
+                                                              height: 1.2,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                              height: 12.h),
+                                                          Text(
+                                                            terms.termDescription ??
+                                                                "상세 내용이 없습니다.",
+                                                            style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              color: Colors
+                                                                  .black87,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                              height: 16.h),
+                                                        ],
                                                       ),
-                                                      // 제목
-                                                      Text(
-                                                        terms.termName ??
-                                                            "용어 제목",
-                                                        style: TextStyle(
-                                                          fontSize: 18.sp,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          letterSpacing: -0.45,
-                                                          height: 1.2,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 12.h),
-                                                      // 내용
-                                                      Text(
-                                                        terms.termDescription ??
-                                                            "상세 내용이 없습니다.",
-                                                        style: TextStyle(
-                                                          fontSize: 14.sp,
-                                                          color: Colors.black87,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 16.h),
-                                                    ],
-                                                  ),
-                                                ),
-                                                // 오른쪽 위 X 버튼
-                                                Positioned(
-                                                  top: 8.h,
-                                                  right: 8.w,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop(); // 팝업 닫기
-                                                    },
-                                                    child: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.black,
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                  Positioned(
+                                                    top: 8.h,
+                                                    right: 8.w,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           );
                                         },
