@@ -26,11 +26,11 @@ class FinishPageController extends GetxController {
       if (progressData.isNotEmpty) {
         learningProgress.assignAll(progressData);
 
-        // 모든 학습 진행 상태가 100이면 FinishLayout 대신 다른 화면 표시
-        bool allCompleted = progressData.values.every((value) => value == 100);
-        shouldShowFinishLayout.value = !allCompleted;
+        // // 모든 학습 진행 상태가 100이면 FinishLayout 대신 다른 화면 표시
+        // bool allCompleted = progressData.values.every((value) => value == 100);
+        // shouldShowFinishLayout.value = !allCompleted;
 
-        print("allcompleted : $allCompleted");
+        // print("allcompleted : $allCompleted");
       }
     } catch (e) {
       debugPrint("fetchTodayQuestProgress() 오류 발생: $e");

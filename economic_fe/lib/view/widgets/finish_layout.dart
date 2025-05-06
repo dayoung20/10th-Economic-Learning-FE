@@ -31,7 +31,7 @@ class FinishLayout extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(top: 54.h, left: 16.w),
               child: GestureDetector(
-                onTap: () => Get.toNamed('/home'),
+                onTap: () => Get.offNamed('/home'),
                 child: const Icon(Icons.close),
               ),
             ),
