@@ -205,7 +205,7 @@ class _AgreementPageState extends State<AgreementPage> {
                             ),
                           ),
                           SizedBox(
-                            width: 16.w,
+                            width: 17.w,
                           ),
                           Text(
                             "(필수) 리플 서비스 이용 약관",
