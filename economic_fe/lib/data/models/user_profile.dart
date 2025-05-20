@@ -1,19 +1,19 @@
 class UserProfile {
-  int? userId;
-  String? profileImageURL;
+  int? userId; // 서버에 전송되지 않음, 프론트에서만 사용
+  String? profileImageURL; // 서버에 전송되지 않음, 프론트에서만 사용
   String nickname;
   String birthDate;
   String gender;
   String profileIntro;
   String businessType;
   String job;
-  int? currentStreak;
-  String? level;
-  int? quizCorrectRate;
+  int? currentStreak; // 서버에 전송되지 않음, 프론트에서만 사용
+  String? level; // 서버에 전송되지 않음, 프론트에서만 사용
+  int? quizCorrectRate; // 서버에 전송되지 않음, 프론트에서만 사용
   bool? isLearningAlarmAllowed;
   bool? isCommunityAlarmAllowed;
-  int? imageId;
-  bool? isLevelTestCompleted;
+  int? imageId; // 서버에 전송하지 않음
+  bool? isLevelTestCompleted; // 서버에 전송하지 않음
 
   UserProfile({
     this.userId,
@@ -27,8 +27,8 @@ class UserProfile {
     this.currentStreak,
     this.level,
     this.quizCorrectRate,
-    this.isLearningAlarmAllowed = true, // 기본값
-    this.isCommunityAlarmAllowed = true, // 기본값
+    this.isLearningAlarmAllowed = true,
+    this.isCommunityAlarmAllowed = true,
     this.imageId,
     this.isLevelTestCompleted,
   });
@@ -49,6 +49,7 @@ class UserProfile {
     );
   }
 
+  /// JSON 변환 (등록/수정 시 서버에 전송되는 데이터)
   Map<String, dynamic> toJson() {
     return {
       "nickname": nickname,
@@ -59,8 +60,8 @@ class UserProfile {
       "job": job,
       "isLearningAlarmAllowed": isLearningAlarmAllowed,
       "isCommunityAlarmAllowed": isCommunityAlarmAllowed,
-      "imageId": imageId,
-      "isLevelTestCompleted": isLevelTestCompleted,
+      // "imageId": imageId, // 서버에 전송하지 않음
+      // "isLevelTestCompleted": isLevelTestCompleted, // 서버에 전송하지 않음
     };
   }
 

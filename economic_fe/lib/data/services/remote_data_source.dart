@@ -961,34 +961,65 @@ class RemoteDataSource {
     try {
       final response = await postApiWithJson(endpoint, userProfile);
 
-      // 응답이 int일 경우, 이를 직접 처리
+      // 응답이 int일 경우 (성공 시 200)
       if (response is int) {
-        debugPrint('POST 요청 실패: ($response) 서버 내부 오류');
+        if (response == 200) {
+          debugPrint('사용자 프로필 등록 성공');
+          return {
+            'isSuccess': true,
+            'code': 'REQUEST_OK',
+            'message': '요청이 승인되었습니다.',
+          };
+        } else {
+          debugPrint('POST 요청 실패: ($response) 서버 내부 오류');
+          return {
+            'isSuccess': false,
+            'code': 'INTERNAL_SERVER_ERROR',
+            'message': '서버 내부 오류가 발생했습니다.',
+          };
+        }
+      }
+
+      // 응답이 http.Response일 경우
+      if (response is http.Response) {
+        final responseBody = response.body;
+        final Map<String, dynamic> responseData =
+            responseBody is String ? jsonDecode(responseBody) : responseBody;
+
+        if (response.statusCode == 200) {
+          debugPrint('사용자 프로필 등록 성공');
+
+          // 서버에서 isSuccess가 false로 응답할 수도 있으므로 추가 체크
+          if (responseData['isSuccess'] == true) {
+            return responseData;
+          } else {
+            debugPrint('서버에서 isSuccess가 false로 응답됨: $responseData');
+            return responseData;
+          }
+        }
+
+        // 상태 코드가 200이 아닌 경우
+        debugPrint('사용자 프로필 등록 실패 - 상태 코드: ${response.statusCode}');
         return {
           'isSuccess': false,
-          'code': 'INTERNAL_SERVER_ERROR',
-          'message': '서버 내부 오류가 발생했습니다.'
+          'code': response.statusCode.toString(),
+          'message': '서버 응답 오류가 발생했습니다.',
         };
       }
 
-      // 응답이 JSON 형식이면 파싱
-      final responseBody = response.body;
-      final Map<String, dynamic> responseData =
-          responseBody is String ? jsonDecode(responseBody) : responseBody;
-
-      if (response.statusCode == 200) {
-        debugPrint('사용자 프로필 등록 성공');
-        return responseData;
-      } else {
-        debugPrint('사용자 프로필 등록 실패: $responseData');
-        return responseData;
-      }
+      // response가 예상하지 않은 타입일 경우
+      debugPrint('예상하지 못한 응답 타입: ${response.runtimeType}');
+      return {
+        'isSuccess': false,
+        'code': 'UNEXPECTED_RESPONSE',
+        'message': '예상하지 못한 응답 형식입니다.',
+      };
     } catch (e) {
       debugPrint('registerUserProfile Error: $e');
       return {
         'isSuccess': false,
         'code': 'NETWORK_ERROR',
-        'message': '네트워크 오류가 발생했습니다.'
+        'message': '네트워크 오류가 발생했습니다.',
       };
     }
   }

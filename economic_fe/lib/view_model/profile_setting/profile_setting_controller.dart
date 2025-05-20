@@ -3,6 +3,7 @@ import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view_model/profile_setting/basic_controller.dart';
 import 'package:economic_fe/view_model/profile_setting/job_select_controller.dart';
 import 'package:economic_fe/view_model/profile_setting/part_select_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileSettingController extends GetxController {
@@ -136,65 +137,181 @@ class ProfileSettingController extends GetxController {
     updateProfileCompletionStatus();
   }
 
-  /// 변경된 값만 API에 전송
+  // /// 변경된 값만 API에 전송
+  // Future<void> saveUserProfile() async {
+  //   if (!isInfoCompleted.value) {
+  //     Get.snackbar('알림', '모든 정보를 입력해주세요.');
+  //     return;
+  //   }
+
+  //   Map<String, dynamic> profileData = {};
+
+  //   // 닉네임 비교
+  //   if (userProfile.value.nickname != oldProfile.nickname) {
+  //     profileData['nickname'] = userProfile.value.nickname;
+  //   }
+
+  //   // 생년월일 비교
+  //   if (userProfile.value.birthDate != oldProfile.birthDate) {
+  //     profileData['birthDate'] = userProfile.value.birthDate;
+  //   }
+
+  //   // 성별 비교
+  //   if (userProfile.value.gender != oldProfile.gender) {
+  //     profileData['gender'] = userProfile.value.gender;
+  //   }
+
+  //   // 한 줄 소개 비교
+  //   if (userProfile.value.profileIntro != oldProfile.profileIntro) {
+  //     profileData['profileIntro'] = userProfile.value.profileIntro;
+  //   }
+
+  //   // 업종 비교
+  //   if (userProfile.value.businessType != oldProfile.businessType) {
+  //     profileData['businessType'] = userProfile.value.businessType;
+  //   }
+
+  //   // 직무 비교
+  //   if (userProfile.value.job != oldProfile.job) {
+  //     profileData['job'] = userProfile.value.job;
+  //   }
+
+  //   // 프로필 사진 비교 (imageId만 전송)
+  //   if (userProfile.value.imageId != oldProfile.imageId) {
+  //     profileData['imageId'] = userProfile.value.imageId;
+  //   }
+
+  //   // **변경된 값이 없으면 API 호출하지 않음**
+  //   if (profileData.isEmpty) {
+  //     Get.snackbar('알림', '변경된 내용이 없습니다.');
+  //     return;
+  //   }
+
+  //   print("변경된 데이터만 전송: $profileData");
+
+  //   bool success = await remoteDataSource.updateUserProfile(profileData);
+
+  //   if (success) {
+  //     Get.snackbar('성공', isEditMode ? '프로필이 수정되었습니다.' : '프로필 등록이 완료되었습니다.');
+  //     Get.offAllNamed(isEditMode ? '/mypage' : '/home');
+  //   } else {
+  //     Get.snackbar('오류', isEditMode ? '프로필 수정에 실패했습니다.' : '프로필 등록에 실패했습니다.');
+  //   }
+  // }
+
+  /// 프로필 저장 (등록/수정 모드 구분)
   Future<void> saveUserProfile() async {
     if (!isInfoCompleted.value) {
       Get.snackbar('알림', '모든 정보를 입력해주세요.');
       return;
     }
 
-    Map<String, dynamic> profileData = {};
+    Map<String, dynamic> profileData = _prepareProfileData();
 
-    // 닉네임 비교
-    if (userProfile.value.nickname != oldProfile.nickname) {
-      profileData['nickname'] = userProfile.value.nickname;
-    }
-
-    // 생년월일 비교
-    if (userProfile.value.birthDate != oldProfile.birthDate) {
-      profileData['birthDate'] = userProfile.value.birthDate;
-    }
-
-    // 성별 비교
-    if (userProfile.value.gender != oldProfile.gender) {
-      profileData['gender'] = userProfile.value.gender;
-    }
-
-    // 한 줄 소개 비교
-    if (userProfile.value.profileIntro != oldProfile.profileIntro) {
-      profileData['profileIntro'] = userProfile.value.profileIntro;
-    }
-
-    // 업종 비교
-    if (userProfile.value.businessType != oldProfile.businessType) {
-      profileData['businessType'] = userProfile.value.businessType;
-    }
-
-    // 직무 비교
-    if (userProfile.value.job != oldProfile.job) {
-      profileData['job'] = userProfile.value.job;
-    }
-
-    // 프로필 사진 비교 (imageId만 전송)
-    if (userProfile.value.imageId != oldProfile.imageId) {
-      profileData['imageId'] = userProfile.value.imageId;
-    }
-
-    // **변경된 값이 없으면 API 호출하지 않음**
     if (profileData.isEmpty) {
       Get.snackbar('알림', '변경된 내용이 없습니다.');
       return;
     }
 
-    print("변경된 데이터만 전송: $profileData");
-
-    bool success = await remoteDataSource.updateUserProfile(profileData);
-
-    if (success) {
-      Get.snackbar('성공', isEditMode ? '프로필이 수정되었습니다.' : '프로필 등록이 완료되었습니다.');
-      Get.offAllNamed(isEditMode ? '/mypage' : '/home');
+    if (isEditMode) {
+      await _updateUserProfile(profileData);
     } else {
-      Get.snackbar('오류', isEditMode ? '프로필 수정에 실패했습니다.' : '프로필 등록에 실패했습니다.');
+      await _registerUserProfile(profileData);
+    }
+  }
+
+  /// 프로필 데이터 준비 (등록/수정 모드 공통)
+  Map<String, dynamic> _prepareProfileData() {
+    Map<String, dynamic> profileData = {};
+
+    // 닉네임
+    if (!isEditMode || userProfile.value.nickname != oldProfile.nickname) {
+      profileData['nickname'] = userProfile.value.nickname;
+    }
+
+    // 생년월일
+    if (!isEditMode || userProfile.value.birthDate != oldProfile.birthDate) {
+      profileData['birthDate'] = userProfile.value.birthDate;
+    }
+
+    // 성별
+    if (!isEditMode || userProfile.value.gender != oldProfile.gender) {
+      profileData['gender'] = userProfile.value.gender;
+    }
+
+    // 한 줄 소개
+    if (!isEditMode ||
+        userProfile.value.profileIntro != oldProfile.profileIntro) {
+      profileData['profileIntro'] = userProfile.value.profileIntro;
+    }
+
+    // 업종
+    if (!isEditMode ||
+        userProfile.value.businessType != oldProfile.businessType) {
+      profileData['businessType'] = userProfile.value.businessType;
+    }
+
+    // 직무
+    if (!isEditMode || userProfile.value.job != oldProfile.job) {
+      profileData['job'] = userProfile.value.job;
+    }
+
+    // 알림 설정 - 학습 알림
+    if (!isEditMode ||
+        userProfile.value.isLearningAlarmAllowed !=
+            oldProfile.isLearningAlarmAllowed) {
+      profileData['isLearningAlarmAllowed'] =
+          userProfile.value.isLearningAlarmAllowed;
+    }
+
+    // 알림 설정 - 커뮤니티 알림
+    if (!isEditMode ||
+        userProfile.value.isCommunityAlarmAllowed !=
+            oldProfile.isCommunityAlarmAllowed) {
+      profileData['isCommunityAlarmAllowed'] =
+          userProfile.value.isCommunityAlarmAllowed;
+    }
+
+    // 이미지 ID (null이 아닐 경우에만 전송)
+    if (userProfile.value.imageId != null) {
+      profileData['imageId'] = userProfile.value.imageId;
+    }
+
+    return profileData;
+  }
+
+  /// 사용자 프로필 등록
+  Future<void> _registerUserProfile(Map<String, dynamic> profileData) async {
+    try {
+      Map<String, dynamic> response =
+          await remoteDataSource.registerUserProfile(profileData);
+
+      if (response['isSuccess']) {
+        Get.snackbar('성공', '프로필이 등록되었습니다.');
+        Get.offAllNamed('/home');
+      } else {
+        Get.snackbar('오류', response['message']);
+      }
+    } catch (e) {
+      debugPrint('프로필 등록 오류: $e');
+      Get.snackbar('오류', '네트워크 오류가 발생했습니다.');
+    }
+  }
+
+  /// 사용자 프로필 수정
+  Future<void> _updateUserProfile(Map<String, dynamic> profileData) async {
+    try {
+      bool success = await remoteDataSource.updateUserProfile(profileData);
+
+      if (success) {
+        Get.snackbar('성공', '프로필이 수정되었습니다.');
+        Get.offAllNamed('/mypage');
+      } else {
+        Get.snackbar('오류', '프로필 수정에 실패했습니다.');
+      }
+    } catch (e) {
+      debugPrint('프로필 수정 오류: $e');
+      Get.snackbar('오류', '네트워크 오류가 발생했습니다.');
     }
   }
 }
