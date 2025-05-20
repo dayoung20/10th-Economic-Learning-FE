@@ -66,7 +66,7 @@ class TestController extends GetxController {
   }
 
   void clickedAfterBtn() {
-    Get.toNamed('/login_exist');
+    Get.toNamed('/login/skip');
   }
 
   Future<List<QuizModel>> getLevelTest() async {

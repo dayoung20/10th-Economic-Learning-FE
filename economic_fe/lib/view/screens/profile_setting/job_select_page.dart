@@ -90,7 +90,7 @@ class JobSelectPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 200.h,
+            height: 180.h,
           ),
           // 저장하기 버튼 활성화
           Obx(() {

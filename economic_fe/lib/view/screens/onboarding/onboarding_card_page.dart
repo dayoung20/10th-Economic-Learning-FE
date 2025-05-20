@@ -85,22 +85,28 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
                 bgColor: Palette.buttonColorBlue,
               ),
               SizedBox(
-                height: 14.h,
+                height: 24.h,
               ),
               GestureDetector(
                 onTap: () {
                   controller.clickedExistBtn();
                 },
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xFF404040),
+                        width: 0.5,
+                      ),
+                    ),
+                  ),
                   child: Text(
                     '계정이 이미 있어요',
                     style: TextStyle(
                       color: const Color(0xFF404040),
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
+                      height: 1.0,
                       letterSpacing: -0.35,
                     ),
                   ),
