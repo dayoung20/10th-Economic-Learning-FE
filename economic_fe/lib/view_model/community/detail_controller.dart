@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class DetailController extends GetxController {
   final RemoteDataSource remoteDataSource = RemoteDataSource(); // 인스턴스 생성
 
+  RxInt currentPostId = (-1).obs;
+
   RxBool isLoading = true.obs;
   RxMap<String, dynamic> postDetail = <String, dynamic>{}.obs;
   RxList<Comment> comments = RxList<Comment>();
@@ -13,7 +15,7 @@ class DetailController extends GetxController {
   RxList<int> myPostIds = <int>[].obs; // 내가 작성한 게시물 id
   RxList<int> likedPostIds = <int>[].obs; // 내가 좋아요 한 게시물 id
   RxList<int> scrappedPostIds = <int>[].obs; // 내가 스크랩 한 게시물 id
-  RxMap<int, bool> likedCommentMap = <int, bool>{}.obs; // 각 댓글별 좋아요 상태
+  // RxMap<int, bool> likedCommentMap = <int, bool>{}.obs; // 각 댓글별 좋아요 상태
 
   final TextEditingController messageController = TextEditingController();
   var messageText = ''.obs;
@@ -35,21 +37,15 @@ class DetailController extends GetxController {
       final postData = await remoteDataSource.getPostDetail(postId);
 
       if (postData != null) {
+        postData["id"] = postId; // ✅ 명시적으로 ID 설정
         postDetail.value = postData;
+        currentPostId.value = postId; // ✅ postId 직접 저장
 
-        await fetchLikedComments();
+        isAuthor.value = postData['isAuthor'] ?? false;
+        isLikedPost.value = postData['isLiked'] ?? false;
+        isScrappedPost.value = postData['isScraped'] ?? false;
 
-        comments.value = _parseComments(
-            postData['commentListResponse']['commentResponseList']);
-
-        await fetchMyPosts();
-        isAuthor.value = myPostIds.contains(postId);
-
-        await fetchLikedPosts();
-        isLikedPost.value = likedPostIds.contains(postId);
-
-        await fetchScrappedPosts();
-        isScrappedPost.value = scrappedPostIds.contains(postId);
+        comments.value = _parseComments(postData['commentList'] ?? []);
       }
     } catch (e) {
       print('게시글 상세 조회 중 오류 발생: $e');
@@ -58,65 +54,31 @@ class DetailController extends GetxController {
     }
   }
 
-  /// 내가 작성한 게시글 조회
-  Future<void> fetchMyPosts() async {
-    var posts = await remoteDataSource.fetchMyPosts();
-    myPostIds.value = posts;
-  }
-
-  /// 내가 좋아요 한 게시물 조회
-  Future<void> fetchLikedPosts() async {
-    final postLists = await remoteDataSource.fetchLikedPosts();
-    List<dynamic> posts = postLists['postList'];
-    likedPostIds.value = posts.map<int>((post) => post['id']).toList();
-    debugPrint("내가 좋아요한 게시글 ID 리스트: $likedPostIds"); // 로그 추가
-  }
-
-  /// 내가 스크랩 한 게시물 조회
-  Future<void> fetchScrappedPosts() async {
-    final postLists = await remoteDataSource.fetchScrapedPosts();
-    List<dynamic> posts = postLists['postList'];
-    scrappedPostIds.value = posts.map<int>((post) => post['id']).toList();
-    debugPrint("내가 스크랩한 게시글 ID 리스트: $scrappedPostIds"); // 로그 추가
-  }
-
-  /// 내가 좋아요 한 댓글 목록 조회
-  Future<void> fetchLikedComments() async {
-    try {
-      final commentLists = await remoteDataSource.fetchLikedComments();
-      List<dynamic> likedComments = commentLists['likeCommentResponses'] ?? [];
-
-      // 각 댓글별 좋아요 상태 저장
-      likedCommentMap.value = {
-        for (var comment in likedComments) comment['id']: true
-      };
-
-      debugPrint("내가 좋아요한 댓글 ID 리스트: ${likedCommentMap.keys.toList()}");
-    } catch (e) {
-      debugPrint("좋아요 한 댓글 목록 조회 중 오류 발생: $e");
-    }
-  }
-
   /// 댓글 파싱 (서버 데이터 → Comment 모델)
   List<Comment> _parseComments(List<dynamic> commentList) {
-    return commentList.map<Comment>((comment) {
-      return Comment(
-        id: comment['id'],
-        content:
-            comment['isDeleted'] == true ? "삭제된 댓글입니다." : comment['content'],
-        author: comment['commenterName'] ?? '익명',
-        date: comment['createdDate'] ?? '방금 전',
-        likes: comment['likeCount'] ?? 0,
-        isAuthor: comment['isAuthor'] ?? false, // 현재 사용자가 작성한 댓글인지 확인
-        isLiked: likedCommentMap[comment['id']] ?? false, // 개별 댓글 좋아요 상태 반영
-        replies: comment['children'] != null
-            ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리
-            : [],
-        isDeleted: comment['isDeleted'],
-        commenterId: comment['commenterId'],
-        commenterProfileImageUrl: comment['commenterProfileImageUrl'],
-      );
-    }).toList();
+    return commentList
+        .map<Comment>((comment) {
+          final int? id = int.tryParse(comment['id'].toString());
+          return Comment(
+            id: id ?? -1,
+            content: comment['isDeleted'] == true
+                ? "삭제된 댓글입니다."
+                : comment['content'],
+            author: comment['commenterName'] ?? '익명',
+            date: comment['createdDate'] ?? '방금 전',
+            likes: comment['likeCount'] ?? 0,
+            isLiked: comment['isLiked'] ?? false,
+            isAuthor: comment['isAuthor'] ?? false,
+            replies: comment['children'] != null
+                ? _parseComments(comment['children'])
+                : [],
+            isDeleted: comment['isDeleted'],
+            commenterId: comment['commenterId'],
+            commenterProfileImageUrl: comment['commenterProfileImageUrl'],
+          );
+        })
+        .where((c) => c.id != -1)
+        .toList();
   }
 
   // 답글을 작성 중인 댓글 ID
@@ -150,7 +112,7 @@ class DetailController extends GetxController {
     String message = messageController.text;
     if (message.isEmpty) return;
 
-    int postId = postDetail["id"]; // 현재 게시글 ID
+    int postId = currentPostId.value;
     bool success;
 
     if (replyingToCommentId.value == -1) {
@@ -177,6 +139,12 @@ class DetailController extends GetxController {
 
   /// 게시글 좋아요 토글
   void likePostToggle() {
+    if (currentPostId.value == -1) {
+      debugPrint("likePostToggle: currentPostId가 설정되지 않았습니다.");
+      Get.snackbar("오류", "게시글 정보가 아직 준비되지 않았습니다.");
+      return;
+    }
+
     if (isLikedPost.value) {
       deleteLikedPost();
     } else {
@@ -186,12 +154,14 @@ class DetailController extends GetxController {
 
   /// 게시글 좋아요 api 연동
   Future<void> likePost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
-    bool success = await remoteDataSource.likePost(postId);
+    final postIdRaw = currentPostId.value;
 
+    final int postId = postIdRaw;
+
+    bool success = await remoteDataSource.likePost(postId);
     if (success) {
       isLikedPost.value = true;
-      fetchPostDetail(postId); // 게시글 상세 다시 불러오기 (새로고침)
+      fetchPostDetail(postId);
     } else {
       Get.snackbar("오류", "게시글 좋아요에 실패했습니다.");
     }
@@ -199,7 +169,7 @@ class DetailController extends GetxController {
 
   /// 게시글 좋아요 취소 api 연동
   Future<void> deleteLikedPost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
+    int postId = currentPostId.value; // 현재 게시글 ID
     bool success = await remoteDataSource.deleteLikedPost(postId);
 
     if (success) {
@@ -224,7 +194,7 @@ class DetailController extends GetxController {
 
   /// 게시글 스크랩 api 연동
   Future<void> scrapPost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
+    int postId = currentPostId.value; // 현재 게시글 ID
     bool success = await remoteDataSource.scrapPost(postId);
 
     if (success) {
@@ -237,7 +207,7 @@ class DetailController extends GetxController {
 
   /// 게시글 스크랩 취소 api 연동
   Future<void> deleteScrappedPost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
+    int postId = currentPostId.value; // 현재 게시글 ID
     bool success = await remoteDataSource.deletePostScrap(postId);
 
     if (success) {
@@ -250,21 +220,66 @@ class DetailController extends GetxController {
 
   /// 댓글 좋아요 토글
   void likeCommentToggle(int commentId) {
-    if (likedCommentMap[commentId] == true) {
+    // 댓글 객체 찾기 (최상위 댓글 또는 대댓글)
+    Comment? targetComment;
+
+    for (var comment in comments) {
+      if (comment.id == commentId) {
+        targetComment = comment;
+        break;
+      }
+
+      for (var reply in comment.replies) {
+        if (reply.id == commentId) {
+          targetComment = reply;
+          break;
+        }
+      }
+
+      if (targetComment != null) break;
+    }
+
+    if (targetComment == null) {
+      debugPrint("댓글을 찾을 수 없습니다: $commentId");
+      return;
+    }
+
+    if (targetComment.isLiked) {
       deleteLikedComment(commentId);
     } else {
       likeComment(commentId);
     }
   }
 
+  void _updateCommentLikeState(int commentId, bool isLiked) {
+    for (var comment in comments) {
+      if (comment.id == commentId) {
+        comment.isLiked = isLiked;
+        comment.likes += isLiked ? 1 : -1;
+        comments.refresh();
+        return;
+      }
+
+      for (var reply in comment.replies) {
+        if (reply.id == commentId) {
+          reply.isLiked = isLiked;
+          reply.likes += isLiked ? 1 : -1;
+          comments.refresh();
+          return;
+        }
+      }
+    }
+
+    debugPrint("댓글 ID $commentId 를 찾을 수 없습니다.");
+  }
+
   /// 댓글 좋아요 api 연동
   Future<void> likeComment(int commentId) async {
-    int postId = postDetail["id"];
+    int postId = currentPostId.value;
     bool success = await remoteDataSource.likeComment(postId, commentId);
 
     if (success) {
-      likedCommentMap[commentId] = true; // 해당 댓글만 좋아요 상태 변경
-      fetchPostDetail(postId);
+      _updateCommentLikeState(commentId, true);
     } else {
       Get.snackbar("오류", "댓글 좋아요에 실패했습니다.");
     }
@@ -272,12 +287,11 @@ class DetailController extends GetxController {
 
   /// 댓글 좋아요 취소 api 연동
   Future<void> deleteLikedComment(int commentId) async {
-    int postId = postDetail["id"];
+    int postId = currentPostId.value;
     bool success = await remoteDataSource.deleteLikedComment(postId, commentId);
 
     if (success) {
-      likedCommentMap.remove(commentId); // 좋아요 취소 시 해당 댓글 ID 제거
-      fetchPostDetail(postId);
+      _updateCommentLikeState(commentId, false);
     } else {
       Get.snackbar("오류", "댓글 좋아요 취소에 실패했습니다.");
     }
@@ -329,7 +343,7 @@ class DetailController extends GetxController {
   Future<void> editComment() async {
     if (messageController.text.isEmpty) return;
 
-    int postId = postDetail["id"];
+    int postId = currentPostId.value;
     int commentId = editingCommentId.value;
     String updatedContent = messageController.text;
 
@@ -365,7 +379,7 @@ class DetailController extends GetxController {
   Future<void> editReply() async {
     if (messageController.text.isEmpty) return;
 
-    int postId = postDetail["id"];
+    int postId = currentPostId.value;
     int replyId = editingReplyId.value;
     String updatedContent = messageController.text;
 
@@ -403,7 +417,7 @@ class DetailController extends GetxController {
 
   /// 게시물 삭제 기능
   Future<void> deletePost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
+    int postId = currentPostId.value; // 현재 게시글 ID 가져오기
     bool success = await remoteDataSource.deletePost(postId);
 
     if (success) {
@@ -416,7 +430,7 @@ class DetailController extends GetxController {
 
   /// 댓글 또는 대댓글 삭제
   Future<void> deleteComment(int commentId) async {
-    int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
+    int postId = currentPostId.value; // 현재 게시글 ID 가져오기
     debugPrint("삭제 요청: postId = $postId, commentId = $commentId");
 
     bool success = await remoteDataSource.deleteComment(postId, commentId);

@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:get/get.dart';
 
 class CommunityController extends GetxController {
@@ -6,7 +7,7 @@ class CommunityController extends GetxController {
 
   RxBool isModalVisible = false.obs;
   Rx<int> selectedCategoryIndex = 0.obs;
-  Rx<int> selectedOrder = 0.obs;
+  Rx<int> selectedOrder = 1.obs;
   Rx<int> selectedTokOrder = 0.obs;
   RxBool isLoading = false.obs;
   var postList = <dynamic>[].obs;
@@ -30,6 +31,19 @@ class CommunityController extends GetxController {
     });
   }
 
+  bool isInitialized = false;
+
+  @override
+  void onReady() {
+    super.onReady();
+    if (!isInitialized) {
+      fetchPosts();
+      fetchTokPosts();
+      fetchTodaysTok();
+      isInitialized = true;
+    }
+  }
+
   void toggleModal() {
     isModalVisible.value = !isModalVisible.value;
   }
@@ -43,7 +57,8 @@ class CommunityController extends GetxController {
   }
 
   void toDetailPage(int postId) {
-    Get.toNamed('/community/detail', arguments: postId);
+    Get.delete<DetailController>(); // 이전 컨트롤러 삭제
+    Get.toNamed('/community/detail', arguments: postId); // 새 컨트롤러로 이동
   }
 
   void toNewPost() {

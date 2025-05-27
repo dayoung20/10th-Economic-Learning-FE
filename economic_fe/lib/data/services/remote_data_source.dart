@@ -186,7 +186,8 @@ class RemoteDataSource {
     String? access = await getToken("accessToken");
 
     Map<String, String> headers = {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
+      'accept': '*/*',
       'Authorization': 'Bearer $access',
     };
 
@@ -961,34 +962,65 @@ class RemoteDataSource {
     try {
       final response = await postApiWithJson(endpoint, userProfile);
 
-      // 응답이 int일 경우, 이를 직접 처리
+      // 응답이 int일 경우 (성공 시 200)
       if (response is int) {
-        debugPrint('POST 요청 실패: ($response) 서버 내부 오류');
+        if (response == 200) {
+          debugPrint('사용자 프로필 등록 성공');
+          return {
+            'isSuccess': true,
+            'code': 'REQUEST_OK',
+            'message': '요청이 승인되었습니다.',
+          };
+        } else {
+          debugPrint('POST 요청 실패: ($response) 서버 내부 오류');
+          return {
+            'isSuccess': false,
+            'code': 'INTERNAL_SERVER_ERROR',
+            'message': '서버 내부 오류가 발생했습니다.',
+          };
+        }
+      }
+
+      // 응답이 http.Response일 경우
+      if (response is http.Response) {
+        final responseBody = response.body;
+        final Map<String, dynamic> responseData =
+            responseBody is String ? jsonDecode(responseBody) : responseBody;
+
+        if (response.statusCode == 200) {
+          debugPrint('사용자 프로필 등록 성공');
+
+          // 서버에서 isSuccess가 false로 응답할 수도 있으므로 추가 체크
+          if (responseData['isSuccess'] == true) {
+            return responseData;
+          } else {
+            debugPrint('서버에서 isSuccess가 false로 응답됨: $responseData');
+            return responseData;
+          }
+        }
+
+        // 상태 코드가 200이 아닌 경우
+        debugPrint('사용자 프로필 등록 실패 - 상태 코드: ${response.statusCode}');
         return {
           'isSuccess': false,
-          'code': 'INTERNAL_SERVER_ERROR',
-          'message': '서버 내부 오류가 발생했습니다.'
+          'code': response.statusCode.toString(),
+          'message': '서버 응답 오류가 발생했습니다.',
         };
       }
 
-      // 응답이 JSON 형식이면 파싱
-      final responseBody = response.body;
-      final Map<String, dynamic> responseData =
-          responseBody is String ? jsonDecode(responseBody) : responseBody;
-
-      if (response.statusCode == 200) {
-        debugPrint('사용자 프로필 등록 성공');
-        return responseData;
-      } else {
-        debugPrint('사용자 프로필 등록 실패: $responseData');
-        return responseData;
-      }
+      // response가 예상하지 않은 타입일 경우
+      debugPrint('예상하지 못한 응답 타입: ${response.runtimeType}');
+      return {
+        'isSuccess': false,
+        'code': 'UNEXPECTED_RESPONSE',
+        'message': '예상하지 못한 응답 형식입니다.',
+      };
     } catch (e) {
       debugPrint('registerUserProfile Error: $e');
       return {
         'isSuccess': false,
         'code': 'NETWORK_ERROR',
-        'message': '네트워크 오류가 발생했습니다.'
+        'message': '네트워크 오류가 발생했습니다.',
       };
     }
   }
@@ -1175,7 +1207,7 @@ class RemoteDataSource {
 
         if (response != null && response["isSuccess"] == true) {
           var results = response["results"];
-          categoryPosts.addAll(results["postList"]); // 현재 페이지 데이터 추가
+          categoryPosts.addAll(results["postPreviewList"]); // 현재 페이지 데이터 추가
           totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
           currentPage++; // 다음 페이지로 이동
         } else {
@@ -1244,36 +1276,28 @@ class RemoteDataSource {
     String? access = await getToken("accessToken");
 
     try {
-      // `post` JSON 데이터 생성
       Map<String, dynamic> postData = {
         "title": title,
         "content": content,
         "type": type,
-        "imageIds": imageIds ?? [],
+        if (imageIds != null && imageIds.isNotEmpty) "imageIds": imageIds,
       };
 
-      // JSON 데이터를 `utf8.encode()`로 변환 후 `MultipartFile.fromBytes()`로 추가
-      var postJsonBytes = utf8.encode(jsonEncode(postData));
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $access',
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(postData),
+      );
 
-      var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
-        ..headers['Authorization'] = 'Bearer $access'
-        ..headers['accept'] = '*/*'
-        ..files.add(http.MultipartFile.fromBytes(
-          'post',
-          postJsonBytes,
-          filename: 'post.json',
-        ));
-
-      // 요청 보내기
-      var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
-
-      // 응답 처리
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('게시물 작성 성공');
         return true;
       } else {
-        debugPrint('게시물 작성 실패: (${response.statusCode}) $responseBody');
+        debugPrint('게시물 작성 실패: (${response.statusCode}) ${response.body}');
         return false;
       }
     } catch (e) {
@@ -1448,13 +1472,13 @@ class RemoteDataSource {
     String endpoint = 'api/v1/post/$postId/like';
 
     try {
-      final response = await _postApi(endpoint);
+      final statusCode = await _postApi(endpoint);
 
-      if (response == 200) {
+      if (statusCode == 200) {
         debugPrint('게시물 좋아요');
         return true;
       } else {
-        debugPrint('게시물 좋아요 실패: (${response.statusCode} ${response.body})');
+        debugPrint('게시물 좋아요 실패: ($statusCode)');
         return false;
       }
     } catch (e) {
