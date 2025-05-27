@@ -74,9 +74,30 @@ class _OnboardingCardPageState extends State<OnboardingCardPage> {
           ),
           Column(
             children: [
+              // ✅ 인디케이터
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    child: Container(
+                      width: _currentIndex == index ? 32.w : 8.w,
+                      height: 8.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: _currentIndex == index
+                            ? const Color(0xff2ad6d6)
+                            : const Color(0xff767676),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+
               SizedBox(
                 height: 32.h,
               ),
+
               CustomButton(
                 text: "시작하기",
                 onPress: () {
