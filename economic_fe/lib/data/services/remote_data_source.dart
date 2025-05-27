@@ -1206,7 +1206,7 @@ class RemoteDataSource {
 
         if (response != null && response["isSuccess"] == true) {
           var results = response["results"];
-          categoryPosts.addAll(results["postList"]); // 현재 페이지 데이터 추가
+          categoryPosts.addAll(results["postPreviewList"]); // 현재 페이지 데이터 추가
           totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
           currentPage++; // 다음 페이지로 이동
         } else {
@@ -1275,36 +1275,28 @@ class RemoteDataSource {
     String? access = await getToken("accessToken");
 
     try {
-      // `post` JSON 데이터 생성
       Map<String, dynamic> postData = {
         "title": title,
         "content": content,
         "type": type,
-        "imageIds": imageIds ?? [],
+        if (imageIds != null && imageIds.isNotEmpty) "imageIds": imageIds,
       };
 
-      // JSON 데이터를 `utf8.encode()`로 변환 후 `MultipartFile.fromBytes()`로 추가
-      var postJsonBytes = utf8.encode(jsonEncode(postData));
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': 'Bearer $access',
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(postData),
+      );
 
-      var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
-        ..headers['Authorization'] = 'Bearer $access'
-        ..headers['accept'] = '*/*'
-        ..files.add(http.MultipartFile.fromBytes(
-          'post',
-          postJsonBytes,
-          filename: 'post.json',
-        ));
-
-      // 요청 보내기
-      var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
-
-      // 응답 처리
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('게시물 작성 성공');
         return true;
       } else {
-        debugPrint('게시물 작성 실패: (${response.statusCode}) $responseBody');
+        debugPrint('게시물 작성 실패: (${response.statusCode}) ${response.body}');
         return false;
       }
     } catch (e) {

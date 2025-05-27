@@ -20,6 +20,18 @@ class _CommunityPageState extends State<CommunityPage> {
   int dayCounts = 3;
 
   @override
+  void initState() {
+    super.initState();
+
+    // 프레임이 그려진 이후 fetch 호출
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchPosts();
+      controller.fetchTokPosts();
+      controller.fetchTodaysTok();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
@@ -676,16 +688,14 @@ class TalkListItem extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width - 141.w,
                 height: 60.h,
-                child: Flexible(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: const Color(0xFF111111),
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                      height: 1.30,
-                      letterSpacing: -0.38,
-                    ),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: const Color(0xFF111111),
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
+                    height: 1.30,
+                    letterSpacing: -0.38,
                   ),
                 ),
               ),
@@ -796,16 +806,14 @@ class ListItem extends StatelessWidget {
                 child: SizedBox(
                   width: 235.w,
                   height: 42.h,
-                  child: Flexible(
-                    child: Text(
-                      description,
-                      style: TextStyle(
-                        color: const Color(0xFF111111),
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        height: 1.50,
-                        letterSpacing: -0.35,
-                      ),
+                  child: Text(
+                    description,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      height: 1.50,
+                      letterSpacing: -0.35,
                     ),
                   ),
                 ),

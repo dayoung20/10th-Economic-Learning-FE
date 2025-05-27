@@ -40,7 +40,8 @@ class DetailController extends GetxController {
         await fetchLikedComments();
 
         comments.value = _parseComments(
-            postData['commentListResponse']['commentResponseList']);
+          postData['commentList'] ?? [],
+        );
 
         await fetchMyPosts();
         isAuthor.value = myPostIds.contains(postId);

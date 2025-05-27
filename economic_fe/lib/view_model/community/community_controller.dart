@@ -30,6 +30,19 @@ class CommunityController extends GetxController {
     });
   }
 
+  bool isInitialized = false;
+
+  @override
+  void onReady() {
+    super.onReady();
+    if (!isInitialized) {
+      fetchPosts();
+      fetchTokPosts();
+      fetchTodaysTok();
+      isInitialized = true;
+    }
+  }
+
   void toggleModal() {
     isModalVisible.value = !isModalVisible.value;
   }
