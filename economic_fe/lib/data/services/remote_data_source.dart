@@ -186,7 +186,8 @@ class RemoteDataSource {
     String? access = await getToken("accessToken");
 
     Map<String, String> headers = {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
+      'accept': '*/*',
       'Authorization': 'Bearer $access',
     };
 
@@ -1471,13 +1472,13 @@ class RemoteDataSource {
     String endpoint = 'api/v1/post/$postId/like';
 
     try {
-      final response = await _postApi(endpoint);
+      final statusCode = await _postApi(endpoint);
 
-      if (response == 200) {
+      if (statusCode == 200) {
         debugPrint('게시물 좋아요');
         return true;
       } else {
-        debugPrint('게시물 좋아요 실패: (${response.statusCode} ${response.body})');
+        debugPrint('게시물 좋아요 실패: ($statusCode)');
         return false;
       }
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/view_model/community/detail_controller.dart';
 import 'package:get/get.dart';
 
 class CommunityController extends GetxController {
@@ -56,7 +57,8 @@ class CommunityController extends GetxController {
   }
 
   void toDetailPage(int postId) {
-    Get.toNamed('/community/detail', arguments: postId);
+    Get.delete<DetailController>(); // 이전 컨트롤러 삭제
+    Get.toNamed('/community/detail', arguments: postId); // 새 컨트롤러로 이동
   }
 
   void toNewPost() {
