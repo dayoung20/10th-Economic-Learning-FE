@@ -325,19 +325,19 @@ class _HomePageState extends State<HomePage> {
                                     padding: const EdgeInsets.all(16),
                                     child: Stack(
                                       children: [
-                                        // 창 닫기 버튼
-                                        Positioned(
-                                          right: 0,
-                                          child: GestureDetector(
-                                            onTap: () => controller
-                                                .isProgressContainerVisible
-                                                .value = true,
-                                            child: const Icon(
-                                              Icons.close,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
+                                        // // 창 닫기 버튼
+                                        // Positioned(
+                                        //   right: 0,
+                                        //   child: GestureDetector(
+                                        //     onTap: () => controller
+                                        //         .isProgressContainerVisible
+                                        //         .value = true,
+                                        //     child: const Icon(
+                                        //       Icons.close,
+                                        //       color: Colors.white,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
