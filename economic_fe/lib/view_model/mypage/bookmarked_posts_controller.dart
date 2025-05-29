@@ -34,32 +34,31 @@ class BookmarkedPostsController extends GetxController {
       }
 
       if (response != null) {
-        final List<dynamic> rawPosts;
+        List<Map<String, dynamic>> rawPosts;
 
         if (argument == '좋아요 한 댓글') {
-          // 좋아요 한 댓글 API의 경우
-          rawPosts = response['likeCommentResponses'] ?? [];
+          // 좋아요 한 댓글 API의 경우 (향후 response['likeCommentResponses'] 등으로 바뀔 수 있음)
+          rawPosts = List<Map<String, dynamic>>.from(response);
         } else {
-          // 다른 API들의 경우
-          rawPosts = response['postList'] ?? [];
+          // 스크랩, 좋아요 게시글 API는 리스트 자체가 response로 옴
+          rawPosts = List<Map<String, dynamic>>.from(response);
         }
 
-        // type 변환 로직 적용
-        final List<Map<String, dynamic>> processedPosts = rawPosts.map((post) {
-          final postMap = Map<String, dynamic>.from(post);
+        final List<Map<String, dynamic>> processedPosts =
+            rawPosts.map((postMap) {
           final type = postMap['type'] ?? '';
           final transformedType = (type == 'ECONOMY_TALK') ? '경제 톡톡' : '일반 게시판';
 
           return {
-            ...postMap, // 기존 데이터
-            'type': transformedType, // 변환된 type 값
+            ...postMap,
+            'type': transformedType,
             if (argument == '좋아요 한 댓글') 'postTitle': postMap['postName'] ?? ''
           };
         }).toList();
 
         posts.value = processedPosts;
-        totalPage.value = response['results']['totalPage'] ?? 0;
-        currentPage.value = response['results']['currentPage'] ?? 0;
+        totalPage.value = 1; // 서버에서 totalPage가 따로 없으므로 임시 처리
+        currentPage.value = 1;
       } else {
         debugPrint("fetchData Error: 응답이 null이거나 성공하지 않았습니다.");
       }
