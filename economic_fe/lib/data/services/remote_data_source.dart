@@ -1696,7 +1696,7 @@ class RemoteDataSource {
 
       if (response != null && response["isSuccess"] == true) {
         var results = response["results"];
-        tokPosts.addAll(results["toktokPreviewResponseList"]); // 현재 페이지 데이터 추가
+        tokPosts.addAll(results["postPreviewList"]); // 현재 페이지 데이터 추가
         // totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
         // currentPage++; // 다음 페이지로 이동
       } else {

@@ -37,8 +37,15 @@ class TalkDetailController extends GetxController {
 
       if (postData != null) {
         postDetail.value = postData;
-        comments.value = _parseComments(
-            postData['commentListResponse']['commentResponseList']);
+
+        final commentRawList = postData['commentList'];
+        if (commentRawList is List<dynamic>) {
+          comments.value = _parseComments(commentRawList);
+        } else {
+          print("⚠️ commentList 형식이 올바르지 않음: $commentRawList");
+        }
+
+        // comments.value = _parseComments(postData['commentList']);
         isLikedPost.value = postData['isLiked'];
         isScrappedPost.value = postData['isScraped'];
       }
@@ -61,12 +68,16 @@ class TalkDetailController extends GetxController {
         likes: comment['likeCount'] ?? 0,
         isAuthor: comment['isAuthor'] ?? false, // 현재 사용자가 작성한 댓글인지 확인
         isLiked: comment['isLiked'] ?? false, // 개별 댓글 좋아요 상태 반영
-        replies: comment['children'] != null
-            ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리
+        // replies: comment['children'] != null
+        //     ? _parseComments(comment['children']) // 재귀적으로 대댓글 처리
+        //     : [],
+        replies: comment['children'] is List
+            ? _parseComments(comment['children'])
             : [],
         isDeleted: comment['isDeleted'],
         commenterId: comment['commenterId'],
-        commenterProfileImageUrl: comment['commenterProfileImageUrl'],
+        // commenterProfileImageUrl: comment['commenterProfileImageUrl'],
+        commenterProfileImageUrl: comment['commenterProfileImageUrl'] ?? '',
       );
     }).toList();
   }
