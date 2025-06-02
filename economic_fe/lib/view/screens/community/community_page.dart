@@ -182,7 +182,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 6.w,
+                                                  horizontal: 12.w,
                                                   vertical: 10.h),
                                               child: Row(
                                                 children:
