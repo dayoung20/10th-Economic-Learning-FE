@@ -199,159 +199,119 @@ class _ArticleListPageState extends State<ArticleListPage> {
                         ),
                       ),
                       // 기사 목록
-                      Obx(
-                        () {
-                          return FutureBuilder<List<ArticleModel>>(
-                            future: controller.getNewsList(
-                                1,
-                                controller.selectedSort.value,
-                                controller.selectedCate.value),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                              // 에러인 경우
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text("에러 발생 ${snapshot.error}"),
-                                );
-                              }
-                              // 데이터가 없을때
-                              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                return const Center(
-                                    child: Text('뉴스 데이터가 없습니다.'));
-                              }
-                              final newsList = snapshot.data!;
+                      Obx(() {
+                        final newsList = controller.newsList;
 
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: newsList.length,
-                                  itemBuilder: (context, index) {
-                                    final news = newsList[index];
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8.w, vertical: 8.h),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.w, vertical: 16.h),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              color: const Color(0xFFD9D9D9),
-                                              width: 1.w,
+                        if (newsList.isEmpty) {
+                          return const Center(child: Text('뉴스 데이터가 없습니다.'));
+                        }
+
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: newsList.length,
+                            itemBuilder: (context, index) {
+                              final news = newsList[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.w, vertical: 8.h),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w, vertical: 16.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: const Color(0xFFD9D9D9),
+                                        width: 1.w,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // 기사 정보
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            _getCategoryName(news.category!),
+                                            style: TextStyle(
+                                              color: const Color(0xFF2BD6D6),
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  _getCategoryName(
-                                                      news.category!),
-                                                  style: TextStyle(
-                                                    color:
-                                                        const Color(0xFF2BD6D6),
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    letterSpacing: -0.3,
-                                                    height: 1.3,
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    controller.getNewsDetail(
-                                                        news.id!);
-                                                    controller
-                                                        .toDetailPage(news);
-                                                  },
-                                                  child: Text(
-                                                    (news.title != null &&
-                                                            news.title!.length >
-                                                                18)
-                                                        ? '${news.title!.substring(0, 18)}...'
-                                                        : news.title ?? "제목 없음",
-                                                    style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      height: 1.3,
-                                                      letterSpacing: -0.4,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 6.h),
-                                                Text(
-                                                  news.publisher ?? "알 수 없음",
-                                                  style: TextStyle(
-                                                    color:
-                                                        const Color(0xFF767676),
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.5,
-                                                    letterSpacing: -0.3,
-                                                  ),
-                                                ),
-                                              ],
+                                          GestureDetector(
+                                            onTap: () {
+                                              controller
+                                                  .getNewsDetail(news.id!);
+                                              controller.toDetailPage(news);
+                                            },
+                                            child: Text(
+                                              (news.title != null &&
+                                                      news.title!.length > 18)
+                                                  ? '${news.title!.substring(0, 18)}...'
+                                                  : news.title ?? "제목 없음",
+                                              style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                            Column(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    if (news.isScraped!) {
-                                                      controller
-                                                          .deleteNewsScrap(
-                                                              news.id!);
-                                                    } else {
-                                                      controller.postNewsScrap(
-                                                          news.id!);
-                                                    }
-                                                  },
-                                                  child: Image.asset(
-                                                    news.isScraped ?? false
-                                                        ? 'assets/bookmark_selected.png'
-                                                        : 'assets/bookmark.png',
-                                                    width: 13.w,
-                                                    height: 18.3.h,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Text(
-                                                  news.createdDate!,
-                                                  style: TextStyle(
-                                                    color:
-                                                        const Color(0xFF767676),
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.5,
-                                                    letterSpacing: -0.3,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(height: 6.h),
+                                          Text(
+                                            news.publisher ?? "알 수 없음",
+                                            style: TextStyle(
+                                              color: const Color(0xFF767676),
+                                              fontSize: 12.sp,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    );
-                                  },
+                                      // 스크랩 아이콘
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (news.isScraped ?? false) {
+                                                controller.deleteNewsScrap(
+                                                    news.id!,
+                                                    article: news);
+                                              } else {
+                                                controller.postNewsScrap(
+                                                    news.id!,
+                                                    article: news);
+                                              }
+                                            },
+                                            child: Image.asset(
+                                              news.isScraped ?? false
+                                                  ? 'assets/bookmark_selected.png'
+                                                  : 'assets/bookmark.png',
+                                              width: 13.w,
+                                              height: 18.3.h,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Text(
+                                            news.createdDate ?? '',
+                                            style: TextStyle(
+                                              color: const Color(0xFF767676),
+                                              fontSize: 12.sp,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 );
