@@ -162,283 +162,228 @@ class _CommunityPageState extends State<CommunityPage> {
                           child: TabBarView(
                             children: [
                               // 일반게시판 내용 (서버 데이터 적용)
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12.w, vertical: 10.h),
-                                        child: Row(
+                              Obx(() {
+                                // 선택된 카테고리에 따라 데이터 필터링
+                                var posts = controller.postList;
+
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // 카테고리 탭 (가로 스크롤)
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 6.w,
+                                                  vertical: 10.h),
+                                              child: Row(
+                                                children:
+                                                    List.generate(5, (index) {
+                                                  final categoryNames = [
+                                                    '전체',
+                                                    '자유',
+                                                    '질문',
+                                                    '책추천',
+                                                    '정보 공유'
+                                                  ];
+                                                  return GestureDetector(
+                                                    onTap: () => controller
+                                                        .selectCategory(index),
+                                                    child: CategoryTab(
+                                                      isSelected: controller
+                                                              .selectedCategoryIndex
+                                                              .value ==
+                                                          index,
+                                                      text:
+                                                          categoryNames[index],
+                                                    ),
+                                                  );
+                                                }),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 인기순 / 최신순 선택
+                                        Row(
                                           children: [
                                             GestureDetector(
-                                              onTap: () =>
-                                                  controller.selectCategory(0),
-                                              child: CategoryTab(
+                                              onTap: () {
+                                                controller.selectOrder(0);
+                                              },
+                                              child: OrderTab(
+                                                text: '인기순',
                                                 isSelected: controller
-                                                        .selectedCategoryIndex
-                                                        .value ==
+                                                        .selectedOrder.value ==
                                                     0,
-                                                text: '전체',
                                               ),
                                             ),
+                                            const SizedBox(width: 6),
                                             GestureDetector(
-                                              onTap: () =>
-                                                  controller.selectCategory(1),
-                                              child: CategoryTab(
+                                              onTap: () {
+                                                controller.selectOrder(1);
+                                              },
+                                              child: OrderTab(
+                                                text: '최신순',
                                                 isSelected: controller
-                                                        .selectedCategoryIndex
-                                                        .value ==
+                                                        .selectedOrder.value ==
                                                     1,
-                                                text: '자유',
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  controller.selectCategory(2),
-                                              child: CategoryTab(
-                                                isSelected: controller
-                                                        .selectedCategoryIndex
-                                                        .value ==
-                                                    2,
-                                                text: '질문',
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  controller.selectCategory(3),
-                                              child: CategoryTab(
-                                                isSelected: controller
-                                                        .selectedCategoryIndex
-                                                        .value ==
-                                                    3,
-                                                text: '책추천',
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  controller.selectCategory(4),
-                                              child: CategoryTab(
-                                                isSelected: controller
-                                                        .selectedCategoryIndex
-                                                        .value ==
-                                                    4,
-                                                text: '정보 공유',
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                        SizedBox(height: 10.h),
+
+                                        // 게시글 리스트
+                                        if (controller.isLoading.value)
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                        else if (posts.isEmpty)
+                                          const Center(
+                                              child: Text('게시글이 없습니다.'))
+                                        else
+                                          Column(
+                                            children: List.generate(
+                                                posts.length, (index) {
+                                              var post = posts[index];
+                                              return Column(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      controller.toDetailPage(
+                                                          post["id"]);
+                                                    },
+                                                    child: ListItem(
+                                                      title:
+                                                          post["title"] ?? '',
+                                                      description:
+                                                          post["content"] ?? '',
+                                                      date:
+                                                          post["createdDate"] ??
+                                                              '',
+                                                      likes:
+                                                          post["likeCount"] ??
+                                                              0,
+                                                      comments: post[
+                                                              "commentCount"] ??
+                                                          0,
+                                                      imageUrl:
+                                                          post["imageUrl"],
+                                                      onTap: () {
+                                                        controller.toDetailPage(
+                                                            post["id"]);
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 16.h),
+                                                    child: Container(
+                                                      height: 1,
+                                                      color: const Color(
+                                                          0xffd9d9d9),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                          ),
+                                      ],
                                     ),
                                   ),
-                                  Obx(() {
-                                    // 선택된 카테고리에 따라 데이터 필터링
-                                    var posts = controller.postList;
-
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16.w),
-                                      child: Column(
-                                        children: [
-                                          // 인기순 / 최신순 선택
-                                          Row(
+                                );
+                              }),
+                              // 경제톡톡 화면
+                              Obx(() {
+                                // 선택된 카테고리에 따라 데이터 필터링
+                                var tokPosts = controller.tokPostList;
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.w),
+                                    child: Column(
+                                      children: [
+                                        // 인기순 / 최신순 선택
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.h),
+                                          child: Row(
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  controller.selectOrder(0);
+                                                  controller.selectTokOrder(0);
                                                 },
                                                 child: OrderTab(
                                                   text: '인기순',
                                                   isSelected: controller
-                                                          .selectedOrder
+                                                          .selectedTokOrder
                                                           .value ==
                                                       0,
                                                 ),
                                               ),
-                                              const SizedBox(width: 6),
+                                              SizedBox(width: 6.w),
                                               GestureDetector(
                                                 onTap: () {
-                                                  controller.selectOrder(1);
+                                                  controller.selectTokOrder(1);
                                                 },
                                                 child: OrderTab(
                                                   text: '최신순',
                                                   isSelected: controller
-                                                          .selectedOrder
+                                                          .selectedTokOrder
                                                           .value ==
                                                       1,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.h),
-                                          // 리스트
-                                          controller.isLoading.value
-                                              ? const Center(
-                                                  child:
-                                                      CircularProgressIndicator()) // 로딩 UI
-                                              : posts.isEmpty
-                                                  ? const Center(
-                                                      child: Text('게시글이 없습니다.'))
-                                                  : SizedBox(
-                                                      height: 270.h,
-                                                      child: ListView.separated(
-                                                        shrinkWrap: true,
-                                                        itemCount: posts.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          var post =
-                                                              posts[index];
-
-                                                          return GestureDetector(
-                                                            onTap: () {
-                                                              controller
-                                                                  .toDetailPage(
-                                                                      post[
-                                                                          "id"]);
-                                                            },
-                                                            child: ListItem(
-                                                              title:
-                                                                  post["title"],
-                                                              description: post[
-                                                                  "content"],
-                                                              date: post[
-                                                                  "createdDate"],
-                                                              likes: post[
-                                                                  "likeCount"],
-                                                              comments: post[
-                                                                  "commentCount"],
-                                                              imageUrl: post[
-                                                                  "imageUrl"],
-                                                              onTap: () {
-                                                                controller
-                                                                    .toDetailPage(
-                                                                        post[
-                                                                            "id"]);
-                                                              },
-                                                            ),
-                                                          );
-                                                        },
-                                                        separatorBuilder:
-                                                            (context, index) {
-                                                          return Padding(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        16.h),
-                                                            child: Container(
-                                                              height: 1,
-                                                              color: const Color(
-                                                                  0xffd9d9d9),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                              // 경제톡톡 화면
-                              Obx(() {
-                                // 선택된 카테고리에 따라 데이터 필터링
-                                var tokPosts = controller.tokPostList;
-                                return Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: Column(
-                                    children: [
-                                      // 인기순 / 최신순 선택
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10.h),
-                                        child: Row(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                controller.selectTokOrder(0);
-                                              },
-                                              child: OrderTab(
-                                                text: '인기순',
-                                                isSelected: controller
-                                                        .selectedTokOrder
-                                                        .value ==
-                                                    0,
-                                              ),
-                                            ),
-                                            SizedBox(width: 6.w),
-                                            GestureDetector(
-                                              onTap: () {
-                                                controller.selectTokOrder(1);
-                                              },
-                                              child: OrderTab(
-                                                text: '최신순',
-                                                isSelected: controller
-                                                        .selectedTokOrder
-                                                        .value ==
-                                                    1,
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                      ),
-                                      // 리스트
-                                      controller.isLoading.value
-                                          ? const Center(
+                                        // 리스트
+                                        if (controller.isLoading.value)
+                                          const Center(
                                               child:
-                                                  CircularProgressIndicator()) // 로딩 UI
-                                          : tokPosts.isEmpty
-                                              ? const Center(
-                                                  child: Text('게시글이 없습니다.'))
-                                              : SizedBox(
-                                                  height: 270.h,
-                                                  child: ListView.separated(
-                                                    shrinkWrap: true,
-                                                    itemCount: tokPosts.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      var tokPost =
-                                                          tokPosts[index];
-
-                                                      return TalkListItem(
-                                                        onTap: () {
-                                                          controller
-                                                              .toTalkDetailPage(
-                                                                  tokPost[
-                                                                      "id"]);
-                                                        },
-                                                        participantCount: tokPost[
-                                                            'participantCount'],
-                                                        createdDate: tokPost[
-                                                            'createdDate'],
-                                                        title: tokPost['title'],
-                                                        likeCount: tokPost[
-                                                            'likeCount'],
-                                                        commentCount: tokPost[
-                                                            'participantCount'], // 댓글 수 연결 필요
-                                                        imageUrl:
-                                                            tokPost['imageUrl'],
-                                                      );
-                                                    },
-                                                    separatorBuilder:
-                                                        (context, index) {
-                                                      return Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 16.h),
-                                                        child: Container(
-                                                          height: 1,
-                                                          color: const Color(
-                                                              0xffd9d9d9),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
+                                                  CircularProgressIndicator())
+                                        else if (tokPosts.isEmpty)
+                                          const Center(
+                                              child: Text('게시글이 없습니다.'))
+                                        else
+                                          Column(
+                                            children: tokPosts.map((tokPost) {
+                                              return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 8.h),
+                                                child: TalkListItem(
+                                                  onTap: () => controller
+                                                      .toTalkDetailPage(
+                                                          tokPost['id']),
+                                                  participantCount: tokPost[
+                                                          'participantCount'] ??
+                                                      0,
+                                                  createdDate:
+                                                      tokPost['createdDate'] ??
+                                                          '',
+                                                  title: tokPost['title'] ?? '',
+                                                  likeCount:
+                                                      tokPost['likeCount'] ?? 0,
+                                                  commentCount: tokPost[
+                                                          'participantCount'] ??
+                                                      0,
+                                                  imageUrl: tokPost['imageUrl'],
                                                 ),
-                                    ],
+                                              );
+                                            }).toList(),
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               }),
