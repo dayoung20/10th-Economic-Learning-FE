@@ -77,4 +77,8 @@ class LevelTestTestController extends GetxController {
       'quizList': quizList,
     });
   }
+
+  void quitLevelTest() {
+    Get.toNamed('/test');
+  }
 }
