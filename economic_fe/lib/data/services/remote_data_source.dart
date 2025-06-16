@@ -1974,23 +1974,27 @@ class RemoteDataSource {
 
   /// api/v1/level-test/result
   /// 레벨 테스트 결과 제출
-  Future<dynamic> postLevelTestResult(
-      List<Map<String, dynamic>> answersJson) async {
-    String endPoint = "api/v1/level-test/result";
+  Future<dynamic> postLevelTestResult({
+    required List<Map<String, dynamic>> answersJson,
+    required String anonymousKey,
+  }) async {
+    String endPoint =
+        "api/v1/level-test/result?levelTestSessionKey=$anonymousKey";
+
     Map<String, dynamic> requestBody = {
       "answers": answersJson,
     };
 
-    print("post 안 : ${jsonEncode(requestBody)}");
+    print("요청 URL: $endPoint");
+    print("post 본문: ${jsonEncode(requestBody)}");
 
     try {
-      // API 요청 실행
       dynamic response =
           await postApiWithJsonReturnResponse(endPoint, requestBody);
 
       if (response != null) {
         debugPrint("레벨테스트 POST 성공: $response");
-        return response; // 성공하면 응답 반환
+        return response;
       } else {
         debugPrint("레벨테스트 POST 실패");
       }
@@ -1998,7 +2002,7 @@ class RemoteDataSource {
       debugPrint("Error 발생: $e");
     }
 
-    return null; // 실패 시 null 반환
+    return null;
   }
 
   /// 톡톡 게시글 검색

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/view_model/test/anonymous_key_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -55,8 +56,14 @@ class LevelTestTestController extends GetxController {
 
     try {
       print("start");
-      dynamic response =
-          await remoteDataSource.postLevelTestResult(answersJson);
+
+      final anonKeyController = Get.find<AnonymousKeyController>();
+      final anonymousKey = anonKeyController.key;
+
+      dynamic response = await remoteDataSource.postLevelTestResult(
+        answersJson: answersJson,
+        anonymousKey: anonymousKey,
+      );
 
       print("response : $response");
     } catch (e) {
