@@ -1,99 +1,81 @@
-import 'package:economic_fe/data/models/article.dart';
 import 'package:economic_fe/data/models/article_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view/screens/article/article_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class ArticleListController extends GetxController {
   final remoteDataSource = RemoteDataSource();
+
   var selectedSort = "RECENT".obs;
   var selectedCate = "전체".obs;
-
-  // 현재 선택된 카테고리 인덱스
   Rx<int> selectedCategoryIndex = 0.obs;
+  Rx<int> selectedOrder = 0.obs;
 
-  // 카테고리 탭 클릭 시 선택된 카테고리 인덱스 업데이트
+  RxList<ArticleModel> newsList = <ArticleModel>[].obs;
+
   void selectCategory(String index) {
     selectedCate.value = index;
   }
 
-  // 인기순 / 최신순 선택 상태 관리
-  Rx<int> selectedOrder = 0.obs;
-
-  // 순서 변경
   void selectOrder(int index) {
     selectedOrder.value = index;
   }
 
-  // 기사 세부페이지로 이동
   void toDetailPage(ArticleModel article) {
     Get.to(() => const ArticleDetailPage(), arguments: article);
   }
 
-  // 챗봇 화면으로 이동
   void toChatbot() {
     Get.toNamed('/chatbot');
   }
 
-  //뉴스 기사 목록 불러오기
-  Future<List<ArticleModel>> getNewsList(
-      int page, String sort, String? category) async {
+  Future<void> getNewsList(int page, String sort, String? category) async {
     try {
-      print("start");
       dynamic response;
-
-      // "전체" 선택 시 category를 null로 전달
       if (category == null || category == "전체") {
         response = await remoteDataSource.getNewsList(page, sort, null);
-        print("category == null $response");
       } else {
         response = await remoteDataSource.getNewsList(page, sort, category);
-        print("category != null $response");
       }
 
       final data = response as Map<String, dynamic>;
-      final newsList = data['results']['newsList'] as List;
-      return newsList.map((news) => ArticleModel.fromJson(news)).toList();
+      final list = data['results']['newsList'] as List;
+      newsList.value = list.map((news) => ArticleModel.fromJson(news)).toList();
     } catch (e) {
       debugPrint('Error: $e');
-      return [];
+      newsList.clear();
     }
   }
 
-  // 뉴스 스크랩
-  Future<void> postNewsScrap(int id) async {
+  Future<void> postNewsScrap(int id, {ArticleModel? article}) async {
     try {
-      print("start");
-      dynamic response;
-
-      response = await remoteDataSource.postNewsScrap(id);
-      print("뉴스 스크랩 : $response");
+      final response = await remoteDataSource.postNewsScrap(id);
+      if (response == true && article != null) {
+        article.isScraped = true;
+        newsList.refresh(); // 상태 갱신
+      }
     } catch (e) {
       debugPrint("Error: $e");
     }
   }
 
-  // 특정 용어 스크랩 취소하기
-  Future<void> deleteNewsScrap(int id) async {
+  Future<void> deleteNewsScrap(int id, {ArticleModel? article}) async {
     try {
-      print("start");
-
-      dynamic response;
-      response = await remoteDataSource.deleteNewsScrap(id);
-      print("scrap delete response : $response");
+      final response = await remoteDataSource.deleteNewsScrap(id);
+      if (response == true && article != null) {
+        article.isScraped = false;
+        newsList.refresh();
+      }
     } catch (e) {
-      debugPrint("Error : $e");
+      debugPrint("Error: $e");
     }
   }
 
-  // 뉴스 상세 조회
   Future<void> getNewsDetail(int id) async {
     try {
-      print("start");
-
-      dynamic response;
-      response = await remoteDataSource.getNewsDetail(id);
+      final response = await remoteDataSource.getNewsDetail(id);
       print("getNewsDetail response : $response");
     } catch (e) {
       debugPrint("Error : $e");

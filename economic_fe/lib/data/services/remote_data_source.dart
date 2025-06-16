@@ -257,12 +257,10 @@ class RemoteDataSource {
   /// 데이터 생성시 사용
   /// jsonData 포함X
   /// 앱에 저장된 accessToken 사용
-  Future<dynamic> _postApiTest(
-    String endPoint,
-  ) async {
+  Future<dynamic> _postApiTest(String endPoint) async {
     String apiUrl = '$baseUrl/$endPoint';
     String? access = await getToken("accessToken");
-    // String authToken = dotenv.env['AUTHORIZATION_KEY']!; // 환경 변수에서 가져오기
+
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $access',
@@ -272,17 +270,16 @@ class RemoteDataSource {
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: headers,
-        // body: jsonEncode(jsonData),
       );
 
       if (response.statusCode == 200) {
         debugPrint('POST 요청 성공');
-        return response.statusCode;
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes)); // JSON 파싱
+        return decoded; // 전체 Map<String, dynamic> 반환
       } else {
         debugPrint('POST 요청 실패: (${response.statusCode}) ${response.body}');
+        return null; // 또는 에러 객체를 던질 수도 있음
       }
-
-      return response.statusCode;
     } catch (e) {
       debugPrint('POST 요청 중 예외 발생: $e');
       return null;
@@ -532,11 +529,13 @@ class RemoteDataSource {
 
       if (response.statusCode == 200) {
         debugPrint('DELETE 요청 성공');
+        final decoded =
+            jsonDecode(utf8.decode(response.bodyBytes)); // 응답 본문 디코딩 후 파싱
+        return decoded; // Map<String, dynamic> 반환
       } else {
-        debugPrint('DELETE 요청 실패: (${response.statusCode})${response.body}');
+        debugPrint('DELETE 요청 실패: (${response.statusCode}) ${response.body}');
+        return null;
       }
-
-      return response.statusCode;
     } catch (e) {
       debugPrint('DELETE 요청 중 예외 발생: $e');
       return;
@@ -611,7 +610,7 @@ class RemoteDataSource {
     }
 
     if (response != null) {
-      print('응답 데이터 : $response');
+      // print('응답 데이터 : $response');
     } else {
       print('데이터 get 실패');
     }
@@ -649,17 +648,19 @@ class RemoteDataSource {
 
   /// api/news/{id}/scrap
   /// 뉴스 스크랩
-  Future<dynamic> postNewsScrap(int id) async {
+  Future<bool> postNewsScrap(int id) async {
     String endPoint = "api/news/$id/scrap";
 
     try {
       final response = await _postApiTest(endPoint);
 
-      if (response != null) {
+      if (response != null &&
+          response['isSuccess'] == true &&
+          response['results']?['isSuccess'] == true) {
         debugPrint("스크랩 post 성공");
         return true;
       } else {
-        debugPrint("스크랩 실패");
+        debugPrint("스크랩 실패: $response");
         return false;
       }
     } catch (e) {
@@ -670,17 +671,19 @@ class RemoteDataSource {
 
   /// 뉴스 스크랩 취소
   /// api/news/{id}/scrap
-  Future<dynamic> deleteNewsScrap(int id) async {
+  Future<bool> deleteNewsScrap(int id) async {
     String endPoint = "api/news/$id/scrap";
 
     try {
       final response = await _deleteApiTest(endPoint);
 
-      if (response != null) {
+      if (response != null &&
+          response['isSuccess'] == true &&
+          response['results']?['isSuccess'] == true) {
         debugPrint("스크랩 delete 성공");
         return true;
       } else {
-        debugPrint("스크랩 delete 실패");
+        debugPrint("스크랩 delete 실패: $response");
         return false;
       }
     } catch (e) {
@@ -1693,7 +1696,7 @@ class RemoteDataSource {
 
       if (response != null && response["isSuccess"] == true) {
         var results = response["results"];
-        tokPosts.addAll(results["toktokPreviewResponseList"]); // 현재 페이지 데이터 추가
+        tokPosts.addAll(results["postPreviewList"]); // 현재 페이지 데이터 추가
         // totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
         // currentPage++; // 다음 페이지로 이동
       } else {
@@ -1971,23 +1974,27 @@ class RemoteDataSource {
 
   /// api/v1/level-test/result
   /// 레벨 테스트 결과 제출
-  Future<dynamic> postLevelTestResult(
-      List<Map<String, dynamic>> answersJson) async {
-    String endPoint = "api/v1/level-test/result";
+  Future<dynamic> postLevelTestResult({
+    required List<Map<String, dynamic>> answersJson,
+    required String anonymousKey,
+  }) async {
+    String endPoint =
+        "api/v1/level-test/result?levelTestSessionKey=$anonymousKey";
+
     Map<String, dynamic> requestBody = {
       "answers": answersJson,
     };
 
-    print("post 안 : ${jsonEncode(requestBody)}");
+    print("요청 URL: $endPoint");
+    print("post 본문: ${jsonEncode(requestBody)}");
 
     try {
-      // API 요청 실행
       dynamic response =
           await postApiWithJsonReturnResponse(endPoint, requestBody);
 
       if (response != null) {
         debugPrint("레벨테스트 POST 성공: $response");
-        return response; // 성공하면 응답 반환
+        return response;
       } else {
         debugPrint("레벨테스트 POST 실패");
       }
@@ -1995,7 +2002,7 @@ class RemoteDataSource {
       debugPrint("Error 발생: $e");
     }
 
-    return null; // 실패 시 null 반환
+    return null;
   }
 
   /// 톡톡 게시글 검색

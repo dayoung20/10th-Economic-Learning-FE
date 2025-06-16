@@ -8,7 +8,7 @@ class CommunityController extends GetxController {
   RxBool isModalVisible = false.obs;
   Rx<int> selectedCategoryIndex = 0.obs;
   Rx<int> selectedOrder = 1.obs;
-  Rx<int> selectedTokOrder = 0.obs;
+  Rx<int> selectedTokOrder = 1.obs;
   RxBool isLoading = false.obs;
   var postList = <dynamic>[].obs;
   var tokPostList = <dynamic>[].obs;

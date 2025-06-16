@@ -57,16 +57,26 @@ class TalkDetailPage extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 152,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(post['imageList'][0]),
-                            fit: BoxFit.cover,
+                      // 이미지 영역
+                      if (post['imageList'] != null &&
+                          post['imageList'].isNotEmpty)
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 152,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(post['imageList'][0]['url']),
+                              fit: BoxFit.cover,
+                            ),
                           ),
+                        )
+                      else
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 152,
+                          color: Colors.grey[200], // 기본 배경
+                          child: const Center(child: Text("이미지 없음")),
                         ),
-                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -79,7 +89,7 @@ class TalkDetailPage extends StatelessWidget {
                               children: [
                                 // 참여 인원
                                 Text(
-                                  '${post['participantCount']}명이 참여했어요',
+                                  '${post['participantCount'] ?? 0}명이 참여했어요',
                                   style: const TextStyle(
                                     color: Color(0xFF767676),
                                     fontSize: 13,
@@ -90,7 +100,7 @@ class TalkDetailPage extends StatelessWidget {
                                 ),
                                 // 게시글 업로드 시간
                                 Text(
-                                  '${post['createdDate']}',
+                                  '${post['createdDate'] ?? ''}',
                                   textAlign: TextAlign.right,
                                   style: const TextStyle(
                                     color: Color(0xFF767676),
@@ -110,7 +120,7 @@ class TalkDetailPage extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 32,
                               child: Flexible(
                                 child: Text(
-                                  '${post['title']}',
+                                  '${post['title'] ?? ''}',
                                   style: const TextStyle(
                                     color: Color(0xFF111111),
                                     fontSize: 18,
@@ -129,7 +139,7 @@ class TalkDetailPage extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 32,
                               child: Flexible(
                                 child: Text(
-                                  '${post['content']}',
+                                  '${post['content'] ?? ''}',
                                   style: const TextStyle(
                                     color: Color(0xFF404040),
                                     fontSize: 16,
@@ -152,18 +162,18 @@ class TalkDetailPage extends StatelessWidget {
                                         onTap: () =>
                                             controller.likePostToggle(),
                                         child: Icon(
-                                          post['isLiked']
+                                          post['isLiked'] == true
                                               ? Icons.favorite
                                               : Icons.favorite_border,
                                           size: 18,
-                                          color: post['isLiked']
+                                          color: post['isLiked'] == true
                                               ? Palette.buttonColorBlue
                                               : const Color(0xff767676),
                                         ),
                                       )),
                                 ),
                                 Text(
-                                  '${post['likeCount']}', // 좋아요 수 연결 필요
+                                  '${post['likeCount'] ?? 0}', // 좋아요 수 연결 필요
                                   style: const TextStyle(
                                     color: Color(0xFF767676),
                                     fontSize: 12,
@@ -184,7 +194,7 @@ class TalkDetailPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${post['participantCount']}',
+                                  '${post['participantCount'] ?? 0}',
                                   style: const TextStyle(
                                     color: Color(0xFF767676),
                                     fontSize: 12,
@@ -202,11 +212,11 @@ class TalkDetailPage extends StatelessWidget {
                                         onTap: () =>
                                             controller.scrapPostToggle(),
                                         child: Icon(
-                                          post['isScraped']
+                                          post['isScraped'] == true
                                               ? Icons.bookmark
                                               : Icons.bookmark_border,
                                           size: 18,
-                                          color: post['isScraped']
+                                          color: post['isScraped'] == true
                                               ? Palette.buttonColorBlue
                                               : const Color(0xff767676),
                                         ),

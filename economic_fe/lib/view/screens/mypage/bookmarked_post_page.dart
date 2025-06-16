@@ -1,3 +1,4 @@
+import 'package:economic_fe/utils/date_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/mypage/bookmarked_posts_controller.dart';
@@ -82,7 +83,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
                             ),
                           ),
                           Text(
-                            post["createdDate"] ?? '',
+                            formatRelativeTime(post["createdDate"] ?? ''),
                             style: TextStyle(
                               color: const Color(0xFF767676),
                               fontSize: 12.sp,

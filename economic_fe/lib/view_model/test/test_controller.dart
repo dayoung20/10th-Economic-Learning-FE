@@ -1,6 +1,7 @@
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/view_model/test/anonymous_key_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 class TestController extends GetxController {
   late BuildContext context;
   static TestController get to => Get.find();
+  String? anonymousKey; // 레벨테스트 세션 키
 
   //레벨테스트 answer
   List<LevelTestAnswerModel> levelTestAnswerModel = [];
@@ -24,6 +26,10 @@ class TestController extends GetxController {
       Get.snackbar("에러", "퀴즈를 불러오지 못했습니다");
       debugPrint("에러 발생: $e");
     }
+  }
+
+  void setAnonymousKey(String key) {
+    anonymousKey = key;
   }
 
   void clickedTestBtn(BuildContext context) async {
@@ -77,7 +83,9 @@ class TestController extends GetxController {
       print("response ::: $response");
 
       final data = response as Map<String, dynamic>;
-      final quizList = data['results']['quizList'] as List;
+      final anonKeyController = Get.put(AnonymousKeyController());
+      anonKeyController.setKey(data['results']['anonymousKey']);
+      final quizList = data['results']['quizzes'] as List;
       return quizList.map((quiz) => QuizModel.fromJson(quiz)).toList();
     } catch (e) {
       debugPrint('Error: $e');

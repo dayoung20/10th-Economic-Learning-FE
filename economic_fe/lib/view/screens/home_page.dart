@@ -1,4 +1,5 @@
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/%08progress_tool_tip.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view/widgets/home_app_bar.dart';
@@ -82,11 +83,7 @@ class _HomePageState extends State<HomePage> {
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 2.w),
-                                        child: Icon(
-                                          Icons.help_outline,
-                                          size: 14.w,
-                                          color: const Color(0xffa2a2a2),
-                                        ),
+                                        child: const ProgressTooltip(),
                                       ),
                                     ],
                                   ),
@@ -325,19 +322,19 @@ class _HomePageState extends State<HomePage> {
                                     padding: const EdgeInsets.all(16),
                                     child: Stack(
                                       children: [
-                                        // 창 닫기 버튼
-                                        Positioned(
-                                          right: 0,
-                                          child: GestureDetector(
-                                            onTap: () => controller
-                                                .isProgressContainerVisible
-                                                .value = true,
-                                            child: const Icon(
-                                              Icons.close,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
+                                        // // 창 닫기 버튼
+                                        // Positioned(
+                                        //   right: 0,
+                                        //   child: GestureDetector(
+                                        //     onTap: () => controller
+                                        //         .isProgressContainerVisible
+                                        //         .value = true,
+                                        //     child: const Icon(
+                                        //       Icons.close,
+                                        //       color: Colors.white,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,

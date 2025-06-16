@@ -10,6 +10,7 @@ class ChatbotController extends GetxController {
   var messages = <Message>[].obs;
 
   final TextEditingController messageController = TextEditingController();
+  final RxBool isLoadingResponse = false.obs;
   var messageText = ''.obs;
 
   var isExpanded = false.obs;
@@ -98,9 +99,12 @@ class ChatbotController extends GetxController {
     messageController.clear();
     messageText.value = '';
 
+    isLoadingResponse.value = true;
+
     try {
       final response = await remoteDataSource.postChatbotMessage(input);
-      final botMessage = response['results']?.toString() ?? '답변이 없습니다.';
+      final botMessage =
+          response['results']['message']?.toString() ?? '답변이 없습니다.';
       messages.add(
         Message(
           text: botMessage,
@@ -118,6 +122,8 @@ class ChatbotController extends GetxController {
           time: getCurrentFormattedTime(),
         ),
       );
+    } finally {
+      isLoadingResponse.value = false;
     }
   }
 
