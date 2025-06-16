@@ -1,3 +1,4 @@
+import 'package:economic_fe/utils/notification_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/%08progress_tool_tip.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
@@ -16,6 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    checkAndRequestNotificationPermissionOnce(); // 최초 진입 시 한 번 실행
+  }
+
   @override
   Widget build(BuildContext context) {
     // GetX 컨트롤러 가져오기

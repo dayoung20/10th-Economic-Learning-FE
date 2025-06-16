@@ -1,0 +1,25 @@
+import 'package:get_storage/get_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:economic_fe/data/services/remote_data_source.dart';
+
+Future<void> checkAndRequestNotificationPermissionOnce() async {
+  final box = GetStorage();
+  final hasRequested = box.read('isNotificationRequested') ?? false;
+
+  if (!hasRequested) {
+    final status = await Permission.notification.request();
+    final isGranted = status.isGranted;
+
+    final remoteDataSource = RemoteDataSource();
+    final success = await remoteDataSource.setAlarm(isGranted);
+
+    if (success) {
+      print("푸시 알림 설정 서버 전송 성공");
+    } else {
+      print("푸시 알림 서버 전송 실패");
+    }
+
+    // 요청 여부 저장
+    box.write('isNotificationRequested', true);
+  }
+}

@@ -1,19 +1,20 @@
 import 'package:economic_fe/data/services/user_router.dart';
 import 'package:economic_fe/data/services/validate_access_token.dart';
-import 'package:economic_fe/view/screens/home_page.dart';
-import 'package:economic_fe/view/screens/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ko', null); // 로캘 초기화
-
   await dotenv.load(fileName: '.env');
+
+  await GetStorage.init(); // 권한 요청 기록 저장용
+
   String nativeAppKey = dotenv.env['NATIVE_APP_KEY']!;
   KakaoSdk.init(nativeAppKey: nativeAppKey);
 
