@@ -57,16 +57,6 @@ class TalkDetailPage extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     children: [
-                      // Container(
-                      //   width: MediaQuery.of(context).size.width,
-                      //   height: 152,
-                      //   decoration: BoxDecoration(
-                      //     image: DecorationImage(
-                      //       image: NetworkImage(post['imageList'][0]),
-                      //       fit: BoxFit.cover,
-                      //     ),
-                      //   ),
-                      // ),
                       // 이미지 영역
                       if (post['imageList'] != null &&
                           post['imageList'].isNotEmpty)
@@ -75,7 +65,7 @@ class TalkDetailPage extends StatelessWidget {
                           height: 152,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(post['imageList'][0]),
+                              image: NetworkImage(post['imageList'][0]['url']),
                               fit: BoxFit.cover,
                             ),
                           ),
