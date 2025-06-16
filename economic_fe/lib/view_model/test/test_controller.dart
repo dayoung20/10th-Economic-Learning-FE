@@ -2,6 +2,7 @@ import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart'
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view_model/test/anonymous_key_controller.dart';
+import 'package:economic_fe/view_model/test/level_test_test_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,14 @@ class TestController extends GetxController {
   void test(BuildContext context) async {
     try {
       final List<QuizModel> quizList = await getLevelTest();
+
+      // 레벨테스트 컨트롤러 초기화
+      if (Get.isRegistered<LevelTestTestController>()) {
+        final testController = Get.find<LevelTestTestController>();
+        testController.resetTest(); // 진행 데이터 초기화
+      }
+
+      // 새로운 문제로 이동
       Get.toNamed('test/test', arguments: quizList);
     } catch (e) {
       Get.snackbar("에러", "퀴즈를 불러오지 못했습니다");

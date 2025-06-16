@@ -135,7 +135,9 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                     keepBtnText: '계속할래요',
                     stopBtnText: '그만할래요',
                     keepFunc: controller.hideModal,
-                    stopFunc: controller.quitLevelTest,
+                    stopFunc: () {
+                      controller.resetTest(); // 상태 초기화
+                    },
                   )
                 : const SizedBox.shrink(); // 안 보이게
           }),
