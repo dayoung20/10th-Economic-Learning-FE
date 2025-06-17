@@ -19,6 +19,16 @@ class _LearningListPageState extends State<LearningListPage> {
   final LearningListController controller = Get.put(LearningListController());
 
   @override
+  void initState() {
+    super.initState();
+
+    // 페이지 진입할 때마다 API 호출
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchLearningSetList();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
