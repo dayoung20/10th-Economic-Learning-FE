@@ -54,7 +54,7 @@ class QuizTestController extends GetxController {
       print("getQuizTest response ::: $response");
 
       final data = response as Map<String, dynamic>;
-      final quizList = data['results']['quizList'] as List;
+      final quizList = data['results'] as List;
       return quizList.map((quiz) => QuizTestModel.fromJson(quiz)).toList();
     } catch (e) {
       debugPrint('Error: $e');

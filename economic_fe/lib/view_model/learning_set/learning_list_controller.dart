@@ -87,6 +87,7 @@ class LearningListController extends GetxController {
   }
 
   void clickedQuiz(int learningSetId, String name) {
+    // debugPrint('learningSetId: $learningSetId, name: $name 퀴즈화면으로 이동');
     Get.toNamed(
       '/learning_list/quiz_level',
       arguments: {

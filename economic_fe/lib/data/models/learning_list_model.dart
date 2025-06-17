@@ -23,7 +23,7 @@ class LearningListModel with ChangeNotifier {
 
   factory LearningListModel.fromJson(Map<String, dynamic> json) {
     return LearningListModel(
-      id: json['id'],
+      id: json['learningSetId'],
       name: json['name'],
       isLearningSetCompleted: json['isLearningSetCompleted'],
       isConceptCompleted: json['isConceptCompleted'],

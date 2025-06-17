@@ -2311,8 +2311,7 @@ class RemoteDataSource {
       var response = await _getApiWithHeader(endPoint);
 
       if (response != null && response["isSuccess"] == true) {
-        learningList = List<Map<String, dynamic>>.from(
-            response["results"]["learningSetPreviewList"]);
+        learningList = List<Map<String, dynamic>>.from(response["results"]);
       } else {
         debugPrint("학습 세트 미리보기 조회 실패: ${response?["message"]}");
       }
@@ -2335,8 +2334,7 @@ class RemoteDataSource {
       var response = await _getApiWithHeader(endPoint);
 
       if (response != null && response["isSuccess"] == true) {
-        conceptList =
-            List<Map<String, dynamic>>.from(response["results"]["conceptList"]);
+        conceptList = List<Map<String, dynamic>>.from(response["results"]);
       } else {
         debugPrint("레벨별 개념 학습 세트 조회 실패: ${response?["message"]}");
       }
@@ -2484,7 +2482,8 @@ class RemoteDataSource {
   /// 퀴즈 시작
   Future<dynamic> getQuizList(int learningSetId, String level) async {
     dynamic response;
-    String endPoint = "api/v1/learning/$learningSetId/quizzes?level=$level";
+    String endPoint =
+        "api/v1/learning/quizzes?learningSetId=$learningSetId&level=$level";
 
     response = await postApiWithoutJsonReturnResponse(endPoint);
     // print("response : $")
