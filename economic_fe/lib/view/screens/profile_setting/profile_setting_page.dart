@@ -36,6 +36,7 @@ class ProfileSettingPage extends StatelessWidget {
             Obx(() {
               return ProfileSettingButton(
                 title: '기본 정보',
+                desc: '기본 정보',
                 onPress: () {
                   Get.toNamed('/profile_setting/basic');
                 },
@@ -49,7 +50,8 @@ class ProfileSettingPage extends StatelessWidget {
             // "업종" 저장 상태에 따라 디자인 변경
             Obx(() {
               return ProfileSettingButton(
-                title: '직업을 선택해주세요',
+                title: '업종',
+                desc: '직업을 선택해주세요',
                 onPress: () {
                   Get.toNamed('/profile_setting/job');
                 },
@@ -63,7 +65,8 @@ class ProfileSettingPage extends StatelessWidget {
             // "직무" 저장 상태에 따라 디자인 변경
             Obx(() {
               return ProfileSettingButton(
-                title: '직무를 선택해주세요',
+                title: '직무',
+                desc: '직무를 선택해주세요',
                 onPress: () {
                   Get.toNamed('/profile_setting/part');
                 },
