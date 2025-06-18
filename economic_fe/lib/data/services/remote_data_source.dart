@@ -2521,8 +2521,7 @@ class RemoteDataSource {
   Future<dynamic> postQuizFinish(int learningSetId, String level) async {
     dynamic response;
 
-    String endPoint = "api/v1/learning/$learningSetId/quizzes/end?level=$level";
-    //  api/v1/learning/1/quizzes/end?level=BEGINNER
+    String endPoint = "api/v1/learning/quizzes/end";
     response = await postApiWithoutJsonReturnResponse(endPoint);
 
     if (response != null) {
