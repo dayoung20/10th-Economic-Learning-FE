@@ -9,6 +9,7 @@ class TalkDetailController extends GetxController {
   RxBool isLoading = true.obs;
   RxMap<String, dynamic> postDetail = <String, dynamic>{}.obs;
   RxList<Comment> comments = RxList<Comment>();
+  late final int postId;
 
   /// 게시글 좋아요 여부
   RxBool isLikedPost = false.obs;
@@ -23,9 +24,12 @@ class TalkDetailController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    int? postId = Get.arguments as int?;
-    if (postId != null) {
+    int? argPostId = Get.arguments as int?;
+    if (argPostId != null) {
+      postId = argPostId; // 전역 변수로 저장
       fetchPostDetail(postId);
+    } else {
+      Get.snackbar("오류", "게시글 ID를 받아오지 못했습니다.");
     }
   }
 
@@ -113,7 +117,6 @@ class TalkDetailController extends GetxController {
     String message = messageController.text;
     if (message.isEmpty) return;
 
-    int postId = postDetail["id"]; // 현재 게시글 ID
     bool success;
 
     if (replyingToCommentId.value == -1) {
@@ -146,7 +149,6 @@ class TalkDetailController extends GetxController {
 
   /// 게시글 좋아요 api 연동
   Future<void> likePost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
     bool success = await remoteDataSource.likePost(postId);
 
     if (success) {
@@ -159,7 +161,6 @@ class TalkDetailController extends GetxController {
 
   /// 게시글 좋아요 취소 api 연동
   Future<void> deleteLikedPost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
     bool success = await remoteDataSource.deleteLikedPost(postId);
 
     if (success) {
@@ -181,7 +182,6 @@ class TalkDetailController extends GetxController {
 
   /// 게시글 스크랩 api 연동
   Future<void> scrapPost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
     bool success = await remoteDataSource.scrapPost(postId);
 
     if (success) {
@@ -194,7 +194,6 @@ class TalkDetailController extends GetxController {
 
   /// 게시글 스크랩 취소 api 연동
   Future<void> deleteScrappedPost() async {
-    int postId = postDetail["id"]; // 현재 게시글 ID
     bool success = await remoteDataSource.deletePostScrap(postId);
 
     if (success) {
@@ -220,7 +219,6 @@ class TalkDetailController extends GetxController {
 
   /// 댓글 좋아요 api 연동
   Future<void> likeComment(int commentId) async {
-    int postId = postDetail["id"];
     bool success = await remoteDataSource.likeComment(postId, commentId);
 
     if (success) {
@@ -232,7 +230,6 @@ class TalkDetailController extends GetxController {
 
   /// 댓글 좋아요 취소 api 연동
   Future<void> deleteLikedComment(int commentId) async {
-    int postId = postDetail["id"];
     bool success = await remoteDataSource.deleteLikedComment(postId, commentId);
 
     if (success) {
@@ -331,7 +328,6 @@ class TalkDetailController extends GetxController {
   Future<void> editComment() async {
     if (messageController.text.isEmpty) return;
 
-    int postId = postDetail["id"];
     int commentId = editingCommentId.value;
     String updatedContent = messageController.text;
 
@@ -367,7 +363,6 @@ class TalkDetailController extends GetxController {
   Future<void> editReply() async {
     if (messageController.text.isEmpty) return;
 
-    int postId = postDetail["id"];
     int replyId = editingReplyId.value;
     String updatedContent = messageController.text;
 
@@ -405,7 +400,6 @@ class TalkDetailController extends GetxController {
 
   /// 댓글 또는 대댓글 삭제
   Future<void> deleteComment(int commentId) async {
-    int postId = postDetail["id"]; // 현재 게시글 ID 가져오기
     debugPrint("삭제 요청: postId = $postId, commentId = $commentId");
 
     bool success = await remoteDataSource.deleteComment(postId, commentId);
