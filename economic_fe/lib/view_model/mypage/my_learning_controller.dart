@@ -78,8 +78,7 @@ class MyLearningController extends GetxController
       final response =
           await remoteDataSource.getScrapConcepts(selectedLevel.value);
       if (response != null && response['isSuccess'] == true) {
-        final List<dynamic> rawConcepts =
-            response['results']['scrapConceptList'] ?? [];
+        final List<dynamic> rawConcepts = response['results'] ?? [];
         scrapConcepts.value = rawConcepts.map((concept) {
           return Map<String, dynamic>.from(concept);
         }).toList();
@@ -116,8 +115,7 @@ class MyLearningController extends GetxController
       final response =
           await remoteDataSource.getScrapQuizzes(selectedLevel.value);
       if (response != null && response['isSuccess'] == true) {
-        final List<dynamic> rawQuizzes =
-            response['results']['scrapQuizList'] ?? [];
+        final List<dynamic> rawQuizzes = response['results'] ?? [];
         scrapQuizzes.value = rawQuizzes.map((concept) {
           return Map<String, dynamic>.from(concept);
         }).toList();
