@@ -45,7 +45,7 @@ class _BookmarkedPostPageState extends State<BookmarkedPostPage> {
             final post = controller.posts[index];
             return GestureDetector(
               onTap: () {
-                if (post['type'] == 'ECONOMY_TALK') {
+                if (post['type'] == '경제 톡톡') {
                   Get.toNamed('/community/talk_detail', arguments: post["id"]);
                 } else {
                   Get.toNamed('/community/detail', arguments: post["id"]);
