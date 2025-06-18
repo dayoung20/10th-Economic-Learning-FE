@@ -94,6 +94,9 @@ class BasicController extends GetxController {
             .updateProfileField('imageId', imageId.value);
         Get.snackbar('성공', '프로필 이미지가 업데이트되었습니다.');
       } else {
+        // 업로드 실패 시 이미지 초기화
+        selectedProfileImage.value = null;
+        imageId.value = null;
         Get.snackbar('실패', '프로필 이미지 등록에 실패하였습니다.');
       }
     }

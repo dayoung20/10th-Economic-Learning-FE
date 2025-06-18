@@ -83,7 +83,7 @@ class LearningConceptController extends GetxController {
       print("스크랩 데이터 응답: $response"); // 응답 데이터 확인
 
       if (response != null && response["results"] != null) {
-        List<dynamic> scrapedConcepts = response["results"]["scrapConceptList"];
+        List<dynamic> scrapedConcepts = response["results"];
 
         // 각 개념의 conceptId만 추출하여 List<int>로 변환
         scrapConceptList
@@ -195,6 +195,15 @@ class LearningConceptController extends GetxController {
   }
 
   void clickedCloseBtn() {
+    // 진행 상태 초기화
+    currentStepIdx.value = 0;
+    conceptList.clear();
+    scrapConceptList.clear();
+    isLoading.value = true;
+    // 모달도 닫아줌
+    hideModal();
+
+    // 이전 화면으로 이동
     Get.offNamed('/learning_list');
   }
 

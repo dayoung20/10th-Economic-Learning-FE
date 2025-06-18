@@ -2,6 +2,7 @@ import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart'
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
+import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 import 'package:economic_fe/view_model/test/level_test_test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -125,6 +126,20 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                         },
                         onFinishTest: () => controller.clickedToKaKao(quizList),
                       ));
+          }),
+          Obx(() {
+            return controller.isModalVisible.value
+                ? StopOptionModal(
+                    closeModal: controller.hideModal,
+                    contents: '정말 레벨테스트를 중단하시겠어요?',
+                    keepBtnText: '계속할래요',
+                    stopBtnText: '그만할래요',
+                    keepFunc: controller.hideModal,
+                    stopFunc: () {
+                      controller.resetTest(); // 상태 초기화
+                    },
+                  )
+                : const SizedBox.shrink(); // 안 보이게
           }),
         ],
       ),

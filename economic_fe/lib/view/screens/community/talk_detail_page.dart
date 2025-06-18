@@ -118,16 +118,14 @@ class TalkDetailPage extends StatelessWidget {
                             // 게시글 제목
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 32,
-                              child: Flexible(
-                                child: Text(
-                                  '${post['title'] ?? ''}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.30,
-                                    letterSpacing: -0.45,
-                                  ),
+                              child: Text(
+                                '${post['title'] ?? ''}',
+                                style: const TextStyle(
+                                  color: Color(0xFF111111),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.30,
+                                  letterSpacing: -0.45,
                                 ),
                               ),
                             ),
@@ -137,16 +135,14 @@ class TalkDetailPage extends StatelessWidget {
                             // 게시글 내용
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 32,
-                              child: Flexible(
-                                child: Text(
-                                  '${post['content'] ?? ''}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF404040),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.50,
-                                    letterSpacing: -0.40,
-                                  ),
+                              child: Text(
+                                '${post['content'] ?? ''}',
+                                style: const TextStyle(
+                                  color: Color(0xFF404040),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.50,
+                                  letterSpacing: -0.40,
                                 ),
                               ),
                             ),

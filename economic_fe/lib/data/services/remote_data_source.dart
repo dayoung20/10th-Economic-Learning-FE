@@ -1355,7 +1355,7 @@ class RemoteDataSource {
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
-      List<dynamic> posts = response['results']['postList'];
+      List<dynamic> posts = response['results'];
 
       List<Map<String, dynamic>> myPosts =
           posts.map((post) => Map<String, dynamic>.from(post)).toList();
@@ -1381,7 +1381,7 @@ class RemoteDataSource {
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
-      List<dynamic> posts = response['results']['userCommentList'];
+      List<dynamic> posts = response['results'];
 
       List<Map<String, dynamic>> myPosts =
           posts.map((post) => Map<String, dynamic>.from(post)).toList();
@@ -1407,7 +1407,7 @@ class RemoteDataSource {
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
-      List<dynamic> posts = response['results']['postList'];
+      List<dynamic> posts = response['results'];
 
       List<Map<String, dynamic>> myPosts =
           posts.map((post) => Map<String, dynamic>.from(post)).toList();
@@ -2311,8 +2311,7 @@ class RemoteDataSource {
       var response = await _getApiWithHeader(endPoint);
 
       if (response != null && response["isSuccess"] == true) {
-        learningList = List<Map<String, dynamic>>.from(
-            response["results"]["learningSetPreviewList"]);
+        learningList = List<Map<String, dynamic>>.from(response["results"]);
       } else {
         debugPrint("학습 세트 미리보기 조회 실패: ${response?["message"]}");
       }
@@ -2335,8 +2334,7 @@ class RemoteDataSource {
       var response = await _getApiWithHeader(endPoint);
 
       if (response != null && response["isSuccess"] == true) {
-        conceptList =
-            List<Map<String, dynamic>>.from(response["results"]["conceptList"]);
+        conceptList = List<Map<String, dynamic>>.from(response["results"]);
       } else {
         debugPrint("레벨별 개념 학습 세트 조회 실패: ${response?["message"]}");
       }
@@ -2484,7 +2482,8 @@ class RemoteDataSource {
   /// 퀴즈 시작
   Future<dynamic> getQuizList(int learningSetId, String level) async {
     dynamic response;
-    String endPoint = "api/v1/learning/$learningSetId/quizzes?level=$level";
+    String endPoint =
+        "api/v1/learning/quizzes?learningSetId=$learningSetId&level=$level";
 
     response = await postApiWithoutJsonReturnResponse(endPoint);
     // print("response : $")
@@ -2517,13 +2516,31 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/learning/quiz/{quizId}/retry?answerIndex={answerIndex}
+  /// 개별 퀴즈 재도전
+  Future<dynamic> postSubmitQuizRetry(int quizId, int answerIndex) async {
+    dynamic response;
+    print("postSubmitQuiz 안 : $quizId, $answerIndex");
+    String endPoint =
+        "api/v1/learning/quiz/$quizId/retry?answerIndex=$answerIndex";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+
+    if (response != null) {
+      debugPrint("퀴즈 재제출 POST 성공 : $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 재제출 POST 실패");
+    }
+    return response;
+  }
+
   /// api/v1/learning/{learningSetId}/quizzes/end
   /// 퀴즈 완료
   Future<dynamic> postQuizFinish(int learningSetId, String level) async {
     dynamic response;
 
-    String endPoint = "api/v1/learning/$learningSetId/quizzes/end?level=$level";
-    //  api/v1/learning/1/quizzes/end?level=BEGINNER
+    String endPoint = "api/v1/learning/quizzes/end";
     response = await postApiWithoutJsonReturnResponse(endPoint);
 
     if (response != null) {

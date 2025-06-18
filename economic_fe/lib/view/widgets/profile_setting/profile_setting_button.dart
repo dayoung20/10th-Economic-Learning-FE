@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileSettingButton extends StatefulWidget {
   final String title;
+  final String desc;
   final Icon icon;
   final void Function()? onPress;
   final bool isSelected; // 버튼의 선택 여부를 나타내는 변수
@@ -12,6 +13,7 @@ class ProfileSettingButton extends StatefulWidget {
   const ProfileSettingButton({
     super.key,
     required this.title,
+    required this.desc,
     this.onPress,
     this.isSelected = false,
     required this.icon,
@@ -65,7 +67,7 @@ class _ProfileSettingButtonState extends State<ProfileSettingButton> {
                         left: 6.w,
                       ),
                       child: Text(
-                        widget.title,
+                        widget.desc,
                         style: Palette.pretendard(
                             context,
                             widget.isSelected

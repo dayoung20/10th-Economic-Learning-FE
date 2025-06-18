@@ -45,6 +45,11 @@ class SearchPageController extends GetxController {
     searchQuery.value = keyword;
     isSearching.value = true;
 
+    // 최근 검색어 목록에 즉시 반영
+    if (!keywords.contains(keyword)) {
+      keywords.insert(0, keyword);
+    }
+
     isLoading(true);
     try {
       await Future.wait([

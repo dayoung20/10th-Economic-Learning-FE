@@ -77,4 +77,15 @@ class LevelTestTestController extends GetxController {
       'quizList': quizList,
     });
   }
+
+  void quitLevelTest() {
+    Get.toNamed('/test');
+  }
+
+  void resetTest() {
+    levelTestAnswers.clear();
+    currentQuizIdx.value = 0;
+    isModalVisible.value = false;
+    quitLevelTest();
+  }
 }

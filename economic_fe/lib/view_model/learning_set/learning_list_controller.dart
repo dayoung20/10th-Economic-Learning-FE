@@ -12,11 +12,11 @@ class LearningListController extends GetxController {
   // 데이터 로딩 여부
   var isLoading = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchLearningSetList();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // fetchLearningSetList();
+  // }
 
   // 학습 세트 목록을 불러오는 메서드
   Future<void> fetchLearningSetList() async {
@@ -87,6 +87,7 @@ class LearningListController extends GetxController {
   }
 
   void clickedQuiz(int learningSetId, String name) {
+    // debugPrint('learningSetId: $learningSetId, name: $name 퀴즈화면으로 이동');
     Get.toNamed(
       '/learning_list/quiz_level',
       arguments: {

@@ -39,9 +39,9 @@ class _WrongQuizPageState extends State<WrongQuizPage> {
       arguments: {
         'quizId': quizzes[index]['id'],
         'learningSetName': quizzes[index]['category'],
-        'option': quizzes[index]['type'] == "OX" ? 1 : 0,
+        // 'option': quizzes[index]['type'] == "OX" ? 1 : 0,
         'isMultiQuizMode': true, // 연속 퀴즈 모드 활성화
-        'currentIndex': index + 1,
+        'currentIndex': index,
         'totalIndex': quizzes.length,
         'quizzes': quizzes, // 전체 리스트 전달
       },
