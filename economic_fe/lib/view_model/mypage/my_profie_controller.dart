@@ -123,18 +123,6 @@ class MyProfileController extends GetxController
     }
   }
 
-  // 내가 댓글 단 게시글 목록 불러오기
-  // Future<void> fetchCommentPosts() async {
-  //   debugPrint("fetchCommentPosts() 실행됨");
-  //   try {
-  //     var posts = await _remoteDataSource.fetchCommentPosts();
-  //     commentPosts
-  //         .assignAll(posts.map((json) => PostModel.fromJson(json)).toList());
-  //     debugPrint("fetchCommentPosts() 완료, 데이터 개수: ${commentPosts.length}");
-  //   } catch (e) {
-  //     debugPrint("Error fetching comment posts: $e");
-  //   }
-  // }
   Future<void> fetchCommentPosts(int? userId) async {
     debugPrint("fetchCommentPosts() 실행됨");
     try {

@@ -1355,7 +1355,7 @@ class RemoteDataSource {
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
-      List<dynamic> posts = response['results']['postList'];
+      List<dynamic> posts = response['results'];
 
       List<Map<String, dynamic>> myPosts =
           posts.map((post) => Map<String, dynamic>.from(post)).toList();
@@ -1381,7 +1381,7 @@ class RemoteDataSource {
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
-      List<dynamic> posts = response['results']['userCommentList'];
+      List<dynamic> posts = response['results'];
 
       List<Map<String, dynamic>> myPosts =
           posts.map((post) => Map<String, dynamic>.from(post)).toList();
@@ -1407,7 +1407,7 @@ class RemoteDataSource {
     var response = await _getApiWithHeader(endPoint);
 
     if (response != null && response['isSuccess'] == true) {
-      List<dynamic> posts = response['results']['postList'];
+      List<dynamic> posts = response['results'];
 
       List<Map<String, dynamic>> myPosts =
           posts.map((post) => Map<String, dynamic>.from(post)).toList();
