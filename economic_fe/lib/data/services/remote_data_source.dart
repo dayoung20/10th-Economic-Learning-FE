@@ -2516,6 +2516,25 @@ class RemoteDataSource {
     return response;
   }
 
+  /// api/v1/learning/quiz/{quizId}/retry?answerIndex={answerIndex}
+  /// 개별 퀴즈 재도전
+  Future<dynamic> postSubmitQuizRetry(int quizId, int answerIndex) async {
+    dynamic response;
+    print("postSubmitQuiz 안 : $quizId, $answerIndex");
+    String endPoint =
+        "api/v1/learning/quiz/$quizId/retry?answerIndex=$answerIndex";
+
+    response = await postApiWithoutJsonReturnResponse(endPoint);
+
+    if (response != null) {
+      debugPrint("퀴즈 재제출 POST 성공 : $response");
+      return response; // 성공하면 응답 반환
+    } else {
+      debugPrint("퀴즈 재제출 POST 실패");
+    }
+    return response;
+  }
+
   /// api/v1/learning/{learningSetId}/quizzes/end
   /// 퀴즈 완료
   Future<dynamic> postQuizFinish(int learningSetId, String level) async {

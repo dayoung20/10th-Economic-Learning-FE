@@ -31,15 +31,15 @@ class _QuizPageState extends State<QuizPage> {
     isMultiQuizMode = Get.arguments['isMultiQuizMode'] ?? false;
     currentIndex = Get.arguments['currentIndex'] ?? 1;
     totalIndex = Get.arguments['totalIndex'] ?? 1;
-    quizzes = Get.arguments['quizzes'];
+    quizzes = Get.arguments['quizzes'] ?? [];
 
     // 단일 퀴즈 및 연속 퀴즈 모두 정상 작동하도록 fetchQuizById() 실행
-    controller.resetQuizState();
+    // controller.resetQuizState();
     controller.fetchQuizById(quizId);
   }
 
   void goToNextQuiz() {
-    if (isMultiQuizMode && quizzes != null && currentIndex < totalIndex - 1) {
+    if (isMultiQuizMode && quizzes != null && currentIndex < totalIndex) {
       print("다음 퀴즈로 이동: ${currentIndex + 1} / 총 $totalIndex 개");
 
       Get.off(
@@ -73,7 +73,7 @@ class _QuizPageState extends State<QuizPage> {
         title: learningSetName ?? '퀴즈',
         icon: Icons.close,
         onPress: () => controller.showModal(),
-        currentIndex: isMultiQuizMode ? currentIndex : null, // 진행률 표시 여부
+        currentIndex: isMultiQuizMode ? currentIndex + 1 : null, // 진행률 표시 여부
         totalIndex: isMultiQuizMode ? totalIndex : null,
       ),
       body: Obx(() {
@@ -83,7 +83,7 @@ class _QuizPageState extends State<QuizPage> {
 
         final question = controller.quizData['question'] ?? '';
         final List<dynamic> choiceList =
-            controller.quizData['choiceList']?['choiceList'] ?? [];
+            controller.quizData['choiceList'] ?? [];
         final List<String> answerOptions =
             choiceList.map((choice) => choice['content'].toString()).toList();
 
@@ -96,15 +96,14 @@ class _QuizPageState extends State<QuizPage> {
         return Stack(
           children: [
             QuizCard(
+              retry: true,
               screenHeight: screenHeight,
               screenWidth: screenWidth,
               onPress: () {},
               option: option,
               question: question,
               answerOptions: answerOptions,
-              isLast: !isMultiQuizMode ||
-                  currentIndex ==
-                      totalIndex, // 단일 퀴즈이므로 true로 설정하여 "퀴즈 종료" 버튼 표시
+              isLast: !isMultiQuizMode || currentIndex == totalIndex - 1,
               isQuiz: true,
               answer: correctAnswerIndex,
               isCorrectQuiz: controller.isCorrect.value,
@@ -112,7 +111,7 @@ class _QuizPageState extends State<QuizPage> {
               onOptionSelected: (int selectedIndex) {
                 controller.selectedIndex.value = selectedIndex;
                 controller.isNextButtonEnabled.value = true;
-                goToNextQuiz(); // 정답 여부와 상관없이 다음 문제로 이동
+                // goToNextQuiz(); // 정답 여부와 상관없이 다음 문제로 이동
               },
               onNextQuizBtn: isMultiQuizMode ? goToNextQuiz : null,
               onFinishTest: controller.finishQuiz,

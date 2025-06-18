@@ -21,6 +21,7 @@ class QuizCard extends StatefulWidget {
   final Function()? onFinishTest;
   final bool? isCorrectQuiz;
   final int? quizId;
+  final bool? retry;
 
   // 선택한 옵션 부모로 전달
   final Function(int)? onOptionSelected;
@@ -44,6 +45,7 @@ class QuizCard extends StatefulWidget {
     this.isCorrectQuiz,
     this.onNextQuizBtn,
     this.quizId,
+    this.retry,
   });
 
   @override
@@ -233,8 +235,10 @@ class _QuizCardState extends State<QuizCard> {
                                   controller.isCorrect.value ? 1 : 2;
 
                               // 답안 제출
-                              controller.postSubmitQuiz(widget.quizId!,
-                                  controller.selectedOption.value);
+                              controller.postSubmitQuiz(
+                                  widget.quizId!,
+                                  controller.selectedOption.value,
+                                  widget.retry ?? false);
                               print("se : ${controller.selectedOption.value}");
                             }
                           : widget.isLast

@@ -27,7 +27,7 @@ class WrongQuizController extends GetxController {
           await remoteDataSource.fetchIncorrectQuestions(selectedLevel.value);
 
       if (response != null && response['isSuccess'] == true) {
-        final failQuizList = response['results']['failQuizList'] as List;
+        final failQuizList = response['results'] as List;
 
         incorrectQuestions.value = failQuizList.map((quiz) {
           return {

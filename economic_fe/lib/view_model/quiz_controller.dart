@@ -75,11 +75,12 @@ class QuizController extends GetxController {
   // }
 
   // 퀴즈 한 문제 풀고 바로 제출
-  Future<void> postSubmitQuiz(int quizId, int answerIndex) async {
+  Future<void> postSubmitQuiz(int quizId, int answerIndex, bool retry) async {
     try {
       print("start quizIddd : $quizId, $answerIndex");
-      dynamic response =
-          await remoteDataSource.postSubmitQuiz(quizId, answerIndex);
+      dynamic response = retry
+          ? await remoteDataSource.postSubmitQuizRetry(quizId, answerIndex)
+          : await remoteDataSource.postSubmitQuiz(quizId, answerIndex);
       final data = response as Map<String, dynamic>;
       isCorrect.value = data['results']['isCorrect'];
       explanation.value = data['results']['explanation'];
