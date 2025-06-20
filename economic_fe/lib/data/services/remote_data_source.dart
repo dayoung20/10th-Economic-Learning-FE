@@ -2582,38 +2582,30 @@ class RemoteDataSource {
 
   /// 알림 구독 (SSE)
   /// api: api/v1/notification/subscribe
-  Future<bool> subscribeToNotifications(
-      {Function(String)? onNotificationReceived}) async {
-    String url = '$baseUrl/api/v1/notification/subscribe';
-    String? access = await getToken("accessToken");
-
+  Future<Stream<SSEModel>?> subscribeToNotifications({
+    Function(String)? onNotificationReceived,
+  }) async {
+    final access = await getToken("accessToken");
     if (access == null) {
       print("SSE 연결 실패: 액세스 토큰 없음");
-      return false;
+      return null;
     }
 
     try {
-      SSEClient.subscribeToSSE(
-        url: url,
+      final stream = SSEClient.subscribeToSSE(
+        url: '$baseUrl/api/v1/notification/subscribe',
         header: {
           "Authorization": "Bearer $access",
           "Accept": "text/event-stream",
         },
         method: SSERequestType.GET,
-      ).listen((SSEModel event) {
-        if (event.data != null && onNotificationReceived != null) {
-          print("Received SSE event: ${event.data}");
-          onNotificationReceived(event.data!);
-        }
-      }, onError: (error) {
-        print("SSE 연결 오류: $error");
-      });
+      );
 
       print("SSE 연결 성공");
-      return true;
+      return stream;
     } catch (e) {
       print("SSE 구독 실패: $e");
-      return false;
+      return null;
     }
   }
 

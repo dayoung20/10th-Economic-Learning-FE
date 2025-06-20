@@ -1,5 +1,7 @@
+import 'package:economic_fe/data/services/sse_manager.dart';
 import 'package:economic_fe/data/services/user_router.dart';
 import 'package:economic_fe/data/services/validate_access_token.dart';
+import 'package:economic_fe/utils/notification_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,12 +16,16 @@ Future<void> main() async {
   await dotenv.load(fileName: '.env');
 
   await GetStorage.init(); // 권한 요청 기록 저장용
+  await initLocalNotifications();
 
   String nativeAppKey = dotenv.env['NATIVE_APP_KEY']!;
   KakaoSdk.init(nativeAppKey: nativeAppKey);
 
   // accessToken 유효성 검증
   bool isValidToken = await validateAccessToken();
+  if (isValidToken) {
+    await SSEManager().init(); // SSE 연결 시작
+  }
 
   runApp(RippleApp(isLoggedIn: isValidToken));
 }
