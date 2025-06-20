@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:economic_fe/view_model/login/login_controller.dart';
@@ -2582,7 +2583,7 @@ class RemoteDataSource {
 
   /// 알림 구독 (SSE)
   /// api: api/v1/notification/subscribe
-  Future<Stream<SSEModel>?> subscribeToNotifications({
+  Future<StreamSubscription?> subscribeToNotifications({
     Function(String)? onNotificationReceived,
   }) async {
     final access = await getToken("accessToken");
@@ -2592,6 +2593,8 @@ class RemoteDataSource {
     }
 
     try {
+      print("--SUBSCRIBING TO SSE---");
+
       final stream = SSEClient.subscribeToSSE(
         url: '$baseUrl/api/v1/notification/subscribe',
         header: {
@@ -2601,27 +2604,44 @@ class RemoteDataSource {
         method: SSERequestType.GET,
       );
 
+      final subscription = stream.listen(
+        (SSEModel event) {
+          print("[RemoteDataSource] SSE 이벤트 수신 시도");
+
+          if (event.data == null) {
+            print("[RemoteDataSource] SSE 이벤트가 도착했지만 data 없음: $event");
+          } else {
+            print("[RemoteDataSource] SSE 이벤트 수신: ${event.data}");
+            onNotificationReceived?.call(event.data!);
+          }
+        },
+        onError: (error) {
+          print("[RemoteDataSource] SSE 오류: $error");
+        },
+      );
+
       print("SSE 연결 성공");
-      return stream;
-    } catch (e) {
+      return subscription;
+    } catch (e, st) {
       print("SSE 구독 실패: $e");
+      print(st);
       return null;
     }
   }
 
   /// JSON 데이터 파싱 (잘못된 데이터 방지)
-  Map<String, dynamic> parseNotificationData(String data) {
-    try {
-      if (!data.startsWith("{")) {
-        print("JSON 형식이 아님, 무시: $data");
-        return {};
-      }
-      return jsonDecode(data);
-    } catch (e) {
-      print("JSON 파싱 오류: $e");
-      return {};
-    }
-  }
+  // Map<String, dynamic> parseNotificationData(String data) {
+  //   try {
+  //     if (!data.startsWith("{")) {
+  //       print("JSON 형식이 아님, 무시: $data");
+  //       return {};
+  //     }
+  //     return jsonDecode(data);
+  //   } catch (e) {
+  //     print("JSON 파싱 오류: $e");
+  //     return {};
+  //   }
+  // }
 }
 
   // /// 알림 구독 (SSE)

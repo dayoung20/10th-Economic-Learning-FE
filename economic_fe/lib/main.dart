@@ -2,6 +2,7 @@ import 'package:economic_fe/data/services/sse_manager.dart';
 import 'package:economic_fe/data/services/user_router.dart';
 import 'package:economic_fe/data/services/validate_access_token.dart';
 import 'package:economic_fe/utils/notification_utils.dart';
+import 'package:economic_fe/utils/scaffold_messenger_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,6 +48,7 @@ class RippleApp extends StatelessWidget {
             textScaler: const TextScaler.linear(1.0), // 시스템 폰트 크기 조정 방지
           ),
           child: GetMaterialApp(
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
             title: 'Ripple',
             initialRoute: isLoggedIn ? '/home' : '/',
             getPages: UserRouter.getPages(),

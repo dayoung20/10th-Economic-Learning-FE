@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/utils/notification_utils.dart';
+import 'package:economic_fe/utils/scaffold_messenger_key.dart';
 import 'package:flutter/material.dart';
 
 class SSEManager with WidgetsBindingObserver {
@@ -16,7 +17,11 @@ class SSEManager with WidgetsBindingObserver {
   bool _isConnected = false;
   StreamSubscription? _subscription;
 
-  Future<void> init() async {
+  BuildContext? _context; // 스낵바 표시용 context 저장
+
+  /// 앱 시작 시 호출 (context는 스낵바 표시용)
+  Future<void> init({BuildContext? context}) async {
+    _context = context;
     WidgetsBinding.instance.addObserver(this);
     await _connect();
   }
@@ -27,19 +32,36 @@ class SSEManager with WidgetsBindingObserver {
   }
 
   Future<void> _connect() async {
-    if (_isConnected) return;
+    if (_isConnected && _subscription != null) return;
 
-    print("SSE 연결 시도...");
+    print("[SSEManager] SSE 연결 시도...");
     _isConnected = true;
 
     _subscription = await remoteDataSource.subscribeToNotifications(
       onNotificationReceived: (data) {
+        print("[SSEManager] 알림 수신됨: $data");
+
         final parsed = jsonDecode(data);
-        showLocalNotification(parsed['title'], parsed['body']);
+        final title = parsed['title'] ?? '알림';
+        final body = parsed['body'] ?? '';
+
+        print("[SSEManager] 알림 내용: $title - $body");
+
+        if (rootScaffoldMessengerKey.currentState != null) {
+          print("[SSEManager] ScaffoldMessenger 존재함, 스낵바 띄우기 시도");
+          rootScaffoldMessengerKey.currentState!
+            ..clearSnackBars()
+            ..showSnackBar(SnackBar(
+              content: Text('$title: $body'),
+              duration: const Duration(seconds: 3),
+            ));
+        } else {
+          print("[SSEManager] ScaffoldMessenger가 null임, 스낵바 실패");
+        }
+
+        showLocalNotification(title, body);
       },
-    ).then((stream) => stream?.listen((_) {}, onError: (_) {
-          print("SSE 오류 발생");
-        }));
+    );
   }
 
   Future<void> _disconnect() async {
