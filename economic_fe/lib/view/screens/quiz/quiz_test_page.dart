@@ -1,10 +1,10 @@
 import 'package:economic_fe/data/models/quiz_test_model.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view/widgets/quiz_card.dart';
+import 'package:economic_fe/view/widgets/stop_option_modal.dart';
 import 'package:economic_fe/view_model/quiz/quiz_test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 // 레벨테스트 문제 9개 전체
 
@@ -18,12 +18,16 @@ class QuizTestPage extends StatefulWidget {
 class _QuizTestPageState extends State<QuizTestPage> {
   final QuizTestController controller = Get.put(QuizTestController());
   // late final Map<String, dynamic> args;
-  late final List<QuizTestModel> quizList;
+  // late final List<QuizTestModel> quizList;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    quizList = controller.quizList;
+    // quizList = controller.quizList;
+
+    // 화면 진입 시마다 퀴즈 새로 요청
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchQuizList();
+    });
   }
 
   @override
@@ -37,10 +41,7 @@ class _QuizTestPageState extends State<QuizTestPage> {
           child: Obx(() => CustomAppBar(
                 title: controller.conceptName.value,
                 icon: Icons.close,
-                onPress: () {
-                  Navigator.pop(context);
-                  controller.currentQuizIdx.value = 0;
-                },
+                onPress: controller.showModal,
                 currentIndex: controller.currentQuizIdx.value + 1,
                 totalIndex: controller.quizList.length,
               ))),
@@ -60,14 +61,14 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         screenWidth: screenWidth,
                         onPress: () {},
                         option: 1, // ox 문제
-                        question:
-                            quizList[controller.currentQuizIdx.value].question,
+                        question: controller
+                            .quizList[controller.currentQuizIdx.value].question,
                         isLast: (controller.currentQuizIdx.value + 1 ==
-                            quizList.length),
+                            controller.quizList.length),
                         isQuiz: true,
                         isCorrectQuiz: controller.isCorrect.value,
-                        quizId:
-                            quizList[controller.currentQuizIdx.value].quizId,
+                        quizId: controller
+                            .quizList[controller.currentQuizIdx.value].quizId,
                         onOptionSelected: (int selected) {
                           setState(() {
                             controller.currentQuizIdx++;
@@ -89,18 +90,19 @@ class _QuizTestPageState extends State<QuizTestPage> {
                         screenWidth: screenWidth,
                         onPress: () {},
                         option: 0,
-                        answerOptions: quizList[controller.currentQuizIdx.value]
+                        answerOptions: controller
+                            .quizList[controller.currentQuizIdx.value]
                             .choiceList
                             .map((choice) => choice.content)
                             .toList(),
-                        question:
-                            quizList[controller.currentQuizIdx.value].question,
+                        question: controller
+                            .quizList[controller.currentQuizIdx.value].question,
                         isQuiz: true,
                         isLast: (controller.currentQuizIdx.value + 1 ==
-                            quizList.length),
+                            controller.quizList.length),
                         isCorrectQuiz: controller.isCorrect.value,
-                        quizId:
-                            quizList[controller.currentQuizIdx.value].quizId,
+                        quizId: controller
+                            .quizList[controller.currentQuizIdx.value].quizId,
                         onOptionSelected: (int selected) {
                           setState(() {
                             controller.currentQuizIdx++;
@@ -117,6 +119,19 @@ class _QuizTestPageState extends State<QuizTestPage> {
                           controller.finishQuiz();
                         },
                       ));
+          }),
+          Obx(() {
+            return controller.isModalVisible.value
+                ? StopOptionModal(
+                    closeModal: controller.hideModal,
+                    contents: '정말 퀴즈를 중단하시겠어요?',
+                    keepBtnText: '계속할래요',
+                    stopBtnText: '그만할래요',
+                    keepFunc: controller.hideModal,
+                    stopFunc: controller.clickedCloseBtn,
+                    isFinishPage: false,
+                  )
+                : const SizedBox();
           }),
         ],
       ),

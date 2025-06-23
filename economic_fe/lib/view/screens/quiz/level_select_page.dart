@@ -17,12 +17,23 @@ class LevelSelectPage extends StatefulWidget {
 class _LevelSelectPageState extends State<LevelSelectPage> {
   late final LevelSelectController controller;
 
+  // 임시
+  final Map<String, bool> levelCompletionMock = {
+    'BEGINNER': true,
+    'INTERMEDIATE': false,
+    'ADVANCED': false,
+  };
+
   String _selectedLevel = ''; // 선택된 레벨을 저장할 변수
 
   @override
   void initState() {
     super.initState();
-    controller = Get.put(LevelSelectController()..getStats());
+    final args = Get.arguments ?? {};
+    controller = Get.put(LevelSelectController()
+      ..conceptName.value = args["name"] ?? "개념 학습"
+      ..learningSetId.value = args["learningSetId"] ?? 0
+      ..getStats());
   }
 
   @override
@@ -61,7 +72,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     // print(controller.selectedLevel);
                   });
                 },
-                isCompleted: true,
+                isCompleted: levelCompletionMock['BEGINNER'] ?? false,
               ),
               SizedBox(height: 16.h),
               _buildLevelButton(
@@ -79,7 +90,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                         _selectedLevel);
                   });
                 },
-                isCompleted: false,
+                isCompleted: levelCompletionMock['INTERMEDIATE'] ?? false,
               ),
               SizedBox(height: 16.h),
               _buildLevelButton(
@@ -97,7 +108,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                         _selectedLevel);
                   });
                 },
-                isCompleted: false,
+                isCompleted: levelCompletionMock['ADVANCED'] ?? false,
               ),
             ],
           ),

@@ -22,6 +22,10 @@ class FinishLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final FinishController controller = Get.put(FinishController());
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchUserCompleted();
+    });
+
     return Scaffold(
       backgroundColor: const Color(0xffDEF7F1),
       body: Stack(
