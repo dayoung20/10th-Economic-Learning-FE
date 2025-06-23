@@ -103,4 +103,30 @@ class QuizTestController extends GetxController {
       'isQuiz': true,
     });
   }
+
+  // 중단 확인 모달 상태
+  var isModalVisible = false.obs;
+
+// 모달 열기
+  void showModal() {
+    isModalVisible.value = true;
+  }
+
+// 모달 닫기
+  void hideModal() {
+    isModalVisible.value = false;
+  }
+
+// 닫기 확정 시 동작
+  void clickedCloseBtn() {
+    // 퀴즈 진행 상태 초기화
+    currentQuizIdx.value = 0;
+    quizList.clear();
+    isCorrect.value = true;
+    explanation.value = "";
+
+    // 모달 닫고 개념 학습 목록 화면으로 이동
+    hideModal();
+    Get.offNamed('/learning_list');
+  }
 }

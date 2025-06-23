@@ -1,5 +1,7 @@
 import 'package:economic_fe/data/models/learning_list_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/view_model/quiz/level_select_controller.dart';
+import 'package:economic_fe/view_model/quiz/quiz_test_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -87,7 +89,8 @@ class LearningListController extends GetxController {
   }
 
   void clickedQuiz(int learningSetId, String name) {
-    // debugPrint('learningSetId: $learningSetId, name: $name 퀴즈화면으로 이동');
+    Get.delete<QuizTestController>();
+    Get.delete<LevelSelectController>();
     Get.toNamed(
       '/learning_list/quiz_level',
       arguments: {
