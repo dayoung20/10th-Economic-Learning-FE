@@ -32,7 +32,10 @@ class SSEManager with WidgetsBindingObserver {
   }
 
   Future<void> _connect() async {
-    if (_isConnected && _subscription != null) return;
+    if (_subscription != null && _isConnected) {
+      print("[SSEManager] 이미 연결되어 있음, 재연결 생략");
+      return;
+    }
 
     print("[SSEManager] SSE 연결 시도...");
     _isConnected = true;
@@ -62,6 +65,17 @@ class SSEManager with WidgetsBindingObserver {
         showLocalNotification(title, body);
       },
     );
+  }
+
+  Future<void> connectIfNeeded({BuildContext? context}) async {
+    _context = context ?? _context;
+
+    if (_isConnected) {
+      print("[SSEManager] 이미 연결되어 있음");
+      return;
+    }
+
+    await _connect();
   }
 
   Future<void> _disconnect() async {
