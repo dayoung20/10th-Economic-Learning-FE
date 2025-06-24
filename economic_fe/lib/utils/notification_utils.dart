@@ -1,6 +1,51 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> initLocalNotifications() async {
+  const AndroidInitializationSettings androidInitSettings =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  // iOS 알림 초기화 설정 추가
+  const DarwinInitializationSettings iosInitSettings =
+      DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+  );
+
+  const InitializationSettings initSettings = InitializationSettings(
+    android: androidInitSettings,
+    iOS: iosInitSettings,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initSettings);
+}
+
+Future<void> showLocalNotification(String title, String body) async {
+  const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+    'ripple_channel_id',
+    'Ripple 알림',
+    channelDescription: '실시간 알림을 제공합니다',
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+  );
+
+  const NotificationDetails platformDetails =
+      NotificationDetails(android: androidDetails);
+
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    title,
+    body,
+    platformDetails,
+  );
+}
 
 Future<void> checkAndRequestNotificationPermissionOnce() async {
   final box = GetStorage();

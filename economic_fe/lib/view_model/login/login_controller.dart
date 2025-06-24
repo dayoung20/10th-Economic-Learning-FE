@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/data/services/sse_manager.dart';
 import 'package:economic_fe/view_model/notification/push_notification_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -92,6 +93,8 @@ class LoginController extends GetxController {
 
           print("백엔드 인증 성공, 저장된 accessToken: $serverToken");
 
+          await SSEManager().connectIfNeeded(); // SSE 연결 시도
+
           // 로그인 성공 후 다음 화면으로 이동
           Get.toNamed("login/agreement", arguments: {
             'from': 'login',
@@ -132,6 +135,9 @@ class LoginController extends GetxController {
 
     // SSE 연결 해제
     // Get.find<PushNotificationController>().disconnectSse();
+
+    // SSE 연결 해제
+    await SSEManager().dispose();
 
     // 로그인 화면으로 이동
     Get.offAllNamed("/login");

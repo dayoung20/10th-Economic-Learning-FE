@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/data/services/sse_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -63,6 +64,8 @@ class LoginExistController extends GetxController {
           await saveLoginState(true);
 
           print("백엔드 인증 성공, 저장된 accessToken: $serverToken");
+
+          await SSEManager().connectIfNeeded(); // SSE 연결 시도
 
           // 로그인 성공 후 다음 화면으로 이동
           Get.toNamed('/home');

@@ -115,91 +115,107 @@ class _NotificationPageState extends State<NotificationPage> {
                       curve: Curves.easeOut,
                       left: swipeOffset[index] ?? 0,
                       right: -(swipeOffset[index] ?? 0), // 수정: null 값 방지
-                      child: Container(
-                        width: MediaQuery.of(context).size.width, // 가로 크기 제한 추가
-                        color: Colors.white,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: 16.w,
-                                top: 16.h,
-                                right: 8.w,
-                              ),
-                              child: Icon(
-                                notification.type == 'COMMENT'
-                                    ? Icons.mark_unread_chat_alt_outlined
-                                    : Icons.subdirectory_arrow_right,
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(
-                                  height: 16.h,
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.onNotificationClick(
+                              notification.id, notification.postId);
+                        },
+                        child: Container(
+                          width:
+                              MediaQuery.of(context).size.width, // 가로 크기 제한 추가
+                          color: notification.isRead
+                              ? const Color(0xFFF3F3F3)
+                              : Colors.white,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: 16.w,
+                                  top: 16.h,
+                                  right: 8.w,
                                 ),
-                                Text(
+                                child: Icon(
                                   notification.type == 'COMMENT'
-                                      ? '댓글 알림'
-                                      : '대댓글 알림',
-                                  style: TextStyle(
-                                    color: const Color(0xFF404040),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.30,
-                                    letterSpacing: -0.35,
-                                  ),
+                                      ? Icons.mark_unread_chat_alt_outlined
+                                      : Icons.subdirectory_arrow_right,
                                 ),
-                                SizedBox(height: 8.h),
-                                Text(
-                                  notification.content,
-                                  style: TextStyle(
-                                    color: const Color(0xFF404040),
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.30,
-                                    letterSpacing: -0.40,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(
+                                    height: 16.h,
                                   ),
-                                ),
-                                SizedBox(height: 9.h),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width - 70.w,
-                                  height: 30.h,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '[${notification.postTitle}]',
-                                        style: TextStyle(
-                                          color: const Color(0xFFA2A2A2),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.30,
-                                          letterSpacing: -0.30,
+                                  Text(
+                                    notification.type == 'COMMENT'
+                                        ? '댓글 알림'
+                                        : '대댓글 알림',
+                                    style: TextStyle(
+                                      color: const Color(0xFF404040),
+                                      fontSize: 14.sp,
+                                      fontWeight: notification.isRead
+                                          ? FontWeight.normal
+                                          : FontWeight.w500,
+                                      height: 1.30,
+                                      letterSpacing: -0.35,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    notification.content,
+                                    style: TextStyle(
+                                      color: notification.isRead
+                                          ? const Color(0xFF909090)
+                                          : const Color(0xFF404040),
+                                      fontSize: 16.sp,
+                                      fontWeight: notification.isRead
+                                          ? FontWeight.normal
+                                          : FontWeight.w500,
+                                      height: 1.30,
+                                      letterSpacing: -0.40,
+                                    ),
+                                  ),
+                                  SizedBox(height: 9.h),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width -
+                                        70.w,
+                                    height: 30.h,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '[${notification.postTitle}]',
+                                          style: TextStyle(
+                                            color: const Color(0xFFA2A2A2),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.30,
+                                            letterSpacing: -0.30,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        notification.createdDate,
-                                        style: TextStyle(
-                                          color: const Color(0xFF767676),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.50,
-                                          letterSpacing: -0.30,
+                                        Text(
+                                          notification.createdDate,
+                                          style: TextStyle(
+                                            color: const Color(0xFF767676),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.50,
+                                            letterSpacing: -0.30,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

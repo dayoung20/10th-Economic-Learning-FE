@@ -20,8 +20,7 @@ class NotificationController extends GetxController {
     try {
       final response = await remoteDataSource.getNotification();
       if (response != null && response['isSuccess']) {
-        final List<dynamic> list =
-            response['results']['notificationResponseList'];
+        final List<dynamic> list = response['results'];
         notifications.assignAll(
             list.map((json) => NotificationModel.fromJson(json)).toList());
       }

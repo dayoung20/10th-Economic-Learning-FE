@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:economic_fe/view_model/login/login_controller.dart';
@@ -2582,54 +2583,65 @@ class RemoteDataSource {
 
   /// 알림 구독 (SSE)
   /// api: api/v1/notification/subscribe
-  Future<bool> subscribeToNotifications(
-      {Function(String)? onNotificationReceived}) async {
-    String url = '$baseUrl/api/v1/notification/subscribe';
-    String? access = await getToken("accessToken");
-
+  Future<StreamSubscription?> subscribeToNotifications({
+    Function(String)? onNotificationReceived,
+  }) async {
+    final access = await getToken("accessToken");
     if (access == null) {
       print("SSE 연결 실패: 액세스 토큰 없음");
-      return false;
+      return null;
     }
 
     try {
-      SSEClient.subscribeToSSE(
-        url: url,
+      print("--SUBSCRIBING TO SSE---");
+
+      final stream = SSEClient.subscribeToSSE(
+        url: '$baseUrl/api/v1/notification/subscribe',
         header: {
           "Authorization": "Bearer $access",
           "Accept": "text/event-stream",
         },
         method: SSERequestType.GET,
-      ).listen((SSEModel event) {
-        if (event.data != null && onNotificationReceived != null) {
-          print("Received SSE event: ${event.data}");
-          onNotificationReceived(event.data!);
-        }
-      }, onError: (error) {
-        print("SSE 연결 오류: $error");
-      });
+      );
+
+      final subscription = stream.listen(
+        (SSEModel event) {
+          print("[RemoteDataSource] SSE 이벤트 수신 시도");
+
+          if (event.data == null) {
+            print("[RemoteDataSource] SSE 이벤트가 도착했지만 data 없음: $event");
+          } else {
+            print("[RemoteDataSource] SSE 이벤트 수신: ${event.data}");
+            onNotificationReceived?.call(event.data!);
+          }
+        },
+        onError: (error) {
+          print("[RemoteDataSource] SSE 오류: $error");
+        },
+      );
 
       print("SSE 연결 성공");
-      return true;
-    } catch (e) {
+      return subscription;
+    } catch (e, st) {
       print("SSE 구독 실패: $e");
-      return false;
+      print(st);
+      return null;
     }
   }
 
   /// JSON 데이터 파싱 (잘못된 데이터 방지)
-  Map<String, dynamic> parseNotificationData(String data) {
-    try {
-      if (!data.startsWith("{")) {
-        print("JSON 형식이 아님, 무시: $data");
-        return {};
-      }
-      return jsonDecode(data);
-    } catch (e) {
-      print("JSON 파싱 오류: $e");
-      return {};
-    }
-  }
+  // Map<String, dynamic> parseNotificationData(String data) {
+  //   try {
+  //     if (!data.startsWith("{")) {
+  //       print("JSON 형식이 아님, 무시: $data");
+  //       return {};
+  //     }
+  //     return jsonDecode(data);
+  //   } catch (e) {
+  //     print("JSON 파싱 오류: $e");
+  //     return {};
+  //   }
+  // }
 }
 
   // /// 알림 구독 (SSE)
