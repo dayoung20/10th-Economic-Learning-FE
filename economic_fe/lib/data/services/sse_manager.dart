@@ -44,9 +44,17 @@ class SSEManager with WidgetsBindingObserver {
       onNotificationReceived: (data) {
         print("[SSEManager] 알림 수신됨: $data");
 
-        final parsed = jsonDecode(data);
-        final title = parsed['title'] ?? '알림';
-        final body = parsed['body'] ?? '';
+        Map<String, dynamic>? parsed;
+
+        try {
+          parsed = jsonDecode(data);
+        } catch (e) {
+          print("[SSEManager] JSON 파싱 실패: $data");
+          return; // JSON이 아니면 무시
+        }
+
+        final title = parsed?['title'] ?? '알림';
+        final body = parsed?['body'] ?? '';
 
         print("[SSEManager] 알림 내용: $title - $body");
 
