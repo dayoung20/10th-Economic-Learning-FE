@@ -1866,95 +1866,97 @@ class RemoteDataSource {
 
   /// 용어 검색
   /// api: api/v1/search/terms
-  Future<List<dynamic>> searchTerms(String keyword) async {
-    List<dynamic> searchResults = [];
-    int currentPage = 0;
-    int totalPages = 0; // 초기값 설정
-
+  Future<Map<String, dynamic>> searchTermsPaged(
+      String keyword, int page) async {
     try {
-      while (currentPage <= totalPages) {
-        String endPoint =
-            'api/v1/search/terms?keyword=$keyword&page=$currentPage';
+      final endPoint = 'api/v1/search/terms?keyword=$keyword&page=$page';
+      final response = await _getApiWithHeader(endPoint);
 
-        var response = await _getApiWithHeader(endPoint);
-
-        if (response != null && response["isSuccess"] == true) {
-          var results = response["results"];
-          searchResults.addAll(results["termList"]); // 현재 페이지 데이터 추가
-          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
-          currentPage++; // 다음 페이지로 이동
-        } else {
-          debugPrint("용어 검색 실패: ${response["message"]}");
-          break;
-        }
+      if (response != null && response["isSuccess"] == true) {
+        return {
+          "termList": response["results"]["termList"],
+          "totalPage": response["results"]["totalPage"],
+          "currentPage": page,
+        };
+      } else {
+        debugPrint("용어 검색 실패: ${response["message"]}");
+        return {
+          "termList": [],
+          "totalPage": 0,
+          "currentPage": page,
+        };
       }
     } catch (e) {
-      debugPrint("용어 검색 중 오류 발생: $e");
+      debugPrint("searchTermsPaged 오류: $e");
+      return {
+        "termList": [],
+        "totalPage": 0,
+        "currentPage": page,
+      };
     }
-
-    return searchResults;
   }
 
   /// 게시글 검색
   /// api: api/v1/search/posts
-  Future<List<dynamic>> searchPosts(String keyword) async {
-    List<dynamic> searchResults = [];
-    int currentPage = 0;
-    int totalPages = 0; // 초기값 설정
-
+  Future<Map<String, dynamic>> searchPostsPaged(
+      String keyword, int page) async {
     try {
-      while (currentPage <= totalPages) {
-        String endPoint =
-            'api/v1/search/posts?keyword=$keyword&page=$currentPage';
+      final endPoint = 'api/v1/search/posts?keyword=$keyword&page=$page';
+      final response = await _getApiWithHeader(endPoint);
 
-        var response = await _getApiWithHeader(endPoint);
-
-        if (response != null && response["isSuccess"] == true) {
-          var results = response["results"];
-          searchResults.addAll(results["postList"]); // 현재 페이지 데이터 추가
-          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
-          currentPage++; // 다음 페이지로 이동
-        } else {
-          debugPrint("게시글 검색 실패: ${response["message"]}");
-          break;
-        }
+      if (response != null && response["isSuccess"] == true) {
+        return {
+          "postList": response["results"]["postPreviewList"],
+          "totalPage": response["results"]["totalPage"],
+          "currentPage": page,
+        };
+      } else {
+        debugPrint("게시글 검색 실패: ${response["message"]}");
+        return {
+          "postList": [],
+          "totalPage": 0,
+          "currentPage": page,
+        };
       }
     } catch (e) {
-      debugPrint("게시글 검색 중 오류 발생: $e");
+      debugPrint("searchPostsPaged 오류: $e");
+      return {
+        "postList": [],
+        "totalPage": 0,
+        "currentPage": page,
+      };
     }
-
-    return searchResults;
   }
 
   /// 뉴스 검색
   /// api: api/v1/search/news
-  Future<List<dynamic>> searchNews(String keyword) async {
-    List<dynamic> searchResults = [];
-    int currentPage = 0;
-    int totalPages = 0; // 초기값 설정
-
+  Future<Map<String, dynamic>> searchNewsPaged(String keyword, int page) async {
     try {
-      while (currentPage <= totalPages) {
-        String endPoint =
-            'api/v1/search/news?keyword=$keyword&page=$currentPage';
+      final endPoint = 'api/v1/search/news?keyword=$keyword&page=$page';
+      final response = await _getApiWithHeader(endPoint);
 
-        var response = await _getApiWithHeader(endPoint);
-
-        if (response != null && response["isSuccess"] == true) {
-          var results = response["results"];
-          searchResults.addAll(results["newsList"]); // 현재 페이지 데이터 추가
-          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
-          currentPage++; // 다음 페이지로 이동
-        } else {
-          debugPrint("기사 검색 실패: ${response["message"]}");
-          break;
-        }
+      if (response != null && response["isSuccess"] == true) {
+        return {
+          "newsList": response["results"]["newsList"],
+          "totalPage": response["results"]["totalPage"],
+          "currentPage": page,
+        };
+      } else {
+        debugPrint("뉴스 검색 실패: ${response["message"]}");
+        return {
+          "newsList": [],
+          "totalPage": 0,
+          "currentPage": page,
+        };
       }
     } catch (e) {
-      debugPrint("기사 검색 중 오류 발생: $e");
+      debugPrint("searchNewsPaged 오류: $e");
+      return {
+        "newsList": [],
+        "totalPage": 0,
+        "currentPage": page,
+      };
     }
-
-    return searchResults;
   }
 
   /// api/v1/level-test/quiz
@@ -2008,34 +2010,34 @@ class RemoteDataSource {
 
   /// 톡톡 게시글 검색
   /// api: api/v1/search/toktoks
-  Future<List<dynamic>> searchTokToks(String keyword) async {
-    List<dynamic> searchResults = [];
-    int currentPage = 0;
-    int totalPages = 0; // 초기값 설정
-
+  Future<Map<String, dynamic>> searchTokToksPaged(
+      String keyword, int page) async {
     try {
-      while (currentPage <= totalPages) {
-        String endPoint =
-            'api/v1/search/toktoks?keyword=$keyword&page=$currentPage';
+      final endPoint = 'api/v1/search/toktoks?keyword=$keyword&page=$page';
+      final response = await _getApiWithHeader(endPoint);
 
-        var response = await _getApiWithHeader(endPoint);
-
-        if (response != null && response["isSuccess"] == true) {
-          var results = response["results"];
-          searchResults
-              .addAll(results["toktokPreviewResponseList"]); // 현재 페이지 데이터 추가
-          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
-          currentPage++; // 다음 페이지로 이동
-        } else {
-          debugPrint("게시글 검색 실패: ${response["message"]}");
-          break;
-        }
+      if (response != null && response["isSuccess"] == true) {
+        return {
+          "tokList": response["results"]["postPreviewList"],
+          "totalPage": response["results"]["totalPage"],
+          "currentPage": page,
+        };
+      } else {
+        debugPrint("톡톡 검색 실패: ${response["message"]}");
+        return {
+          "tokList": [],
+          "totalPage": 0,
+          "currentPage": page,
+        };
       }
     } catch (e) {
-      debugPrint("게시글 검색 중 오류 발생: $e");
+      debugPrint("searchTokToksPaged 오류: $e");
+      return {
+        "tokList": [],
+        "totalPage": 0,
+        "currentPage": page,
+      };
     }
-
-    return searchResults;
   }
 
   /// 사용자 퀘스트 목표 조회

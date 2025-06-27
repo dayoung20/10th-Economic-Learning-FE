@@ -23,6 +23,27 @@ class SearchPageController extends GetxController {
   var searchNews = <ArticleModel>[].obs;
   var searchToks = <TokModel>[].obs;
 
+  // 용어사전 (terms) 페이징 상태
+  int currentTermPage = 0;
+  bool isTermLastPage = false;
+
+  // 기사 (News) 페이징 상태
+  int currentNewsPage = 0;
+  bool isNewsLastPage = false;
+
+  // 게시물 (Posts) 페이징 상태
+  int currentPostPage = 0;
+  bool isPostLastPage = false;
+
+  // 경제톡톡 (Toks) 페이징 상태
+  int currentTokPage = 0;
+  bool isTokLastPage = false;
+
+  final isTermFetching = false.obs;
+  final isNewsFetching = false.obs;
+  final isPostFetching = false.obs;
+  final isTokFetching = false.obs;
+
   final List<String> categories = ["통합", "용어사전", "경제 기사", "일반 게시판", "경제 톡톡"];
 
   @override
@@ -50,13 +71,30 @@ class SearchPageController extends GetxController {
       keywords.insert(0, keyword);
     }
 
-    isLoading(true);
+    // 초기화
+    currentTermPage = 1;
+    isTermLastPage = false;
+    searchTerms.clear();
+
+    currentNewsPage = 1;
+    isNewsLastPage = false;
+    searchNews.clear();
+
+    currentPostPage = 1;
+    isPostLastPage = false;
+    searchPosts.clear();
+
+    currentTokPage = 1;
+    isTokLastPage = false;
+    searchToks.clear();
+
+    // isLoading(true);
     try {
       await Future.wait([
-        fetchSearchTermsResults(keyword),
-        fetchSearchPostsResults(keyword),
-        fetchSearchNewsResults(keyword),
-        fetchSearchToksResults(keyword),
+        fetchSearchTermsResults(keyword, currentTermPage),
+        fetchSearchPostsResults(keyword, currentPostPage),
+        fetchSearchNewsResults(keyword, currentNewsPage),
+        fetchSearchToksResults(keyword, currentTokPage),
       ]);
     } catch (e) {
       debugPrint('검색 중 오류 발생: $e');
@@ -70,17 +108,43 @@ class SearchPageController extends GetxController {
     selectedTabIndex.value = index;
   }
 
+  Future<void> fetchNextTermPage(String keyword) async {
+    await fetchSearchTermsResults(keyword, currentTermPage);
+  }
+
+  Future<void> fetchNextNewsPage(String keyword) async {
+    await fetchSearchNewsResults(keyword, currentNewsPage);
+  }
+
+  Future<void> fetchNextPostPage(String keyword) async {
+    await fetchSearchPostsResults(keyword, currentPostPage);
+  }
+
+  Future<void> fetchNextTokPage(String keyword) async {
+    await fetchSearchToksResults(keyword, currentTokPage);
+  }
+
   /// 용어 검색
-  Future<void> fetchSearchTermsResults(String keyword) async {
-    isLoading(true);
+  Future<void> fetchSearchTermsResults(String keyword, int page) async {
+    if (isTermFetching.value || isTermLastPage) return;
+    isTermFetching.value = true;
+
     try {
-      final response = await remoteDataSource.searchTerms(keyword);
-      searchTerms.assignAll(
-          response.map((json) => DictionaryModel.fromJson(json)).toList());
+      final response = await remoteDataSource.searchTermsPaged(keyword, page);
+      final List newItems = response['termList'];
+      final List<DictionaryModel> models =
+          newItems.map((e) => DictionaryModel.fromJson(e)).toList();
+
+      if (models.isEmpty) {
+        isTermLastPage = true;
+      } else {
+        searchTerms.addAll(models);
+        currentTermPage++;
+      }
     } catch (e) {
-      debugPrint('Error fetching terms: $e');
+      debugPrint("페이징 검색 오류: $e");
     } finally {
-      isLoading(false);
+      isTermFetching.value = false;
     }
   }
 
@@ -101,44 +165,74 @@ class SearchPageController extends GetxController {
   }
 
   /// 게시판 검색
-  Future<void> fetchSearchPostsResults(String keyword) async {
-    isLoading(true);
+  Future<void> fetchSearchPostsResults(String keyword, int page) async {
+    if (isPostFetching.value || isPostLastPage) return;
+    isPostFetching.value = true;
+
     try {
-      final response = await remoteDataSource.searchPosts(keyword);
-      searchPosts
-          .assignAll(response.map((json) => PostModel.fromJson(json)).toList());
+      final response = await remoteDataSource.searchPostsPaged(keyword, page);
+      final List newItems = response['postList'];
+      final List<PostModel> models =
+          newItems.map((e) => PostModel.fromJson(e)).toList();
+
+      if (models.isEmpty) {
+        isPostLastPage = true;
+      } else {
+        searchPosts.addAll(models);
+        currentPostPage++;
+      }
     } catch (e) {
       debugPrint('Error fetching posts: $e');
     } finally {
-      isLoading(false);
+      isPostFetching.value = false;
     }
   }
 
   /// 경제 뉴스 검색
-  Future<void> fetchSearchNewsResults(String keyword) async {
-    isLoading(true);
+  Future<void> fetchSearchNewsResults(String keyword, int page) async {
+    if (isNewsFetching.value || isNewsLastPage) return;
+    isNewsFetching.value = true;
+
     try {
-      final response = await remoteDataSource.searchNews(keyword);
-      searchNews.assignAll(
-          response.map((json) => ArticleModel.fromJson(json)).toList());
+      final response = await remoteDataSource.searchNewsPaged(keyword, page);
+      final List newItems = response['newsList'];
+      final List<ArticleModel> models =
+          newItems.map((e) => ArticleModel.fromJson(e)).toList();
+
+      if (models.isEmpty) {
+        isNewsLastPage = true;
+      } else {
+        searchNews.addAll(models);
+        currentNewsPage++;
+      }
     } catch (e) {
       debugPrint('Error fetching articles: $e');
     } finally {
-      isLoading(false);
+      isNewsFetching.value = false;
     }
   }
 
   /// 톡톡 게시글 검색
-  Future<void> fetchSearchToksResults(String keyword) async {
-    isLoading(true);
+  Future<void> fetchSearchToksResults(String keyword, int page) async {
+    if (isTokFetching.value || isTokLastPage) return;
+    isTokFetching.value = true;
+
     try {
-      final response = await remoteDataSource.searchTokToks(keyword);
-      searchToks
-          .assignAll(response.map((json) => TokModel.fromJson(json)).toList());
+      final response = await remoteDataSource.searchTokToksPaged(keyword, page);
+      final List newItems = response['tokList'];
+      final List<TokModel> models =
+          newItems.map((e) => TokModel.fromJson(e)).toList();
+
+      if (models.isEmpty) {
+        isTokLastPage = true;
+      } else {
+        searchToks.addAll(models);
+        currentTokPage++;
+      }
     } catch (e) {
-      debugPrint('Error fetching toks: $e');
+      debugPrint('Error fetching toktoks: $e');
     } finally {
-      isLoading(false);
+      isTokFetching.value = false;
     }
   }
 
