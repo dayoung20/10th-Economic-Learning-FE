@@ -77,26 +77,33 @@ class NotificationController extends GetxController {
   /// postId가 게시글 목록(`api/v1/post`)인지 경제톡톡(`api/v1/post/toktok`)인지 판별
   Future<String?> checkPostLocation(int postId) async {
     try {
-      // 두 개의 API 요청을 병렬 실행하여 속도 향상
+      // 두 API를 병렬 호출
       final results = await Future.wait([
-        remoteDataSource.fetchCategoryPosts("RECENT", "ALL"), // 전체 게시글 조회
-        remoteDataSource.fetchTokLists("RECENT"), // 경제톡톡 조회
+        remoteDataSource.fetchCategoryPosts(
+          page: 0,
+          sort: "RECENT",
+          type: "ALL",
+        ),
+        remoteDataSource.fetchTokLists(
+          page: 0,
+          sort: "RECENT",
+        ),
       ]);
 
-      List<dynamic> categoryPosts = results[0];
-      List<dynamic> tokPosts = results[1];
+      // Map 타입으로 받아와서 리스트 추출
+      final categoryPosts = results[0]["postPreviewList"] ?? [];
+      final tokPosts = results[1]["postPreviewList"] ?? [];
 
-      // postId가 게시글 목록에 존재하면 `/community/detail` 페이지로 이동
+      // 게시글 ID가 어디에 포함되어 있는지 확인
       if (categoryPosts.any((post) => post["id"] == postId)) {
         return "/community/detail";
       }
 
-      // postId가 경제톡톡 목록에 존재하면 `/community/talk_detail` 페이지로 이동
       if (tokPosts.any((post) => post["id"] == postId)) {
         return "/community/talk_detail";
       }
 
-      return null; // 해당 postId가 어떤 목록에도 없을 경우
+      return null;
     } catch (e) {
       debugPrint("게시글 확인 중 오류 발생: $e");
       return null;

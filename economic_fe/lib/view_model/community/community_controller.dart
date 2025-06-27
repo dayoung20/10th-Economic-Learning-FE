@@ -1,5 +1,6 @@
 import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:economic_fe/view_model/community/detail_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class CommunityController extends GetxController {
@@ -10,20 +11,34 @@ class CommunityController extends GetxController {
   Rx<int> selectedOrder = 1.obs;
   Rx<int> selectedTokOrder = 1.obs;
   RxBool isLoading = false.obs;
-  var postList = <dynamic>[].obs;
-  var tokPostList = <dynamic>[].obs;
   RxMap<String, dynamic> todaysTokDetail = <String, dynamic>{}.obs;
+
+  // 일반 게시글용
+  var postList = <dynamic>[].obs;
+  var currentPostPage = 0.obs;
+  var totalPostPage = 1.obs;
+  var isFetchingPost = false.obs;
+
+// 경제톡톡 게시글용
+  var tokPostList = <dynamic>[].obs;
+  var currentTokPage = 0.obs;
+  var totalTokPage = 1.obs;
+  var isFetchingTok = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+
+    // 최초 데이터 로딩
     fetchTodaysTok();
-    fetchPosts(); // 초기 데이터 로드
+    fetchPosts();
     fetchTokPosts();
 
-    // 페이지가 다시 활성화될 때마다 새로고침
+    // 라우트 복귀 시 새로고침
     ever(Get.currentRoute.obs, (route) {
       if (route == '/community') {
+        resetPostList();
+        resetTokList();
         fetchTodaysTok();
         fetchPosts();
         fetchTokPosts();
@@ -33,15 +48,27 @@ class CommunityController extends GetxController {
 
   bool isInitialized = false;
 
-  @override
-  void onReady() {
-    super.onReady();
-    if (!isInitialized) {
-      fetchPosts();
-      fetchTokPosts();
-      fetchTodaysTok();
-      isInitialized = true;
-    }
+  // @override
+  // void onReady() {
+  //   super.onReady();
+  //   if (!isInitialized) {
+  //     fetchPosts();
+  //     fetchTokPosts();
+  //     fetchTodaysTok();
+  //     isInitialized = true;
+  //   }
+  // }
+
+  void resetPostList() {
+    postList.clear();
+    currentPostPage.value = 0;
+    totalPostPage.value = 1;
+  }
+
+  void resetTokList() {
+    tokPostList.clear();
+    currentTokPage.value = 0;
+    totalTokPage.value = 1;
   }
 
   void toggleModal() {
@@ -76,32 +103,71 @@ class CommunityController extends GetxController {
     return categoryTypes[selectedCategoryIndex.value];
   }
 
-  Future<void> fetchPosts() async {
-    isLoading.value = true;
+  Future<void> fetchPosts({bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      if (isFetchingPost.value || currentPostPage.value >= totalPostPage.value)
+        return;
+    }
+
+    if (!isLoadMore) {
+      isLoading.value = true;
+      resetPostList();
+    }
+
+    isFetchingPost.value = true;
     String sort = selectedOrder.value == 0 ? "POPULAR" : "RECENT";
+    String type = selectedCategoryType;
 
     try {
-      var posts =
-          await remoteDataSource.fetchCategoryPosts(sort, selectedCategoryType);
-      postList.assignAll(posts);
+      final results = await remoteDataSource.fetchCategoryPosts(
+        page: currentPostPage.value,
+        sort: sort,
+        type: type,
+      );
+
+      if (results["postPreviewList"] != null) {
+        postList.addAll(results["postPreviewList"]);
+        totalPostPage.value = results["totalPage"] ?? 1;
+        currentPostPage.value++;
+      }
     } catch (e) {
-      print("Error fetching posts: $e");
+      debugPrint("Error fetching posts: $e");
     } finally {
+      isFetchingPost.value = false;
       isLoading.value = false;
     }
   }
 
   /// 경제톡톡 목록 조회
-  Future<void> fetchTokPosts() async {
-    isLoading.value = true;
-    String sort = selectedOrder.value == 0 ? "POPULAR" : "RECENT";
+  Future<void> fetchTokPosts({bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      if (isFetchingTok.value || currentTokPage.value >= totalTokPage.value)
+        return;
+    }
+
+    if (!isLoadMore) {
+      isLoading.value = true;
+      resetTokList();
+    }
+
+    isFetchingTok.value = true;
+    String sort = selectedTokOrder.value == 0 ? "POPULAR" : "RECENT";
 
     try {
-      var tokPosts = await remoteDataSource.fetchTokLists(sort);
-      tokPostList.assignAll(tokPosts);
+      final results = await remoteDataSource.fetchTokLists(
+        page: currentTokPage.value,
+        sort: sort,
+      );
+
+      if (results["postPreviewList"] != null) {
+        tokPostList.addAll(results["postPreviewList"]);
+        totalTokPage.value = results["totalPage"] ?? 1;
+        currentTokPage.value++;
+      }
     } catch (e) {
-      print("Error fetching tokPosts: $e");
+      debugPrint("Error fetching tokPosts: $e");
     } finally {
+      isFetchingTok.value = false;
       isLoading.value = false;
     }
   }
@@ -125,6 +191,7 @@ class CommunityController extends GetxController {
   void selectCategory(int index) {
     if (selectedCategoryIndex.value != index) {
       selectedCategoryIndex.value = index;
+      resetPostList(); // 페이지 초기화 추가
       fetchPosts();
     }
   }

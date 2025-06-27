@@ -19,11 +19,27 @@ class _CommunityPageState extends State<CommunityPage> {
   final CommunityController controller = Get.put(CommunityController());
   int dayCounts = 3;
 
+  final ScrollController _postScrollController = ScrollController();
+  final ScrollController _tokScrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
 
-    // 프레임이 그려진 이후 fetch 호출
+    _postScrollController.addListener(() {
+      if (_postScrollController.position.pixels >=
+          _postScrollController.position.maxScrollExtent - 200) {
+        controller.fetchPosts(isLoadMore: true);
+      }
+    });
+
+    _tokScrollController.addListener(() {
+      if (_tokScrollController.position.pixels >=
+          _tokScrollController.position.maxScrollExtent - 200) {
+        controller.fetchTokPosts(isLoadMore: true);
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchPosts();
       controller.fetchTokPosts();
@@ -161,230 +177,139 @@ class _CommunityPageState extends State<CommunityPage> {
                         Expanded(
                           child: TabBarView(
                             children: [
-                              // 일반게시판 내용 (서버 데이터 적용)
+                              // 일반게시판 탭
                               Obx(() {
-                                // 선택된 카테고리에 따라 데이터 필터링
-                                var posts = controller.postList;
+                                final posts = controller.postList;
 
-                                return SingleChildScrollView(
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16.w),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // 카테고리 탭 (가로 스크롤)
-                                        SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Padding(
+                                return ListView.builder(
+                                  controller: _postScrollController,
+                                  itemCount: posts.length +
+                                      2, // 0: 필터 영역, 마지막: 로딩 인디케이터
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  itemBuilder: (context, index) {
+                                    if (index == 0) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 14.h),
+                                          _buildCategoryTabs(), // 카테고리 탭
+                                          _buildOrderTabs(), // 인기순/최신순
+                                          SizedBox(height: 10.h),
+                                        ],
+                                      );
+                                    } else if (index == posts.length + 1) {
+                                      return controller.isFetchingPost.value
+                                          ? const Padding(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 12.w,
-                                                  vertical: 10.h),
-                                              child: Row(
-                                                children:
-                                                    List.generate(5, (index) {
-                                                  final categoryNames = [
-                                                    '전체',
-                                                    '자유',
-                                                    '질문',
-                                                    '책추천',
-                                                    '정보 공유'
-                                                  ];
-                                                  return GestureDetector(
-                                                    onTap: () => controller
-                                                        .selectCategory(index),
-                                                    child: CategoryTab(
-                                                      isSelected: controller
-                                                              .selectedCategoryIndex
-                                                              .value ==
-                                                          index,
-                                                      text:
-                                                          categoryNames[index],
-                                                    ),
-                                                  );
-                                                }),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                                  vertical: 20),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                            )
+                                          : const SizedBox.shrink();
+                                    }
 
-                                        // 인기순 / 최신순 선택
-                                        Row(
+                                    final post = posts[index - 1];
+                                    return Column(
+                                      children: [
+                                        ListItem(
+                                          title: post["title"] ?? '',
+                                          description: post["content"] ?? '',
+                                          date: post["createdDate"] ?? '',
+                                          likes: post["likeCount"] ?? 0,
+                                          comments: post["commentCount"] ?? 0,
+                                          imageUrl: post["imageUrl"],
+                                          onTap: () => controller
+                                              .toDetailPage(post["id"]),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 16.h),
+                                          child: Container(
+                                              height: 1,
+                                              color: const Color(0xffd9d9d9)),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }),
+
+                              // 경제톡톡 탭
+                              Obx(() {
+                                final tokPosts = controller.tokPostList;
+
+                                return ListView.builder(
+                                  controller: _tokScrollController,
+                                  itemCount: tokPosts.length + 2,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  itemBuilder: (context, index) {
+                                    if (index == 0) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10.h),
+                                        child: Row(
                                           children: [
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectOrder(0);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectTokOrder(0),
                                               child: OrderTab(
                                                 text: '인기순',
                                                 isSelected: controller
-                                                        .selectedOrder.value ==
+                                                        .selectedTokOrder
+                                                        .value ==
                                                     0,
                                               ),
                                             ),
-                                            const SizedBox(width: 6),
+                                            SizedBox(width: 6.w),
                                             GestureDetector(
-                                              onTap: () {
-                                                controller.selectOrder(1);
-                                              },
+                                              onTap: () =>
+                                                  controller.selectTokOrder(1),
                                               child: OrderTab(
                                                 text: '최신순',
                                                 isSelected: controller
-                                                        .selectedOrder.value ==
+                                                        .selectedTokOrder
+                                                        .value ==
                                                     1,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10.h),
+                                      );
+                                    } else if (index == tokPosts.length + 1) {
+                                      return controller.isFetchingTok.value
+                                          ? const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 20),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                            )
+                                          : const SizedBox.shrink();
+                                    }
 
-                                        // 게시글 리스트
-                                        if (controller.isLoading.value)
-                                          const Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                        else if (posts.isEmpty)
-                                          const Center(
-                                              child: Text('게시글이 없습니다.'))
-                                        else
-                                          Column(
-                                            children: List.generate(
-                                                posts.length, (index) {
-                                              var post = posts[index];
-                                              return Column(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      controller.toDetailPage(
-                                                          post["id"]);
-                                                    },
-                                                    child: ListItem(
-                                                      title:
-                                                          post["title"] ?? '',
-                                                      description:
-                                                          post["content"] ?? '',
-                                                      date:
-                                                          post["createdDate"] ??
-                                                              '',
-                                                      likes:
-                                                          post["likeCount"] ??
-                                                              0,
-                                                      comments: post[
-                                                              "commentCount"] ??
-                                                          0,
-                                                      imageUrl:
-                                                          post["imageUrl"],
-                                                      onTap: () {
-                                                        controller.toDetailPage(
-                                                            post["id"]);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 16.h),
-                                                    child: Container(
-                                                      height: 1,
-                                                      color: const Color(
-                                                          0xffd9d9d9),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            }),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }),
-                              // 경제톡톡 화면
-                              Obx(() {
-                                // 선택된 카테고리에 따라 데이터 필터링
-                                var tokPosts = controller.tokPostList;
-                                return SingleChildScrollView(
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16.w),
-                                    child: Column(
-                                      children: [
-                                        // 인기순 / 최신순 선택
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 10.h),
-                                          child: Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  controller.selectTokOrder(0);
-                                                },
-                                                child: OrderTab(
-                                                  text: '인기순',
-                                                  isSelected: controller
-                                                          .selectedTokOrder
-                                                          .value ==
-                                                      0,
-                                                ),
-                                              ),
-                                              SizedBox(width: 6.w),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  controller.selectTokOrder(1);
-                                                },
-                                                child: OrderTab(
-                                                  text: '최신순',
-                                                  isSelected: controller
-                                                          .selectedTokOrder
-                                                          .value ==
-                                                      1,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // 리스트
-                                        if (controller.isLoading.value)
-                                          const Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                        else if (tokPosts.isEmpty)
-                                          const Center(
-                                              child: Text('게시글이 없습니다.'))
-                                        else
-                                          Column(
-                                            children: tokPosts.map((tokPost) {
-                                              return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 8.h),
-                                                child: TalkListItem(
-                                                  onTap: () => controller
-                                                      .toTalkDetailPage(
-                                                          tokPost['id']),
-                                                  participantCount: tokPost[
-                                                          'participantCount'] ??
-                                                      0,
-                                                  createdDate:
-                                                      tokPost['createdDate'] ??
-                                                          '',
-                                                  title: tokPost['title'] ?? '',
-                                                  likeCount:
-                                                      tokPost['likeCount'] ?? 0,
-                                                  commentCount: tokPost[
-                                                          'participantCount'] ??
-                                                      0,
-                                                  imageUrl: tokPost['imageUrl'],
-                                                ),
-                                              );
-                                            }).toList(),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
+                                    final tokPost = tokPosts[index - 1];
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 8.h),
+                                      child: TalkListItem(
+                                        onTap: () => controller
+                                            .toTalkDetailPage(tokPost['id']),
+                                        participantCount:
+                                            tokPost['participantCount'] ?? 0,
+                                        createdDate:
+                                            tokPost['createdDate'] ?? '',
+                                        title: tokPost['title'] ?? '',
+                                        likeCount: tokPost['likeCount'] ?? 0,
+                                        commentCount:
+                                            tokPost['commentCount'] ?? 0,
+                                        imageUrl: tokPost['imageUrl'],
+                                      ),
+                                    );
+                                  },
                                 );
                               }),
                             ],
@@ -521,6 +446,50 @@ class _CommunityPageState extends State<CommunityPage> {
         ),
       ),
       bottomNavigationBar: const CustomBottomBar(currentIndex: 3),
+    );
+  }
+
+  Widget _buildCategoryTabs() {
+    final categoryNames = ['전체', '자유', '질문', '책추천', '정보 공유'];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        child: Row(
+          children: List.generate(categoryNames.length, (index) {
+            return GestureDetector(
+              onTap: () => controller.selectCategory(index),
+              child: CategoryTab(
+                isSelected: controller.selectedCategoryIndex.value == index,
+                text: categoryNames[index],
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOrderTabs() {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () => controller.selectOrder(0),
+          child: OrderTab(
+            text: '인기순',
+            isSelected: controller.selectedOrder.value == 0,
+          ),
+        ),
+        SizedBox(width: 6.w),
+        GestureDetector(
+          onTap: () => controller.selectOrder(1),
+          child: OrderTab(
+            text: '최신순',
+            isSelected: controller.selectedOrder.value == 1,
+          ),
+        ),
+      ],
     );
   }
 }

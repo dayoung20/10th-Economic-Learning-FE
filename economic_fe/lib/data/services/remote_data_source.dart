@@ -1188,42 +1188,30 @@ class RemoteDataSource {
     }
   }
 
-  /// 게시글 목록 조회
+  /// 단일 페이지 게시글 목록 조회
   /// api: api/v1/post
-  Future<List<dynamic>> fetchCategoryPosts(String sort, String type) async {
-    List<dynamic> categoryPosts = [];
-    int currentPage = 0;
-    int totalPages = 0; // 초기값 설정
-
+  Future<Map<String, dynamic>> fetchCategoryPosts({
+    required int page,
+    required String sort,
+    required String type,
+  }) async {
     try {
-      while (currentPage <= totalPages) {
-        String endPoint;
+      String endPoint = type == "ALL"
+          ? 'api/v1/post?page=$page&sort=$sort'
+          : 'api/v1/post?page=$page&sort=$sort&type=$type';
 
-        if (type == "ALL") {
-          // 전체 카테고리일 경우 `type` 파라미터 없이 요청
-          endPoint = 'api/v1/post?page=$currentPage&sort=$sort';
-        } else {
-          // 특정 카테고리 조회 시 `type` 포함
-          endPoint = 'api/v1/post?page=$currentPage&sort=$sort&type=$type';
-        }
+      final response = await _getApiWithHeader(endPoint);
 
-        var response = await _getApiWithHeader(endPoint);
-
-        if (response != null && response["isSuccess"] == true) {
-          var results = response["results"];
-          categoryPosts.addAll(results["postPreviewList"]); // 현재 페이지 데이터 추가
-          totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
-          currentPage++; // 다음 페이지로 이동
-        } else {
-          debugPrint("게시글 조회 실패: ${response["message"]}");
-          break;
-        }
+      if (response != null && response["isSuccess"] == true) {
+        return response["results"] as Map<String, dynamic>;
+      } else {
+        debugPrint("게시글 조회 실패: ${response["message"]}");
       }
     } catch (e) {
       debugPrint("게시글 목록 조회 중 오류 발생: $e");
     }
 
-    return categoryPosts;
+    return {};
   }
 
   /// 이미지 업로드 API
@@ -1683,31 +1671,26 @@ class RemoteDataSource {
     }
   }
 
-  /// 경제톡톡 목록 조회
+  /// 단일 페이지 경제톡톡 목록 조회
   /// api: api/v1/post/toktok
-  Future<List<dynamic>> fetchTokLists(String sort) async {
-    List<dynamic> tokPosts = [];
-    int currentPage = 0;
-    // int totalPages = 0; // 초기값 설정
-
+  Future<Map<String, dynamic>> fetchTokLists({
+    required int page,
+    required String sort,
+  }) async {
     try {
-      String endPoint = 'api/v1/post/toktok?page=$currentPage&sort=$sort';
-
-      var response = await _getApiWithHeader(endPoint);
+      final endPoint = 'api/v1/post/toktok?page=$page&sort=$sort';
+      final response = await _getApiWithHeader(endPoint);
 
       if (response != null && response["isSuccess"] == true) {
-        var results = response["results"];
-        tokPosts.addAll(results["postPreviewList"]); // 현재 페이지 데이터 추가
-        // totalPages = results["totalPage"]; // 전체 페이지 수 업데이트
-        // currentPage++; // 다음 페이지로 이동
+        return response["results"] as Map<String, dynamic>;
       } else {
-        debugPrint("게시글 조회 실패: ${response["message"]}");
+        debugPrint("경제톡톡 조회 실패: ${response["message"]}");
       }
     } catch (e) {
-      debugPrint("게시글 목록 조회 중 오류 발생: $e");
+      debugPrint("경제톡톡 목록 조회 중 오류 발생: $e");
     }
 
-    return tokPosts;
+    return {};
   }
 
   /// 경제톡톡 게시물 상세 조회 API
