@@ -64,8 +64,9 @@ class NotificationController extends GetxController {
     String? targetRoute = await checkPostLocation(postId);
 
     if (targetRoute != null) {
-      // 알림 확인 API 호출 및 UI에서 즉각 제거
-      await markNotificationAsChecked(notificationId);
+      // // 알림 확인 API 호출 및 UI에서 즉각 제거
+      // await markNotificationAsChecked(notificationId);
+      await deleteNotification(notificationId); // 알림 확인 API 대신 알림 제거 API 호출
 
       Get.toNamed(targetRoute, arguments: postId);
     } else {
