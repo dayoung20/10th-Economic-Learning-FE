@@ -2464,6 +2464,26 @@ class RemoteDataSource {
     }
   }
 
+  /// 학습 세트 별 완료한 퀴즈 조회
+  /// API: api/v1/learning/{learningSetId}/quizzes
+  Future<Map<String, dynamic>> fetchCompletedQuizzes(int learningSetId) async {
+    String endPoint = 'api/v1/learning/$learningSetId/quizzes';
+
+    try {
+      var response = await _getApiWithHeader(endPoint);
+
+      if (response != null && response['isSuccess'] == true) {
+        return Map<String, bool>.from(response['results']['results']);
+      } else {
+        debugPrint("학습 세트 별 유저가 완료한 퀴즈 조회 실패: ${response?['message']}");
+        return {};
+      }
+    } catch (e) {
+      debugPrint("fetchCompleteQuizzes 오류 발생: $e");
+      return {};
+    }
+  }
+
   /// api/v1/learning/{learningSetId}/quizzes
   /// 퀴즈 시작
   Future<dynamic> getQuizList(int learningSetId, String level) async {
@@ -2614,24 +2634,23 @@ class RemoteDataSource {
     }
   }
 
-  /// 개념 학습 스크랩 취소
-  /// API: api/v1/learning/concept/{conceptId}/scrap
-  Future<bool> deleteConceptScrap(int conceptId) async {
-    String endpoint = 'api/v1/learning/concept/$conceptId/scrap';
+  /// 유저 탈퇴
+  /// API: api/v1/user
+  Future<bool> deleteUser() async {
+    String endpoint = 'api/v1/user';
 
     try {
       final response = await _deleteApi(endpoint);
 
       if (response == 200) {
-        debugPrint('개념 학습 스크랩 취소 성공');
+        debugPrint('유저 탈퇴 성공');
         return true;
       } else {
-        debugPrint(
-            '개념 학습 스크랩 삭제 실패: (${response.statusCode} ${response.body})');
+        debugPrint('유저 탈퇴 실패: (${response.statusCode} ${response.body})');
         return false;
       }
     } catch (e) {
-      debugPrint('개념 학습 스크랩 삭제 중 예외 발생: $e');
+      debugPrint('유저 탈퇴 처리 중 예외 발생: $e');
       return false;
     }
   }
