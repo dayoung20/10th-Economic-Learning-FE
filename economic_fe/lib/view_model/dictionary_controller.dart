@@ -80,32 +80,6 @@ class DictionaryController extends GetxController {
     isFetchingMore.value = false;
   }
 
-  // /// 자음 또는 키워드에 따른 용어 데이터 불러오기
-  // Future<void> fetchDictionary(int page, String text, bool type) async {
-  //   try {
-  //     isLoading.value = true;
-
-  //     dynamic response;
-  //     if (type) {
-  //       // 자음 기준 검색
-  //       response = await remoteDataSource.getDictionary(page, text);
-  //     } else {
-  //       // 키워드 기준 검색
-  //       response = await remoteDataSource.getKewordResult(page, text);
-  //     }
-
-  //     final data = response as Map<String, dynamic>;
-  //     final termList = data['results']['termList'] as List;
-  //     dictionaryList.value =
-  //         termList.map((term) => DictionaryModel.fromJson(term)).toList();
-  //   } catch (e) {
-  //     debugPrint('fetchDictionary Error: $e');
-  //     dictionaryList.clear(); // 에러 발생 시 빈 리스트
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
   /// 특정 용어 상세 불러오기 (팝업용)
   Future<void> getTermDetail(int id) async {
     try {

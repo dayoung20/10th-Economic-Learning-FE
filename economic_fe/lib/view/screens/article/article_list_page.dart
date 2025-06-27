@@ -21,7 +21,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
   @override
   void initState() {
     super.initState();
-    controller.getNewsList(1, "RECENT", null);
+    controller.fetchNewsInitial(1, "RECENT", null);
   }
 
   @override
@@ -56,7 +56,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("전체");
-                        controller.getNewsList(1, "RECENT", null);
+                        controller.fetchNewsInitial(1, "RECENT", null);
                       },
                       child: CategoryTab(
                         isSelected: controller.selectedCate.value == "전체",
@@ -66,7 +66,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("FINANCE");
-                        controller.getNewsList(1, "RECENT", "FINANCE");
+                        controller.fetchNewsInitial(1, "RECENT", "FINANCE");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -76,7 +76,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("INVESTMENT");
-                        controller.getNewsList(1, "RECENT", "INVESTMENT");
+                        controller.fetchNewsInitial(1, "RECENT", "INVESTMENT");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -86,7 +86,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("NORMAL");
-                        controller.getNewsList(1, "RECENT", "NORMAL");
+                        controller.fetchNewsInitial(1, "RECENT", "NORMAL");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "NORMAL",
@@ -95,7 +95,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("GLOBAL");
-                        controller.getNewsList(1, "RECENT", "GLOBAL");
+                        controller.fetchNewsInitial(1, "RECENT", "GLOBAL");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "GLOBAL",
@@ -104,7 +104,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("INDUSTRY");
-                        controller.getNewsList(1, "RECENT", "INDUSTRY");
+                        controller.fetchNewsInitial(1, "RECENT", "INDUSTRY");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -114,7 +114,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("REAL_ESTATE");
-                        controller.getNewsList(1, "RECENT", "REAL_ESTATE");
+                        controller.fetchNewsInitial(1, "RECENT", "REAL_ESTATE");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -124,7 +124,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("ECONOMIC_ANALYSIS");
-                        controller.getNewsList(
+                        controller.fetchNewsInitial(
                             1, "RECENT", "ECONOMIC_ANALYSIS");
                       },
                       child: CategoryTab(
@@ -135,7 +135,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("ECONOMIC_POLICY");
-                        controller.getNewsList(1, "RECENT", "ECONOMIC_POLICY");
+                        controller.fetchNewsInitial(
+                            1, "RECENT", "ECONOMIC_POLICY");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value ==
@@ -145,7 +146,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("OTHER");
-                        controller.getNewsList(1, "RECENT", "OTHER");
+                        controller.fetchNewsInitial(1, "RECENT", "OTHER");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "OTHER",
@@ -173,7 +174,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                             GestureDetector(
                               onTap: () {
                                 controller.selectOrder(0);
-                                controller.getNewsList(1, "POPULAR",
+                                controller.fetchNewsInitial(1, "POPULAR",
                                     controller.selectedCate.value);
                               },
                               child: OrderTab(
@@ -187,7 +188,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                             GestureDetector(
                               onTap: () {
                                 controller.selectOrder(1);
-                                controller.getNewsList(
+                                controller.fetchNewsInitial(
                                     1, "RECENT", controller.selectedCate.value);
                               },
                               child: OrderTab(
@@ -207,109 +208,150 @@ class _ArticleListPageState extends State<ArticleListPage> {
                         }
 
                         return Expanded(
-                          child: ListView.builder(
-                            itemCount: newsList.length,
-                            itemBuilder: (context, index) {
-                              final news = newsList[index];
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w, vertical: 8.h),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w, vertical: 16.h),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: const Color(0xFFD9D9D9),
-                                        width: 1.w,
+                          child: Obx(() {
+                            final newsList = controller.newsList;
+
+                            if (controller.isLoading.value &&
+                                newsList.isEmpty) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+
+                            if (newsList.isEmpty) {
+                              return const Center(child: Text('뉴스 데이터가 없습니다.'));
+                            }
+
+                            return NotificationListener<ScrollNotification>(
+                              onNotification: (scrollInfo) {
+                                if (scrollInfo.metrics.pixels >=
+                                    scrollInfo.metrics.maxScrollExtent - 100) {
+                                  controller.loadMoreIfNeeded();
+                                }
+                                return false;
+                              },
+                              child: ListView.builder(
+                                itemCount: newsList.length +
+                                    (controller.currentPage.value <
+                                            controller.totalPage.value
+                                        ? 1
+                                        : 0),
+                                itemBuilder: (context, index) {
+                                  if (index == newsList.length) {
+                                    return const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
+                                    );
+                                  }
+
+                                  final news = newsList[index];
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 8.h),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w, vertical: 16.h),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: const Color(0xFFD9D9D9),
+                                            width: 1.w,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // 기사 정보
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                _getCategoryName(
+                                                    news.category!),
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF2BD6D6),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  controller
+                                                      .getNewsDetail(news.id!);
+                                                  controller.toDetailPage(news);
+                                                },
+                                                child: Text(
+                                                  (news.title != null &&
+                                                          news.title!.length >
+                                                              18)
+                                                      ? '${news.title!.substring(0, 18)}...'
+                                                      : news.title ?? "제목 없음",
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 6.h),
+                                              Text(
+                                                news.publisher ?? "알 수 없음",
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF767676),
+                                                  fontSize: 12.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // 스크랩 아이콘
+                                          Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (news.isScraped ?? false) {
+                                                    controller.deleteNewsScrap(
+                                                        news.id!,
+                                                        article: news);
+                                                  } else {
+                                                    controller.postNewsScrap(
+                                                        news.id!,
+                                                        article: news);
+                                                  }
+                                                },
+                                                child: Image.asset(
+                                                  news.isScraped ?? false
+                                                      ? 'assets/bookmark_selected.png'
+                                                      : 'assets/bookmark.png',
+                                                  width: 13.w,
+                                                  height: 18.3.h,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 20),
+                                              Text(
+                                                news.createdDate ?? '',
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF767676),
+                                                  fontSize: 12.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // 기사 정보
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            _getCategoryName(news.category!),
-                                            style: TextStyle(
-                                              color: const Color(0xFF2BD6D6),
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              controller
-                                                  .getNewsDetail(news.id!);
-                                              controller.toDetailPage(news);
-                                            },
-                                            child: Text(
-                                              (news.title != null &&
-                                                      news.title!.length > 18)
-                                                  ? '${news.title!.substring(0, 18)}...'
-                                                  : news.title ?? "제목 없음",
-                                              style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 6.h),
-                                          Text(
-                                            news.publisher ?? "알 수 없음",
-                                            style: TextStyle(
-                                              color: const Color(0xFF767676),
-                                              fontSize: 12.sp,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      // 스크랩 아이콘
-                                      Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (news.isScraped ?? false) {
-                                                controller.deleteNewsScrap(
-                                                    news.id!,
-                                                    article: news);
-                                              } else {
-                                                controller.postNewsScrap(
-                                                    news.id!,
-                                                    article: news);
-                                              }
-                                            },
-                                            child: Image.asset(
-                                              news.isScraped ?? false
-                                                  ? 'assets/bookmark_selected.png'
-                                                  : 'assets/bookmark.png',
-                                              width: 13.w,
-                                              height: 18.3.h,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            news.createdDate ?? '',
-                                            style: TextStyle(
-                                              color: const Color(0xFF767676),
-                                              fontSize: 12.sp,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            );
+                          }),
                         );
                       }),
                     ],
