@@ -141,7 +141,18 @@ class _SearchPageState extends State<SearchPage>
   Widget _buildSearchResults() {
     return Expanded(
       child: Obx(() {
-        if (controller.selectedTabIndex.value == 0) {
+        int tabIndex = controller.selectedTabIndex.value;
+
+        if (tabIndex == 0) {
+          final hasAnyResults = controller.searchTerms.isNotEmpty ||
+              controller.searchNews.isNotEmpty ||
+              controller.searchPosts.isNotEmpty ||
+              controller.searchToks.isNotEmpty;
+
+          if (!hasAnyResults) {
+            return const Center(child: Text("결과가 없습니다."));
+          }
+
           return _buildAll(
             controller.searchTerms,
             controller.searchNews,
@@ -150,50 +161,88 @@ class _SearchPageState extends State<SearchPage>
           );
         }
 
+        // 개별 탭 처리
         List<dynamic> results;
-        switch (controller.selectedTabIndex.value) {
-          case 1: // 용어사전
+        bool isLoading;
+        VoidCallback onLoadMore;
+
+        switch (tabIndex) {
+          case 1:
             results = controller.searchTerms;
+            isLoading = controller.isTermFetching.value;
+            onLoadMore = () =>
+                controller.fetchNextTermPage(controller.searchQuery.value);
             break;
-          case 2: // 경제 기사
+          case 2:
             results = controller.searchNews;
+            isLoading = controller.isNewsFetching.value;
+            onLoadMore = () =>
+                controller.fetchNextNewsPage(controller.searchQuery.value);
             break;
-          case 3: // 일반 게시판
+          case 3:
             results = controller.searchPosts;
+            isLoading = controller.isPostFetching.value;
+            onLoadMore = () =>
+                controller.fetchNextPostPage(controller.searchQuery.value);
             break;
-          default: // 경제 톡톡
+          case 4:
+          default:
             results = controller.searchToks;
+            isLoading = controller.isTokFetching.value;
+            onLoadMore =
+                () => controller.fetchNextTokPage(controller.searchQuery.value);
         }
 
-        return results.isEmpty
-            ? const Center(child: Text("결과가 없습니다."))
-            : ListView.separated(
-                separatorBuilder: (_, __) => const Divider(
-                  color: Color(0xffd9d9d9),
-                  thickness: 1,
-                  height: 0,
-                ),
-                itemCount: results.length,
-                itemBuilder: (_, i) {
-                  switch (controller.selectedTabIndex.value) {
-                    case 0: // 통합
-                      return _buildAll(
-                          results[i], results[i], results[i], results[i]);
+        if (results.isEmpty && isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                    case 1: // 용어사전 (Dictionary)
-                      return _buildDictionaryCard(results[i]);
+        if (results.isEmpty) {
+          return const Center(child: Text("결과가 없습니다."));
+        }
 
-                    case 2: // 경제 기사 (News)
-                      return _buildNewsCard(results[i]);
+        // 결과가 있을 때 + 스크롤 감지
+        return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo.metrics.pixels >=
+                    scrollInfo.metrics.maxScrollExtent - 100 &&
+                !isLoading) {
+              onLoadMore();
+            }
+            return false;
+          },
+          child: ListView.separated(
+            separatorBuilder: (_, __) => const Divider(
+              color: Color(0xffd9d9d9),
+              thickness: 1,
+              height: 0,
+            ),
+            itemCount: results.length + 1,
+            itemBuilder: (_, i) {
+              // 마지막 아이템은 로딩 인디케이터
+              if (i == results.length) {
+                return isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : const SizedBox.shrink();
+              }
 
-                    case 3: // 일반 게시글
-                      return _buildPostCard(results[i]);
-
-                    default: // 경제 톡톡
-                      return _buildTokCard(results[i]);
-                  }
-                },
-              );
+              switch (tabIndex) {
+                case 1:
+                  return _buildDictionaryCard(results[i]);
+                case 2:
+                  return _buildNewsCard(results[i]);
+                case 3:
+                  return _buildPostCard(results[i]);
+                case 4:
+                default:
+                  return _buildTokCard(results[i]);
+              }
+            },
+          ),
+        );
       }),
     );
   }

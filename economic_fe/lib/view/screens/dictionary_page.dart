@@ -41,7 +41,9 @@ class _DictionaryPageState extends State<DictionaryPage> {
   void initState() {
     super.initState();
     controller = Get.put(DictionaryController()..getStats());
-    controller.fetchDictionary(0, consonants[_selectedIndex], true);
+
+    // 첫 자음 기준 초기 데이터 호출
+    controller.fetchDictionaryInitial(consonants[_selectedIndex], true);
   }
 
   @override
@@ -77,7 +79,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 onFieldSubmitted: (value) {
                   controller.keyword.value = value;
                   controller.typeValue.value = false;
-                  controller.fetchDictionary(0, value, false);
+                  controller.fetchDictionaryInitial(
+                      value, false); // ← 페이징 초기화 포함
                 },
               ),
             ),
@@ -101,8 +104,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                               controller.typeValue.value = true;
                               controller.selectedConsonant.value =
                                   consonants[index];
-                              controller.fetchDictionary(
-                                  0, consonants[index], true);
+                              controller.fetchDictionaryInitial(
+                                  consonants[index], true); // ← 페이징 초기화 포함
                             });
                           },
                           child: Container(
@@ -141,113 +144,150 @@ class _DictionaryPageState extends State<DictionaryPage> {
             ),
 
             // 리스트 영역
-            Obx(() {
-              if (controller.isLoading.value) {
-                return const Expanded(
-                    child: Center(child: CircularProgressIndicator()));
-              }
+            Expanded(
+              child: Obx(() {
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (scrollInfo) {
+                    if (scrollInfo.metrics.pixels >=
+                        scrollInfo.metrics.maxScrollExtent - 50) {
+                      controller.loadMoreIfNeeded(
+                        controller.typeValue.value
+                            ? controller.selectedConsonant.value
+                            : controller.keyword.value,
+                        controller.typeValue.value,
+                      );
+                    }
+                    return false;
+                  },
+                  child: controller.isLoading.value &&
+                          controller.dictionaryList.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : controller.dictionaryList.isEmpty
+                          ? const Center(child: Text("용어 사전 데이터가 없습니다."))
+                          : ListView.builder(
+                              itemCount: controller.dictionaryList.length +
+                                  (controller.currentPage.value <
+                                          controller.totalPage.value
+                                      ? 1
+                                      : 0), // 로딩 인디케이터용 1개 추가
+                              itemBuilder: (context, index) {
+                                if (index == controller.dictionaryList.length) {
+                                  return const Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  );
+                                }
 
-              if (controller.dictionaryList.isEmpty) {
-                return const Expanded(
-                    child: Center(child: Text("용어 사전 데이터가 없습니다.")));
-              }
-
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: controller.dictionaryList.length,
-                  itemBuilder: (context, index) {
-                    final terms = controller.dictionaryList[index];
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            controller.getTermDetail(terms.termId ?? 2);
-                            showDialog(
-                              context: context,
-                              builder: (_) => _buildTermDialog(terms),
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            padding: const EdgeInsets.all(16),
-                            color: Colors.white,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                final terms = controller.dictionaryList[index];
+                                return Column(
                                   children: [
-                                    Text(
-                                      truncateWithEllipsis(
-                                          terms.termName ?? "", 20),
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8.h),
-                                    SizedBox(
-                                      width: 300.w,
-                                      child: Text(
-                                        truncateWithEllipsis(
-                                            terms.termDescription ?? "", 25),
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: const Color(0xFF767676),
+                                    GestureDetector(
+                                      onTap: () {
+                                        controller
+                                            .getTermDetail(terms.termId ?? 0);
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) =>
+                                              _buildTermDialog(terms),
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8),
+                                        padding: const EdgeInsets.all(16),
+                                        color: Colors.white,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  truncateWithEllipsis(
+                                                      terms.termName ?? "", 20),
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8.h),
+                                                SizedBox(
+                                                  width: 300.w,
+                                                  child: Text(
+                                                    truncateWithEllipsis(
+                                                        terms.termDescription ??
+                                                            "",
+                                                        25),
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      color: const Color(
+                                                          0xFF767676),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final ctx = context;
+                                                setState(() {
+                                                  terms.isScraped =
+                                                      !(terms.isScraped ??
+                                                          false);
+                                                });
+                                                if (terms.isScraped == true) {
+                                                  await controller
+                                                      .postTermScrap(
+                                                          terms.termId!);
+                                                  if (mounted) {
+                                                    CustomSnackBar.show(
+                                                        context: ctx,
+                                                        message: '용어를 스크랩했어요');
+                                                  }
+                                                } else {
+                                                  await controller
+                                                      .deleteTermScrap(
+                                                          terms.termId!);
+                                                  if (mounted) {
+                                                    CustomSnackBar.show(
+                                                        context: ctx,
+                                                        message: '스크랩을 취소했어요');
+                                                  }
+                                                }
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 11.w,
+                                                    top: 8.h,
+                                                    bottom: 8.h),
+                                                child: Image.asset(
+                                                  terms.isScraped ?? false
+                                                      ? "assets/bookmark_selected.png"
+                                                      : "assets/bookmark.png",
+                                                  width: 13.w,
+                                                  height: 18.2.h,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    final ctx = context;
-                                    setState(() {
-                                      terms.isScraped =
-                                          !(terms.isScraped ?? false);
-                                    });
-                                    if (terms.isScraped == true) {
-                                      await controller
-                                          .postTermScrap(terms.termId!);
-                                      if (mounted) {
-                                        CustomSnackBar.show(
-                                            context: ctx,
-                                            message: '용어를 스크랩했어요');
-                                      }
-                                    } else {
-                                      await controller
-                                          .deleteTermScrap(terms.termId!);
-                                      if (mounted) {
-                                        CustomSnackBar.show(
-                                            context: ctx,
-                                            message: '스크랩을 취소했어요');
-                                      }
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 11.w, top: 8.h, bottom: 8.h),
-                                    child: Image.asset(
-                                      terms.isScraped ?? false
-                                          ? "assets/bookmark_selected.png"
-                                          : "assets/bookmark.png",
-                                      width: 13.w,
-                                      height: 18.2.h,
+                                    const Divider(
+                                      color: Color(0xFFEBEBEB),
+                                      height: 1,
+                                      thickness: 1,
                                     ),
-                                  ),
-                                ),
-                              ],
+                                  ],
+                                );
+                              },
                             ),
-                          ),
-                        ),
-                        const Divider(
-                            color: Color(0xFFEBEBEB), height: 1, thickness: 1),
-                      ],
-                    );
-                  },
-                ),
-              );
-            }),
+                );
+              }),
+            )
           ],
         ),
         bottomNavigationBar: const CustomBottomBar(currentIndex: 1),

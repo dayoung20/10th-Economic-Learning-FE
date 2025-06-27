@@ -13,7 +13,20 @@ class ArticleListController extends GetxController {
   Rx<int> selectedCategoryIndex = 0.obs;
   Rx<int> selectedOrder = 0.obs;
 
+  // 페이징 상태
+  var currentPage = 0.obs;
+  var totalPage = 1.obs;
+  var isLoading = false.obs;
+  var isFetchingMore = false.obs;
+
   RxList<ArticleModel> newsList = <ArticleModel>[].obs;
+
+  // 페이징 초기화
+  void resetPaging() {
+    currentPage.value = 0;
+    totalPage.value = 1;
+    newsList.clear();
+  }
 
   void selectCategory(String index) {
     selectedCate.value = index;
@@ -31,22 +44,48 @@ class ArticleListController extends GetxController {
     Get.toNamed('/chatbot');
   }
 
+  /// 첫 페이지 로딩
+  Future<void> fetchNewsInitial(int page, String sort, String? category) async {
+    resetPaging();
+    await getNewsList(page, sort, category);
+  }
+
   Future<void> getNewsList(int page, String sort, String? category) async {
     try {
-      dynamic response;
-      if (category == null || category == "전체") {
-        response = await remoteDataSource.getNewsList(page, sort, null);
-      } else {
-        response = await remoteDataSource.getNewsList(page, sort, category);
-      }
+      isLoading.value = page == 1;
+      isFetchingMore.value = page != 1;
+
+      dynamic response = await remoteDataSource.getNewsList(
+          page, sort, category == "전체" ? null : category);
 
       final data = response as Map<String, dynamic>;
       final list = data['results']['newsList'] as List;
-      newsList.value = list.map((news) => ArticleModel.fromJson(news)).toList();
+      final total = data['results']['totalPage'] as int;
+
+      final articles = list.map((news) => ArticleModel.fromJson(news)).toList();
+
+      if (page == 1) {
+        newsList.value = articles;
+      } else {
+        newsList.addAll(articles);
+      }
+
+      totalPage.value = total;
+      currentPage.value = page;
     } catch (e) {
-      debugPrint('Error: $e');
-      newsList.clear();
+      debugPrint('getNewsList Error: $e');
+      if (page == 1) newsList.clear();
+    } finally {
+      isLoading.value = false;
+      isFetchingMore.value = false;
     }
+  }
+
+  Future<void> loadMoreIfNeeded() async {
+    if (isFetchingMore.value || currentPage.value >= totalPage.value) return;
+
+    await getNewsList(currentPage.value + 1, selectedSort.value,
+        selectedCate.value == "전체" ? null : selectedCate.value);
   }
 
   Future<void> postNewsScrap(int id, {ArticleModel? article}) async {

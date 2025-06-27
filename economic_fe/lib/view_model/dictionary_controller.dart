@@ -11,38 +11,73 @@ class DictionaryController extends GetxController {
   var keyword = "".obs;
   var typeValue = true.obs; // true: 자음 선택, false: 키워드 검색
 
+  // 페이징 상태
+  var currentPage = 0.obs;
+  var totalPage = 1.obs;
+  var isLoading = false.obs;
+  var isFetchingMore = false.obs;
+
   // 데이터 상태
   var dictionaryList = <DictionaryModel>[].obs;
-  var isLoading = false.obs;
 
   void getStats() {
     print("Stats initialized!");
   }
 
-  /// 자음 또는 키워드에 따른 용어 데이터 불러오기
-  Future<void> fetchDictionary(int page, String text, bool type) async {
-    try {
-      isLoading.value = true;
+  // 페이징 초기화
+  void resetPaging() {
+    currentPage.value = 0;
+    totalPage.value = 1;
+    dictionaryList.clear();
+  }
 
+  /// 자음/키워드에 따른 첫 페이지 로딩
+  Future<void> fetchDictionaryInitial(String text, bool type) async {
+    resetPaging();
+    await fetchDictionaryPage(text, type);
+  }
+
+  /// 특정 페이지 데이터만 가져오는 메서드 (내부 호출용)
+  Future<void> fetchDictionaryPage(String text, bool type) async {
+    if (currentPage.value >= totalPage.value) return;
+
+    isLoading.value = true;
+
+    try {
       dynamic response;
       if (type) {
-        // 자음 기준 검색
-        response = await remoteDataSource.getDictionary(page, text);
+        response =
+            await remoteDataSource.getDictionary(currentPage.value, text);
       } else {
-        // 키워드 기준 검색
-        response = await remoteDataSource.getKewordResult(page, text);
+        response =
+            await remoteDataSource.getKewordResult(currentPage.value, text);
       }
 
       final data = response as Map<String, dynamic>;
       final termList = data['results']['termList'] as List;
-      dictionaryList.value =
+      final terms =
           termList.map((term) => DictionaryModel.fromJson(term)).toList();
+
+      // 누적 추가
+      dictionaryList.addAll(terms);
+
+      // 페이지 정보 업데이트
+      totalPage.value = data['results']['totalPage'];
+      currentPage.value += 1;
     } catch (e) {
-      debugPrint('fetchDictionary Error: $e');
-      dictionaryList.clear(); // 에러 발생 시 빈 리스트
+      debugPrint('fetchDictionaryPage Error: $e');
     } finally {
       isLoading.value = false;
     }
+  }
+
+  /// 스크롤 도달 시 추가 로딩 트리거
+  Future<void> loadMoreIfNeeded(String text, bool type) async {
+    if (isFetchingMore.value || currentPage.value >= totalPage.value) return;
+
+    isFetchingMore.value = true;
+    await fetchDictionaryPage(text, type);
+    isFetchingMore.value = false;
   }
 
   /// 특정 용어 상세 불러오기 (팝업용)
