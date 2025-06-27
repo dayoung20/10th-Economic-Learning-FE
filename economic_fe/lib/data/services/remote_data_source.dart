@@ -1161,7 +1161,7 @@ class RemoteDataSource {
     String url = "$baseUrl/api/v2/auth/login/kakao?accessToken=$accessToken";
 
     try {
-      final response = await http.get(
+      final response = await http.post(
         Uri.parse(url),
         headers: {
           "accept": "*/*",
