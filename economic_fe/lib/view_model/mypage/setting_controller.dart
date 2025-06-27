@@ -39,4 +39,35 @@ class SettingController extends GetxController {
       Get.offAllNamed("/");
     });
   }
+
+  /// 회원 탈퇴 기능
+  Future<void> deleteAccount() async {
+    isLoading.value = true;
+
+    try {
+      bool success = await remoteDataSource.deleteUser();
+
+      if (success) {
+        // SharedPreferences에서 사용자 정보 제거
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+
+        // 온보딩 또는 로그인 화면으로 이동
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.offAllNamed("/");
+        });
+
+        Get.snackbar("탈퇴 완료", "회원탈퇴가 정상적으로 처리되었습니다.",
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        Get.snackbar("탈퇴 실패", "회원탈퇴에 실패했습니다.",
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar("오류", "회원탈퇴 중 문제가 발생했습니다.",
+          snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

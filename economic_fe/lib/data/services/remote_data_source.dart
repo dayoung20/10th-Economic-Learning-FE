@@ -2614,70 +2614,25 @@ class RemoteDataSource {
     }
   }
 
-  /// JSON 데이터 파싱 (잘못된 데이터 방지)
-  // Map<String, dynamic> parseNotificationData(String data) {
-  //   try {
-  //     if (!data.startsWith("{")) {
-  //       print("JSON 형식이 아님, 무시: $data");
-  //       return {};
-  //     }
-  //     return jsonDecode(data);
-  //   } catch (e) {
-  //     print("JSON 파싱 오류: $e");
-  //     return {};
-  //   }
-  // }
+  /// 개념 학습 스크랩 취소
+  /// API: api/v1/learning/concept/{conceptId}/scrap
+  Future<bool> deleteConceptScrap(int conceptId) async {
+    String endpoint = 'api/v1/learning/concept/$conceptId/scrap';
+
+    try {
+      final response = await _deleteApi(endpoint);
+
+      if (response == 200) {
+        debugPrint('개념 학습 스크랩 취소 성공');
+        return true;
+      } else {
+        debugPrint(
+            '개념 학습 스크랩 삭제 실패: (${response.statusCode} ${response.body})');
+        return false;
+      }
+    } catch (e) {
+      debugPrint('개념 학습 스크랩 삭제 중 예외 발생: $e');
+      return false;
+    }
+  }
 }
-
-  // /// 알림 구독 (SSE)
-  // /// api: api/v1/notification/subscribe
-  // Future<bool> subscribeToNotifications(
-  //     {Function(String)? onNotificationReceived}) async {
-  //   String url = '$baseUrl/api/v1/notification/subscribe';
-  //   String? access = await getToken("accessToken");
-
-  //   //   if (access == null) {
-  //   //     print("SSE 연결 실패: 액세스 토큰 없음");
-  //   //     return false;
-  //   //   }
-
-  //   //   try {
-  //   //     SSEClient.subscribeToSSE(
-  //   //       url: url,
-  //   //       header: {
-  //   //         "Authorization": "Bearer $access",
-  //   //         "Accept": "text/event-stream",
-  //   //       },
-  //   //       method: SSERequestType.GET,
-  //   //     ).listen((SSEModel event) {
-  //   //       if (event.data != null && onNotificationReceived != null) {
-  //   //         print("Received SSE event: ${event.data}");
-  //   //         onNotificationReceived(event.data!);
-  //   //       }
-  //   //     }, onError: (error) {
-  //   //       print("SSE 연결 오류: $error");
-  //   //     });
-
-  //   //     print("SSE 연결 성공");
-  //   //     return true;
-  //   //   } catch (e) {
-  //   //     print("SSE 구독 실패: $e");
-  //   //     return false;
-  //   //   }
-  //   // }
-
-  //   /// JSON 데이터 파싱 (잘못된 데이터 방지)
-  //   Map<String, dynamic> parseNotificationData(String data) {
-  //     try {
-  //       if (!data.startsWith("{")) {
-  //         print("⚠️ JSON 형식이 아님, 무시: $data");
-  //         return {};
-  //       }
-  //       return jsonDecode(data);
-  //     } catch (e) {
-  //       print("JSON 파싱 오류: $e");
-  //       return {};
-  //     }
-  //   }
-  // }
-

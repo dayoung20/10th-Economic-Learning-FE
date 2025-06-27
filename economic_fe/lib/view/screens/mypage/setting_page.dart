@@ -99,8 +99,7 @@ class _SettingPageState extends State<SettingPage> {
                           context: context,
                           type: 'withdraw',
                           onConfirm: () {
-                            // TODO: 탈퇴 기능 연동 예정
-                            Get.snackbar("안내", "회원탈퇴 기능은 준비 중입니다.");
+                            controller.deleteAccount();
                           },
                         );
                       },
