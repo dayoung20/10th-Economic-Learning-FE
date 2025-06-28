@@ -9,12 +9,6 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginExistController extends GetxController {
-  // // var levelTestAnswers = <LevelTestAnswerModel>[].obs;
-  // List<LevelTestAnswerModel> levelTestAnswers = [];
-
-  // final String clientId = dotenv.env['CLIENT_ID']!;
-  // final String redirectUri = dotenv.env['REDIRECT_URI']!;
-
   Future<void> login() async {
     try {
       // 카카오톡 또는 계정 로그인
@@ -67,8 +61,17 @@ class LoginExistController extends GetxController {
 
           await SSEManager().connectIfNeeded(); // SSE 연결 시도
 
-          // 로그인 성공 후 다음 화면으로 이동
-          Get.toNamed('/home');
+          // 사용자 프로필 조회 (신규 메서드 사용)
+          final userInfo = await RemoteDataSource().fetchUserInfoByToken();
+          final isProfileSet = userInfo.isNotEmpty;
+
+          if (!isProfileSet) {
+            print("사용자 프로필 미설정 → 프로필 설정 페이지로 이동");
+            Get.toNamed('/profile_setting');
+          } else {
+            print("사용자 프로필 설정 완료 → 홈으로 이동");
+            Get.toNamed('/home');
+          }
         } else {
           print("백엔드 인증 실패: ${responseData["message"] ?? "응답 데이터 없음"}");
           Get.snackbar("로그인 실패", responseData["message"] ?? "알 수 없는 오류 발생");

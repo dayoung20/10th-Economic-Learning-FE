@@ -2265,6 +2265,45 @@ class RemoteDataSource {
     }
   }
 
+  /// 사용자 정보 조회 (토큰 기반)
+  /// GET: api/v1/user/info (Authorization 헤더 필요)
+  Future<Map<String, dynamic>> fetchUserInfoByToken() async {
+    try {
+      const endPoint = 'api/v1/user/info';
+
+      final response = await _getApiWithHeader(endPoint); // 헤더 포함 요청
+
+      // 응답이 null인지 체크
+      if (response == null) {
+        debugPrint("[fetchUserInfoByToken] 응답이 null입니다.");
+        return {};
+      }
+
+      // 성공 응답 처리
+      if (response["isSuccess"] == true) {
+        final results = response["results"];
+        if (results != null && results is Map<String, dynamic>) {
+          return results;
+        } else {
+          debugPrint("[fetchUserInfoByToken] results가 null이거나 잘못된 형식입니다.");
+          return {};
+        }
+      }
+
+      // 프로필 미설정 여부 확인
+      if (response["code"] == "ATTENDANCE_NOT_FOUND") {
+        debugPrint("[fetchUserInfoByToken] 프로필 미설정 상태 (ATTENDANCE_NOT_FOUND)");
+        return {};
+      }
+
+      debugPrint("[fetchUserInfoByToken] 실패 메시지: ${response["message"]}");
+      return {};
+    } catch (e) {
+      debugPrint("[fetchUserInfoByToken] 예외 발생: $e");
+      return {};
+    }
+  }
+
   /// 푸시 알림 설정
   /// API: api/v1/user/alarm
   Future<bool> setAlarm(bool alarm) async {
