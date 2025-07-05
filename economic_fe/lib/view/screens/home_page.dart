@@ -17,6 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // GetX 컨트롤러 가져오기
+  final HomeController controller = Get.put(HomeController());
+
   @override
   void initState() {
     super.initState();
@@ -24,10 +27,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // GetX 컨트롤러 가져오기
-    final HomeController controller = Get.put(HomeController());
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    controller.fetchAllHomeData(); // 매 진입 시 갱신
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: const HomeAppBar(),
