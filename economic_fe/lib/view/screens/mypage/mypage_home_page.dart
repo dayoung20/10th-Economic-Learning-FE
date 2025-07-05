@@ -18,6 +18,14 @@ class _MypageHomePageState extends State<MypageHomePage> {
   final MypageHomeController controller = Get.put(MypageHomeController());
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!controller.isLoading.value) {
+      controller.refreshMypageData();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,

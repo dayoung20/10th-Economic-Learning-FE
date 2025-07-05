@@ -18,12 +18,21 @@ class MypageHomeController extends GetxController {
   var isCheckedList =
       <bool>[false, false, false, false, false, false, false].obs;
 
+  /// 마이페이지 전체 데이터 갱신 함수
+  Future<void> refreshMypageData() async {
+    isLoading.value = true; // 새로 로딩 시작
+    await Future.wait([
+      fetchUserInfo(),
+      fetchCurrentStreak(),
+      fetchWeeklyAttendanceStatus(),
+    ]);
+    isLoading.value = false;
+  }
+
   @override
   void onInit() {
     super.onInit();
-    fetchUserInfo();
-    fetchCurrentStreak();
-    fetchWeeklyAttendanceStatus();
+    refreshMypageData(); // 최초 1회
   }
 
   // 사용자 정보 조회

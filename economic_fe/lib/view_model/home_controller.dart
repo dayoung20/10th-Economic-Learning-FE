@@ -5,7 +5,7 @@ import 'package:economic_fe/data/services/remote_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // GoRouter import
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with WidgetsBindingObserver {
   final remoteDataSource = RemoteDataSource();
 
   var currentStreak = 0.obs; // 연속 출석 날짜
@@ -91,6 +91,25 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+    fetchAllHomeData();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 앱이 포그라운드로 복귀했을 때 홈 데이터 다시 불러오기
+    if (state == AppLifecycleState.resumed) {
+      fetchAllHomeData();
+    }
+  }
+
+  void fetchAllHomeData() {
     fetchProgress();
     fetchUserGoal();
     fetchCurrentStreak();
