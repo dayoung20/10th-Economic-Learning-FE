@@ -773,16 +773,14 @@ class _SearchPageState extends State<SearchPage>
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 141.w,
                   height: 60.h,
-                  child: Flexible(
-                    child: Text(
-                      tok.title!,
-                      style: TextStyle(
-                        color: const Color(0xFF111111),
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                        height: 1.30,
-                        letterSpacing: -0.38,
-                      ),
+                  child: Text(
+                    tok.title!,
+                    style: TextStyle(
+                      color: const Color(0xFF111111),
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                      height: 1.30,
+                      letterSpacing: -0.38,
                     ),
                   ),
                 ),
