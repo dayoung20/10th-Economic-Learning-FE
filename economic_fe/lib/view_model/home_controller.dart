@@ -280,14 +280,12 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         todaysTokDetail.value = todaysTok;
 
         // 프로필 이미지 리스트 저장
-        var userProfiles = todaysTokDetail["userRandomProfileListResponse"]
-            ?["userRandomProfileResponseList"] as List<dynamic>?;
+        var userProfiles = todaysTokDetail["userProfiles"] as List<dynamic>?;
 
         if (userProfiles != null) {
           participantProfileImages.value = userProfiles
               .map((user) => user["profileImageUrl"] as String? ?? "")
-              .where((url) => url.isNotEmpty) // 빈 URL 제거
-              .toList();
+              .toList(); // .where 제거 → null도 기본 이미지로 표시
         }
       }
     } catch (e) {

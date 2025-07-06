@@ -671,10 +671,10 @@ class _HomePageState extends State<HomePage> {
                                                                   error,
                                                                   stackTrace) =>
                                                               Image.asset(
-                                                                  'assets/default_profile.png'),
+                                                                  'assets/profile_example.png'),
                                                         )
                                                       : Image.asset(
-                                                          'assets/default_profile.png'), // 기본 이미지
+                                                          'assets/profile_example.png'), // 기본 이미지
                                                 ),
                                               ),
                                             );
