@@ -72,19 +72,19 @@ class SearchPageController extends GetxController {
     }
 
     // 초기화
-    currentTermPage = 1;
+    currentTermPage = 0;
     isTermLastPage = false;
     searchTerms.clear();
 
-    currentNewsPage = 1;
+    currentNewsPage = 0;
     isNewsLastPage = false;
     searchNews.clear();
 
-    currentPostPage = 1;
+    currentPostPage = 0;
     isPostLastPage = false;
     searchPosts.clear();
 
-    currentTokPage = 1;
+    currentTokPage = 0;
     isTokLastPage = false;
     searchToks.clear();
 
@@ -171,6 +171,7 @@ class SearchPageController extends GetxController {
 
     try {
       final response = await remoteDataSource.searchPostsPaged(keyword, page);
+      // debugPrint('게시판 응답: $response');
       final List newItems = response['postList'];
       final List<PostModel> models =
           newItems.map((e) => PostModel.fromJson(e)).toList();
@@ -219,6 +220,7 @@ class SearchPageController extends GetxController {
 
     try {
       final response = await remoteDataSource.searchTokToksPaged(keyword, page);
+      // debugPrint('톡톡 응답: $response');
       final List newItems = response['tokList'];
       final List<TokModel> models =
           newItems.map((e) => TokModel.fromJson(e)).toList();
