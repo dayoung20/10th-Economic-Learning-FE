@@ -11,7 +11,7 @@ class ArticleListController extends GetxController {
   var selectedSort = "RECENT".obs;
   var selectedCate = "전체".obs;
   Rx<int> selectedCategoryIndex = 0.obs;
-  Rx<int> selectedOrder = 0.obs;
+  Rx<int> selectedOrder = 1.obs;
 
   // 페이징 상태
   var currentPage = 0.obs;
@@ -34,6 +34,7 @@ class ArticleListController extends GetxController {
 
   void selectOrder(int index) {
     selectedOrder.value = index;
+    selectedSort.value = selectedOrder.value == 0 ? "POPULAR" : "RECENT";
   }
 
   void toDetailPage(ArticleModel article) {
