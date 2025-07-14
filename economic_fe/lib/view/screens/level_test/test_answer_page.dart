@@ -171,106 +171,122 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                 ),
                                 child: Column(
                                   children: List.generate(
-                                      quizList[controller
-                                              .currentQuestionIndex.value]
-                                          .choiceList
-                                          .length, (index) {
-                                    final isSelected = answers[controller
-                                                .currentQuestionIndex.value]
-                                            .answer ==
-                                        quizList[controller
-                                                .currentQuestionIndex.value]
-                                            .choiceList[index]
-                                            .content;
-                                    final isCorrect = response["results"]
-                                            ["answerResponses"][
-                                        controller.currentQuestionIndex
-                                            .value]["isCorrect"];
-                                    return Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 16.h), // 선지 간 간격
-                                      width: MediaQuery.of(context).size.width -
-                                          96.w,
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: ShapeDecoration(
-                                        color: isSelected
-                                            ? isCorrect
-                                                ? const Color(0xffE1F6FF) // 정답
-                                                : const Color(0xffFFF2F1) // 오답
-                                            : Colors.white, // 기본 배경 색상
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                            width: isSelected ? 3 : 1, // 테두리 두께
-                                            color: isSelected
-                                                ? isCorrect
-                                                    ? const Color(
-                                                        0xff067BD5) // 정답
-                                                    : const Color(
-                                                        0xffFF5468) // 오답
-                                                : const Color(
-                                                    0xFFD9D9D9), // 기본 테두리 색상
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 24.w,
-                                            height: 24.h,
-                                            decoration: ShapeDecoration(
-                                              color: isSelected
-                                                  ? isCorrect
-                                                      ? const Color(
-                                                          0xff067BD5) // 정답
-                                                      : const Color(
-                                                          0xffFF5468) // 오답
-                                                  : const Color(
-                                                      0xFFF2F3F5), // 기본 번호 배경색
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
+                                    quizList[controller
+                                            .currentQuestionIndex.value]
+                                        .choiceList
+                                        .length,
+                                    (index) {
+                                      final currentQuizIndex =
+                                          controller.currentQuestionIndex.value;
+                                      final choice = quizList[currentQuizIndex]
+                                          .choiceList[index];
+                                      final choiceContent = choice.content;
+
+                                      final selectedAnswer =
+                                          answers[currentQuizIndex].answer;
+                                      final correctAnswer = response["results"]
+                                              ["answerResponses"]
+                                          [currentQuizIndex]["answer"];
+                                      final isSelected =
+                                          selectedAnswer == choiceContent;
+                                      final isCorrectAnswer =
+                                          correctAnswer == choiceContent;
+                                      final isUserCorrect =
+                                          selectedAnswer == correctAnswer;
+
+                                      // 색상 결정
+                                      Color bgColor;
+                                      Color borderColor;
+                                      Color numberBgColor;
+                                      Color numberTextColor;
+
+                                      if (isSelected) {
+                                        bgColor = isUserCorrect
+                                            ? const Color(0xffE1F6FF)
+                                            : const Color(0xffFFF2F1);
+                                        borderColor = isUserCorrect
+                                            ? const Color(0xff067BD5)
+                                            : const Color(0xffFF5468);
+                                        numberBgColor = borderColor;
+                                        numberTextColor = Colors.white;
+                                      } else if (!isUserCorrect &&
+                                          isCorrectAnswer) {
+                                        bgColor = const Color(0xffF2FFF2);
+                                        borderColor = const Color(0xff32C85A);
+                                        numberBgColor = borderColor;
+                                        numberTextColor = Colors.white;
+                                      } else {
+                                        bgColor = Colors.white;
+                                        borderColor = const Color(0xFFD9D9D9);
+                                        numberBgColor = const Color(0xFFF2F3F5);
+                                        numberTextColor =
+                                            const Color(0xFF111111);
+                                      }
+
+                                      return Container(
+                                        margin: EdgeInsets.only(bottom: 16.h),
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                96.w,
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: ShapeDecoration(
+                                          color: bgColor,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              width: (isSelected ||
+                                                      isCorrectAnswer)
+                                                  ? 3
+                                                  : 1,
+                                              color: borderColor,
                                             ),
-                                            child: Center(
-                                              child: Text(
-                                                '${index + 1}', // 선지 번호
-                                                style: TextStyle(
-                                                  color: isSelected
-                                                      ? Colors
-                                                          .white // 선택된 번호 텍스트 색상
-                                                      : const Color(
-                                                          0xFF111111), // 기본 번호 텍스트 색상
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 1.40,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 24.w,
+                                              height: 24.h,
+                                              decoration: ShapeDecoration(
+                                                color: numberBgColor,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '${index + 1}',
+                                                  style: TextStyle(
+                                                    color: numberTextColor,
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    height: 1.40,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          SizedBox(
-                                            width: 190.w,
-                                            child: Text(
-                                              quizList[controller
-                                                      .currentQuestionIndex
-                                                      .value]
-                                                  .choiceList[index]
-                                                  .content, // 선지 내용
-                                              style: TextStyle(
-                                                color: const Color(0xFF111111),
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.w500,
-                                                height: 1.40,
-                                                letterSpacing: -0.45,
+                                            const SizedBox(width: 12),
+                                            SizedBox(
+                                              width: 190.w,
+                                              child: Text(
+                                                choiceContent,
+                                                style: TextStyle(
+                                                  color:
+                                                      const Color(0xFF111111),
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  height: 1.40,
+                                                  letterSpacing: -0.45,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ],
