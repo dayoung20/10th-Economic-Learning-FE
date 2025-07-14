@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
 class DatePickerService {
-  // 날짜 선택 다이얼로그 표시
   Future<DateTime?> pickDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+    DateTime? selectedDate;
+    await DatePicker.showDatePicker(
+      context,
+      locale: LocaleType.ko,
+      showTitleActions: true,
+      minTime: DateTime(1900),
+      maxTime: DateTime(2101),
+      currentTime: DateTime.now(),
+      onConfirm: (date) {
+        selectedDate = date;
+      },
     );
-    return picked;
+    return selectedDate;
   }
 }
