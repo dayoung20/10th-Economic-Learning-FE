@@ -21,7 +21,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
   @override
   void initState() {
     super.initState();
-    controller.fetchNewsInitial(1, "RECENT", null);
+    controller.fetchNewsInitial(0, "RECENT", null);
   }
 
   @override
@@ -56,7 +56,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("전체");
-                        controller.fetchNewsInitial(1, "RECENT", null);
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, null);
                       },
                       child: CategoryTab(
                         isSelected: controller.selectedCate.value == "전체",
@@ -66,7 +67,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("FINANCE");
-                        controller.fetchNewsInitial(1, "RECENT", "FINANCE");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "FINANCE");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -76,7 +78,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("INVESTMENT");
-                        controller.fetchNewsInitial(1, "RECENT", "INVESTMENT");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "INVESTMENT");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -86,7 +89,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("NORMAL");
-                        controller.fetchNewsInitial(1, "RECENT", "NORMAL");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "NORMAL");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "NORMAL",
@@ -95,7 +99,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("GLOBAL");
-                        controller.fetchNewsInitial(1, "RECENT", "GLOBAL");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "GLOBAL");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "GLOBAL",
@@ -104,7 +109,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("INDUSTRY");
-                        controller.fetchNewsInitial(1, "RECENT", "INDUSTRY");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "INDUSTRY");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -114,7 +120,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("REAL_ESTATE");
-                        controller.fetchNewsInitial(1, "RECENT", "REAL_ESTATE");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "REAL_ESTATE");
                       },
                       child: CategoryTab(
                           isSelected:
@@ -124,8 +131,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("ECONOMIC_ANALYSIS");
-                        controller.fetchNewsInitial(
-                            1, "RECENT", "ECONOMIC_ANALYSIS");
+                        controller.fetchNewsInitial(0,
+                            controller.selectedSort.value, "ECONOMIC_ANALYSIS");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value ==
@@ -135,8 +142,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("ECONOMIC_POLICY");
-                        controller.fetchNewsInitial(
-                            1, "RECENT", "ECONOMIC_POLICY");
+                        controller.fetchNewsInitial(0,
+                            controller.selectedSort.value, "ECONOMIC_POLICY");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value ==
@@ -146,7 +153,8 @@ class _ArticleListPageState extends State<ArticleListPage> {
                     GestureDetector(
                       onTap: () {
                         controller.selectCategory("OTHER");
-                        controller.fetchNewsInitial(1, "RECENT", "OTHER");
+                        controller.fetchNewsInitial(
+                            0, controller.selectedSort.value, "OTHER");
                       },
                       child: CategoryTab(
                           isSelected: controller.selectedCate.value == "OTHER",
@@ -174,7 +182,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                             GestureDetector(
                               onTap: () {
                                 controller.selectOrder(0);
-                                controller.fetchNewsInitial(1, "POPULAR",
+                                controller.fetchNewsInitial(0, "POPULAR",
                                     controller.selectedCate.value);
                               },
                               child: OrderTab(
@@ -189,7 +197,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                               onTap: () {
                                 controller.selectOrder(1);
                                 controller.fetchNewsInitial(
-                                    1, "RECENT", controller.selectedCate.value);
+                                    0, "RECENT", controller.selectedCate.value);
                               },
                               child: OrderTab(
                                 text: '최신순',
