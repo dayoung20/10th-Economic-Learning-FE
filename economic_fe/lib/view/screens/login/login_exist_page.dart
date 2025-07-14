@@ -1,4 +1,5 @@
 import 'package:economic_fe/view/theme/palette.dart';
+import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/login/login_exist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +19,13 @@ class _LoginExistPageState extends State<LoginExistPage> {
 
     return Scaffold(
       backgroundColor: Palette.background,
+      appBar: CustomAppBar(
+        title: '',
+        icon: Icons.arrow_back_ios_new,
+        onPress: () {
+          Get.back();
+        },
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -25,7 +33,7 @@ class _LoginExistPageState extends State<LoginExistPage> {
             Column(
               children: [
                 SizedBox(
-                  height: 164.h,
+                  height: 100.h,
                 ),
                 // 어플 로고
                 Image.asset(
