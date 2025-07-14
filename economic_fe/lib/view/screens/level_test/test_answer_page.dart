@@ -186,7 +186,6 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                             ["answerResponses"][
                                         controller.currentQuestionIndex
                                             .value]["isCorrect"];
-                                    print("isCorrect : $isCorrect");
                                     return Container(
                                       margin: EdgeInsets.only(
                                           bottom: 16.h), // 선지 간 간격
@@ -375,18 +374,19 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                     // controller.answers[index];
                                     response["results"]["answerResponses"]
                                         [index]["isCorrect"];
-                                print(response["results"]["answerResponses"]
-                                    [index]["isCorrect"]);
                                 return GestureDetector(
+                                  behavior:
+                                      HitTestBehavior.opaque, // 이것도 함께 추가!
                                   onTap: () {
-                                    print("sele : $index");
                                     controller.selectQuestion(index);
                                     Navigator.pop(context);
-                                    print("sele : $index");
                                   },
-                                  child: Padding(
+                                  child: Container(
+                                    width: double.infinity,
                                     padding: EdgeInsets.symmetric(
-                                        vertical: 15.h), // Row 간 간격
+                                        vertical: 15.h, horizontal: 8.w),
+                                    color: Colors
+                                        .transparent, // ✨ 터치 영역 확보를 위해 필요!
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -402,11 +402,9 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                                   ? Palette.buttonColorBlue
                                                   : const Color(0xff767676),
                                             ),
-                                            SizedBox(
-                                              width: 8.5.w,
-                                            ),
+                                            SizedBox(width: 8.5.w),
                                             Text(
-                                              '${index + 1}번', // 번호 표시
+                                              '${index + 1}번',
                                               style: TextStyle(
                                                 color: isSelected
                                                     ? const Color(0xFF2AD6D6)
@@ -419,13 +417,12 @@ class _TestAnswerPageState extends State<TestAnswerPage> {
                                             ),
                                           ],
                                         ),
-                                        isSelected
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                size: 20.w,
-                                                color: Palette.buttonColorBlue,
-                                              )
-                                            : const SizedBox(),
+                                        if (isSelected)
+                                          Icon(
+                                            Icons.check_circle,
+                                            size: 20.w,
+                                            color: Palette.buttonColorBlue,
+                                          )
                                       ],
                                     ),
                                   ),
