@@ -182,6 +182,9 @@ class BasicInfoPage extends StatelessWidget {
                         controller.nickname.value = value; // 닉네임 업데이트
                         controller.validateNickname(value);
                       },
+                      onEditingComplete: () {
+                        FocusScope.of(context).unfocus(); // 키보드 내리기
+                      },
                       controller: controller.nicknameController,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
@@ -386,6 +389,10 @@ class BasicInfoPage extends StatelessWidget {
                               child: TextField(
                                 controller: controller.userInputController,
                                 onChanged: controller.onTextChanged,
+                                textInputAction: TextInputAction.done,
+                                onEditingComplete: () {
+                                  FocusScope.of(context).unfocus();
+                                },
                                 maxLines: 5,
                                 inputFormatters: [
                                   // 글자 수가 maxLength를 초과하지 않도록 제한
