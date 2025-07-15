@@ -41,7 +41,16 @@ abstract class BaseLoginController extends GetxController {
     }
   }
 
-  void _listenToAppLinks() {
+  void _listenToAppLinks() async {
+    // cold start 시에도 URI 가져오기
+    final initialUri = await _appLinks.getInitialLink();
+    if (initialUri != null && !_isRedirectHandled) {
+      debugPrint("초기 앱 링크 수신: $initialUri");
+      _isRedirectHandled = true;
+      await _handleRedirectUri(initialUri);
+    }
+
+    // 이후 URI 수신 스트림 구독
     _appLinks.uriLinkStream.listen((uri) async {
       debugPrint("앱 링크 수신: $uri");
       if (_isRedirectHandled) return;
