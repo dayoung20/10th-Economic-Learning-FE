@@ -1,11 +1,8 @@
-import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
-import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/data/storage/level_test_storage.dart';
 import 'package:economic_fe/view_model/test/anonymous_key_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AgreementController extends GetxController {
   late BuildContext context;
@@ -39,36 +36,36 @@ class AgreementController extends GetxController {
   }
 
   // 확인 버튼 클릭
-  void clickedConfirmBtn(
-      List<LevelTestAnswerModel> answers, List<QuizModel> quizList) async {
-    List<Map<String, dynamic>> answersJson =
-        answers.map((e) => e.toJson()).toList();
-
+  void clickedConfirmBtn() async {
     try {
-      print("start");
+      if (from == 'skip') {
+        Get.offAllNamed('/profile_setting');
+        return;
+      }
+
+      final (answers, quizList) = await LevelTestStorage.loadLevelTestData();
+
+      final answersJson = answers.map((e) => e.toJson()).toList();
 
       final anonKeyController = Get.find<AnonymousKeyController>();
       final anonymousKey = anonKeyController.key;
 
-      dynamic response = await remoteDataSource.postLevelTestResult(
+      final response = await remoteDataSource.postLevelTestResult(
         answersJson: answersJson,
         anonymousKey: anonymousKey,
       );
 
-      print("response : $response");
+      // 서버 응답 성공 후 저장 데이터 삭제
+      await LevelTestStorage.clear();
 
-      if (from == 'skip') {
-        Get.offAllNamed('/profile_setting');
-      } else {
-        Get.toNamed(
-          '/leveltest_result',
-          arguments: {
-            'response': response,
-            'answer': answers,
-            'quizList': quizList,
-          },
-        );
-      }
+      Get.toNamed(
+        '/leveltest_result',
+        arguments: {
+          'response': response,
+          'answer': answers,
+          'quizList': quizList,
+        },
+      );
     } catch (e) {
       debugPrint("error : $e");
     }

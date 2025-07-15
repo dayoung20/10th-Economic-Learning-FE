@@ -38,6 +38,20 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+  		<dict>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+      			<string>kakao580c6a0fba50f0b9eec31313985f9428</string>
+    		</array>
+  		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>kakaokompassauth</string>
+  		<string>kakaolink</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

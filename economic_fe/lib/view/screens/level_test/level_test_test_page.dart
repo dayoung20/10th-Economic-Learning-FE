@@ -124,7 +124,7 @@ class _LevelTestTestPageState extends State<LevelTestTestPage> {
                             controller.currentQuizIdx++;
                           });
                         },
-                        onFinishTest: () => controller.clickedToKaKao(quizList),
+                        onFinishTest: () => controller.clickedToKakao(quizList),
                       ));
           }),
           Obx(() {

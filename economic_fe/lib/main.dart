@@ -13,28 +13,32 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('ko', null); // 로캘 초기화
+  await initializeDateFormatting('ko', null);
   await dotenv.load(fileName: '.env');
 
-  await GetStorage.init(); // 권한 요청 기록 저장용
+  await GetStorage.init();
   await initLocalNotifications();
 
-  String nativeAppKey = dotenv.env['NATIVE_APP_KEY']!;
+  final nativeAppKey = dotenv.env['NATIVE_APP_KEY']!;
   KakaoSdk.init(nativeAppKey: nativeAppKey);
 
-  // accessToken 유효성 검증
-  bool isValidToken = await validateAccessToken();
+  final isValidToken = await validateAccessToken();
   if (isValidToken) {
-    await SSEManager().init(); // SSE 연결 시작
+    await SSEManager().init();
   }
 
-  runApp(RippleApp(isLoggedIn: isValidToken));
+  runApp(RippleApp(
+    initialRoute: isValidToken ? '/home' : '/',
+    isLoggedIn: isValidToken,
+  ));
 }
 
 class RippleApp extends StatelessWidget {
+  final String initialRoute;
   final bool isLoggedIn;
 
-  const RippleApp({super.key, required this.isLoggedIn});
+  const RippleApp(
+      {super.key, required this.initialRoute, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,7 @@ class RippleApp extends StatelessWidget {
           child: GetMaterialApp(
             scaffoldMessengerKey: rootScaffoldMessengerKey,
             title: 'Ripple',
-            initialRoute: isLoggedIn ? '/home' : '/',
+            initialRoute: initialRoute,
             getPages: UserRouter.getPages(),
             builder: (context, widget) {
               return MediaQuery(

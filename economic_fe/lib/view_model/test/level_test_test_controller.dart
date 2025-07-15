@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
 import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/data/services/remote_data_source.dart';
+import 'package:economic_fe/data/storage/level_test_storage.dart';
 import 'package:economic_fe/view_model/test/anonymous_key_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class LevelTestTestController extends GetxController {
   late BuildContext context;
@@ -71,11 +69,15 @@ class LevelTestTestController extends GetxController {
     }
   }
 
-  void clickedToKaKao(List<QuizModel> quizList) {
-    Get.toNamed('/login', arguments: {
-      'levelTestAnswers': levelTestAnswers,
-      'quizList': quizList,
-    });
+  // 카카오 로그인
+  void clickedToKakao(List<QuizModel> quizList) async {
+    final answers = levelTestAnswers.toList();
+    print('[clickedToKakao] 저장 전 answers: $answers');
+
+    await LevelTestStorage.saveLevelTestData(answers, quizList);
+
+    print('[clickedToKakao] 저장 완료');
+    Get.toNamed('/login');
   }
 
   void quitLevelTest() {

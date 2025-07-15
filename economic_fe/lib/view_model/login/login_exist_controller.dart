@@ -1,117 +1,16 @@
-import 'dart:convert';
-
 import 'package:economic_fe/data/services/remote_data_source.dart';
-import 'package:economic_fe/data/services/sse_manager.dart';
-import 'package:flutter/material.dart';
+import 'package:economic_fe/view_model/login/base_login_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginExistController extends GetxController {
-  Future<void> login() async {
-    try {
-      // 카카오톡 또는 계정 로그인
-      OAuthToken token;
-      if (await isKakaoTalkInstalled()) {
-        token = await UserApi.instance.loginWithKakaoTalk();
-      } else {
-        token = await UserApi.instance.loginWithKakaoAccount();
-      }
+class LoginExistController extends BaseLoginController {
+  @override
+  void onLoginSuccess() async {
+    final userInfo = await RemoteDataSource().fetchUserInfoByToken();
+    final isProfileSet = userInfo.isNotEmpty;
 
-      String kakaoAccessToken = token.accessToken;
-      print("카카오 로그인 성공, accessToken: $kakaoAccessToken");
-
-      // 백엔드에 카카오 토큰 전송 후 서버 인증 토큰 받아오기
-      await getlogin(kakaoAccessToken);
-    } catch (error) {
-      print("카카오 로그인 실패: $error");
-    }
-  }
-
-  // 백엔드에서 토큰 받아오기
-  Future<void> getlogin(String accessToken) async {
-    try {
-      print("백엔드 로그인 요청 시작");
-
-      // HTTP GET 요청 실행
-      http.Response? response = await RemoteDataSource.getlogin(accessToken);
-
-      if (response == null) {
-        print("백엔드 응답 없음 (로그인 실패)");
-        Get.snackbar("로그인 실패", "서버와의 연결이 원활하지 않습니다.");
-        return;
-      }
-
-      // 응답 상태 코드 확인
-      if (response.statusCode == 200) {
-        // response.body를 JSON으로 변환 후 Map 형태로 저장
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-
-        // 서버 응답이 성공적인지 확인
-        if (responseData["isSuccess"] == true &&
-            responseData.containsKey("results")) {
-          String serverToken = responseData["results"]; // 실제 accessToken
-
-          // 토큰 저장 (자동 로그인 유지)
-          await saveToken("accessToken", serverToken);
-          await saveLoginState(true);
-
-          print("백엔드 인증 성공, 저장된 accessToken: $serverToken");
-
-          await SSEManager().connectIfNeeded(); // SSE 연결 시도
-
-          // 사용자 프로필 조회 (신규 메서드 사용)
-          final userInfo = await RemoteDataSource().fetchUserInfoByToken();
-          final isProfileSet = userInfo.isNotEmpty;
-
-          if (!isProfileSet) {
-            print("사용자 프로필 미설정 → 프로필 설정 페이지로 이동");
-            Get.toNamed('/profile_setting');
-          } else {
-            print("사용자 프로필 설정 완료 → 홈으로 이동");
-            Get.toNamed('/home');
-          }
-        } else {
-          print("백엔드 인증 실패: ${responseData["message"] ?? "응답 데이터 없음"}");
-          Get.snackbar("로그인 실패", responseData["message"] ?? "알 수 없는 오류 발생");
-        }
-      } else {
-        print("로그인 실패: ${response.statusCode}, 응답 본문: ${response.body}");
-        Get.snackbar("로그인 실패", "서버 응답 오류: ${response.statusCode}");
-      }
-    } catch (e) {
-      debugPrint("백엔드 로그인 요청 실패: $e");
-      Get.snackbar("로그인 오류", "네트워크 오류가 발생했습니다.");
-    }
-  }
-
-  // 로그인 상태 저장
-  Future<void> saveLoginState(bool isLoggedIn) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("isLoggedIn", isLoggedIn);
-  }
-
-  // 토큰 저장
-  Future<void> saveToken(String sessionKey, String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(sessionKey, token);
-  }
-
-  // 토큰 불러오기
-  Future<String?> getToken(String sessionKey) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(sessionKey);
-  }
-
-  // 토큰 삭제
-  Future<void> deleteToken(String sessionKey) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(sessionKey);
-  }
-
-  // 테스트용
-  void toArticle() {
-    Get.toNamed('/article');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.offAllNamed(isProfileSet ? '/home' : '/profile_setting');
+    });
   }
 }
