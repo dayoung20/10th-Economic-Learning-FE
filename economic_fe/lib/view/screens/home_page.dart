@@ -1,6 +1,6 @@
 import 'package:economic_fe/utils/notification_utils.dart';
 import 'package:economic_fe/view/theme/palette.dart';
-import 'package:economic_fe/view/widgets/%08progress_tool_tip.dart';
+import 'package:economic_fe/view/widgets/progress_tool_tip.dart';
 import 'package:economic_fe/view/widgets/circular_chart.dart';
 import 'package:economic_fe/view/widgets/custom_bottom_bar.dart';
 import 'package:economic_fe/view/widgets/home_app_bar.dart';

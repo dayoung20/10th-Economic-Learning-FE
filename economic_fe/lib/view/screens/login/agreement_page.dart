@@ -1,5 +1,3 @@
-import 'package:economic_fe/data/models/level_test/level_test_answer_model.dart';
-import 'package:economic_fe/data/models/level_test/level_test_model.dart';
 import 'package:economic_fe/view/theme/palette.dart';
 import 'package:economic_fe/view/widgets/custom_app_bar.dart';
 import 'package:economic_fe/view_model/login/agreement_controller.dart';
@@ -15,24 +13,20 @@ class AgreementPage extends StatefulWidget {
 }
 
 class _AgreementPageState extends State<AgreementPage> {
-  late final AgreementController controller;
+  final AgreementController controller = Get.put(AgreementController());
+
   @override
   void initState() {
     super.initState();
-    controller = Get.put(AgreementController());
 
-    final from = Get.arguments['from'] ?? 'login';
+    final arguments = Get.arguments as Map<String, dynamic>? ?? {};
+    final from = arguments['from'] ?? 'login';
+
     controller.setFrom(from);
   }
 
   @override
   Widget build(BuildContext context) {
-    final arguments = Get.arguments as Map<String, dynamic>;
-    final String from = arguments['from'] ?? 'login';
-    final List<LevelTestAnswerModel> answers =
-        arguments['levelTestAnswers'] ?? [];
-    final List<QuizModel> quizList = arguments['quizList'] ?? [];
-
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: CustomAppBar(
@@ -322,7 +316,7 @@ class _AgreementPageState extends State<AgreementPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          controller.clickedConfirmBtn(answers, quizList);
+                          controller.clickedConfirmBtn();
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,

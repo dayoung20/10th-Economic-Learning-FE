@@ -1,4 +1,4 @@
-package com.example.economic_fe
+package com.cotato.ripple
 
 import io.flutter.embedding.android.FlutterActivity
 

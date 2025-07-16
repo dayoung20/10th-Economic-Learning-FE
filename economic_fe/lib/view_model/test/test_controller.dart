@@ -92,7 +92,8 @@ class TestController extends GetxController {
       print("response ::: $response");
 
       final data = response as Map<String, dynamic>;
-      final anonKeyController = Get.put(AnonymousKeyController());
+      final anonKeyController =
+          Get.put(AnonymousKeyController(), permanent: true);
       anonKeyController.setKey(data['results']['anonymousKey']);
       final quizList = data['results']['quizzes'] as List;
       return quizList.map((quiz) => QuizModel.fromJson(quiz)).toList();

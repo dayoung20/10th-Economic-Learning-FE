@@ -1,22 +1,12 @@
 import java.util.Properties
 
-// def getEnvValue(String key, String defaultValue) {
-//     def properties = new Properties()
-//     def envFile = rootProject.file('.env')
-//     if (envFile.exists()) {
-//         properties.load(new FileInputStream(envFile))
-//     }
-//     return properties.getProperty(key, defaultValue)
-// }
-
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def dotenvFile = rootProject.file('.env')
+def dotenvFile = file("$rootDir/../.env") // 실제 .env 위치 반영해서 수정
 def dotenvProps = new Properties()
 
 if (dotenvFile.exists()) {
@@ -32,7 +22,7 @@ if (keyPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.economic_fe"
+    namespace = "com.cotato.ripple"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -46,35 +36,27 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.cotato.ripple"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = 2
         versionName = "1.0.1"
-        // manifestPlaceholders += [KAKAO_NATIVE_APP_KEY: project.env.get("NATIVE_APP_KEY")]
         manifestPlaceholders += [
             KAKAO_NATIVE_APP_KEY: dotenvProps['NATIVE_APP_KEY'] ?: "default_key"
         ]
     }
 
     signingConfigs {
-    release {
-        storeFile file(keyProperties['storeFile'])
-        storePassword keyProperties['storePassword']
-        keyAlias keyProperties['keyAlias']
-        keyPassword keyProperties['keyPassword']
+        release {
+            storeFile file(keyProperties['storeFile'])
+            storePassword keyProperties['storePassword']
+            keyAlias keyProperties['keyAlias']
+            keyPassword keyProperties['keyPassword']
+        }
     }
-}
-
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            // signingConfig = signingConfigs.debug
             signingConfig signingConfigs.release
             shrinkResources true
             minifyEnabled true
