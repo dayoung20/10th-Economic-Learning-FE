@@ -60,7 +60,6 @@ class NewPostPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // 1. 메인 콘텐츠 (스크롤 가능한 부분)
           Positioned.fill(
             child: Column(
               children: [
@@ -111,7 +110,6 @@ class NewPostPage extends StatelessWidget {
                     ),
                   );
                 }),
-
                 // 제목 입력창
                 Padding(
                   padding:
@@ -131,20 +129,17 @@ class NewPostPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 // 구분선
                 Container(
                   width: MediaQuery.of(context).size.width - 32,
                   height: 1,
                   color: const Color(0xffd9d9d9),
                 ),
-
                 // 콘텐츠 입력 영역
                 Expanded(
                   child: Obx(() {
                     return SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(
-                          16, 14, 16, 100), // bottom bar 높이만큼 추가!
+                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 100),
                       child: Column(
                         children: [
                           TextField(
@@ -229,8 +224,6 @@ class NewPostPage extends StatelessWidget {
               ],
             ),
           ),
-
-          // 2. BottomPostBar - 키보드 위로 따라 올라오게
           Positioned(
             left: 0,
             right: 0,
@@ -239,44 +232,6 @@ class NewPostPage extends StatelessWidget {
           ),
         ],
       ),
-
-      // bottomNavigationBar: Container(
-      //   decoration: const BoxDecoration(
-      //     border: Border(top: BorderSide(width: 1, color: Color(0xFFD9D9D9))),
-      //   ),
-      //   child: Padding(
-      //     padding:
-      //         const EdgeInsets.only(bottom: 20, top: 10, left: 10, right: 10),
-      //     child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         GestureDetector(
-      //           onTap: () async {
-      //             await controller.pickImage(context);
-      //           },
-      //           child: Image.asset(
-      //             'assets/add_photo.png',
-      //             width: 24,
-      //             height: 24,
-      //           ),
-      //         ),
-      //         Obx(() {
-      //           return Padding(
-      //             padding: const EdgeInsets.all(8.0),
-      //             child: Text(
-      //               '${controller.contentLength.value}/3500',
-      //               style: TextStyle(
-      //                 color: controller.contentLength.value > 3500
-      //                     ? Colors.red
-      //                     : Colors.black,
-      //               ),
-      //             ),
-      //           );
-      //         }),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
